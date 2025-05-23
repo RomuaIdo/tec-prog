@@ -1,17 +1,23 @@
 # Compiladores
-CC = gcc
-CXX = g++
+ifeq ($(OS),Windows_NT)
+    CXX = g++
+    TARGET = bin/$(VERSION_NAME).exe
+    SFML_PATH = C:/SFML-2.6.2
+    LDFLAGS = -L$(SFML_PATH)/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
+    CXXFLAGS += -I$(SFML_PATH)/include
+else
+    CC = gcc
+    CXX = g++
+    TARGET = bin/$(VERSION_NAME)
+    LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
+endif
 
 # Flags
 CFLAGS = -Wall -Wextra -std=c11 -DPROGRAM_VERSION=\"$(VERSION_NAME)\"
 CXXFLAGS = -Wall -Wextra -std=c++17 -DPROGRAM_VERSION=\"$(VERSION_NAME)\"
 
-# Linker flags para SFML
-LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
-
 # Nome do programa (usa nome do diretório atual)
 VERSION_NAME := $(notdir $(CURDIR))
-TARGET = bin/$(VERSION_NAME)
 
 # Configuração de pastas
 SRC_DIR = src
