@@ -10,13 +10,19 @@ using namespace sf;
 
 class Gerenciador_Grafico {
 private:
+  static Gerenciador_Grafico* instancia;
   RenderWindow* pjanela;
   map<string, Texture*> texturas;
   Font* fonte;
-
-public:
   Gerenciador_Grafico();
+public:
+
   ~Gerenciador_Grafico();
+
+  Gerenciador_Grafico(const Gerenciador_Grafico&) = delete;
+  Gerenciador_Grafico& operator=(const Gerenciador_Grafico&) = delete;
+
+  static Gerenciador_Grafico* getInstancia();
 
 
   void setJanela(RenderWindow* janela);
