@@ -1,37 +1,39 @@
-# Compiladores
-ifeq ($(OS),Windows_NT)
-    CXX = g++
-    TARGET = bin/$(VERSION_NAME).exe
-    SFML_PATH = C:/SFML-2.6.2
-    LDFLAGS = -L$(SFML_PATH)/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
-    CXXFLAGS += -I$(SFML_PATH)/include
-else
-    CC = gcc
-    CXX = g++
-    TARGET = bin/$(VERSION_NAME)
-    LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
-endif
-
-# Flags
-CFLAGS = -Wall -Wextra -std=c11 -DPROGRAM_VERSION=\"$(VERSION_NAME)\"
-CXXFLAGS = -Wall -Wextra -std=c++17 -DPROGRAM_VERSION=\"$(VERSION_NAME)\"
-
-# Nome do programa (usa nome do diretório atual)
+# Nome do programa (usa o nome do diretório atual)
 VERSION_NAME := $(notdir $(CURDIR))
 
-# Configuração de pastas
+# Detectar sistema operacional
+UNAME_S := $(shell uname -s)
+
+# Compilador
+CXX = g++
+
+# Diretórios padrão
 SRC_DIR = src
 OBJ_DIR = obj
 BIN_DIR = bin
 
-# Encontrar arquivos fonte
-ifeq ($(OS),Windows_NT)
-    SRCS = $(shell powershell -Command "Get-ChildItem -Path $(SRC_DIR) -Recurse -Filter *.cpp | ForEach-Object { $$_.FullName }")
+# Caminho do SFML (ajuste se necessário)
+ifeq ($(UNAME_S),Linux)
+    SFML_INCLUDE = 
+    SFML_LIB = 
 else
-    SRCS = $(shell find $(SRC_DIR) -name '*.cpp')
+	CXXFLAGS += -I/mingw64/include
+	LDFLAGS += -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
 endif
 
-# Gerar lista de objetos
+# Flags
+CXXFLAGS = -Wall -Wextra -std=c++17 -DPROGRAM_VERSION=\"$(VERSION_NAME)\"
+LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
+
+# Nome do executável
+ifeq ($(UNAME_S),Linux)
+    TARGET = $(BIN_DIR)/$(VERSION_NAME)
+else
+    TARGET = $(BIN_DIR)/$(VERSION_NAME).exe
+endif
+
+# Encontrar arquivos fonte (.cpp) com caminhos relativos
+SRCS = $(shell find $(SRC_DIR) -name '*.cpp')
 OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRCS))
 
 # Regra padrão
@@ -41,22 +43,23 @@ all: prepare $(TARGET)
 prepare:
 	@mkdir -p $(OBJ_DIR) $(BIN_DIR)
 
-# Linkar o executável
-$(TARGET): $(OBJS)
-	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
-
 # Compilar cada arquivo fonte
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(@D)
 	$(CXX) $(CXXFLAGS) -c $< -o $@
 
+# Linkar o executável
+$(TARGET): $(OBJS)
+	$(CXX) $(CXXFLAGS) $^ -o $@ $(LDFLAGS)
+
 # Executar o programa
 run: $(TARGET)
 	./$(TARGET)
 
-# Limpar build
+# Limpar arquivos de build
 clean:
 	rm -rf $(OBJ_DIR) $(BIN_DIR)
 	@echo "Build limpo!"
 
 .PHONY: all prepare run clean
+
