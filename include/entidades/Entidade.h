@@ -11,6 +11,6 @@ public:
   virtual void desenhar() = 0;
   virtual void atualizar() = 0;
 
-  virtual void colidir(Entidade* outra) = 0;
+  virtual void colidir() = 0;
 };
 #endif
