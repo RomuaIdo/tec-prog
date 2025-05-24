@@ -36,6 +36,9 @@ int main() {
         gg->limpar();
         quadrado->executar(); // Atualiza e desenha
         quadrado2->executar();
+        quadrado->fixCollisionWithWindow(quadrado->getShape() , window);
+        quadrado2->fixCollisionWithWindow(quadrado2->getShape() , window);
+
         gg->exibir();
     }
     

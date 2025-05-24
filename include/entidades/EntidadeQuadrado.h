@@ -3,7 +3,7 @@
 #include "Entidade.h"
 #include <SFML/Graphics.hpp>
 
-class EntidadeQuadrado : public Entidade {
+class EntidadeQuadrado : public Entidade, public Sprite {
 private:
     sf::RectangleShape shape;
     int player_num;
@@ -15,7 +15,9 @@ public:
     void desenhar() override;
     void atualizar() override;
     void movePlayer();
-    void colidir() override;
+    void colidir();
+    sf::RectangleShape* getShape();
+    void fixCollisionWithWindow(sf::Shape* sprite, const sf::RenderWindow& window);
 };
 
 #endif
