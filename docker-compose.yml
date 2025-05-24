@@ -1,8 +1,0 @@
-version: '3.8'
-services:
-  jogo:
-    build: .
-    volumes:
-      - .:/app
-    command: make run
-
