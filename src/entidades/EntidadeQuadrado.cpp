@@ -1,9 +1,8 @@
 #include "../../include/entidades/EntidadeQuadrado.h"
 #include <SFML/Window.hpp>
 
-EntidadeQuadrado::EntidadeQuadrado(float x, float y, float size, int p_num = 1){
+EntidadeQuadrado::EntidadeQuadrado(float x, float y, float size, int p_num){
     player_num = p_num;
-    
     shape.setSize(sf::Vector2f(size, size));
     shape.setPosition(x, y);
     shape.setFillColor(sf::Color::Green);
@@ -48,8 +47,21 @@ void EntidadeQuadrado::executar() {
     atualizar();
     desenhar();
     movePlayer();
+    colidir();
 }
 
-void EntidadeQuadrado::colidir(Entidade* outra) {
-    // Implementação de colisão (opcional)
+void EntidadeQuadrado::colidir() {
+    sf::Vector2f player_pos = shape.getPosition();
+    if(player_pos.x <= 0){
+        shape.setPosition(0, player_pos.y);
+    }
+    else if(player_pos.x >= 800){
+        shape.setPosition(800, player_pos.y);
+    }
+    if(player_pos.y <= 0){
+        shape.setPosition(player_pos.x, 0);
+    }
+    else if(player_pos.y >= 600){
+        shape.setPosition(player_pos.x, 600);
+    }
 }

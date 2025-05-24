@@ -11,12 +11,11 @@ private:
 public:
     EntidadeQuadrado(float x, float y, float size, int p_num);
     void handleEvent(const sf::Event& event);
-    
     void executar() override;
     void desenhar() override;
     void atualizar() override;
     void movePlayer();
-    void colidir(Entidade* outra) override;
+    void colidir() override;
 };
 
 #endif
