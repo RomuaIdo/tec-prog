@@ -12,25 +12,25 @@ SRC_DIR = src
 OBJ_DIR = obj
 BIN_DIR = bin
 
-# Caminho do SFML (ajuste se necessário)
+# Configurações específicas por plataforma
 ifeq ($(UNAME_S),Linux)
+    # Configurações para Linux
     SFML_INCLUDE = 
-    SFML_LIB = 
-else
-	CXXFLAGS += -I/mingw64/include
-	LDFLAGS += -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
-endif
-
-# Flags
-CXXFLAGS = -Wall -Wextra -std=c++17 -DPROGRAM_VERSION=\"$(VERSION_NAME)\"
-LDFLAGS = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
-
-# Nome do executável
-ifeq ($(UNAME_S),Linux)
+    SFML_LIB = -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
     TARGET = $(BIN_DIR)/$(VERSION_NAME)
+    CXXFLAGS += -I/usr/include/SFML
 else
+    # Configurações para Windows (MSYS2 UCRT64)
+    SFML_INCLUDE = -I/mingw64/include
+    SFML_LIB = -L/mingw64/lib -lsfml-graphics -lsfml-window -lsfml-system -lsfml-audio -lsfml-network
     TARGET = $(BIN_DIR)/$(VERSION_NAME).exe
+    CXXFLAGS += -I/mingw64/include
+    LDFLAGS += -static-libgcc -static-libstdc++
 endif
+
+# Flags comuns
+CXXFLAGS += -Wall -Wextra -std=c++17 -DPROGRAM_VERSION=\"$(VERSION_NAME)\"
+LDFLAGS += $(SFML_LIB)
 
 # Encontrar arquivos fonte (.cpp) com caminhos relativos
 SRCS = $(shell find $(SRC_DIR) -name '*.cpp')
@@ -46,7 +46,7 @@ prepare:
 # Compilar cada arquivo fonte
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp
 	@mkdir -p $(@D)
-	$(CXX) $(CXXFLAGS) -c $< -o $@
+	$(CXX) $(CXXFLAGS) $(SFML_INCLUDE) -c $< -o $@
 
 # Linkar o executável
 $(TARGET): $(OBJS)
@@ -62,4 +62,3 @@ clean:
 	@echo "Build limpo!"
 
 .PHONY: all prepare run clean
-
