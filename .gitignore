@@ -1,6 +1,8 @@
 *.o
+*.so
+*.a
 *.exe
 /.vscode/
 /.idea/
-/bin/
-/obj/
+/bin/*
+/obj/*
