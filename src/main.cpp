@@ -3,6 +3,9 @@
 #include "../include/entidades/EntidadeQuadrado.h"
 #include "../include/gerenciadores/Gerenciador_Grafico.h"
 
+#define HEIGHT = 800
+#define 
+int 
 
 int main() {
     RenderWindow window(VideoMode(800, 600), "SFML");
@@ -12,8 +15,8 @@ int main() {
     Gerenciador_Grafico* gg = Gerenciador_Grafico::getInstancia();
     gg->setJanela(&window);
     
-    EntidadeQuadrado quadrado(100, 100, 50);
-    
+    EntidadeQuadrado quadrado(100, 100, 50,1);
+    EntidadeQuadrado quadrado2(100, 100, 40,2);
     while (window.isOpen()) {
         sf::Event event;
         while (window.pollEvent(event)) {
@@ -22,10 +25,12 @@ int main() {
                 window.close();
             }
             quadrado.handleEvent(event); // Trata eventos específicos
+            quadrado2.handleEvent(event);
         }
         
         gg->limpar();
         quadrado.executar(); // Atualiza e desenha
+        quadrado2.executar();
         gg->exibir();
     }
     
