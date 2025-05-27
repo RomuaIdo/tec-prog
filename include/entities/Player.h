@@ -26,7 +26,7 @@ public:
     void execute() ;
 
     void move();
-    void colide();
+    void collide();
     sf::RectangleShape getShape();
 };
 #endif
