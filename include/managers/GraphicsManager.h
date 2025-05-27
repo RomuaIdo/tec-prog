@@ -1,5 +1,5 @@
-#ifndef GRAPHICAL_MANAGER_H
-#define GRAPHICAL_MANAGER_H
+#ifndef GRAPHICS_MANAGER_H
+#define GRAPHICS_MANAGER_H
 #include <SFML/Graphics.hpp>
 #include <map>
 #include <string>
@@ -10,21 +10,21 @@ using namespace sf;
 class Ente;
 
 
-class Graphical_Manager {
+class GraphicsManager {
 private:
-  static Graphical_Manager* instance
+  static GraphicsManager* instance
   RenderWindow* pWindow;
   map<string, Texture*> textures;
   Font* font;
-  Graphical_Manager();
+  GraphicsManager();
 public:
 
-  ~Graphical_Manager();
+  ~GraphicsManager();
 
-  Graphical_Manager(const Graphical_Manager&) = delete;
-  Graphical_Manager& operator=(const Graphical_Manager&) = delete;
+  GraphicsManager(const GraphicsManager&) = delete;
+  GraphicsManager& operator=(const GraphicsManager&) = delete;
 
-  static Graphical_Manager* getInstance();
+  static GraphicsManager* getInstance();
 
   bool openWindow() const;
   RenderWindow* getWindow() const;
