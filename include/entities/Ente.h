@@ -1,20 +1,20 @@
 #ifndef ENTE_H
 #define ENTE_H
 #include <SFML/Graphics.hpp>
-#include "../gerenciadores/Gerenciador_Grafico.h"
+#include "../managers/Graphical_Manager.h"
 using namespace sf;
 
 
 class Ente {
 protected:
-  static Gerenciador_Grafico* pGG;
+  static Graphical_Manager* pGG;
   Sprite sprite;
-  Texture textura;
+  Texture texture;
 
 public:
   Ente();
   virtual ~Ente();
-  virtual void desenhar() = 0;
+  virtual void draw() = 0;
   virtual Drawable& getDrawable() = 0;
 };
 
