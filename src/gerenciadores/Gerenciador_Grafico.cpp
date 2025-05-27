@@ -2,7 +2,7 @@
 #include "../../include/entidades/Ente.h"
 
 
-Gerenciador_Grafico *Gerenciador_Grafico::instancia = nullptr;
+Graphical_Manager *Gerenciador_Grafico::instancia = nullptr;
 
 Gerenciador_Grafico *Gerenciador_Grafico::getInstancia() {
   if (instancia == nullptr) {
@@ -57,8 +57,10 @@ void Gerenciador_Grafico::exibir() {
 }
 
 
-bool Gerenciador_Grafico::janelaAberta() const {
-  return pjanela != nullptr && pjanela->isOpen();
+bool Gerenciador_Grafico::janelaAberta() const {
+
+  return pjanela != nullptr && pjanela->isOpen();
+
 }
 
 
