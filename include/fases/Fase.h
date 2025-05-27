@@ -1,18 +1,18 @@
 #ifndef FASE_H
 #define FASE_H
-#include "../entidades/Ente.h"
-#include "../entidades/Entidade.h"
+#include "../entities/Ente.h"
+#include "../entities/Entity.h"
 
 class Fase : public Ente {
 protected:
-  Lista<Entidade*> entidades;
-  Gerenciador_Colisoes* gerenciadorColisoes;
+  Lista<Entity*> entities;
+  CollisionManager* collisions_manager;
 
 public:
   Fase();
   ~Fase();
 
-  virtual void executar() = 0;
+  virtual void execute() = 0;
 
 }
 
