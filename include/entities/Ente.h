@@ -1,13 +1,13 @@
 #ifndef ENTE_H
 #define ENTE_H
 #include <SFML/Graphics.hpp>
-#include "../managers/Graphical_Manager.h"
+#include "../managers/GraphicalManager.h"
 using namespace sf;
 
 
 class Ente {
 protected:
-  static Graphical_Manager* pGG;
+  static GraphicalManager* pGG;
   Sprite sprite;
   Texture texture;
 
