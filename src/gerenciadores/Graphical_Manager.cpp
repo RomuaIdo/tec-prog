@@ -1,36 +1,38 @@
-#include "../../include/gerenciadores/Gerenciador_Grafico.h"
-#include "../../include/entidades/Ente.h"
+#include "../../include/managers/Graphical_Manager.h"
+#include "../../include/entities/Ente.h"
 
 
-Graphical_Manager *Gerenciador_Grafico::instancia = nullptr;
+Graphical_Manager *Graphical_Manager::instance = nullptr;
 
-Gerenciador_Grafico *Gerenciador_Grafico::getInstancia() {
-  if (instancia == nullptr) {
-    instancia = new Gerenciador_Grafico();
+Graphical_Manager *Graphical_Manager::getInstance() {
+  if (instance == nullptr) {
+    instance = new Graphical_Manager();
   }
-  return instancia;
+  return instance;
 }
 
-Gerenciador_Grafico::Gerenciador_Grafico() {
-  pjanela = nullptr;
-  fonte = new Font();
-  if (!fonte->loadFromFile("../../assets/fonts/arial.ttf")) {
-    std::cerr << "Erro ao carregar a fonte." << std::endl;
+Graphical_Manager::Graphical_Manager():
+  pWindow = nullptr,
+  font(NULL)
+{
+  font = new Font();
+  if (!font->loadFromFile("../../assets/fonts/arial.ttf")) {
+    std::cerr << "Error when trying to load the font." << std::endl;
   }
 }
 
-Gerenciador_Grafico::~Gerenciador_Grafico() {
+Graphical_Manager::~Graphical_Manager() {
   map<string, Texture *>::iterator it;
-  for (it = texturas.begin(); it != texturas.end(); it++) {
+  for (it = textures.begin(); it != textures.end(); it++) {
     delete it->second;
     it->second = nullptr;
   }
-  delete fonte;
+  delete font;
 }
 
-void Gerenciador_Grafico::setJanela(RenderWindow *janela) { pjanela = janela; }
+void Graphical_Manager::setWindow(RenderWindow *window) { pWindow = window; }
 
-Font *Gerenciador_Grafico::getFonte() { return fonte; }
+Font *Graphical_Manager::getFont() { return font; }
 
 void Gerenciador_Grafico::desenhar(Ente* ente) {
   if (pjanela != nullptr) {
