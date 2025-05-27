@@ -15,6 +15,7 @@ public:
   Ente();
   virtual ~Ente();
   virtual void desenhar() = 0;
+  virtual Drawable& getDrawable() = 0;
 };
 
 #endif

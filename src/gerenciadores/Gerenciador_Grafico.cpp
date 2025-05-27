@@ -1,4 +1,6 @@
 #include "../../include/gerenciadores/Gerenciador_Grafico.h"
+#include "../../include/entidades/Ente.h"
+
 
 Gerenciador_Grafico *Gerenciador_Grafico::instancia = nullptr;
 
@@ -30,12 +32,12 @@ void Gerenciador_Grafico::setJanela(RenderWindow *janela) { pjanela = janela; }
 
 Font *Gerenciador_Grafico::getFonte() { return fonte; }
 
-void Gerenciador_Grafico::desenhar(Drawable &drawable) {
+void Gerenciador_Grafico::desenhar(Ente* ente) {
   if (pjanela != nullptr) {
-    pjanela->draw(drawable);
-  } else {
+    pjanela->draw(ente->getDrawable());
+  } else{
     std::cerr << "Janela não inicializada." << std::endl;
-  }
+  } 
 }
 
 void Gerenciador_Grafico::limpar() {
@@ -52,4 +54,14 @@ void Gerenciador_Grafico::exibir() {
   } else {
     std::cerr << "Janela não inicializada." << std::endl;
   }
+}
+
+
+bool Gerenciador_Grafico::janelaAberta() const {
+  return pjanela != nullptr && pjanela->isOpen();
+}
+
+
+RenderWindow *Gerenciador_Grafico::getJanela() const {
+  return pjanela;
 }

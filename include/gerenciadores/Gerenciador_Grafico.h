@@ -7,6 +7,8 @@
 using namespace std;
 using namespace sf;
 
+class Ente;
+
 
 class Gerenciador_Grafico {
 private:
@@ -24,13 +26,14 @@ public:
 
   static Gerenciador_Grafico* getInstancia();
 
-
+  bool janelaAberta() const;
+  RenderWindow* getJanela() const;
   void setJanela(RenderWindow* janela);
   Texture carregarTextura(const string& caminho);
   
   Font* getFonte();
 
-  void desenhar(Drawable& drawable);
+  void desenhar(Ente* ente);
   void limpar();
   void exibir();
 };
