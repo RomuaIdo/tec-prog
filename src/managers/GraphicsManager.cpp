@@ -1,4 +1,4 @@
-#include "../../include/managers/GraphicalManager.h"
+#include "../../include/managers/GraphicsManager.h"
 #include "../../include/entities/Ente.h"
 
 
