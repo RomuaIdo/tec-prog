@@ -1,7 +1,7 @@
-#include "../../include/entidades/Player.h"
+#include "../../include/entities/Player.h"
 #include <SFML/Window.hpp>
 
-Player::Player(float x, float y, Gerenciador_Grafico *pGG, int p_num = 1): 
+Player::Player(float x, float y, GraphicsManager *pGG, int p_num = 1): 
     Sprite(), movimentSpeed(50.f), grid_size(50.f), shape(),
     velocity(0.f, 0.f), gg(pGG), player_num(p_num), health(10), vel_max(30.f), 
     gravity(0.f,30.f), friction(0.f, 0.f), friction_coef(0.7)
@@ -86,14 +86,14 @@ void Player::move() {
     
 }
 
-void Player::executar() {
+void Player::execute() {
     move();
-    colidir();
+    collide);
 }
 
 sf::RectangleShape Player::getShape() { return shape; }
 
-void Player::colidir(){
+void Player::collide(){
     sf::Vector2f pos = shape.getPosition();
     sf::Vector2f size = shape.getSize();
 
