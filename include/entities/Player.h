@@ -5,7 +5,7 @@
 using namespace sf;
 using namespace std;
 
-class Player : public Sprite, Entity {
+class Player : public Sprite{//, Entity {
 private:
     const float movimentSpeed;
     const float grid_size;

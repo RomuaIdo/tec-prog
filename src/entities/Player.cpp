@@ -1,4 +1,5 @@
 #include "../../include/entities/Player.h"
+#include "../../include/managers/GraphicsManager.h"
 #include <SFML/Window.hpp>
 
 Player::Player(float x, float y, GraphicsManager *pGG, int p_num = 1): 
@@ -88,7 +89,7 @@ void Player::move() {
 
 void Player::execute() {
     move();
-    collide);
+    collide();
 }
 
 sf::RectangleShape Player::getShape() { return shape; }

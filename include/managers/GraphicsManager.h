@@ -12,29 +12,36 @@ class Ente;
 
 class GraphicsManager {
 private:
-  static GraphicsManager* instance
-  RenderWindow* pWindow;
-  map<string, Texture*> textures;
-  Font* font;
-  GraphicsManager();
+    static GraphicsManager* instance;
+    RenderWindow* pWindow;
+    map<string, Texture*> textures;
+    Font* font;
+        float dt;
+    Clock dt_clock;
+    GraphicsManager();
 public:
 
-  ~GraphicsManager();
+    ~GraphicsManager();
 
-  GraphicsManager(const GraphicsManager&) = delete;
-  GraphicsManager& operator=(const GraphicsManager&) = delete;
+    GraphicsManager(const GraphicsManager&) = delete;
+    GraphicsManager& operator=(const GraphicsManager&) = delete;
 
-  static GraphicsManager* getInstance();
+    static GraphicsManager* getInstance();
 
-  bool openWindow() const;
-  RenderWindow* getWindow() const;
-  void setWindow(RenderWindow* window);
-  Texture loadTexture(const string& path);
-  
-  Font* getFonte();
+    bool openWindow() const;
+    RenderWindow* getWindow() const;
+    void setWindow(RenderWindow* window);
+    Texture loadTexture(const string& path);
 
-  void draw(Ente* ente);
-  void clean();
-  void show();
+    Font* getFont();
+
+    void setClock();
+    void draw(Ente* ente);
+    void clean();
+    void show();
+
+    
+    float getdt();
+    Clock getClockdt();
 };
 #endif

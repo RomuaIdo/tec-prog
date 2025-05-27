@@ -12,7 +12,7 @@ GraphicsManager *GraphicsManager::getInstance() {
 }
 
 GraphicsManager::GraphicsManager():
-  pWindow = nullptr,
+  pWindow(nullptr),
   font(NULL)
 {
   font = new Font();
@@ -69,3 +69,8 @@ bool GraphicsManager::openWindow() const {
 RenderWindow *GraphicsManager::getWindow() const {
   return pWindow;
 }
+
+void GraphicsManager::setClock(){ dt = dt_clock.restart().asSeconds(); }
+
+float GraphicsManager::getdt() { return dt; }
+Clock GraphicsManager::getClockdt() { return dt_clock; }

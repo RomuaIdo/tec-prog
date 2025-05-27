@@ -1,5 +1,5 @@
 #include "../../include/game/Game.h"
-
+#include "../../include/entities/Player.h"
 
 Game::Game() {
     GG = GraphicsManager::getInstance();
@@ -16,15 +16,15 @@ Game::~Game() {
 void Game::execute() {
     RenderWindow window(VideoMode(800, 600), "Good Game");
     window.setFramerateLimit(60);
-    G->setWindow(&window);
-    RenderWindow* window = GG->getWindow();
+    GG->setWindow(&window);
+    RenderWindow* pWindow = GG->getWindow();
 
     while (GG->openWindow()) {
         Event event;
-        while (window->pollEvent(event)) {
+        while (pWindow->pollEvent(event)) {
             if (event.type == Event::Closed || 
                 (event.type == Event::KeyPressed && event.key.code == sf::Keyboard::Escape)) {
-                window->close();
+                window.close();
             }
             player1->handleEvent(event); // Trata eventos específicos
             player2->handleEvent(event);
