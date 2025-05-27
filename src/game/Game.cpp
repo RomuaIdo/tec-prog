@@ -2,7 +2,7 @@
 
 
 Game::Game() {
-    GG = Graphical_Manager::getInstance();
+    GG = GraphicsManager::getInstance();
     player1 = new Player(100, 100, GG, 1);
     player2 = new Player(200, 200, GG, 2);
     execute();
