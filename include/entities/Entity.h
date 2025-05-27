@@ -9,7 +9,8 @@ public:
 
   virtual void execute() = 0;
   virtual void draw() = 0;
-  virtual void update() = 0;
+//   virtual void update() = 0;
+  virtual void move() = 0;
   virtual void collide() = 0;
 };
 #endif

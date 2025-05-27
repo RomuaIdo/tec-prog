@@ -2,9 +2,9 @@
 #include "../../include/entities/Player.h"
 
 Game::Game() {
-    GG = GraphicsManager::getInstance();
-    player1 = new Player(100, 100, GG, 1);
-    player2 = new Player(200, 200, GG, 2);
+    pGM = GraphicsManager::getInstance();
+    player1 = new Player(100, 100, pGM, 1);
+    player2 = new Player(200, 200, pGM, 2);
     execute();
 }
 
@@ -16,10 +16,10 @@ Game::~Game() {
 void Game::execute() {
     RenderWindow window(VideoMode(800, 600), "Good Game");
     window.setFramerateLimit(60);
-    GG->setWindow(&window);
-    RenderWindow* pWindow = GG->getWindow();
+    pGM->setWindow(&window);
+    RenderWindow* pWindow = pGM->getWindow();
 
-    while (GG->openWindow()) {
+    while (pGM->openWindow()) {
         Event event;
         while (pWindow->pollEvent(event)) {
             if (event.type == Event::Closed || 
@@ -30,10 +30,11 @@ void Game::execute() {
             player2->handleEvent(event);
         }
         
-        GG->clean();
+        pGM->clean();
+
         player1->execute(); // Atualiza e desenha
         player2->execute();
         
-        GG->show();
+        pGM->show();
     }
 }

@@ -5,13 +5,13 @@
 using namespace sf;
 using namespace std;
 
-class Player : public Sprite{//, Entity {
+class Player : public Sprite, Entity {
 private:
     const float movimentSpeed;
     const float grid_size;
     RectangleShape shape;
     Vector2f velocity;
-    GraphicsManager* gg;
+    GraphicsManager* GM;
     int player_num;
     int health;
     const float vel_max;
@@ -24,7 +24,8 @@ public:
     ~Player();
     void handleEvent(const sf::Event& event);
     void execute() ;
-
+    void draw();
+    Drawable& getDrawable();
     void move();
     void collide();
     sf::RectangleShape getShape();

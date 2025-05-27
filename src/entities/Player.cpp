@@ -4,7 +4,7 @@
 
 Player::Player(float x, float y, GraphicsManager *pGG, int p_num = 1): 
     Sprite(), movimentSpeed(50.f), grid_size(50.f), shape(),
-    velocity(0.f, 0.f), gg(pGG), player_num(p_num), health(10), vel_max(30.f), 
+    velocity(0.f, 0.f), GM(pGG), player_num(p_num), health(10), vel_max(30.f), 
     gravity(0.f,30.f), friction(0.f, 0.f), friction_coef(0.7)
 
     {
@@ -34,26 +34,34 @@ void Player::handleEvent(const sf::Event &event) {
   }
 }
 
+void Player::draw() {
+    GM->draw(this); // Usa o Gerenciador Gráfico
+}
+
+Drawable& Player::getDrawable() {
+    return shape;
+}
+
 void Player::move() {
 
     if (player_num == 1) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
             if(shape.getPosition().y + shape.getSize().y >= 600)
-                velocity.y += -(movimentSpeed + 1000) * gg->getdt();
+                velocity.y += -(movimentSpeed + 1000) * GM->getdt();
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-            velocity.x += -movimentSpeed * gg->getdt();
+            velocity.x += -movimentSpeed * GM->getdt();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-            velocity.x += movimentSpeed * gg->getdt();
+            velocity.x += movimentSpeed * GM->getdt();
     } else {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
             if(shape.getPosition().y + shape.getSize().y >= 600)
-                velocity.y += -(movimentSpeed + 1000) * gg->getdt();
+                velocity.y += -(movimentSpeed + 1000) * GM->getdt();
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-            velocity.x += -movimentSpeed * gg->getdt();
+            velocity.x += -movimentSpeed * GM->getdt();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-            velocity.x += movimentSpeed * gg->getdt();
+            velocity.x += movimentSpeed * GM->getdt();
     }
 
     if (velocity.x > vel_max){
@@ -74,7 +82,8 @@ void Player::move() {
             velocity.x = -vel_max;
         velocity.y = -vel_max;
     }
-    velocity += gravity * gg->getdt();
+
+    velocity += gravity * GM->getdt();
 
     if(velocity.x > 0)
         friction.x = -gravity.y * friction_coef;
@@ -82,12 +91,14 @@ void Player::move() {
         friction.x = gravity.y * friction_coef;
     else 
         friction.x = 0;
-    velocity += friction * gg->getdt();
+        
+    velocity += friction * GM->getdt();
     shape.move(velocity);
     
 }
 
 void Player::execute() {
+    draw();
     move();
     collide();
 }

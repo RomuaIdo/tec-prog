@@ -4,7 +4,7 @@
 
 class Game {
 private:
-    GraphicsManager* GG;
+    GraphicsManager* pGM;
     Player* player1;
     Player* player2;
 
