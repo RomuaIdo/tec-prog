@@ -1,7 +1,9 @@
 #include "../../include/game/Game.h"
 #include "../../include/entities/Player.h"
 
-Game::Game() {
+Game::Game():
+player1(nullptr), player2(nullptr), pGM(nullptr)
+{
     pGM = GraphicsManager::getInstance();
     player1 = new Player(100, 100, pGM, 1);
     player2 = new Player(200, 200, pGM, 2);
@@ -21,6 +23,7 @@ void Game::execute() {
 
     while (pGM->openWindow()) {
         Event event;
+        pGM->setClock();
         while (pWindow->pollEvent(event)) {
             if (event.type == Event::Closed || 
                 (event.type == Event::KeyPressed && event.key.code == sf::Keyboard::Escape)) {

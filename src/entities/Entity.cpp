@@ -1,5 +1,7 @@
 #include "../../include/entities/Entity.h"
 
-Entity::Entity() {}
+Entity::Entity() :
+Ente()
+{}
 
 Entity::~Entity() {}
