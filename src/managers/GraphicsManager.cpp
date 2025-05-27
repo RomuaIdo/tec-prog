@@ -1,0 +1,71 @@
+#include "../../include/managers/GraphicalManager.h"
+#include "../../include/entities/Ente.h"
+
+
+GraphicsManager *GraphicsManager::instance = nullptr;
+
+GraphicsManager *GraphicsManager::getInstance() {
+  if (instance == nullptr) {
+    instance = new GraphicsManager();
+  }
+  return instance;
+}
+
+GraphicsManager::GraphicsManager():
+  pWindow = nullptr,
+  font(NULL)
+{
+  font = new Font();
+  if (!font->loadFromFile("../../assets/fonts/arial.ttf")) {
+    std::cerr << "Error when trying to load the font." << std::endl;
+  }
+}
+
+GraphicsManager::~GraphicsManager() {
+  map<string, Texture *>::iterator it;
+  for (it = textures.begin(); it != textures.end(); it++) {
+    delete it->second;
+    it->second = nullptr;
+  }
+  delete font;
+}
+
+void GraphicsManager::setWindow(RenderWindow *window) { pWindow = window; }
+
+Font *GraphicsManager::getFont() { return font; }
+
+void GraphicsManager::draw(Ente* ente) {
+  if (pWindow != nullptr) {
+    pWindow->draw(ente->getDrawable());
+  } else{
+    std::cerr << "Window not initialized." << std::endl;
+  } 
+}
+
+void GraphicsManager::clean() {
+  if (pWindow != nullptr) {
+    pWindow->clear();
+  } else {
+    std::cerr << "Window not initialized." << std::endl;
+  }
+}
+
+void GraphicsManager::show() {
+  if (pWindow != nullptr) {
+    pWindow->display();
+  } else {
+    std::cerr << "Window not initialized." << std::endl;
+  }
+}
+
+
+bool GraphicsManager::openWindow() const {
+
+  return pWindow != nullptr && pWindow->isOpen();
+
+}
+
+
+RenderWindow *GraphicsManager::getWindow() const {
+  return pWindow;
+}
