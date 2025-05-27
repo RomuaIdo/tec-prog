@@ -1,10 +1,10 @@
-#include "../managers/GraphicalManager.h"
+#include "../managers/GraphicsManager.h"
 #include "../entities/Player.h"
 
 
 class Game {
 private:
-    GraphicalManager* GG;
+    GraphicsManager* GG;
     Player* player1;
     Player* player2;
 
