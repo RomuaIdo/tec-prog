@@ -11,7 +11,7 @@ private:
     const float grid_size;
     RectangleShape shape;
     Vector2f velocity;
-    GraphicalManager* gg;
+    GraphicsManager* gg;
     int player_num;
     int health;
     const float vel_max;
@@ -20,7 +20,7 @@ private:
     float friction_coef;
 
 public:
-    Player(float x, float y, GraphicalManager* pGG, int p_num);
+    Player(float x, float y, GraphicsManager* pGG, int p_num);
     ~Player();
     void handleEvent(const sf::Event& event);
     void execute() ;
