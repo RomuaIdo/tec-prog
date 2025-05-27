@@ -1,5 +1,5 @@
-#ifndef GERENCIADOR_GRAFICO_H
-#define GERENCIADOR_GRAFICO_H
+#ifndef GRAPHICAL_MANAGER_H
+#define GRAPHICAL_MANAGER_H
 #include <SFML/Graphics.hpp>
 #include <map>
 #include <string>
@@ -10,31 +10,31 @@ using namespace sf;
 class Ente;
 
 
-class Gerenciador_Grafico {
+class Graphical_Manager {
 private:
-  static Gerenciador_Grafico* instancia;
-  RenderWindow* pjanela;
-  map<string, Texture*> texturas;
-  Font* fonte;
-  Gerenciador_Grafico();
+  static Graphical_Manager* instance
+  RenderWindow* pWindow;
+  map<string, Texture*> textures;
+  Font* font;
+  Graphical_Manager();
 public:
 
-  ~Gerenciador_Grafico();
+  ~Graphical_Manager();
 
-  Gerenciador_Grafico(const Gerenciador_Grafico&) = delete;
-  Gerenciador_Grafico& operator=(const Gerenciador_Grafico&) = delete;
+  Graphical_Manager(const Graphical_Manager&) = delete;
+  Graphical_Manager& operator=(const Graphical_Manager&) = delete;
 
-  static Gerenciador_Grafico* getInstancia();
+  static Graphical_Manager* getInstance();
 
-  bool janelaAberta() const;
-  RenderWindow* getJanela() const;
-  void setJanela(RenderWindow* janela);
-  Texture carregarTextura(const string& caminho);
+  bool openWindow() const;
+  RenderWindow* getWindow() const;
+  void setWindow(RenderWindow* window);
+  Texture loadTexture(const string& path);
   
   Font* getFonte();
 
-  void desenhar(Ente* ente);
-  void limpar();
-  void exibir();
+  void draw(Ente* ente);
+  void clean();
+  void show();
 };
 #endif
