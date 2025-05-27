@@ -31,8 +31,8 @@ void Game::execute() {
         }
         
         GG->clean();
-        player1->executar(); // Atualiza e desenha
-        player2->executar();
+        player1->execute(); // Atualiza e desenha
+        player2->execute();
         
         GG->show();
     }
