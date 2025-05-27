@@ -1,11 +1,11 @@
 #ifndef PLAYER_H
 #define PLAYER_H
-#include "Entidade.h"
+#include "Entity.h"
 #include <SFML/Graphics.hpp>
 using namespace sf;
 using namespace std;
 
-class Player : public Sprite, Entidade {
+class Player : public Sprite, Entity {
 private:
     const float movimentSpeed;
     const float grid_size;
@@ -20,10 +20,10 @@ private:
     float friction_coef;
 
 public:
-    Player(float x, float y, Gerenciador_Grafico* pGG, int p_num);
+    Player(float x, float y, Graphical_Manager* pGG, int p_num);
     ~Player();
     void handleEvent(const sf::Event& event);
-    void executar() ;
+    void execute() ;
 
     void move();
     void colide();
