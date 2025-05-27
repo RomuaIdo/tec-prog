@@ -5,13 +5,16 @@
 Player::Player(float x, float y, GraphicsManager *pGG, int p_num = 1): 
     Sprite(), movimentSpeed(50.f), grid_size(50.f), shape(),
     velocity(0.f, 0.f), GM(pGG), player_num(p_num), health(10), vel_max(30.f), 
-    gravity(0.f,30.f), friction(0.f, 0.f), friction_coef(0.7), Entity()
+    gravity(0.f,50.f), friction(0.f, 0.f), friction_coef(0.3), Entity()
 
     {
 
     shape.setSize(sf::Vector2f(grid_size, grid_size));
     shape.setPosition(x, y);
-    shape.setFillColor(sf::Color::Green);
+    if(p_num == 1)
+        shape.setFillColor(sf::Color::Green);
+    else 
+        shape.setFillColor(sf::Color::Blue);
 }
 
 Player::~Player() {}
@@ -83,67 +86,29 @@ void Player::move() {
         velocity.y = -vel_max;
     }
 
-    velocity += gravity * GM->getdt();
-
-    if(velocity.x > 0)
+    
+    if(velocity.x > 0){
         friction.x = -gravity.y * friction_coef;
-    else if(velocity.x <0)
+        if(velocity.x + friction.x * GM->getdt() < 0) {
+           velocity.x = 0;
+            friction.x = 0;
+        }
+    }
+    else if(velocity.x <0){
         friction.x = gravity.y * friction_coef;
-    else 
+        if(velocity.x + friction.x * GM->getdt() > 0) {
+            velocity.x = 0;
+            friction.x = 0;
+        }
+    }
+    else
         friction.x = 0;
-        
+    
+    
+    
+    
+    velocity += gravity * GM->getdt();
     velocity += friction * GM->getdt();
-
-    // if (player_num == 1) {
-    //     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
-    //         if(shape.getPosition().y + shape.getSize().y >= 600)
-    //             velocity.y += -(movimentSpeed + 1000) / 60.f;
-    //     }
-    //     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-    //         velocity.x += -movimentSpeed / 60.f;
-    //     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-    //         velocity.x += movimentSpeed / 60.f;
-    // } else {
-    //     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
-    //         if(shape.getPosition().y + shape.getSize().y >= 600)
-    //             velocity.y += -(movimentSpeed + 1000) / 60.f;
-    //     }
-    //     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-    //         velocity.x += -movimentSpeed / 60.f;
-    //     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-    //         velocity.x += movimentSpeed / 60.f;
-    // }
-
-    // if (velocity.x > vel_max){
-    //     if(velocity.y > vel_max)
-    //         velocity.y = vel_max;
-    //     velocity.x = vel_max;
-    // }else if( velocity.y > vel_max){
-    //     if(velocity.x > vel_max)
-    //         velocity.x = vel_max;
-    //     velocity.y = vel_max;
-    // }
-    // if (velocity.x < -vel_max){
-    //     if(velocity.y < -vel_max)
-    //         velocity.y = -vel_max;
-    //     velocity.x = -vel_max;
-    // }else if( velocity.y < -vel_max){
-    //     if(velocity.x < -vel_max)
-    //         velocity.x = -vel_max;
-    //     velocity.y = -vel_max;
-    // }
-
-    // velocity += gravity / 60.f;
-
-    // if(velocity.x > 0)
-    //     friction.x = -gravity.y * friction_coef;
-    // else if(velocity.x <0)
-    //     friction.x = gravity.y * friction_coef;
-    // else 
-    //     friction.x = 0;
-        
-    // velocity += friction / 60.f;
-
     shape.move(velocity);
     
 }
