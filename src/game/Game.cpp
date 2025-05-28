@@ -72,7 +72,7 @@ void Game::execute() {
 void Game::create_entes(){
     for(int i = 0; i < 2; i++){
         Enemy* e = nullptr;
-        e = new Enemy(30, (float) (i*150) , (float) ((i+1)*150),  (float) ((i+1) * 15), 5, 0.5 , 2);
+        e = new Enemy(30, (float) (i*150) , (float) ((i+1)*150),  60.f , 5, 0.f , 2);
         if(e){
             e->addPlayer(player1);
             e->addPlayer(player2);
