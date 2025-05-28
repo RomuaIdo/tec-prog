@@ -2,11 +2,13 @@
 #include "../../include/entities/Player.h"
 
 Game::Game():
-player1(nullptr), player2(nullptr), pGM(nullptr)
+player1(nullptr), player2(nullptr), pGM(nullptr), entes_list(), it()
 {
+    entes_list.clear();
+    create_entes();
     pGM = GraphicsManager::getInstance();
-    player1 = new Player(100, 100, pGM, 1);
-    player2 = new Player(200, 200, pGM, 2);
+    player1 = new Player(50, 100, 100, 50.f, 10, 0.5, 4, 1, 60.f);
+    player2 = new Player(50, 100, 100, 50.f, 10, 0.5, 4, 2, 60.f);
     execute();
 }
 
@@ -34,10 +36,23 @@ void Game::execute() {
         }
         
         pGM->clean();
-
+        for(it = entes_list.begin(); it != entes_list.end(); it++){
+            (*it)->execute();
+        }
         player1->execute(); // Atualiza e desenha
         player2->execute();
         
         pGM->show();
+    }
+}
+
+void Game::create_entes(){
+    for(int i = 0; i < 2; i++){
+        Enemy* e = nullptr;
+        e = new Enemy(30, (float) ((i+1)*150) , (float) ((i+1)*150), 30.f, 5, 0.5 , 2);
+        if(e){
+            entes_list.push_back(e);
+        }else 
+            continue;
     }
 }

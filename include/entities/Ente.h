@@ -6,16 +6,17 @@ using namespace sf;
 
 
 class Ente {
-protected:
-  static GraphicsManager* pGG;
-  Sprite sprite;
-  Texture texture;
+    protected:
+        static GraphicsManager* pGM;
+        Sprite sprite;
+        Texture texture;
 
-public:
-  Ente();
-  virtual ~Ente();
-  virtual void draw() = 0;
-  virtual Drawable& getDrawable() = 0;
+    public:
+        Ente();
+        virtual ~Ente();
+        virtual void draw() = 0;
+        virtual Drawable& getDrawable() = 0;
+        virtual void execute() = 0;
 };
 
 #endif

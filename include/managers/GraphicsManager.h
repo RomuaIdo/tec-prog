@@ -16,7 +16,7 @@ private:
     RenderWindow* pWindow;
     map<string, Texture*> textures;
     Font* font;
-        float dt;
+    float dt;
     Clock dt_clock;
     GraphicsManager();
 public:

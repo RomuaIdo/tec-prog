@@ -1,33 +1,23 @@
 #ifndef PLAYER_H
 #define PLAYER_H
-#include "Entity.h"
+#include "Character.h"
 #include <SFML/Graphics.hpp>
 using namespace sf;
 using namespace std;
 
-class Player : public Sprite, Entity {
+class Player : public Character {
 private:
-    const float movimentSpeed;
-    const float grid_size;
-    RectangleShape shape;
-    Vector2f velocity;
-    GraphicsManager* GM;
+
     int player_num;
-    int health;
+    int score;
     const float vel_max;
-    Vector2f gravity;
-    Vector2f friction;
-    float friction_coef;
 
 public:
-    Player(float x, float y, GraphicsManager* pGG, int p_num);
+    Player(const float size, float x, float y, const float movSpeed, int life = 5, float coef = 0.5, int s = 1, int p_num, const float v_max);
     ~Player();
     void handleEvent(const sf::Event& event);
     void execute() ;
-    void draw();
-    Drawable& getDrawable();
+    void loseHealth(int damage);
     void move();
-    void collide();
-    sf::RectangleShape getShape();
 };
 #endif
