@@ -86,7 +86,7 @@ void Enemy::move(){
     //     attack(*it);
     // else{
     // }
-    if(closer_direction.y > 0){
+    if(velocity.y > 0){
         closer_direction.y = 0.f;
     }
         velocity += closer_direction  * pGM->getdt();
