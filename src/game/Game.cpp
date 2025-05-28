@@ -6,8 +6,8 @@ player1(nullptr), player2(nullptr), pGM(nullptr), entes_list(), it()
 {
     entes_list.clear();
     pGM = GraphicsManager::getInstance();
-    player1 = new Player(50, 200, 100, 50.f, 10, 0.5, 4, 1, 60.f);
-    player2 = new Player(50, 100, 100, 50.f, 10, 0.5, 4, 2, 60.f);
+    player1 = new Player(50, 200, 100, 50.f, 10, 1, 4, 1, 60.f);
+    player2 = new Player(50, 100, 100, 50.f, 10, 1, 4, 2, 60.f);
     create_entes();
     
     // for (auto& ent : entes_list) {

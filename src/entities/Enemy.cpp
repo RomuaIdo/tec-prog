@@ -5,8 +5,7 @@
 
 Enemy::Enemy(const float size, float x, float y, const float movSpeed, int life, float coef , int s):
     Character(size, x, y, movSpeed, life, coef, s), players_list(), it(){
-    shape.setSize(sf::Vector2f(grid_size, grid_size));
-    shape.setPosition(x, y);
+
     shape.setFillColor(sf::Color::Red);
     players_list.clear();
 }
@@ -27,7 +26,6 @@ void Enemy::addPlayer(Player *p){
 
 void Enemy::attack(Player *p){
     p->loseHealth(strength);
-    // cout << "Player " << p->getShape().getFillColor(). << "got hurt!" << endl;
     cout << "Player got hurt!" << endl;
     cout << "He now has:" << p->getHealth() << endl;
 

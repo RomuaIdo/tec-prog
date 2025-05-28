@@ -18,11 +18,11 @@ class Enemy : public Character{
     public:
 
         Enemy(const float size, float x, float y, const float movSpeed, int life = 5, float coef = 0.5, int s = 1);
-        ~Enemy();
-        void addPlayer(Player *p);
-        void attack(Player *p);
-        void execute();
-        void move();
+        virtual ~Enemy();
+        virtual void addPlayer(Player *p);
+        virtual void attack(Player *p);
+        virtual void execute();
+        virtual void move();
 };
 
 

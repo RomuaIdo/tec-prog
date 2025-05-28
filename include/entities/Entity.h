@@ -17,7 +17,6 @@ class Entity : public Ente {
 
         virtual void execute() = 0;
         virtual void draw();
-        virtual void move() = 0;
         virtual void collide() = 0;
         virtual Drawable& getDrawable();
         sf::RectangleShape getShape();

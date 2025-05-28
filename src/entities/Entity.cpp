@@ -19,3 +19,4 @@ Drawable& Entity::getDrawable() {
 sf::RectangleShape Entity::getShape() { 
     return shape; 
 }
+
