@@ -6,7 +6,10 @@
 Enemy::Enemy(const float size, float x, float y, const float movSpeed, int life, float coef , int s):
     Character(size, x, y, movSpeed, life, coef, s), players_list(), it(){
 
-    shape.setFillColor(sf::Color::Red);
+    texture.loadFromFile("../../sprites/PlayerSprite.png", sf::IntRect({x, y}, {50, 80}));
+    texture.setSmooth(true);
+    sprite.setTexture(texture);
+    //shape.setFillColor(sf::Color::Red);
     players_list.clear();
 }
 
