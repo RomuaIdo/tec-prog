@@ -54,11 +54,9 @@ void Enemy::execute(){
 }
 
 void Enemy::move(){
-    const float vel_max = 30.f;
     float closer = sqrt(800 * 800 + 600 * 600);
     Vector2f closer_direction;
-    closer_direction.x = 800.f;
-    closer_direction.y = 600.f;
+
     for(it = players_list.begin(); it != players_list.end(); it++){
         if(*it){
             // Get direction to player
@@ -79,15 +77,18 @@ void Enemy::move(){
                 closer_direction *= movimentSpeed;
             } 
 
-
-            if((*it)->getPosition().x == position.x || 
-               (*it)->getPosition().y == position.y)
-                attack(*it);
-            else{
-                velocity = closer_direction  * pGM->getdt();
-            }
+            
+            
         }
     }
-    velocity.y *= 20;
+    // if((*it)->getPosition().x == position.x && 
+    //     (*it)->getPosition().y == position.y)
+    //     attack(*it);
+    // else{
+    // }
+    if(closer_direction.y > 0){
+        closer_direction.y = 0.f;
+    }
+        velocity += closer_direction  * pGM->getdt();
     moveCharacter();
 }

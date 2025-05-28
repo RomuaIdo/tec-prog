@@ -14,7 +14,7 @@ Character::~Character(){
 }
 
 void Character::moveCharacter(){
-    const float vel_max = 30.f;
+    const float vel_max = 50.f;
 
     // See if velocity ultrapassed vel_max
     if (velocity.x > vel_max){

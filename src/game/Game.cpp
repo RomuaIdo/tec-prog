@@ -63,9 +63,9 @@ void Game::execute() {
 }
 
 void Game::create_entes(){
-    for(int i = 0; i < 2; i++){
+    for(int i = 0; i < 1; i++){
         Enemy* e = nullptr;
-        e = new Enemy((float) (i*150) , (float) ((i+1)*150),  60.f , 5, 0.f , 2);
+        e = new Enemy((float) (i*150) , (float) ((i+1)*150),  20.f , 5, 1.f , 2);
         if(e){
             e->addPlayer(player1);
             e->addPlayer(player2);
@@ -76,7 +76,7 @@ void Game::create_entes(){
     }
     for(int i = 0; i < 2; i++){
         Obstacle* o = nullptr;
-        o = new Obstacle(false, (i+2) * 100.f, 520.f);
+        o = new Obstacle(false, (i+2) * 100.f, 560.f);
         if(o){
             entes_list.push_back(o);
             cout << "Obstacle created" << endl;
