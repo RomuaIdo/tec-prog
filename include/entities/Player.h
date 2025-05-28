@@ -18,6 +18,7 @@ public:
     void handleEvent(const sf::Event& event);
     void execute() ;
     void loseHealth(int damage);
+    int getHealth();
     void move();
 };
 #endif

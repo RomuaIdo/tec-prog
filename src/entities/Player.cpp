@@ -66,39 +66,10 @@ void Player::execute() {
     draw();
 }
 
-
-
-// void Player::collide(){
-//     sf::Vector2f pos = shape.getPosition();
-//     sf::Vector2f size = shape.getSize();
-
-
-//     float window_width = 800.0f;  // example
-//     float window_height = 600.0f; // example
-
-//     // Left wall
-//     if (pos.x < 0){
-//         shape.setPosition(0, pos.y);
-//         velocity.x = 0;
-//     }    
-//     // Right wall
-//     if (pos.x + size.x > window_width){
-//         shape.setPosition(window_width - size.x, pos.y);
-//         velocity.x = 0;
-//     }   
-//     // Top wall
-//     if (pos.y < 0){
-
-//         shape.setPosition(pos.x, 0);
-//         velocity.y = 0;
-//         // Bottom wall
-//     }if (pos.y + size.y > window_height){
-//         shape.setPosition(pos.x, window_height - size.y);
-//         velocity.y = 0;
-//     }
-
-// }
-
 void Player::loseHealth(int damage){
     health -= damage;
+}
+
+int Player::getHealth(){
+    return health;
 }

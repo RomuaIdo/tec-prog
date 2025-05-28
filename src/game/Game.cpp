@@ -5,18 +5,19 @@ Game::Game():
 player1(nullptr), player2(nullptr), pGM(nullptr), entes_list(), it()
 {
     entes_list.clear();
-    create_entes();
     pGM = GraphicsManager::getInstance();
     player1 = new Player(50, 200, 100, 50.f, 10, 0.5, 4, 1, 60.f);
     player2 = new Player(50, 100, 100, 50.f, 10, 0.5, 4, 2, 60.f);
-    for (auto& ent : entes_list) {
-    Enemy* e = dynamic_cast<Enemy*>(ent);
-    if (e) {
-        e->addPlayer(player1);
-        e->addPlayer(player2);
-        std::cout << "Players added to enemy\n";
-    }
-}
+    create_entes();
+    
+    // for (auto& ent : entes_list) {
+    //     Enemy* e = dynamic_cast<Enemy*>(ent);
+    //     if (e) {
+    //         e->addPlayer(player1);
+    //         e->addPlayer(player2);
+    //         std::cout << "Players added to enemy\n";
+    //     }
+    // }
 
     execute();
 }
@@ -30,6 +31,7 @@ Game::~Game() {
         }
     }
     entes_list.clear();
+    delete pGM;
     delete player1;
     delete player2;
 }
@@ -54,8 +56,9 @@ void Game::execute() {
         
         pGM->clean();
         for(it = entes_list.begin(); it != entes_list.end(); it++){
-            if(*it)
+            if(*it){
                 (*it)->execute();
+            }
             else 
                 cout << "Não executado" << endl;
         }
@@ -69,10 +72,12 @@ void Game::execute() {
 void Game::create_entes(){
     for(int i = 0; i < 2; i++){
         Enemy* e = nullptr;
-        e = new Enemy(30, (float) (i*150) , (float) ((i+1)*150), 30.f, 5, 0.5 , 2);
+        e = new Enemy(30, (float) (i*150) , (float) ((i+1)*150),  (float) ((i+1) * 15), 5, 0.5 , 2);
         if(e){
-            // e->addPlayer(player2);
+            e->addPlayer(player1);
+            e->addPlayer(player2);
             entes_list.push_back(e);
+            cout << "Players added to enemy" << endl;
         }else 
             cout << "Enemy not allocated." << endl;
     }

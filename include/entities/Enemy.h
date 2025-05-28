@@ -3,6 +3,7 @@
 #include <list>
 #include "Entity.h"
 #include "Player.h"
+#include <math.h>
 #include <SFML/Graphics.hpp>
 using namespace sf;
 using namespace std;
@@ -13,7 +14,7 @@ class Enemy : public Character{
 
         list<Player*> players_list;
         list<Player*>::iterator it;
-        
+
     public:
 
         Enemy(const float size, float x, float y, const float movSpeed, int life = 5, float coef = 0.5, int s = 1);
