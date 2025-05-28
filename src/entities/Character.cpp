@@ -9,6 +9,10 @@ Character::Character(const float size, float x, float y, const float movSpeed, i
 
 }
 
+Character::~Character(){
+    
+}
+
 void Character::collide(){
     sf::Vector2f pos = shape.getPosition();
     sf::Vector2f size = shape.getSize();

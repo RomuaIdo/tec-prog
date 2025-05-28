@@ -11,7 +11,6 @@ Enemy::Enemy(const float size, float x, float y, const float movSpeed, int life,
 }
 
 Enemy::~Enemy(){
-    list<Player*>::iterator it;
     for( it = players_list.begin(); it != players_list.end(); it++){
         if(*it){
             delete (*it);

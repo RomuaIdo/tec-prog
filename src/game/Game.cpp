@@ -13,6 +13,14 @@ player1(nullptr), player2(nullptr), pGM(nullptr), entes_list(), it()
 }
 
 Game::~Game() {
+
+    for( it = entes_list.begin(); it != entes_list.end(); it++){
+        if(*it){
+            delete (*it);
+            (*it) = NULL;
+        }
+    }
+    entes_list.clear();
     delete player1;
     delete player2;
 }
