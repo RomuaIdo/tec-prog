@@ -6,7 +6,7 @@ Vector2f Character::gravity(0.f, 30.f);
 
 Character::Character(const float size, float x, float y, const float movSpeed, int life, float coef, int s):
     Entity(size, x, y), health(life), friction_coef(coef), friction(0.f,0.f), strength(s), movimentSpeed(movSpeed), velocity(0.f, 0.f){
-
+    
 }
 
 Character::~Character(){
@@ -57,6 +57,8 @@ void Character::moveCharacter(){
     velocity += gravity * pGM->getdt();
     velocity += friction * pGM->getdt();
     shape.move(velocity);
+    sprite.setPosition(shape.getPosition());
+
 }
 
 void Character::collide(){

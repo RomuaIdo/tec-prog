@@ -13,7 +13,7 @@ void Entity::draw() {
 }
 
 Drawable& Entity::getDrawable() {
-    
+    sprite.setPosition(shape.getPosition());
     return sprite;
 }
 

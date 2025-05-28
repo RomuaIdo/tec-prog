@@ -5,9 +5,15 @@
 Player::Player(const float size, float x, float y, const float movSpeed, int life, float coef, int s, int p_num, const float v_max): 
     Character(size, x, y, movSpeed, life, coef, s), player_num(p_num), score(0), vel_max(v_max){
 
-    texture.loadFromFile("../../sprites/PlayerSprite.png", sf::IntRect({x, y}, {50, 80}));
+    if (!texture.loadFromFile("../../sprites/PlayerSprite.png", sf::IntRect({x, y}, {50, 80}))) {
+        std::cerr << "Failed to load PlayerSprite.png!" << std::endl;
+    }    
     texture.setSmooth(true);
     sprite.setTexture(texture);
+    sprite.setScale(    
+    shape.getSize().x / sprite.getLocalBounds().width,
+    shape.getSize().y / sprite.getLocalBounds().height
+    );
     // if(p_num == 1)
     //     shape.setFillColor(sf::Color::Green);
     // else 
