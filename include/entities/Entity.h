@@ -9,6 +9,7 @@ class Entity : public Ente {
     
     protected:
         RectangleShape shape;
+        Vector2f position;
         const float grid_size;
 
     public:

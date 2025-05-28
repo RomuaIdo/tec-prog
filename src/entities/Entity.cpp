@@ -1,7 +1,7 @@
 #include "../../include/entities/Entity.h"
 
 Entity::Entity(const float size, float x, float y) :
-    Ente(), grid_size(size){
+    Ente(), grid_size(size), position(x,y){
     shape.setPosition(x,y);
     shape.setSize(sf::Vector2f(grid_size, grid_size));
 }
