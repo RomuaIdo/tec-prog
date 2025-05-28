@@ -3,8 +3,8 @@
 #include <SFML/Window.hpp>
 
 
-Enemy::Enemy(const float size, float x, float y, const float movSpeed, int life, float coef , int s):
-    Character(size, x, y, movSpeed, life, coef, s), players_list(), it(){
+Enemy::Enemy(float x, float y, const float movSpeed, int life, float coef , int s):
+    Character(x, y, movSpeed, life, coef, s), players_list(), it(){
 
     if (!texture.loadFromFile("sprites/EnemySprite.png")) {
         std::cerr << "Failed to load EnemySprite.png!" << std::endl;
@@ -13,8 +13,8 @@ Enemy::Enemy(const float size, float x, float y, const float movSpeed, int life,
     texture.setSmooth(true);
     sprite.setTexture(texture);
     sprite.setScale(    
-    shape.getSize().x / sprite.getLocalBounds().width,
-    shape.getSize().y / sprite.getLocalBounds().height
+    size.x / sprite.getLocalBounds().width,
+    size.y / sprite.getLocalBounds().height
     );
 
     players_list.clear();
@@ -60,7 +60,7 @@ void Enemy::move(){
     for(it = players_list.begin(); it != players_list.end(); it++){
         if(*it){
             // Get direction to player
-            Vector2f direction = ((*it)->getShape().getPosition() - shape.getPosition());
+            Vector2f direction = ((*it)->getPosition() - position);
             float module = sqrt(direction.x*direction.x + direction.y*direction.y);
 
 
@@ -77,18 +77,9 @@ void Enemy::move(){
                 closer_direction *= movimentSpeed;
             } 
 
-            
-                
 
-            
-            // if ((*it)->getShape().getPosition().x > shape.getPosition().x )
-            //     velocity.x += movimentSpeed * pGM->getdt();
-            // else if ((*it)->getShape().getPosition().x < shape.getPosition().x )
-            //     velocity.x += -movimentSpeed * pGM->getdt();
-            // else attack(*it);
-
-            if((*it)->getShape().getPosition().x == shape.getPosition().x || 
-               (*it)->getShape().getPosition().y == shape.getPosition().y)
+            if((*it)->getPosition().x == position.x || 
+               (*it)->getPosition().y == position.y)
                 attack(*it);
             else{
                 velocity = closer_direction  * pGM->getdt();

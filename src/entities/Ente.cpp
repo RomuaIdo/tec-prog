@@ -4,7 +4,8 @@
 GraphicsManager* Ente::pGM = GraphicsManager::getInstance();
 Ente::Ente():
     sprite(), texture(){
-    
+    size.x = sprite.getLocalBounds().width;
+    size.y = sprite.getLocalBounds().height;
 }
 
 Ente::~Ente() {
