@@ -13,7 +13,8 @@ void Entity::draw() {
 }
 
 Drawable& Entity::getDrawable() {
-    return shape;
+    
+    return sprite;
 }
 
 sf::RectangleShape Entity::getShape() { 

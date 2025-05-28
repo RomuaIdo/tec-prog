@@ -17,6 +17,7 @@ class Ente {
         virtual void draw() = 0;
         virtual Drawable& getDrawable() = 0;
         virtual void execute() = 0;
+
 };
 
 #endif

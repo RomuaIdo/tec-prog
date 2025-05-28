@@ -12,7 +12,7 @@ Obstacle::~Obstacle(){
 }
 
 void Obstacle::execute(){
-
+    draw();
 }
 
 void Obstacle::ObstacleAction(){
@@ -24,5 +24,5 @@ void Obstacle::collide(){
 }
 
 void Obstacle::dealDamage(){
-    
+
 }

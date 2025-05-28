@@ -1,6 +1,7 @@
 #include "../managers/GraphicsManager.h"
 #include "../entities/Player.h"
 #include "../entities/Enemy.h"
+#include "../entities/Obstacle.h"
 #include <list>
 
 class Game {

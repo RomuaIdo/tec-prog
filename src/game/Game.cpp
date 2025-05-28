@@ -45,6 +45,7 @@ void Game::execute() {
     while (pGM->openWindow()) {
         Event event;
         pGM->setClock();
+        pGM->operator++();
         while (pWindow->pollEvent(event)) {
             if (event.type == Event::Closed || 
                 (event.type == Event::KeyPressed && event.key.code == sf::Keyboard::Escape)) {
@@ -60,7 +61,7 @@ void Game::execute() {
                 (*it)->execute();
             }
             else 
-                cout << "Não executado" << endl;
+                cout << "Not executed." << endl;
         }
         player1->execute(); // Atualiza e desenha
         player2->execute();
@@ -80,6 +81,15 @@ void Game::create_entes(){
             cout << "Players added to enemy" << endl;
         }else 
             cout << "Enemy not allocated." << endl;
+    }
+    for(int i = 0; i < 2; i++){
+        Obstacle* o = nullptr;
+        o = new Obstacle(false, 60, (i+2) * 100.f, 300.f);
+        if(o){
+            entes_list.push_back(o);
+            cout << "Obstacle created" << endl;
+        }else 
+            cout << "Obstacle not allocated." << endl;
     }
 
 }

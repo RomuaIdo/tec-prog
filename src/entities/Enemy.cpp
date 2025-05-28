@@ -25,9 +25,13 @@ void Enemy::addPlayer(Player *p){
 }
 
 void Enemy::attack(Player *p){
-    p->loseHealth(strength);
-    cout << "Player got hurt!" << endl;
-    cout << "He now has:" << p->getHealth() << endl;
+    // If player has health and after 2 seconds, it can attack 
+    if(p->getHealth() > 0 && pGM->getClockTime() >= 2.f){
+        p->loseHealth(strength);
+        cout << "Player got hurt!" << endl;
+        cout << "He now has:" << p->getHealth() << endl;
+        pGM->resetClock();
+    }
 
 }
 
@@ -45,11 +49,12 @@ void Enemy::move(){
     closer_direction.y = 600.f;
     for(it = players_list.begin(); it != players_list.end(); it++){
         if(*it){
+            // Get direction to player
             Vector2f direction = ((*it)->getShape().getPosition() - shape.getPosition());
             float module = sqrt(direction.x*direction.x + direction.y*direction.y);
 
-            // if(direction.x < (*it)->getShape().getSize().x  )
 
+            // To improve
             if(module == 0) {
                 attack((*it));
                 continue;
@@ -80,6 +85,6 @@ void Enemy::move(){
             }
         }
     }
-    velocity.y *= 10;
+    velocity.y *= 20;
     moveCharacter();
 }

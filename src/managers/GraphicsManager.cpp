@@ -2,7 +2,8 @@
 #include "../../include/entities/Ente.h"
 
 
-GraphicsManager *GraphicsManager::instance = nullptr;
+GraphicsManager *GraphicsManager::instance(nullptr);
+float GraphicsManager::clock_time(0.f);
 
 GraphicsManager *GraphicsManager::getInstance() {
   if (instance == nullptr) {
@@ -73,5 +74,14 @@ RenderWindow *GraphicsManager::getWindow() const {
 
 void GraphicsManager::setClock(){ dt = dt_clock.restart().asSeconds(); }
 
-float GraphicsManager::getdt() { return dt; }
-Clock GraphicsManager::getClockdt() { return dt_clock; }
+const float GraphicsManager::getdt() const{ return dt; }
+
+void GraphicsManager::operator++(){
+    clock_time += dt;
+}
+
+const Clock GraphicsManager::getClockdt() const { return dt_clock; }
+
+const float GraphicsManager::getClockTime() const { return clock_time; }
+
+void GraphicsManager::resetClock(){ clock_time = 0;}
