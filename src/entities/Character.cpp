@@ -5,12 +5,56 @@
 Vector2f Character::gravity(0.f, 30.f);
 
 Character::Character(const float size, float x, float y, const float movSpeed, int life, float coef, int s):
-    Entity(size, x, y), health(life), friction_coef(coef), friction(), strength(s), movimentSpeed(movSpeed), velocity(0.f, 0.f){
+    Entity(size, x, y), health(life), friction_coef(coef), friction(0.f,0.f), strength(s), movimentSpeed(movSpeed), velocity(0.f, 0.f){
 
 }
 
 Character::~Character(){
+
+}
+
+void Character::moveCharacter(){
+    const float vel_max = 50.f;
+    if (velocity.x > vel_max){
+        if(velocity.y > vel_max)
+            velocity.y = vel_max;
+        velocity.x = vel_max;
+    }else if( velocity.y > vel_max){
+        if(velocity.x > vel_max)
+            velocity.x = vel_max;
+        velocity.y = vel_max;
+    }
+    if (velocity.x < -vel_max){
+        if(velocity.y < -vel_max)
+            velocity.y = -vel_max;
+        velocity.x = -vel_max;
+    }else if( velocity.y < -vel_max){
+        if(velocity.x < -vel_max)
+            velocity.x = -vel_max;
+        velocity.y = -vel_max;
+    }
+
     
+    if(velocity.x > 0){
+        friction.x = -gravity.y * friction_coef;
+        if(velocity.x + friction.x * pGM->getdt() < 0) {
+           velocity.x = 0;
+            friction.x = 0;
+        }
+    }
+    else if(velocity.x <0){
+        friction.x = gravity.y * friction_coef;
+        if(velocity.x + friction.x * pGM->getdt() > 0) {
+            velocity.x = 0;
+            friction.x = 0;
+        }
+    }
+    else
+        friction.x = 0;
+    
+    velocity += gravity * pGM->getdt();
+    velocity += friction * pGM->getdt();
+    shape.move(velocity);
 }
 
 void Character::collide(){

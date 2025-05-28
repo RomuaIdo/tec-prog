@@ -56,53 +56,14 @@ void Player::move() {
             velocity.x += movimentSpeed * pGM->getdt();
     }
 
-    if (velocity.x > vel_max){
-        if(velocity.y > vel_max)
-            velocity.y = vel_max;
-        velocity.x = vel_max;
-    }else if( velocity.y > vel_max){
-        if(velocity.x > vel_max)
-            velocity.x = vel_max;
-        velocity.y = vel_max;
-    }
-    if (velocity.x < -vel_max){
-        if(velocity.y < -vel_max)
-            velocity.y = -vel_max;
-        velocity.x = -vel_max;
-    }else if( velocity.y < -vel_max){
-        if(velocity.x < -vel_max)
-            velocity.x = -vel_max;
-        velocity.y = -vel_max;
-    }
-
-    
-    if(velocity.x > 0){
-        friction.x = -gravity.y * friction_coef;
-        if(velocity.x + friction.x * pGM->getdt() < 0) {
-           velocity.x = 0;
-            friction.x = 0;
-        }
-    }
-    else if(velocity.x <0){
-        friction.x = gravity.y * friction_coef;
-        if(velocity.x + friction.x * pGM->getdt() > 0) {
-            velocity.x = 0;
-            friction.x = 0;
-        }
-    }
-    else
-        friction.x = 0;
-    
-    velocity += gravity * pGM->getdt();
-    velocity += friction * pGM->getdt();
-    shape.move(velocity);
+    moveCharacter();
     
 }
 
 void Player::execute() {
-    draw();
     move();
     collide();
+    draw();
 }
 
 

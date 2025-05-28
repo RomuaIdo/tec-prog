@@ -22,6 +22,7 @@ class Character : public Entity{
         virtual void execute() = 0;
         virtual void move() = 0;
         virtual void collide();
+        void moveCharacter();
 
 
 };
