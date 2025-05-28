@@ -12,6 +12,8 @@ Enemy::Enemy(float x, float y, const float movSpeed, int life, float coef , int 
 
     texture.setSmooth(true);
     sprite.setTexture(texture);
+    size.x = sprite.getLocalBounds().width;
+    size.y = sprite.getLocalBounds().height;
     sprite.setScale(    
     size.x / sprite.getLocalBounds().width,
     size.y / sprite.getLocalBounds().height

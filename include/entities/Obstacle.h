@@ -11,7 +11,7 @@ class Obstacle : public Entity{
         bool harmful;
 
     public:
-        Obstacle(bool harm, const float size, float x, float y);
+        Obstacle(bool harm, float x, float y);
         virtual ~Obstacle();
         virtual void execute();
         virtual void ObstacleAction();
