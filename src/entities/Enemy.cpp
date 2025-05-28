@@ -6,10 +6,17 @@
 Enemy::Enemy(const float size, float x, float y, const float movSpeed, int life, float coef , int s):
     Character(size, x, y, movSpeed, life, coef, s), players_list(), it(){
 
-    texture.loadFromFile("../../sprites/PlayerSprite.png", sf::IntRect({x, y}, {50, 80}));
+    if (!texture.loadFromFile("sprites/EnemySprite.png")) {
+        std::cerr << "Failed to load EnemySprite.png!" << std::endl;
+    }    
+
     texture.setSmooth(true);
     sprite.setTexture(texture);
-    //shape.setFillColor(sf::Color::Red);
+    sprite.setScale(    
+    shape.getSize().x / sprite.getLocalBounds().width,
+    shape.getSize().y / sprite.getLocalBounds().height
+    );
+
     players_list.clear();
 }
 

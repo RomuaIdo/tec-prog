@@ -5,19 +5,24 @@
 Player::Player(const float size, float x, float y, const float movSpeed, int life, float coef, int s, int p_num, const float v_max): 
     Character(size, x, y, movSpeed, life, coef, s), player_num(p_num), score(0), vel_max(v_max){
 
-    if (!texture.loadFromFile("../../sprites/PlayerSprite.png", sf::IntRect({x, y}, {50, 80}))) {
-        std::cerr << "Failed to load PlayerSprite.png!" << std::endl;
-    }    
+    
+    if(p_num == 1){
+        if (!texture.loadFromFile("sprites/Player1Sprite.png")) {
+            std::cerr << "Failed to load PlayerSprite.png!" << std::endl;
+        }    
+    }
+    else {
+        if (!texture.loadFromFile("sprites/Player2Sprite.png")) {
+            std::cerr << "Failed to load PlayerSprite.png!" << std::endl;
+        }  
+    }
+    
     texture.setSmooth(true);
     sprite.setTexture(texture);
     sprite.setScale(    
-    shape.getSize().x / sprite.getLocalBounds().width,
-    shape.getSize().y / sprite.getLocalBounds().height
+        shape.getSize().x / sprite.getLocalBounds().width,
+        shape.getSize().y / sprite.getLocalBounds().height
     );
-    // if(p_num == 1)
-    //     shape.setFillColor(sf::Color::Green);
-    // else 
-    //     shape.setFillColor(sf::Color::Blue);
 }
 
 Player::~Player() {}

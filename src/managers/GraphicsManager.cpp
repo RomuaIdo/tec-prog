@@ -17,7 +17,7 @@ GraphicsManager::GraphicsManager():
   font(NULL)
 {
   font = new Font();
-  if (!font->loadFromFile("../../assets/fonts/arial.ttf")) {
+  if (!font->loadFromFile("assets/fonts/arial.ttf")) {
     std::cerr << "Error when trying to load the font." << std::endl;
   }
 
