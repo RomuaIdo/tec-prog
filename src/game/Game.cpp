@@ -2,8 +2,7 @@
 #include "../../include/entities/Player.h"
 
 Game::Game():
-player1(nullptr), player2(nullptr), pGM(nullptr), entes_list(), it()
-{
+pGM(nullptr), entes_list(), it(), player1(nullptr), player2(nullptr){
     entes_list.clear();
     pGM = GraphicsManager::getInstance();
     player1 = new Player(50, 200, 100, 50.f, 10, 1, 4, 1, 60.f);
@@ -24,16 +23,17 @@ player1(nullptr), player2(nullptr), pGM(nullptr), entes_list(), it()
 
 Game::~Game() {
 
-    for( it = entes_list.begin(); it != entes_list.end(); it++){
-        if(*it){
-            delete (*it);
-            (*it) = NULL;
+    list<Ente*>::iterator ite;
+    for( ite = entes_list.begin(); ite != entes_list.end(); ite++){
+        if(*ite){
+            cout << "Deleting entity..." << endl;
+            delete (*ite);
+            (*ite) = nullptr;
         }
     }
+    cout << "Deletado com sucesso" << endl;
     entes_list.clear();
-    delete pGM;
-    delete player1;
-    delete player2;
+    pGM = nullptr;
 }
 
 void Game::execute() {

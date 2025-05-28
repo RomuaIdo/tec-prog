@@ -21,12 +21,6 @@ Enemy::Enemy(const float size, float x, float y, const float movSpeed, int life,
 }
 
 Enemy::~Enemy(){
-    for( it = players_list.begin(); it != players_list.end(); it++){
-        if(*it){
-            delete (*it);
-            (*it) = NULL;
-        }
-    }
     players_list.clear();
 }
 
@@ -97,4 +91,13 @@ void Enemy::move(){
     }
     velocity.y *= 20;
     moveCharacter();
+}
+
+void Enemy::removePlayer(Player *p){
+    for(it = players_list.begin(); it != players_list.end(); it++){
+        if(*it == p){
+            players_list.erase(it);
+            return;
+        }
+  }
 }

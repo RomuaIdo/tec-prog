@@ -42,9 +42,9 @@ class GraphicsManager {
         void show();
 
         void operator++();
-        const float getdt() const;
+        float getdt() const;
         const Clock getClockdt() const;
-        const float getClockTime() const;
+        float getClockTime() const;
         void resetClock();
 };
 #endif

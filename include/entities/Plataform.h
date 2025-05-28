@@ -1,6 +1,6 @@
 #ifndef PLATAFORM_H
 #define PLATAFORM_H
-#include "Obstacle.h"
+#include "../obstacles/Obstacle.h"
 #include <SFML/Graphics.hpp>
 using namespace sf;
 using namespace std;

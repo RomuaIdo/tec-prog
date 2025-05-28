@@ -3,7 +3,7 @@
 #include <SFML/Window.hpp>
 
 Plataform::Plataform(const float size, float x, float y, bool harm):
-    Obstacle(harm,size,x,y), height(0.f), width(0.f){
+    Obstacle(harm,size,x,y), width(0.f), height(0.f){
 
 }
 
