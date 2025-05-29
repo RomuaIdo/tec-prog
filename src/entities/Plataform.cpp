@@ -2,9 +2,9 @@
 #include "../../include/managers/GraphicsManager.h"
 #include <SFML/Window.hpp>
 
+
 Plataform::Plataform(float x, float y, bool harm):
     Obstacle(harm,x,y), height(0.f), width(0.f){
-
 }
 
 Plataform::~Plataform(){}

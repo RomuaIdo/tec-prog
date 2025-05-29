@@ -20,6 +20,7 @@ class Enemy : public Character{
         Enemy(float x, float y, const float movSpeed, int life = 5, float coef = 0.5, int s = 1);
         virtual ~Enemy();
         virtual void addPlayer(Player *p);
+        virtual void removePlayer(Player *p);
         virtual void attack(Player *p);
         virtual void execute();
         virtual void move();

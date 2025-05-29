@@ -6,7 +6,7 @@
 Enemy::Enemy(float x, float y, const float movSpeed, int life, float coef , int s):
     Character(x, y, movSpeed, life, coef, s), players_list(), it(){
 
-    if (!texture.loadFromFile("sprites/EnemySprite.png")) {
+    if (!texture.loadFromFile("assets/textures/EnemySprite.png")) {
         std::cerr << "Failed to load EnemySprite.png!" << std::endl;
     }    
 
@@ -23,12 +23,6 @@ Enemy::Enemy(float x, float y, const float movSpeed, int life, float coef , int 
 }
 
 Enemy::~Enemy(){
-    for( it = players_list.begin(); it != players_list.end(); it++){
-        if(*it){
-            delete (*it);
-            (*it) = NULL;
-        }
-    }
     players_list.clear();
 }
 
@@ -91,4 +85,13 @@ void Enemy::move(){
     }
         velocity += closer_direction  * pGM->getdt();
     moveCharacter();
+}
+
+void Enemy::removePlayer(Player *p){
+    for(it = players_list.begin(); it != players_list.end(); it++){
+        if(*it == p){
+            players_list.erase(it);
+            return;
+        }
+  }
 }

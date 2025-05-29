@@ -3,14 +3,14 @@
 #include "../entities/Ente.h"
 #include "../entities/Entity.h"
 
-class Fase : public Ente {
+class Phase : public Ente {
 protected:
-  Lista<Entity*> entities;
-  CollisionManager* collisions_manager;
+  //Lista<Entity*> entities;
+  //CollisionManager* collisions_manager;
 
 public:
-  Fase();
-  ~Fase();
+  Phase();
+  ~Phase();
 
   virtual void execute() = 0;
 

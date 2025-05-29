@@ -74,7 +74,7 @@ RenderWindow *GraphicsManager::getWindow() const {
 
 void GraphicsManager::setClock(){ dt = dt_clock.restart().asSeconds(); }
 
-const float GraphicsManager::getdt() const{ return dt; }
+float GraphicsManager::getdt() const{ return dt; }
 
 void GraphicsManager::operator++(){
     clock_time += dt;
@@ -82,6 +82,6 @@ void GraphicsManager::operator++(){
 
 const Clock GraphicsManager::getClockdt() const { return dt_clock; }
 
-const float GraphicsManager::getClockTime() const { return clock_time; }
+float GraphicsManager::getClockTime() const { return clock_time; }
 
 void GraphicsManager::resetClock(){ clock_time = 0;}

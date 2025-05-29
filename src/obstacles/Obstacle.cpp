@@ -1,4 +1,4 @@
-#include "../../include/entities/Obstacle.h"
+#include "../../include/obstacles/Obstacle.h"
 #include "../../include/managers/GraphicsManager.h"
 #include <SFML/Window.hpp>
 
