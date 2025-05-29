@@ -12,50 +12,9 @@ Character::~Character(){
 
 }
 
-void Character::moveCharacter(){
-    const float vel_max = 50.f;
-
-    // See if velocity ultrapassed vel_max
-    if (velocity.x > vel_max){
-        if(velocity.y > vel_max)
-            velocity.y = vel_max;
-        velocity.x = vel_max;
-    }else if( velocity.y > vel_max){
-        if(velocity.x > vel_max)
-            velocity.x = vel_max;
-        velocity.y = vel_max;
-    }
-    if (velocity.x < -vel_max){
-        if(velocity.y < -vel_max)
-            velocity.y = -vel_max;
-        velocity.x = -vel_max;
-    }else if( velocity.y < -vel_max){
-        if(velocity.x < -vel_max)
-            velocity.x = -vel_max;
-        velocity.y = -vel_max;
-    }
-
-    // Apply friction
-    if(velocity.x > 0){
-        friction.x = -gravity.y * friction_coef;
-        if(velocity.x + friction.x * pGM->getdt() < 0) {
-           velocity.x = 0;
-            friction.x = 0;
-        }
-    }
-    else if(velocity.x <0){
-        friction.x = gravity.y * friction_coef;
-        if(velocity.x + friction.x * pGM->getdt() > 0) {
-            velocity.x = 0;
-            friction.x = 0;
-        }
-    }
-    else
-        friction.x = 0;
-    
-    velocity += gravity * pGM->getdt();
-    velocity += friction * pGM->getdt();
-    position += velocity;
+void Character::moveCharacter(Vector2f vel){
+    vel += gravity * pGM->getdt();
+    position += vel;
     sprite.setPosition(position);
 
 }
@@ -86,4 +45,8 @@ void Character::collide(){
         velocity.y = 0;
     }
 
+}
+
+Vector2f Character::getVelocity() const{
+    return velocity;
 }

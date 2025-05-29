@@ -18,7 +18,8 @@ class Ente {
         virtual void draw() = 0;
         virtual Drawable& getDrawable() = 0;
         virtual void execute() = 0;
-
+        Vector2f getSize() const;
+        Vector2f getPosition() const;
 };
 
 #endif

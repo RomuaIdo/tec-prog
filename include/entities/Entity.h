@@ -21,4 +21,5 @@ class Entity : public Ente {
         Vector2f getPosition();
 
 };
+
 #endif

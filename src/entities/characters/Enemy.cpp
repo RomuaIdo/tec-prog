@@ -78,8 +78,9 @@ void Enemy::move(){
     if(velocity.y > 0){
         closer_direction.y = 0.f;
     }
-        velocity += closer_direction  * pGM->getdt();
-    moveCharacter();
+    velocity += closer_direction  * pGM->getdt();
+    
+    moveCharacter(velocity);
 }
 
 void Enemy::removePlayer(Player *p){

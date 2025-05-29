@@ -9,3 +9,11 @@ Ente::Ente():
 Ente::~Ente() {
     pGM = nullptr;
 }
+
+Vector2f Ente::getPosition() const {
+    return sprite.getPosition();
+}
+
+Vector2f Ente::getSize() const{
+    return size;
+}

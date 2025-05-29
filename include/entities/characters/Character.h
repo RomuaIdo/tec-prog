@@ -1,6 +1,6 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
-#include "../Entity.h"
+#include "entities/Entity.h"
 #include <SFML/Graphics.hpp>
 using namespace sf;
 using namespace std;
@@ -24,7 +24,8 @@ class Character : public Entity {
         virtual void execute() = 0;
         virtual void move() = 0;
         virtual void collide();
-        void moveCharacter();
+        void moveCharacter(Vector2f vel);
+        Vector2f getVelocity() const;
 };
 
 #endif

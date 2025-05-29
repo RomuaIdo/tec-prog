@@ -1,11 +1,6 @@
 #ifndef COLLISION_MANAGER_H
 #define COLLISION_MANAGER_H
 #include <SFML/Graphics.hpp>
-#include "../entities/characters/Enemy.h"
-#include "../entities/obstacles/Obstacle.h"
-#include "../entities/characters/Player.h"
-#include "../entities/Projectile.h"
-
 #include <map>
 #include <string>
 #include <iostream>
@@ -15,14 +10,20 @@
 using namespace std;
 using namespace sf;
 
+class Enemy;
+class Obstacle;
+class Player;
+class Projectile;
+class Entity; 
+
 class CollisionManager{
 
     private:
         vector<Enemy*> enemies_vector;
         list<Obstacle*> obstacles_list;
         set<Projectile*> projectiles_set;
-        Player* player1;
-        Player* player2;
+
+        list<Player*> players_list;
         static CollisionManager* instance;
 
     public:
