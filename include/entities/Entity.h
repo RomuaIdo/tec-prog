@@ -8,18 +8,20 @@ using namespace sf;
 class Entity : public Ente {
     
     protected:
-        RectangleShape shape;
-        const float grid_size;
+        // RectangleShape shape;
+        Vector2f position;
+        // const float grid_size;
 
     public:
-        Entity(const float size, float x, float y);
+        Entity(float x, float y);
         virtual ~Entity();
 
         virtual void execute() = 0;
         virtual void draw();
         virtual void collide() = 0;
         virtual Drawable& getDrawable();
-        sf::RectangleShape getShape();
+        // sf::RectangleShape getShape();
+        Vector2f getPosition();
 
 };
 #endif

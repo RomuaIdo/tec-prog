@@ -12,7 +12,7 @@ class Plataform : public Obstacle{
         float height;
 
     public:
-        Plataform(const float size, float x, float y, bool harm = false);
+        Plataform(float x, float y, bool harm = false);
         ~Plataform();
         void setWidth(float w);
         float getWidth() const;

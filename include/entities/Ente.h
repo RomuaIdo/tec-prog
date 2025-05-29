@@ -10,6 +10,7 @@ class Ente {
         static GraphicsManager* pGM;
         Sprite sprite;
         Texture texture;
+        Vector2f size;
 
     public:
         Ente();

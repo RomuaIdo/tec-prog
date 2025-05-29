@@ -4,8 +4,8 @@
 
 Vector2f Character::gravity(0.f, 30.f);
 
-Character::Character(const float size, float x, float y, const float movSpeed, int life, float coef, int s):
-    Entity(size, x, y), health(life), friction_coef(coef), friction(0.f,0.f), strength(s), movimentSpeed(movSpeed), velocity(0.f, 0.f){
+Character::Character(float x, float y, const float movSpeed, int life, float coef, int s):
+    Entity(x, y), health(life), friction_coef(coef), friction(0.f,0.f), strength(s), movimentSpeed(movSpeed), velocity(0.f, 0.f){
     
 }
 
@@ -14,7 +14,7 @@ Character::~Character(){
 }
 
 void Character::moveCharacter(){
-    const float vel_max = 30.f;
+    const float vel_max = 50.f;
 
     // See if velocity ultrapassed vel_max
     if (velocity.x > vel_max){
@@ -56,37 +56,34 @@ void Character::moveCharacter(){
     
     velocity += gravity * pGM->getdt();
     velocity += friction * pGM->getdt();
-    shape.move(velocity);
-    sprite.setPosition(shape.getPosition());
+    position += velocity;
+    sprite.setPosition(position);
 
 }
 
 void Character::collide(){
-    sf::Vector2f pos = shape.getPosition();
-    sf::Vector2f size = shape.getSize();
-
-
+    
     float window_width = 800.0f;  // example
     float window_height = 600.0f; // example
 
     // Left wall
-    if (pos.x < 0){
-        shape.setPosition(0, pos.y);
+    if (position.x < 0){
+        position.x = 0;
         velocity.x = 0;
     }    
     // Right wall
-    if (pos.x + size.x > window_width){
-        shape.setPosition(window_width - size.x, pos.y);
+    if (position.x + size.x > window_width){
+        position.x = window_width - size.x;
         velocity.x = 0;
     }   
     // Top wall
-    if (pos.y < 0){
-
-        shape.setPosition(pos.x, 0);
+    if (position.y < 0){
+        position.y = 0;
         velocity.y = 0;
-        // Bottom wall
-    }if (pos.y + size.y > window_height){
-        shape.setPosition(pos.x, window_height - size.y);
+    }
+    // Bottom wall
+    if (position.y + size.y > window_height){
+        position.y = window_height - size.y;
         velocity.y = 0;
     }
 

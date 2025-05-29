@@ -3,8 +3,8 @@
 #include <SFML/Window.hpp>
 
 
-Enemy::Enemy(const float size, float x, float y, const float movSpeed, int life, float coef , int s):
-    Character(size, x, y, movSpeed, life, coef, s), players_list(), it(){
+Enemy::Enemy(float x, float y, const float movSpeed, int life, float coef , int s):
+    Character(x, y, movSpeed, life, coef, s), players_list(), it(){
 
     if (!texture.loadFromFile("assets/textures/EnemySprite.png")) {
         std::cerr << "Failed to load EnemySprite.png!" << std::endl;
@@ -12,9 +12,11 @@ Enemy::Enemy(const float size, float x, float y, const float movSpeed, int life,
 
     texture.setSmooth(true);
     sprite.setTexture(texture);
+    size.x = sprite.getLocalBounds().width;
+    size.y = sprite.getLocalBounds().height;
     sprite.setScale(    
-    shape.getSize().x / sprite.getLocalBounds().width,
-    shape.getSize().y / sprite.getLocalBounds().height
+    size.x / sprite.getLocalBounds().width,
+    size.y / sprite.getLocalBounds().height
     );
 
     players_list.clear();
@@ -46,15 +48,13 @@ void Enemy::execute(){
 }
 
 void Enemy::move(){
-    const float vel_max = 30.f;
     float closer = sqrt(800 * 800 + 600 * 600);
     Vector2f closer_direction;
-    closer_direction.x = 800.f;
-    closer_direction.y = 600.f;
+
     for(it = players_list.begin(); it != players_list.end(); it++){
         if(*it){
             // Get direction to player
-            Vector2f direction = ((*it)->getShape().getPosition() - shape.getPosition());
+            Vector2f direction = ((*it)->getPosition() - position);
             float module = sqrt(direction.x*direction.x + direction.y*direction.y);
 
 
@@ -72,24 +72,18 @@ void Enemy::move(){
             } 
 
             
-                
-
             
-            // if ((*it)->getShape().getPosition().x > shape.getPosition().x )
-            //     velocity.x += movimentSpeed * pGM->getdt();
-            // else if ((*it)->getShape().getPosition().x < shape.getPosition().x )
-            //     velocity.x += -movimentSpeed * pGM->getdt();
-            // else attack(*it);
-
-            if((*it)->getShape().getPosition().x == shape.getPosition().x || 
-               (*it)->getShape().getPosition().y == shape.getPosition().y)
-                attack(*it);
-            else{
-                velocity = closer_direction  * pGM->getdt();
-            }
         }
     }
-    velocity.y *= 20;
+    // if((*it)->getPosition().x == position.x && 
+    //     (*it)->getPosition().y == position.y)
+    //     attack(*it);
+    // else{
+    // }
+    if(velocity.y > 0){
+        closer_direction.y = 0.f;
+    }
+        velocity += closer_direction  * pGM->getdt();
     moveCharacter();
 }
 
