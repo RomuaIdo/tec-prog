@@ -56,7 +56,6 @@ void Character::moveCharacter(){
     
     velocity += gravity * pGM->getdt();
     velocity += friction * pGM->getdt();
-    // shape.move(velocity);
     position += velocity;
     sprite.setPosition(position);
 
