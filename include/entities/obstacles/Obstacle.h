@@ -1,6 +1,6 @@
 #ifndef OBSTACLE_H
 #define OBSTACLE_H
-#include "../entities/Entity.h"
+#include "../Entity.h"
 #include <SFML/Graphics.hpp>
 using namespace sf;
 using namespace std;

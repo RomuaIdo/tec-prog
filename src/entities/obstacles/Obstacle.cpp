@@ -1,10 +1,10 @@
-#include "../../include/obstacles/Obstacle.h"
-#include "../../include/managers/GraphicsManager.h"
+#include "../../../include/entities/obstacles/Obstacle.h"
+#include "../../../include/managers/GraphicsManager.h"
 #include <SFML/Window.hpp>
 
 Obstacle::Obstacle(bool harm, float x, float y):
     Entity(x,y), harmful(harm){
-    if (!texture.loadFromFile("sprites/Obstacle.png")) {
+    if (!texture.loadFromFile("assets/textures/Obstacle.png")) {
         std::cerr << "Failed to load Obstacle.png!" << std::endl;
     }    
 
