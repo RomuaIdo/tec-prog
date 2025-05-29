@@ -18,7 +18,7 @@ class Character : public Entity {
         static Vector2f gravity;
 
     public:
-        Character(const float size, float x, float y, const float movSpeed,
+        Character(float x, float y, const float movSpeed,
         int life = 5, float coef = 0.5, int s = 1);
         virtual ~Character();
         virtual void execute() = 0;
