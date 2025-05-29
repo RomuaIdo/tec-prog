@@ -1,5 +1,4 @@
 #include "../../../include/entities/characters/Character.h"
-#include "../../../include/managers/GraphicsManager.h"
 #include <SFML/Window.hpp>
 
 Vector2f Character::gravity(0.f, 30.f);

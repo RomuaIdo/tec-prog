@@ -2,7 +2,6 @@
 #define ENTITY_H
 #include "Ente.h"
 #include <SFML/Graphics.hpp>
-#include "../managers/GraphicsManager.h"
 using namespace sf;
 
 class Entity : public Ente {

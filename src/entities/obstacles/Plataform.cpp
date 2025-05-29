@@ -1,5 +1,4 @@
 #include "../../../include/entities/obstacles/Plataform.h"
-#include "../../../include/managers/GraphicsManager.h"
 #include <SFML/Window.hpp>
 
 

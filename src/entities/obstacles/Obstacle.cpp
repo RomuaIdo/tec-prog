@@ -1,5 +1,4 @@
 #include "../../../include/entities/obstacles/Obstacle.h"
-#include "../../../include/managers/GraphicsManager.h"
 #include <SFML/Window.hpp>
 
 Obstacle::Obstacle(bool harm, float x, float y):

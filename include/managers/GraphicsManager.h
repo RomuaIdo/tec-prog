@@ -1,7 +1,7 @@
 #ifndef GRAPHICS_MANAGER_H
 #define GRAPHICS_MANAGER_H
 #include <SFML/Graphics.hpp>
-
+#include "CollisionManager.h"
 #include <map>
 #include <string>
 #include <iostream>
@@ -14,7 +14,7 @@ class Ente;
 class GraphicsManager {
     private:
         static GraphicsManager* instance;
-        // static CollisionManager* pCM;
+        static CollisionManager* pCM;
         RenderWindow* pWindow;
         map<string, Texture*> textures;
         Font* font;
@@ -29,8 +29,8 @@ class GraphicsManager {
         GraphicsManager(const GraphicsManager&) = delete;
         GraphicsManager& operator=(const GraphicsManager&) = delete;
 
-        static GraphicsManager* getInstance();
-
+        static GraphicsManager  *getInstance();
+        static CollisionManager *getCollisionManager();
         bool openWindow() const;
         RenderWindow* getWindow() const;
         void setWindow(RenderWindow* window);

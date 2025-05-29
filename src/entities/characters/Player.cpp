@@ -1,5 +1,4 @@
 #include "../../../include/entities/characters/Player.h"
-#include "../../../include/managers/GraphicsManager.h"
 #include <SFML/Window.hpp>
 
 Player::Player(float x, float y, const float movSpeed, int life, float coef, int s, int p_num, const float v_max): 

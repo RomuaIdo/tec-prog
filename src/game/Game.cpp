@@ -1,5 +1,4 @@
 #include "../../include/game/Game.h"
-#include "../../include/entities/characters/Player.h"
 
 Game::Game():
 pGM(nullptr), entes_list(), it(), player1(nullptr), player2(nullptr){

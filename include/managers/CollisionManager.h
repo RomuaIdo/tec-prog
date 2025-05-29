@@ -5,7 +5,6 @@
 #include "../entities/obstacles/Obstacle.h"
 #include "../entities/characters/Player.h"
 #include "../entities/Projectile.h"
-#include "../entities/Entity.h"
 
 #include <map>
 #include <string>
@@ -26,9 +25,9 @@ class CollisionManager{
         Player* player2;
         static CollisionManager* instance;
 
-        CollisionManager();
-
     public:
+        
+        CollisionManager();
         ~CollisionManager();
         CollisionManager* getInstance();
         const bool verifyCollision(Entity* ent1, Entity* ent2) const;

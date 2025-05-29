@@ -1,9 +1,9 @@
 #include "../../include/managers/GraphicsManager.h"
-#include "../../include/managers/CollisionManager.h"
 #include "../../include/entities/Ente.h"
 
 
-GraphicsManager *GraphicsManager::instance(nullptr);
+GraphicsManager  *GraphicsManager::instance(nullptr);
+CollisionManager *GraphicsManager::pCM(nullptr);
 
 float GraphicsManager::clock_time(0.f);
 
@@ -12,6 +12,13 @@ GraphicsManager *GraphicsManager::getInstance() {
     instance = new GraphicsManager();
   }
   return instance;
+}
+
+CollisionManager *GraphicsManager::getCollisionManager(){
+    if (pCM == nullptr) {
+        pCM = new CollisionManager();
+    }
+    return pCM;
 }
 
 GraphicsManager::GraphicsManager():
