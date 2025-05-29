@@ -80,7 +80,7 @@ void Enemy::move(){
     }
     velocity += closer_direction  * pGM->getdt();
     
-    moveCharacter(velocity);
+    moveCharacter();
 }
 
 void Enemy::removePlayer(Player *p){

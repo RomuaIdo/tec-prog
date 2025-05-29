@@ -24,8 +24,9 @@ class Character : public Entity {
         virtual void execute() = 0;
         virtual void move() = 0;
         virtual void collide();
-        void moveCharacter(Vector2f vel);
+        void moveCharacter();
         Vector2f getVelocity() const;
+        void setVelocity(Vector2f vel);
 };
 
 #endif

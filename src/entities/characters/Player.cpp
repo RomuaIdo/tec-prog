@@ -95,9 +95,9 @@ void Player::move() {
     }
     else
         friction.x = 0;
-    
+        
     velocity += friction * pGM->getdt();
-    moveCharacter(velocity);
+    moveCharacter();
     
 }
 

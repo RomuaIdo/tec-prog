@@ -21,6 +21,7 @@ class Ente {
         virtual void execute() = 0;
         Vector2f getSize() const;
         Vector2f getPosition() const;
+        void setPosition(Vector2f pos);
 };
 
 #endif

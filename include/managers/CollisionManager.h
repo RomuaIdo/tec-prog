@@ -31,7 +31,7 @@ class CollisionManager{
         
         ~CollisionManager();
         static CollisionManager* getInstance();
-        const bool verifyCollision(Entity* ent1, Entity* ent2) const;
+        bool verifyCollision(Entity* ent1, Entity* ent2) const;
         void treatEnemiesCollision();
         void treatObstaclesCollision();
         void treatProjectilesCollision();

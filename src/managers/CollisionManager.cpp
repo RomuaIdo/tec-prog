@@ -27,6 +27,7 @@ CollisionManager::~CollisionManager(){
 }
 
 float vectorModule(Vector2f vector){
+    
     return sqrt(vector.x*vector.x + vector.y*vector.y);
 }
 
@@ -35,12 +36,12 @@ float module(float val){
     return val;
 }
 
-const bool CollisionManager::verifyCollision(Entity* ent1, Entity* ent2) const{
+bool CollisionManager::verifyCollision(Entity* ent1, Entity* ent2) const{
 
-    Vector2f ent1center = ent1->getPosition() - (ent1->getSize() / static_cast<float> (2));    
-    Vector2f ent2center = ent2->getPosition() - (ent2->getSize() / static_cast<float> (2));
+    Vector2f ent1center = ent1->getPosition() + (ent1->getSize() / static_cast<float> (2));    
+    Vector2f ent2center = ent2->getPosition() + (ent2->getSize() / static_cast<float> (2));
 
-    if(module(vectorModule(ent1center - ent2center)) < module(vectorModule(ent1->getSize() - ent2->getSize()))){
+    if(module(vectorModule(ent1center - ent2center)) < module(vectorModule(ent1->getSize() / static_cast<float>(2) + ent2->getSize() / static_cast<float>(2) ))){
         return true;
     }
     return false;
@@ -54,7 +55,9 @@ void CollisionManager::treatEnemiesCollision(){
                 if(*itEnemy){
                     if(verifyCollision( (*it) , (*itEnemy) ) ){
                         cout << "Player collided!" <<endl;
-                        (*it)->moveCharacter((*it)->getVelocity() * static_cast<float>(-1.5));
+                        (*it)->setVelocity( (*it)->getVelocity() - (*it)->getVelocity() * static_cast<float>(1.1));
+                        (*it)->moveCharacter();
+
                         (*itEnemy)->attack((*it));
                     }
                 }
@@ -70,7 +73,9 @@ void CollisionManager::treatObstaclesCollision(){
             for(list<Obstacle*>::iterator itObstacle = obstacles_list.begin(); itObstacle != obstacles_list.end(); itObstacle++){
                 if(*itObstacle){
                     if(verifyCollision( (*it) , (*itObstacle) ) ){
-                        (*it)->moveCharacter((*it)->getVelocity() * static_cast<float>(-1.2));
+                        cout << "Player collided!" <<endl;
+                        (*it)->setVelocity( (*it)->getVelocity() - (*it)->getVelocity() * static_cast<float>(1.1));
+                        (*it)->moveCharacter();
                     }
                 }
             }
@@ -85,7 +90,9 @@ void CollisionManager::treatProjectilesCollision(){
             for(set<Projectile*>::iterator itProjectile = projectiles_set.begin(); itProjectile != projectiles_set.end(); itProjectile++){
                 if(*itProjectile){
                     if(verifyCollision( (*it) , (*itProjectile) ) ){
-                        (*it)->moveCharacter((*it)->getVelocity()* static_cast<float>(-0.3));
+                        cout << "Player collided!" <<endl;
+                        (*it)->setPosition( (*it)->getVelocity() - (*it)->getVelocity() * static_cast<float>(0.3));
+                        (*it)->setVelocity( (*it)->getVelocity() - (*it)->getVelocity() * static_cast<float>(0.3));
                     }
                 }
             }

@@ -12,10 +12,9 @@ Character::~Character(){
 
 }
 
-void Character::moveCharacter(Vector2f vel){
-    vel += gravity * pGM->getdt();
-    velocity = vel;
-    position += vel;
+void Character::moveCharacter(){
+    velocity += gravity * pGM->getdt();
+    position += velocity;
     sprite.setPosition(position);
 
 }
@@ -50,4 +49,8 @@ void Character::collide(){
 
 Vector2f Character::getVelocity() const{
     return velocity;
+}
+
+void Character::setVelocity(Vector2f vel){
+    velocity = vel;
 }
