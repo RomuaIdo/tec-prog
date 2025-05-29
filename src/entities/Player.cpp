@@ -7,12 +7,12 @@ Player::Player(const float size, float x, float y, const float movSpeed, int lif
 
     
     if(p_num == 1){
-        if (!texture.loadFromFile("sprites/Player1Sprite.png")) {
+        if (!texture.loadFromFile("assets/textures/Player1Sprite.png")) {
             std::cerr << "Failed to load PlayerSprite.png!" << std::endl;
         }    
     }
     else {
-        if (!texture.loadFromFile("sprites/Player2Sprite.png")) {
+        if (!texture.loadFromFile("assets/textures/Player2Sprite.png")) {
             std::cerr << "Failed to load PlayerSprite.png!" << std::endl;
         }  
     }

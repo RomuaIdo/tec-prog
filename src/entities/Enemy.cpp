@@ -6,7 +6,7 @@
 Enemy::Enemy(const float size, float x, float y, const float movSpeed, int life, float coef , int s):
     Character(size, x, y, movSpeed, life, coef, s), players_list(), it(){
 
-    if (!texture.loadFromFile("sprites/EnemySprite.png")) {
+    if (!texture.loadFromFile("assets/textures/EnemySprite.png")) {
         std::cerr << "Failed to load EnemySprite.png!" << std::endl;
     }    
 
