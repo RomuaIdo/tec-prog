@@ -1,10 +1,10 @@
 #ifndef COLLISION_MANAGER_H
 #define COLLISION_MANAGER_H
 #include <SFML/Graphics.hpp>
-#include "../entities/Enemy.h"
-#include "../entities/Obstacle.h"
-#include "../entities/Player.h"
-// #include "../entities/Projectile.h"
+#include "../entities/characters/Enemy.h"
+#include "../entities/obstacles/Obstacle.h"
+#include "../entities/characters/Player.h"
+#include "../entities/Projectile.h"
 #include <map>
 #include <string>
 #include <iostream>
@@ -17,9 +17,9 @@ using namespace sf;
 class CollisionManager{
 
     private:
-        vector<Enemy*> enemys_vector;
+        vector<Enemy*> enemies_vector;
         list<Obstacle*> obstacles_list;
-        // set<Projectile*> projectiles_set;
+        set<Projectile*> projectiles_set;
         Player* player1;
         Player* player2;
 
@@ -27,12 +27,12 @@ class CollisionManager{
         CollisionManager();
         ~CollisionManager();
         const bool verifyCollision(Entity* ent1, Entity* ent2) const;
-        void treatObstaclesCollision();
         void treatEnemiesCollision();
+        void treatObstaclesCollision();
         void treatProjectilesCollision();
         void addEnemy(Enemy* e);
         void addObstacle(Obstacle* o);
-        // void addProjectile(Projectile* p);
+        void addProjectile(Projectile* p);
         void execute();
 
 };
