@@ -11,7 +11,6 @@ using namespace std;
 class Enemy : public Character{
 
     protected:
-
         list<Player*> players_list;
         list<Player*>::iterator it;
 

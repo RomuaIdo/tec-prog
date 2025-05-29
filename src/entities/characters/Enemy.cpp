@@ -75,11 +75,7 @@ void Enemy::move(){
             
         }
     }
-    // if((*it)->getPosition().x == position.x && 
-    //     (*it)->getPosition().y == position.y)
-    //     attack(*it);
-    // else{
-    // }
+
     if(velocity.y > 0){
         closer_direction.y = 0.f;
     }
