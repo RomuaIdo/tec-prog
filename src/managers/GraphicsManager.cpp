@@ -3,7 +3,6 @@
 
 
 GraphicsManager  *GraphicsManager::instance(nullptr);
-CollisionManager *GraphicsManager::pCM(nullptr);
 
 float GraphicsManager::clock_time(0.f);
 
@@ -14,12 +13,6 @@ GraphicsManager *GraphicsManager::getInstance() {
   return instance;
 }
 
-CollisionManager *GraphicsManager::getCollisionManager(){
-    if (pCM == nullptr) {
-        pCM = new CollisionManager();
-    }
-    return pCM;
-}
 
 GraphicsManager::GraphicsManager():
   pWindow(nullptr),

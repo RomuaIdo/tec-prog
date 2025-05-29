@@ -15,5 +15,6 @@ Vector2f Ente::getPosition() const {
 }
 
 Vector2f Ente::getSize() const{
+    
     return size;
 }

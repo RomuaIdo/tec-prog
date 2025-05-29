@@ -1,14 +1,15 @@
 #include "../../include/game/Game.h"
 
 Game::Game():
-pGM(nullptr), entes_list(), it(), player1(nullptr), player2(nullptr){
+pGM(nullptr), pCM(nullptr), entes_list(), it(), player1(nullptr), player2(nullptr){
     entes_list.clear();
     pGM = GraphicsManager::getInstance();
+    pCM = CollisionManager::getInstance();
     player1 = new Player(200, 100, 50.f, 10, 1, 4, 1, 60.f);
     player2 = new Player(100, 100, 50.f, 10, 1, 4, 2, 60.f);
     create_entes();
-    
-
+    pCM->addPlayer(player1);
+    pCM->addPlayer(player2);
     execute();
 }
 
@@ -56,7 +57,7 @@ void Game::execute() {
         }
         player1->execute(); // Atualiza e desenha
         player2->execute();
-        
+        pCM->execute();
         pGM->show();
     }
 }
@@ -68,6 +69,7 @@ void Game::create_entes(){
         if(e){
             e->addPlayer(player1);
             e->addPlayer(player2);
+            pCM->addEnemy(e);
             entes_list.push_back(e);
             cout << "Players added to enemy" << endl;
         }else 

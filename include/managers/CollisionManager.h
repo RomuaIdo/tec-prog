@@ -26,15 +26,16 @@ class CollisionManager{
         list<Player*> players_list;
         static CollisionManager* instance;
 
+        CollisionManager();
     public:
         
-        CollisionManager();
         ~CollisionManager();
-        CollisionManager* getInstance();
+        static CollisionManager* getInstance();
         const bool verifyCollision(Entity* ent1, Entity* ent2) const;
         void treatEnemiesCollision();
         void treatObstaclesCollision();
         void treatProjectilesCollision();
+        void addPlayer(Player* p);
         void addEnemy(Enemy* e);
         void addObstacle(Obstacle* o);
         void addProjectile(Projectile* p);

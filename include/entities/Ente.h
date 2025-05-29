@@ -11,6 +11,7 @@ class Ente {
         Sprite sprite;
         Texture texture;
         Vector2f size;
+        
 
     public:
         Ente();

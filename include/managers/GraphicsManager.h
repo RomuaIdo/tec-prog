@@ -14,7 +14,6 @@ class Ente;
 class GraphicsManager {
     private:
         static GraphicsManager* instance;
-        static CollisionManager* pCM;
         RenderWindow* pWindow;
         map<string, Texture*> textures;
         Font* font;

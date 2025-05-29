@@ -26,15 +26,23 @@ CollisionManager::~CollisionManager(){
     obstacles_list.clear();
 }
 
+float vectorModule(Vector2f vector){
+    return sqrt(vector.x*vector.x + vector.y*vector.y);
+}
+
+float module(float val){
+    if(val < 0) return -val;
+    return val;
+}
+
 const bool CollisionManager::verifyCollision(Entity* ent1, Entity* ent2) const{
-    if( ent2->getPosition().x + ent2->getSize().x > ent1->getPosition().x )
+
+    Vector2f ent1center = ent1->getPosition() - (ent1->getSize() / static_cast<float> (2));    
+    Vector2f ent2center = ent2->getPosition() - (ent2->getSize() / static_cast<float> (2));
+
+    if(module(vectorModule(ent1center - ent2center)) < module(vectorModule(ent1->getSize() - ent2->getSize()))){
         return true;
-    if( ent2->getPosition().y + ent2->getSize().y > ent1->getPosition().y )
-        return true;
-    if( ent1->getPosition().x + ent1->getSize().x > ent2->getPosition().x )
-        return true;
-    if( ent1->getPosition().y + ent1->getSize().y > ent2->getPosition().y )
-        return true;
+    }
     return false;
 }
 
@@ -45,6 +53,7 @@ void CollisionManager::treatEnemiesCollision(){
             for(vector<Enemy*>::iterator itEnemy = enemies_vector.begin(); itEnemy != enemies_vector.end(); itEnemy++){
                 if(*itEnemy){
                     if(verifyCollision( (*it) , (*itEnemy) ) ){
+                        cout << "Player collided!" <<endl;
                         (*it)->moveCharacter((*it)->getVelocity() * static_cast<float>(-1.5));
                         (*itEnemy)->attack((*it));
                     }
@@ -94,6 +103,10 @@ void CollisionManager::addObstacle(Obstacle *o){
 
 void CollisionManager::addProjectile(Projectile *p){
     projectiles_set.insert(p);
+}
+
+void CollisionManager::addPlayer(Player* p){
+    players_list.push_back(p);
 }
 
 void CollisionManager::execute(){
