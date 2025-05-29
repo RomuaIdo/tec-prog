@@ -3,14 +3,14 @@
 #include "Ente.h"
 #include <SFML/Graphics.hpp>
 #include "../managers/GraphicsManager.h"
+#include "../managers/CollisionManager.h"
 using namespace sf;
 
 class Entity : public Ente {
     
     protected:
-        // RectangleShape shape;
         Vector2f position;
-        // const float grid_size;
+        
 
     public:
         Entity(float x, float y);
