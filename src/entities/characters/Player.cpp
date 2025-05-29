@@ -80,14 +80,14 @@ void Player::move() {
 
     // Apply friction
     if(velocity.x > 0){
-        friction.x = -gravity.y * friction_coef;
+        friction.x = -20.f * friction_coef;
         if(velocity.x + friction.x * pGM->getdt() < 0) {
            velocity.x = 0;
             friction.x = 0;
         }
     }
     else if(velocity.x <0){
-        friction.x = gravity.y * friction_coef;
+        friction.x = 20.f * friction_coef;
         if(velocity.x + friction.x * pGM->getdt() > 0) {
             velocity.x = 0;
             friction.x = 0;

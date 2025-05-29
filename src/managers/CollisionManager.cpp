@@ -45,7 +45,7 @@ void CollisionManager::treatEnemiesCollision(){
             for(vector<Enemy*>::iterator itEnemy = enemies_vector.begin(); itEnemy != enemies_vector.end(); itEnemy++){
                 if(*itEnemy){
                     if(verifyCollision( (*it) , (*itEnemy) ) ){
-                        (*it)->moveCharacter(-(*it)->getVelocity());
+                        (*it)->moveCharacter((*it)->getVelocity() * static_cast<float>(-1.5));
                         (*itEnemy)->attack((*it));
                     }
                 }
@@ -61,7 +61,7 @@ void CollisionManager::treatObstaclesCollision(){
             for(list<Obstacle*>::iterator itObstacle = obstacles_list.begin(); itObstacle != obstacles_list.end(); itObstacle++){
                 if(*itObstacle){
                     if(verifyCollision( (*it) , (*itObstacle) ) ){
-                        (*it)->moveCharacter(-(*it)->getVelocity());
+                        (*it)->moveCharacter((*it)->getVelocity() * static_cast<float>(-1.2));
                     }
                 }
             }
@@ -76,7 +76,7 @@ void CollisionManager::treatProjectilesCollision(){
             for(set<Projectile*>::iterator itProjectile = projectiles_set.begin(); itProjectile != projectiles_set.end(); itProjectile++){
                 if(*itProjectile){
                     if(verifyCollision( (*it) , (*itProjectile) ) ){
-                        (*it)->moveCharacter(-(*it)->getVelocity()*0.2f);
+                        (*it)->moveCharacter((*it)->getVelocity()* static_cast<float>(-0.3));
                     }
                 }
             }

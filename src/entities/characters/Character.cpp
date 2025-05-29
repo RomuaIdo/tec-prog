@@ -14,6 +14,7 @@ Character::~Character(){
 
 void Character::moveCharacter(Vector2f vel){
     vel += gravity * pGM->getdt();
+    velocity = vel;
     position += vel;
     sprite.setPosition(position);
 
