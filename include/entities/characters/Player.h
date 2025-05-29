@@ -2,7 +2,6 @@
 #define PLAYER_H
 #include "Character.h"
 #include <SFML/Graphics.hpp>
-#include "Character.h"
 using namespace sf;
 using namespace std;
 
@@ -22,4 +21,5 @@ public:
     int getHealth();
     void move();
 };
+
 #endif

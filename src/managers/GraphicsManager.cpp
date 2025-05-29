@@ -1,8 +1,10 @@
 #include "../../include/managers/GraphicsManager.h"
+#include "../../include/managers/CollisionManager.h"
 #include "../../include/entities/Ente.h"
 
 
 GraphicsManager *GraphicsManager::instance(nullptr);
+
 float GraphicsManager::clock_time(0.f);
 
 GraphicsManager *GraphicsManager::getInstance() {

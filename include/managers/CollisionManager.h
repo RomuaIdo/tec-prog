@@ -5,6 +5,8 @@
 #include "../entities/obstacles/Obstacle.h"
 #include "../entities/characters/Player.h"
 #include "../entities/Projectile.h"
+#include "../entities/Entity.h"
+
 #include <map>
 #include <string>
 #include <iostream>
