@@ -4,7 +4,7 @@
 
 
 Plataform::Plataform(float x, float y, bool harm):
-    Obstacle(harm,x,y), height(0.f), width(0.f){
+    Obstacle(harm,x,y), width(0.f),height(0.f){
 }
 
 Plataform::~Plataform(){}

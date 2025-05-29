@@ -63,8 +63,8 @@ void Character::moveCharacter(){
 
 void Character::collide(){
     
-    float window_width = 800.0f;  // example
-    float window_height = 600.0f; // example
+    float window_width = (pGM->getWindow()->getSize()).x;
+    float window_height = (pGM->getWindow()->getSize()).y;
 
     // Left wall
     if (position.x < 0){

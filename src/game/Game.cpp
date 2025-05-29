@@ -9,13 +9,12 @@ pGM(nullptr), entes_list(), it(), player1(nullptr), player2(nullptr){
     player2 = new Player(100, 100, 50.f, 10, 1, 4, 2, 60.f);
     create_entes();
     
-
     execute();
 }
 
 Game::~Game() {
 
-    list<Ente*>::iterator ite;
+    List<Ente*>::iterator ite;
     for( ite = entes_list.begin(); ite != entes_list.end(); ite++){
         if(*ite){
             cout << "Deleting entity..." << endl;
