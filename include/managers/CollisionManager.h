@@ -22,10 +22,13 @@ class CollisionManager{
         set<Projectile*> projectiles_set;
         Player* player1;
         Player* player2;
+        static CollisionManager* instance;
+
+        CollisionManager();
 
     public:
-        CollisionManager();
         ~CollisionManager();
+        CollisionManager* getInstance();
         const bool verifyCollision(Entity* ent1, Entity* ent2) const;
         void treatEnemiesCollision();
         void treatObstaclesCollision();

@@ -10,7 +10,6 @@ class Entity : public Ente {
     
     protected:
         Vector2f position;
-        
 
     public:
         Entity(float x, float y);

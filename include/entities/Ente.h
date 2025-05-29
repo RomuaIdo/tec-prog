@@ -7,7 +7,6 @@ using namespace sf;
 
 class Ente {
     protected:
-        static GraphicsManager* pGM;
         Sprite sprite;
         Texture texture;
         Vector2f size;
