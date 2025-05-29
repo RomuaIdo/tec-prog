@@ -76,7 +76,7 @@ void Game::create_entes(){
     }
     for(int i = 0; i < 2; i++){
         Obstacle* o = nullptr;
-        o = new Obstacle(false, (i+2) * 100.f, 560.f);
+        o = new Obstacle(false, (i+2) * 100.f, 570.f);
         if(o){
             entes_list.push_back(o);
             cout << "Obstacle created" << endl;

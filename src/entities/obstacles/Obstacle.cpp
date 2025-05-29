@@ -19,7 +19,6 @@ Obstacle::Obstacle(bool harm, float x, float y):
 }
 
 Obstacle::~Obstacle(){
-
 }
 
 void Obstacle::execute(){
@@ -27,13 +26,11 @@ void Obstacle::execute(){
 }
 
 void Obstacle::ObstacleAction(){
-
 }
 
 void Obstacle::collide(){
-
 }
 
 void Obstacle::dealDamage(){
-
 }
+
