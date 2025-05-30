@@ -2,8 +2,8 @@
 #include <SFML/Window.hpp>
 
 Player::Player(float x, float y, const float acel, int life, float coef, int s, int p_num, const float v_max): 
-    Character(x, y, acel, life, coef, s), player_num(p_num), score(0), vel_max(v_max){
-
+    Character(x, y, acel, life, coef, s), player_num(p_num), score(0), vel_max(v_max), projectiles_list(){
+    projectiles_list.clear();
     
     if(p_num == 1){
         if (!texture.loadFromFile("assets/textures/Player1Sprite.png")) {
@@ -27,12 +27,32 @@ Player::Player(float x, float y, const float acel, int life, float coef, int s, 
 
 }
 
-Player::~Player() {}
+Player::~Player() {
+    for(list<Projectile*>::iterator it; it != projectiles_list.end(); it++){
+        delete (*it);
+        (*it) = nullptr;
+    }
+    projectiles_list.clear();
+}
 
 void Player::handleEvent(const sf::Event &event) {
     return;
 }
 
+void Player::shoot(){
+    if(player_num == 1){
+        if(Keyboard::isKeyPressed(sf::Keyboard::C)){
+            Projectile* p = new Projectile(position.x, position.y);
+            if(p){
+                addProjectile(p);
+            }
+        }
+    }
+}
+
+void Player::addProjectile(Projectile* p){
+    projectiles_list.push_back(p);
+}
 
 void Player::move() {
 
@@ -94,6 +114,9 @@ void Player::collide(){
 }
 
 void Player::execute() {
+    for(list<Projectile*>::iterator it; it != projectiles_list.end(); it++){
+        (*it)->execute();
+    }
     move();
     draw();
 }

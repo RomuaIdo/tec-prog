@@ -15,7 +15,7 @@ Projectile::Projectile(float x, float y, float vel):
     size.x / sprite.getLocalBounds().width,
     size.y / sprite.getLocalBounds().height
     );
-    active = false;
+    active = true;
 }
 
 Projectile::~Projectile(){ 
