@@ -53,7 +53,7 @@ void CollisionManager::treatWallCollision(){
     float window_height = 600.0f; // example
 
     // For each Player
-    for(list<Player*>::iterator it = players_list.begin(); it != players_list.end(); it++){
+    for(vector<Player*>::iterator it = players_vector.begin(); it != players_vector.end(); it++){
         if(*it){
             Player* p = (*it);
             Vector2f pos = p->getPosition();
@@ -147,7 +147,7 @@ void resolveCollisionCharacter(Character* a, Character* b) {
                 bPos.y += push;
                 if (a->getVelocity().y > 0)  // only cancel downward movement
                     a->setVelocity({a->getVelocity().x, 0.f});
-                if (b->getVelocity().y < 0)
+                if (b->getVelocity().y > 0)
                     b->setVelocity({b->getVelocity().x, 0.f});
             } else {
                 // a is below b (jumping up)
@@ -207,27 +207,45 @@ void resolveCollisionObstacle(Character* c, Obstacle* o) {
     }
 }
 
+void CollisionManager::treatPlayersCollision(){
+    
+    if(verifyCollision(players_vector[0] , players_vector[1])){
+        resolveCollisionCharacter(players_vector[0], players_vector[1]);
+    }
+}
 
 void CollisionManager::treatEnemiesCollision(){
     // Treat for each player
-    for(list<Player*>::iterator it = players_list.begin(); it != players_list.end(); it++){
+    for(vector<Player*>::iterator it = players_vector.begin(); it != players_vector.end(); it++){
         if((*it)){
             for(vector<Enemy*>::iterator itEnemy = enemies_vector.begin(); itEnemy != enemies_vector.end(); itEnemy++){
                 if(*itEnemy){
                     if(verifyCollision( (*it) , (*itEnemy) ) ){
                         resolveCollisionCharacter((*it), (*itEnemy));
                         (*itEnemy)->attack(*it);
-
                     }
                 }
             }
         }
     }
+
 }
 
 void CollisionManager::treatObstaclesCollision(){
     // Treat for each player
-    for(list<Player*>::iterator it = players_list.begin(); it != players_list.end(); it++){
+    for(vector<Player*>::iterator it = players_vector.begin(); it != players_vector.end(); it++){
+        if((*it)){
+            for(list<Obstacle*>::iterator itObstacle = obstacles_list.begin(); itObstacle != obstacles_list.end(); itObstacle++){
+                if(*itObstacle){
+                    if(verifyCollision( (*it) , (*itObstacle) ) ){
+                        resolveCollisionObstacle((*it), (*itObstacle));
+                    }
+                }
+            }
+        }
+    }
+    // Treat for each Enemy
+    for(vector<Enemy*>::iterator it = enemies_vector.begin(); it != enemies_vector.end(); it++){
         if((*it)){
             for(list<Obstacle*>::iterator itObstacle = obstacles_list.begin(); itObstacle != obstacles_list.end(); itObstacle++){
                 if(*itObstacle){
@@ -242,12 +260,11 @@ void CollisionManager::treatObstaclesCollision(){
 
 void CollisionManager::treatProjectilesCollision(){
     // Treat for each player
-    for(list<Player*>::iterator it = players_list.begin(); it != players_list.end(); it++){
+    for(vector<Player*>::iterator it = players_vector.begin(); it != players_vector.end(); it++){
         if((*it)){
             for(set<Projectile*>::iterator itProjectile = projectiles_set.begin(); itProjectile != projectiles_set.end(); itProjectile++){
                 if(*itProjectile){
                     if(verifyCollision( (*it) , (*itProjectile) ) ){
-                        cout << "Player collided!" <<endl;
                         (*it)->collide();
                         (*itProjectile)->collide();
                     }
@@ -270,7 +287,7 @@ void CollisionManager::addProjectile(Projectile *p){
 }
 
 void CollisionManager::addPlayer(Player* p){
-    players_list.push_back(p);
+    players_vector.push_back(p);
 }
 
 void CollisionManager::execute(){
@@ -278,4 +295,6 @@ void CollisionManager::execute(){
     treatObstaclesCollision();
     treatProjectilesCollision();
     treatWallCollision();
+    if(players_vector.size()>1) 
+        treatPlayersCollision();
 }
