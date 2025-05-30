@@ -1,14 +1,16 @@
 #include "../../include/game/Game.h"
 #include "../../include/entities/Player.h"
+#include "../../include/graphicalelements/Button.h"
+
 
 Game::Game():
-pGM(nullptr), entes_list(), it(), player1(nullptr), player2(nullptr){
+pGM(nullptr), entes_list(), it(), player1(nullptr), player2(nullptr), mouseSubject(){
     entes_list.clear();
     pGM = GraphicsManager::getInstance();
     player1 = new Player(200, 100, 50.f, 10, 1, 4, 1, 60.f);
     player2 = new Player(100, 100, 50.f, 10, 1, 4, 2, 60.f);
     create_entes();
-    
+    game_state = GameState::MAIN_MENU;    
     execute();
 }
 
@@ -32,7 +34,9 @@ void Game::execute() {
     window.setFramerateLimit(60);
     pGM->setWindow(&window);
     RenderWindow* pWindow = pGM->getWindow();
-
+    // Teste de botao
+ 
+    Button* button = new Button("assets/fonts/Minecraft.ttf", "Load Game", "assets/textures/button.png", "assets/textures/button_hovered.png", "assets/textures/button_hovered.png", &mouseSubject, 20, Vector2f(300.f, 500.f));
     while (pGM->openWindow()) {
         Event event;
         pGM->setClock();
@@ -41,6 +45,9 @@ void Game::execute() {
             if (event.type == Event::Closed || 
                 (event.type == Event::KeyPressed && event.key.code == sf::Keyboard::Escape)) {
                 window.close();
+            }
+            if (event.type == Event::MouseMoved) {
+                mouseSubject.notifyObservers(event.mouseMove);
             }
             player1->handleEvent(event); // Trata eventos específicos
             player2->handleEvent(event);
@@ -54,9 +61,9 @@ void Game::execute() {
             else 
                 cout << "Not executed." << endl;
         }
-        player1->execute(); // Atualiza e desenha
+        player1->execute();
         player2->execute();
-        
+        button->execute();
         pGM->show();
     }
 }

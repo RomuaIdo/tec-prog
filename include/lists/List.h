@@ -134,7 +134,6 @@ public:
     iterator begin() { return iterator(head); }
     iterator end() { return iterator(nullptr); }
 
-    // Optional: const_iterator support
     class const_iterator {
         friend class List;
     private:

@@ -30,6 +30,7 @@ endif
 
 # Flags comuns
 CXXFLAGS += -Wall -Wextra -std=c++17 -DPROGRAM_VERSION=\"$(VERSION_NAME)\"
+DEBUG_FLAGS = -g
 LDFLAGS += $(SFML_LIB)
 
 # Encontrar arquivos fonte (.cpp) com caminhos relativos
@@ -38,6 +39,11 @@ OBJS = $(patsubst $(SRC_DIR)/%.cpp,$(OBJ_DIR)/%.o,$(SRCS))
 
 # Regra padrão
 all: prepare $(TARGET)
+
+# Regra para build com debug
+debug: CXXFLAGS += $(DEBUG_FLAGS)
+debug: all
+
 
 # Criar diretórios necessários
 prepare:

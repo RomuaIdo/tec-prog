@@ -2,8 +2,16 @@
 #include "../entities/Player.h"
 #include "../entities/Enemy.h"
 #include "../entities/obstacles/Obstacle.h"
+#include "../graphicalelements/MouseSubject.h"
 #include <list>
 #include "../lists/List.h"
+
+enum class GameState {
+    MAIN_MENU,
+    PLAYING,
+    GAME_OVER
+};
+
 
 class Game {
     private:
@@ -13,6 +21,8 @@ class Game {
         Player* player1;
         Player* player2;
         void execute();
+        GameState game_state;
+        MouseSubject mouseSubject;
 
     public:
         Game();
