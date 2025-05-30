@@ -8,7 +8,7 @@ Entity::Entity(float x, float y) :
 Entity::~Entity() {}
 
 void Entity::draw() {
-    pGM->draw(this); // Usa o Gerenciador Gráfico
+    pGM->draw(this);
 }
 
 Drawable& Entity::getDrawable() {
@@ -16,4 +16,11 @@ Drawable& Entity::getDrawable() {
     return sprite;
 }
 
-Vector2f Entity::getPosition(){ return position; }
+Vector2f Entity::getPosition() const{
+    return position;
+}
+
+void Entity::setPosition(Vector2f pos){
+    position = pos;
+    sprite.setPosition(position);
+}

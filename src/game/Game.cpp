@@ -43,7 +43,7 @@ void Game::execute() {
                 (event.type == Event::KeyPressed && event.key.code == sf::Keyboard::Escape)) {
                 window.close();
             }
-            player1->handleEvent(event); // Trata eventos específicos
+            player1->handleEvent(event);
             player2->handleEvent(event);
         }
         
@@ -55,7 +55,7 @@ void Game::execute() {
             else 
                 cout << "Not executed." << endl;
         }
-        player1->execute(); // Atualiza e desenha
+        player1->execute();
         player2->execute();
         pCM->execute();
         pGM->show();
@@ -65,7 +65,7 @@ void Game::execute() {
 void Game::create_entes(){
     for(int i = 0; i < 1; i++){
         Enemy* e = nullptr;
-        e = new Enemy((float) (i*150) , (float) ((i+1)*150),  40.f , 5, 1.f , 2);
+        e = new Enemy((float) (i*150) , (float) ((i+1)*150),  10.f , 5, 1.f , 2);
         if(e){
             e->addPlayer(player1);
             e->addPlayer(player2);

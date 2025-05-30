@@ -22,3 +22,5 @@ void Ente::setPosition(Vector2f pos){
     sprite.setPosition(pos);
 }
 
+
+

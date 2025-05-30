@@ -22,8 +22,8 @@ class CollisionManager{
         vector<Enemy*> enemies_vector;
         list<Obstacle*> obstacles_list;
         set<Projectile*> projectiles_set;
-
         list<Player*> players_list;
+
         static CollisionManager* instance;
 
         CollisionManager();
@@ -35,6 +35,7 @@ class CollisionManager{
         void treatEnemiesCollision();
         void treatObstaclesCollision();
         void treatProjectilesCollision();
+        void treatWallCollision();
         void addPlayer(Player* p);
         void addEnemy(Enemy* e);
         void addObstacle(Obstacle* o);

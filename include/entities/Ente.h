@@ -20,8 +20,8 @@ class Ente {
         virtual Drawable& getDrawable() = 0;
         virtual void execute() = 0;
         Vector2f getSize() const;
-        Vector2f getPosition() const;
-        void setPosition(Vector2f pos);
+        virtual Vector2f getPosition() const;
+        virtual void setPosition(Vector2f pos);
 };
 
 #endif

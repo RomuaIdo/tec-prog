@@ -41,11 +41,112 @@ bool CollisionManager::verifyCollision(Entity* ent1, Entity* ent2) const{
     Vector2f ent1center = ent1->getPosition() + (ent1->getSize() / static_cast<float> (2));    
     Vector2f ent2center = ent2->getPosition() + (ent2->getSize() / static_cast<float> (2));
 
-    if(module(vectorModule(ent1center - ent2center)) < module(vectorModule(ent1->getSize() / static_cast<float>(2) + ent2->getSize() / static_cast<float>(2) ))){
+    if(module(vectorModule(ent1center - ent2center)) < 
+       module(vectorModule(ent1->getSize() / static_cast<float>(2) + ent2->getSize() / static_cast<float>(2) ))){
         return true;
     }
     return false;
 }
+
+void CollisionManager::treatWallCollision(){
+    float window_width = 800.0f;  // example
+    float window_height = 600.0f; // example
+
+    // For each Player
+    for(list<Player*>::iterator it = players_list.begin(); it != players_list.end(); it++){
+        if(*it){
+            Player* p = (*it);
+            Vector2f pos = p->getPosition();
+            Vector2f vel = p->getVelocity();
+            // Left wall
+            if (pos.x < 0){
+                pos.x = 0;
+                vel.x = 0;
+            }    
+            // Right wall
+            if (pos.x + p->getSize().x > window_width){
+                pos.x = window_width - p->getSize().x;
+                vel.x = 0;
+            }   
+            // Top wall
+            if (pos.y < 0){
+                pos.y = 0;
+                vel.y = 0;
+            } 
+            // Bottom wall
+            if (pos.y + p->getSize().y > window_height){
+                pos.y = window_height - p->getSize().y;
+                vel.y = 0;
+            }
+            p->setPosition(pos);
+            p->setVelocity(vel);
+        }
+    }
+    // For each Enemy
+    for(vector<Enemy*>::iterator itEnemy = enemies_vector.begin(); itEnemy != enemies_vector.end(); itEnemy++){
+        if(*itEnemy){
+            Enemy* e = (*itEnemy);
+            Vector2f pos = e->getPosition();
+            Vector2f vel = e->getVelocity();
+            // Left wall
+            if (pos.x < 0){
+                pos.x = 0;
+                vel.x = 0;
+            }    
+            // Right wall
+            if (pos.x + e->getSize().x > window_width){
+                pos.x = window_width - e->getSize().x;
+                vel.x = 0;
+            }   
+            // Top wall
+            if (pos.y < 0){
+                pos.y = 0;
+                vel.y = 0;
+            } 
+            // Bottom wall
+            if (pos.y + e->getSize().y > window_height){
+                pos.y = window_height - e->getSize().y;
+                vel.y = 0;
+            }
+            e->setPosition(pos);
+            e->setVelocity(vel);
+        }
+    }
+    
+}
+
+void resolveCollisionCharacter(Character* a, Character* b) {
+    Vector2f aPos = a->getPosition();
+    Vector2f bPos = b->getPosition();
+    Vector2f aSize = a->getSize();
+    Vector2f bSize = b->getSize();
+
+    float deltaX = (aPos.x + aSize.x / 2) - (bPos.x + bSize.x / 2);
+    float deltaY = (aPos.y + aSize.y / 2) - (bPos.y + bSize.y / 2);
+
+    float intersectX = std::abs(deltaX) - (aSize.x + bSize.x) / 2;
+    float intersectY = std::abs(deltaY) - (aSize.y + bSize.y) / 2;
+
+    if (intersectX < 0.0f && intersectY < 0.0f) {
+        // Resolve the collision on the axis with the least penetration
+        if (std::abs(intersectX) < std::abs(intersectY)) {
+            if (deltaX > 0)
+                a->setPosition({ aPos.x - intersectX, aPos.y });
+            else
+                a->setPosition({ aPos.x + intersectX, aPos.y });
+
+            a->setVelocity({ 0.f, a->getVelocity().y });
+        } else {
+            if (deltaY > 0)
+                a->setPosition({ aPos.x, aPos.y - intersectY });
+            else
+                a->setPosition({ aPos.x, aPos.y + intersectY });
+
+            a->setVelocity({ a->getVelocity().x, 0.f });
+        }
+    }
+}
+
 
 void CollisionManager::treatEnemiesCollision(){
     // Treat for each player
@@ -55,10 +156,10 @@ void CollisionManager::treatEnemiesCollision(){
                 if(*itEnemy){
                     if(verifyCollision( (*it) , (*itEnemy) ) ){
                         cout << "Player collided!" <<endl;
-                        (*it)->setVelocity( (*it)->getVelocity() - (*it)->getVelocity() * static_cast<float>(1.1));
-                        (*it)->moveCharacter();
-
-                        (*itEnemy)->attack((*it));
+                        resolveCollisionCharacter((*it), (*itEnemy));
+                        (*itEnemy)->attack(*it);
+                        // (*it)->collide();
+                        // (*itEnemy)->collide();
                     }
                 }
             }
@@ -74,8 +175,8 @@ void CollisionManager::treatObstaclesCollision(){
                 if(*itObstacle){
                     if(verifyCollision( (*it) , (*itObstacle) ) ){
                         cout << "Player collided!" <<endl;
-                        (*it)->setVelocity( (*it)->getVelocity() - (*it)->getVelocity() * static_cast<float>(1.1));
-                        (*it)->moveCharacter();
+                        (*it)->collide();
+                        (*itObstacle)->collide();
                     }
                 }
             }
@@ -91,8 +192,8 @@ void CollisionManager::treatProjectilesCollision(){
                 if(*itProjectile){
                     if(verifyCollision( (*it) , (*itProjectile) ) ){
                         cout << "Player collided!" <<endl;
-                        (*it)->setPosition( (*it)->getVelocity() - (*it)->getVelocity() * static_cast<float>(0.3));
-                        (*it)->setVelocity( (*it)->getVelocity() - (*it)->getVelocity() * static_cast<float>(0.3));
+                        (*it)->collide();
+                        (*itProjectile)->collide();
                     }
                 }
             }
@@ -120,4 +221,5 @@ void CollisionManager::execute(){
     treatEnemiesCollision();
     treatObstaclesCollision();
     treatProjectilesCollision();
+    treatWallCollision();
 }

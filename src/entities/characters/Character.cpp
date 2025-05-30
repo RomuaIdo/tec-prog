@@ -19,34 +19,6 @@ void Character::moveCharacter(){
 
 }
 
-void Character::collide(){
-    
-    float window_width = 800.0f;  // example
-    float window_height = 600.0f; // example
-
-    // Left wall
-    if (position.x < 0){
-        position.x = 0;
-        velocity.x = 0;
-    }    
-    // Right wall
-    if (position.x + size.x > window_width){
-        position.x = window_width - size.x;
-        velocity.x = 0;
-    }   
-    // Top wall
-    if (position.y < 0){
-        position.y = 0;
-        velocity.y = 0;
-    }
-    // Bottom wall
-    if (position.y + size.y > window_height){
-        position.y = window_height - size.y;
-        velocity.y = 0;
-    }
-
-}
-
 Vector2f Character::getVelocity() const{
     return velocity;
 }

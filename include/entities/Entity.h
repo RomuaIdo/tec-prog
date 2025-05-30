@@ -17,8 +17,8 @@ class Entity : public Ente {
         virtual void draw();
         virtual void collide() = 0;
         virtual Drawable& getDrawable();
-        // sf::RectangleShape getShape();
-        Vector2f getPosition();
+        Vector2f getPosition() const;
+        void setPosition(Vector2f pos);
 
 };
 

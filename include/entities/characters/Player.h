@@ -20,6 +20,7 @@ public:
     void loseHealth(int damage);
     int getHealth();
     void move();
+    void collide();
 };
 
 #endif

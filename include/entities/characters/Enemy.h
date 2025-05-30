@@ -23,6 +23,7 @@ class Enemy : public Character{
         virtual void attack(Player *p);
         virtual void execute();
         virtual void move();
+        void collide();
 };
 
 

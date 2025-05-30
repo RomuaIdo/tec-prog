@@ -43,7 +43,6 @@ void Enemy::attack(Player *p){
 void Enemy::execute(){
     move();
     draw();
-    collide();
 }
 
 void Enemy::move(){
@@ -55,7 +54,6 @@ void Enemy::move(){
             // Get direction to player
             Vector2f direction = ((*it)->getPosition() - position);
             float module = sqrt(direction.x*direction.x + direction.y*direction.y);
-
 
             // To improve
             if(module == 0) {
@@ -69,16 +67,15 @@ void Enemy::move(){
                 closer_direction /= closer;
                 closer_direction *= movimentSpeed;
             } 
-
-            
-            
         }
     }
 
-    if(velocity.y > 0){
-        closer_direction.y = 0.f;
-    }
-    velocity += closer_direction  * pGM->getdt();
+    if(closer_direction.y < 0 && position.y >= 580.f){
+        closer_direction.y *= 10;
+    }else if(closer_direction.y > 0.f && position.y < 600.f) closer_direction.y = 0.f;
+    
+
+    velocity += closer_direction * pGM->getdt();
     
     moveCharacter();
 }
@@ -90,4 +87,8 @@ void Enemy::removePlayer(Player *p){
             return;
         }
   }
+}
+
+void Enemy::collide(){
+    velocity = Vector2f(0.f,0.f);
 }
