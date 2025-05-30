@@ -1,8 +1,8 @@
 #include "../../../include/entities/characters/Player.h"
 #include <SFML/Window.hpp>
 
-Player::Player(float x, float y, const float movSpeed, int life, float coef, int s, int p_num, const float v_max): 
-    Character(x, y, movSpeed, life, coef, s), player_num(p_num), score(0), vel_max(v_max){
+Player::Player(float x, float y, const float acel, int life, float coef, int s, int p_num, const float v_max): 
+    Character(x, y, acel, life, coef, s), player_num(p_num), score(0), vel_max(v_max){
 
     
     if(p_num == 1){
@@ -39,43 +39,31 @@ void Player::move() {
     if (player_num == 1) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
             if(position.y + size.y >= 600)
-                velocity.y += -(movimentSpeed + 1000) * pGM->getdt();
+                velocity.y += -(15);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-            velocity.x += -movimentSpeed * pGM->getdt();
+            velocity.x += -aceleration * pGM->getdt();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-            velocity.x += movimentSpeed * pGM->getdt();
+            velocity.x += aceleration * pGM->getdt();
     } else {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
             if(position.y + size.y >= 600)
-                velocity.y += -(movimentSpeed + 1000) * pGM->getdt();
+                velocity.y += -(15);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-            velocity.x += -movimentSpeed * pGM->getdt();
+            velocity.x += -aceleration * pGM->getdt();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-            velocity.x += movimentSpeed * pGM->getdt();
+            velocity.x += aceleration * pGM->getdt();
     }
 
-    const float vel_max = 30.f;
+    const float vel_max = 20.f;
 
     // See if velocity ultrapassed vel_max
     if (velocity.x > vel_max){
-        if(velocity.y > vel_max)
-            velocity.y = vel_max;
         velocity.x = vel_max;
-    }else if( velocity.y > vel_max){
-        if(velocity.x > vel_max)
-            velocity.x = vel_max;
-        velocity.y = vel_max;
     }
     if (velocity.x < -vel_max){
-        if(velocity.y < -vel_max)
-            velocity.y = -vel_max;
         velocity.x = -vel_max;
-    }else if( velocity.y < -vel_max){
-        if(velocity.x < -vel_max)
-            velocity.x = -vel_max;
-        velocity.y = -vel_max;
     }
 
     // Apply friction

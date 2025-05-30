@@ -13,12 +13,12 @@ class Character : public Entity {
         Vector2f friction;
 
         int strength;
-        const float movimentSpeed;
+        const float aceleration;
         Vector2f velocity;
         static Vector2f gravity;
 
     public:
-        Character(float x, float y, const float movSpeed,
+        Character(float x, float y, const float acel,
         int life = 5, float coef = 0.5, int s = 1);
         virtual ~Character();
         virtual void execute() = 0;

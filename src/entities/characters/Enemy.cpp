@@ -2,8 +2,8 @@
 #include <SFML/Window.hpp>
 
 
-Enemy::Enemy(float x, float y, const float movSpeed, int life, float coef , int s):
-    Character(x, y, movSpeed, life, coef, s), players_list(), it(){
+Enemy::Enemy(float x, float y, const float acel, int life, float coef , int s):
+    Character(x, y, acel, life, coef, s), players_list(), it(){
 
     if (!texture.loadFromFile("assets/textures/EnemySprite.png")) {
         std::cerr << "Failed to load EnemySprite.png!" << std::endl;
@@ -64,13 +64,15 @@ void Enemy::move(){
             if(module < closer ){
                 closer = module;
                 closer_direction = direction;
+                // Normalize vector
                 closer_direction /= closer;
-                closer_direction *= movimentSpeed;
+
+                closer_direction *= aceleration;
             } 
         }
     }
 
-    if(closer_direction.y < 0 && position.y >= 580.f){
+    if(closer_direction.y < 0 && position.y >= 600.f){
         closer_direction.y *= 10;
     }else if(closer_direction.y > 0.f && position.y < 600.f) closer_direction.y = 0.f;
     

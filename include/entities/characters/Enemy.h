@@ -16,7 +16,7 @@ class Enemy : public Character{
 
     public:
 
-        Enemy(float x, float y, const float movSpeed, int life = 5, float coef = 0.5, int s = 1);
+        Enemy(float x, float y, const float acel, int life = 5, float coef = 0.5, int s = 1);
         virtual ~Enemy();
         virtual void addPlayer(Player *p);
         virtual void removePlayer(Player *p);

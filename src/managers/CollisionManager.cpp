@@ -128,24 +128,47 @@ void resolveCollisionCharacter(Character* a, Character* b) {
     float intersectY = std::abs(deltaY) - (aSize.y + bSize.y) / 2;
 
     if (intersectX < 0.0f && intersectY < 0.0f) {
-        // Resolve the collision on the axis with the least penetration
         if (std::abs(intersectX) < std::abs(intersectY)) {
-            if (deltaX > 0)
-                a->setPosition({ aPos.x - intersectX, aPos.y });
-            else
-                a->setPosition({ aPos.x + intersectX, aPos.y });
-
-            a->setVelocity({ 0.f, a->getVelocity().y });
+            float push = intersectX / 2.f;
+            if (deltaX > 0) {
+                aPos.x -= push;
+                bPos.x += push;
+            } else {
+                aPos.x += push;
+                bPos.x -= push;
+            }
+            a->setVelocity({0.f, a->getVelocity().y});
+            b->setVelocity({0.f, b->getVelocity().y});
         } else {
-            if (deltaY > 0)
-                a->setPosition({ aPos.x, aPos.y - intersectY });
-            else
-                a->setPosition({ aPos.x, aPos.y + intersectY });
-
-            a->setVelocity({ a->getVelocity().x, 0.f });
+            float push = intersectY / 2.f;
+            if (deltaY > 0) {
+                // a is above b
+                aPos.y -= push;
+                bPos.y += push;
+                if (a->getVelocity().y > 0)  // only cancel downward movement
+                    a->setVelocity({a->getVelocity().x, 0.f});
+                if (b->getVelocity().y < 0)
+                    b->setVelocity({b->getVelocity().x, 0.f});
+            } else {
+                // a is below b (jumping up)
+                aPos.y += push;
+                bPos.y -= push;
+                // don't cancel a's velocity — it's jumping
+                if (a->getVelocity().y > 0)  // only cancel downward movement
+                    a->setVelocity({a->getVelocity().x, 0.f});
+                if (b->getVelocity().y > 0)
+                    b->setVelocity({b->getVelocity().x, 0.f});
+            }
         }
+
+        a->setPosition(aPos);
+        b->setPosition(bPos);
     }
 }
+
+
+
+
 
 
 void CollisionManager::treatEnemiesCollision(){
@@ -155,7 +178,7 @@ void CollisionManager::treatEnemiesCollision(){
             for(vector<Enemy*>::iterator itEnemy = enemies_vector.begin(); itEnemy != enemies_vector.end(); itEnemy++){
                 if(*itEnemy){
                     if(verifyCollision( (*it) , (*itEnemy) ) ){
-                        cout << "Player collided!" <<endl;
+                        // cout << "Player collided!" <<endl;
                         resolveCollisionCharacter((*it), (*itEnemy));
                         (*itEnemy)->attack(*it);
                         // (*it)->collide();
