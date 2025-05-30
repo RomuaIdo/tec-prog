@@ -47,7 +47,7 @@ void Enemy::execute(){
 
 void Enemy::move(){
     float closer = sqrt(800 * 800 + 600 * 600);
-    Vector2f closer_direction;
+    Vector2f closer_direction = Vector2f(0.f,0.f);
 
     for(it = players_list.begin(); it != players_list.end(); it++){
         if(*it){
@@ -72,12 +72,13 @@ void Enemy::move(){
         }
     }
 
-    if(closer_direction.y < 0 && position.y >= 600.f){
-        closer_direction.y *= 10;
-    }else if(closer_direction.y > 0.f && position.y < 600.f) closer_direction.y = 0.f;
+    if(closer_direction.y < 0 && speed.y == 0.f){
+        closer_direction.y = -10.f;
+    }else closer_direction.y = 0.f;
     
 
-    velocity += closer_direction * pGM->getdt();
+    speed.x += closer_direction.x * pGM->getdt();
+    speed.y += closer_direction.y;
     
     moveCharacter();
 }
@@ -92,5 +93,5 @@ void Enemy::removePlayer(Player *p){
 }
 
 void Enemy::collide(){
-    velocity = Vector2f(0.f,0.f);
+    speed = Vector2f(0.f,0.f);
 }

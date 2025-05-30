@@ -11,10 +11,10 @@ class Character : public Entity {
         int health;
         float friction_coef;
         Vector2f friction;
-
+        
         int strength;
         const float aceleration;
-        Vector2f velocity;
+        Vector2f speed;
         static Vector2f gravity;
 
     public:

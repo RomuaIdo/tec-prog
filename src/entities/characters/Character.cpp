@@ -4,7 +4,7 @@
 Vector2f Character::gravity(0.f, 30.f);
 
 Character::Character(float x, float y, const float movSpeed, int life, float coef, int s):
-    Entity(x, y), health(life), friction_coef(coef), friction(0.f,0.f), strength(s), aceleration(movSpeed), velocity(0.f, 0.f){
+    Entity(x, y), health(life), friction_coef(coef), friction(0.f,0.f), strength(s), aceleration(movSpeed), speed(0.f, 0.f){
     
 }
 
@@ -13,16 +13,16 @@ Character::~Character(){
 }
 
 void Character::moveCharacter(){
-    velocity += gravity * pGM->getdt();
-    position += velocity;
+    speed += gravity * pGM->getdt();
+    position += speed;
     sprite.setPosition(position);
 
 }
 
 Vector2f Character::getVelocity() const{
-    return velocity;
+    return speed;
 }
 
 void Character::setVelocity(Vector2f vel){
-    velocity = vel;
+    speed = vel;
 }

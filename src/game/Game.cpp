@@ -6,10 +6,10 @@ pGM(nullptr), pCM(nullptr), entes_list(), it(), player1(nullptr), player2(nullpt
     pGM = GraphicsManager::getInstance();
     pCM = CollisionManager::getInstance();
     player1 = new Player(200, 100, 50.f, 10, 1, 4, 1, 60.f);
-    player2 = new Player(100, 100, 50.f, 10, 1, 4, 2, 60.f);
+    // player2 = new Player(100, 100, 50.f, 10, 1, 4, 2, 60.f);
     create_entes();
     pCM->addPlayer(player1);
-    pCM->addPlayer(player2);
+    // pCM->addPlayer(player2);
     execute();
 }
 
@@ -44,7 +44,7 @@ void Game::execute() {
                 window.close();
             }
             player1->handleEvent(event);
-            player2->handleEvent(event);
+            // player2->handleEvent(event);
         }
         
         pGM->clean();
@@ -56,7 +56,7 @@ void Game::execute() {
                 cout << "Not executed." << endl;
         }
         player1->execute();
-        player2->execute();
+        // player2->execute();
         pCM->execute();
         pGM->show();
     }
@@ -68,7 +68,7 @@ void Game::create_entes(){
         e = new Enemy((float) (i*150) , (float) ((i+1)*150),  10.f , 5, 1.f , 2);
         if(e){
             e->addPlayer(player1);
-            e->addPlayer(player2);
+            // e->addPlayer(player2);
             pCM->addEnemy(e);
             entes_list.push_back(e);
             cout << "Players added to enemy" << endl;

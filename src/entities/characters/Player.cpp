@@ -38,59 +38,59 @@ void Player::move() {
 
     if (player_num == 1) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
-            if(velocity.y == 0)
-                velocity.y += -(15);
+            if(speed.y == 0)
+                speed.y += -(15);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-            velocity.x += -aceleration * pGM->getdt();
+            speed.x += -aceleration * pGM->getdt();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-            velocity.x += aceleration * pGM->getdt();
+            speed.x += aceleration * pGM->getdt();
     } else {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
-            if(velocity.y == 0)
-                velocity.y += -(15);
+            if(speed.y == 0)
+                speed.y += -(15);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-            velocity.x += -aceleration * pGM->getdt();
+            speed.x += -aceleration * pGM->getdt();
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-            velocity.x += aceleration * pGM->getdt();
+            speed.x += aceleration * pGM->getdt();
     }
 
     const float vel_max = 15.f;
 
     // See if velocity ultrapassed vel_max
-    if (velocity.x > vel_max){
-        velocity.x = vel_max;
+    if (speed.x > vel_max){
+        speed.x = vel_max;
     }
-    if (velocity.x < -vel_max){
-        velocity.x = -vel_max;
+    if (speed.x < -vel_max){
+        speed.x = -vel_max;
     }
 
     // Apply friction
-    if(velocity.x > 0){
+    if(speed.x > 0){
         friction.x = -20.f * friction_coef;
-        if(velocity.x + friction.x * pGM->getdt() < 0) {
-           velocity.x = 0;
+        if(speed.x + friction.x * pGM->getdt() < 0) {
+           speed.x = 0;
             friction.x = 0;
         }
     }
-    else if(velocity.x < 0){
+    else if(speed.x < 0){
         friction.x = 20.f * friction_coef;
-        if(velocity.x + friction.x * pGM->getdt() > 0) {
-            velocity.x = 0;
+        if(speed.x + friction.x * pGM->getdt() > 0) {
+            speed.x = 0;
             friction.x = 0;
         }
     }
     else
         friction.x = 0;
         
-    velocity += friction * pGM->getdt();
+    speed += friction * pGM->getdt();
     moveCharacter();
     
 }
 
 void Player::collide(){
-    velocity = Vector2f(velocity.x * -0.1f, velocity.y * -0.1f);
+    speed = Vector2f(speed.x * -0.1f, speed.y * -0.1f);
 }
 
 void Player::execute() {
