@@ -79,6 +79,7 @@ void Game::create_entes(){
         Obstacle* o = nullptr;
         o = new Obstacle(false, (i+2) * 100.f, 570.f);
         if(o){
+            pCM->addObstacle(o);
             entes_list.push_back(o);
             cout << "Obstacle created" << endl;
         }else 

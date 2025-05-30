@@ -166,9 +166,46 @@ void resolveCollisionCharacter(Character* a, Character* b) {
     }
 }
 
+void resolveCollisionObstacle(Character* c, Obstacle* o) {
+    Vector2f cPos =  c->getPosition();
+    Vector2f oPos =  o->getPosition();
+    Vector2f cSize = c->getSize();
+    Vector2f oSize = o->getSize();
 
+    float deltaX = (cPos.x + cSize.x / 2) - (oPos.x + oSize.x / 2);
+    float deltaY = (cPos.y + cSize.y / 2) - (oPos.y + oSize.y / 2);
 
+    float intersectX = std::abs(deltaX) - (cSize.x + oSize.x) / 2;
+    float intersectY = std::abs(deltaY) - (cSize.y + oSize.y) / 2;
 
+    if (intersectX < 0.0f && intersectY < 0.0f) {
+        if (std::abs(intersectX) < std::abs(intersectY)) {
+            float push = intersectX;
+            if (deltaX > 0) {
+                cPos.x -= push;
+            } else {
+                cPos.x += push;
+            }
+            c->setVelocity({0.f, c->getVelocity().y});
+        } else {
+            float push = intersectY;
+            if (deltaY > 0) {
+                // a is above b
+                cPos.y -= push;
+                if (c->getVelocity().y > 0)  // only cancel downward movement
+                    c->setVelocity({c->getVelocity().x, 0.f});
+                } else {
+                // a is below b (jumping up)
+                cPos.y += push;
+                // don't cancel a's velocity — it's jumping
+                if (c->getVelocity().y > 0)  // only cancel downward movement
+                    c->setVelocity({c->getVelocity().x, 0.f});
+            }
+        }
+
+        c->setPosition(cPos);
+    }
+}
 
 
 void CollisionManager::treatEnemiesCollision(){
@@ -178,11 +215,9 @@ void CollisionManager::treatEnemiesCollision(){
             for(vector<Enemy*>::iterator itEnemy = enemies_vector.begin(); itEnemy != enemies_vector.end(); itEnemy++){
                 if(*itEnemy){
                     if(verifyCollision( (*it) , (*itEnemy) ) ){
-                        // cout << "Player collided!" <<endl;
                         resolveCollisionCharacter((*it), (*itEnemy));
                         (*itEnemy)->attack(*it);
-                        // (*it)->collide();
-                        // (*itEnemy)->collide();
+
                     }
                 }
             }
@@ -197,9 +232,7 @@ void CollisionManager::treatObstaclesCollision(){
             for(list<Obstacle*>::iterator itObstacle = obstacles_list.begin(); itObstacle != obstacles_list.end(); itObstacle++){
                 if(*itObstacle){
                     if(verifyCollision( (*it) , (*itObstacle) ) ){
-                        cout << "Player collided!" <<endl;
-                        (*it)->collide();
-                        (*itObstacle)->collide();
+                        resolveCollisionObstacle((*it), (*itObstacle));
                     }
                 }
             }

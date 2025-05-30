@@ -38,7 +38,7 @@ void Player::move() {
 
     if (player_num == 1) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
-            if(position.y + size.y >= 600)
+            if(velocity.y == 0)
                 velocity.y += -(15);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
@@ -47,7 +47,7 @@ void Player::move() {
             velocity.x += aceleration * pGM->getdt();
     } else {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
-            if(position.y + size.y >= 600)
+            if(velocity.y == 0)
                 velocity.y += -(15);
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
@@ -56,7 +56,7 @@ void Player::move() {
             velocity.x += aceleration * pGM->getdt();
     }
 
-    const float vel_max = 20.f;
+    const float vel_max = 15.f;
 
     // See if velocity ultrapassed vel_max
     if (velocity.x > vel_max){
