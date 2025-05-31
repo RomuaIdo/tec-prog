@@ -15,7 +15,6 @@ private:
 public:
     Player(float x, float y, const float movSpeed, int life = 5, float coef = 0.5, int s = 1, int p_num = 1, const float v_max = 50.f);
     ~Player();
-    void handleEvent(const sf::Event& event);
     void execute() ;
     void loseHealth(int damage);
     int getHealth();

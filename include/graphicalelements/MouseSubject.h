@@ -17,6 +17,7 @@ public:
   void addObserver(MouseObserver* observer);
   void removeObserver(MouseObserver* observer);
   void notifyObservers(const Event::MouseMoveEvent& event);
+  void notifyObservers(const Event::MouseButtonEvent& event);
 };
 
 

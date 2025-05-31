@@ -30,9 +30,6 @@ Player::Player(float x, float y, const float movSpeed, int life, float coef, int
 
 Player::~Player() {}
 
-void Player::handleEvent(const sf::Event &event) {
-    return;
-}
 
 
 void Player::move() {

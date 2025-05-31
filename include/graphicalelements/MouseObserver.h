@@ -9,6 +9,7 @@ public:
   virtual ~MouseObserver();
   MouseObserver();
   virtual void onMouseEvent(const Event::MouseMoveEvent& event) = 0;
+  virtual void onMouseEvent(const Event::MouseButtonEvent& event) = 0;
 };
 
 

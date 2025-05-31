@@ -2,20 +2,15 @@
 
 Button::Button(const string fontPath, const string info,
                const string normalTexturePath, const string hoveredTexturePath,
-               const string pressedTexturePath, MouseSubject* subject,
-               unsigned int fontSize, Vector2f position)
+               MouseSubject *subject, unsigned int fontSize, Vector2f position)
     : Ente(), fontSize(fontSize), position(position),
-      state(ButtonState::NORMAL), mouseSubject(subject) {
+      state(ButtonState::NORMAL), mouseSubject(subject), clicked(false) {
 
-  mouseSubject->addObserver(this);
   if (!texture.loadFromFile(normalTexturePath)) {
     cerr << "Failed to load normal texture!" << endl;
   }
   if (!hoverTexture.loadFromFile(hoveredTexturePath)) {
     cerr << "Failed to load hovered texture!" << endl;
-  }
-  if (!pressedTexture.loadFromFile(pressedTexturePath)) {
-    cerr << "Failed to load pressed texture!" << endl;
   }
   if (!font.loadFromFile(fontPath)) {
     cerr << "Failed to load font!" << endl;
@@ -31,7 +26,21 @@ Button::Button(const string fontPath, const string info,
   adjustSize();
 }
 
-Button::~Button() {}
+void Button::activate() { mouseSubject->addObserver(this); }
+
+void Button::deactivate() { mouseSubject->removeObserver(this); }
+bool Button::wasClicked() {
+  if (clicked) {
+    clicked = false;
+    return true;
+  }
+  return false;
+}
+
+Button::~Button() {
+  deactivate();
+  mouseSubject = nullptr;
+}
 
 Drawable &Button::getDrawable() { return sprite; }
 
@@ -64,9 +73,6 @@ void Button::setState(ButtonState newState) {
   case ButtonState::HOVERED:
     sprite.setTexture(hoverTexture);
     break;
-  case ButtonState::PRESSED:
-    sprite.setTexture(pressedTexture);
-    break;
   }
 }
 
@@ -89,20 +95,22 @@ void Button::adjustSize() {
           bounds.top);
 }
 
-void Button::handleMouseInput(const Vector2f &mousePosition) {
+void Button::onMouseEvent(const Event::MouseMoveEvent &event) {
+  Vector2f mousepos(static_cast<float>(event.x), static_cast<float>(event.y));
   FloatRect bounds = sprite.getGlobalBounds();
-  if (bounds.contains(mousePosition)) {
-    if (Mouse::isButtonPressed(Mouse::Left)) {
-      setState(ButtonState::PRESSED);
-    } else {
-      setState(ButtonState::HOVERED);
-    }
-  } else {
+  if (bounds.contains(mousepos)) {
+    setState(ButtonState::HOVERED);
+  }
+  else {
     setState(ButtonState::NORMAL);
   }
 }
 
-void Button::onMouseEvent(const Event::MouseMoveEvent& event){
-  Vector2f mousepos(static_cast<float>(event.x), static_cast<float>(event.y));
-  handleMouseInput(mousepos);
+void Button::onMouseEvent(const Event::MouseButtonEvent &event) {
+  Vector2f mousePos(static_cast<float>(event.x), static_cast<float>(event.y));
+  FloatRect bounds = sprite.getGlobalBounds();
+
+  if (bounds.contains(mousePos) && event.button == Mouse::Left) {
+    clicked = true;
+  }
 }

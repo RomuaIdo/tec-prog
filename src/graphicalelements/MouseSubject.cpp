@@ -27,3 +27,12 @@ void MouseSubject::notifyObservers(const Event::MouseMoveEvent &event) {
     }
   }
 }
+
+void MouseSubject::notifyObservers(const Event::MouseButtonEvent &event) {
+  list<MouseObserver *>::iterator it;
+  for (it = observers.begin(); it != observers.end(); it++) {
+    if (*it != nullptr) {
+      (*it)->onMouseEvent(event);
+    }
+  }
+}
