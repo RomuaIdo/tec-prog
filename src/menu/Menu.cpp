@@ -10,6 +10,11 @@ Menu::Menu(Game* game) : Ente(), pGame(game) {
 
 Menu::~Menu() {
   pGame = nullptr;
+  map<string, Button*>::iterator it;
+  for (it = buttons.begin(); it != buttons.end(); ++it) {
+    delete it->second;
+  }
+  buttons.clear();
 }
 
 void Menu::execute() {

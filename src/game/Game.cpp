@@ -16,6 +16,12 @@ Game::Game()
 }
 
 Game::~Game() {
+  delete player1;
+  player1 = nullptr;
+  delete player2;
+  player2 = nullptr;
+  delete menu;
+  menu = nullptr;
 
   List<Ente *>::iterator ite;
   for (ite = entes_list.begin(); ite != entes_list.end(); ite++) {
@@ -27,6 +33,8 @@ Game::~Game() {
   }
   cout << "Deletado com sucesso" << endl;
   entes_list.clear();
+
+
   pGM = nullptr;
 }
 
