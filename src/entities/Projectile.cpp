@@ -3,10 +3,10 @@
 
 Projectile::Projectile(float x, float y, float vel):
     Entity(x,y), velocity(vel){
-    if (!texture.loadFromFile("assets/textures/Player1.png")) {
-        std::cerr << "Failed to load Player1.png!" << std::endl;
+    if (!texture.loadFromFile("assets/textures/Player1Sprite.png")) {
+            std::cerr << "Failed to load PlayerSprite.png!" << std::endl;
     }    
-
+   
     texture.setSmooth(true);
     sprite.setTexture(texture);
     size.x = sprite.getLocalBounds().width;
@@ -19,8 +19,9 @@ Projectile::Projectile(float x, float y, float vel):
 }
 
 Projectile::~Projectile(){ 
-    active = false; 
 }
+
+bool Projectile::getActive(){ return active; }
 
 void Projectile::changeActive(){
     active = !active;
@@ -33,7 +34,7 @@ void Projectile::collide(){
 }
 
 void Projectile::draw() {
-    if(active){
+    if(active && pGM){
         pGM->draw(this);
     }
 }
@@ -48,6 +49,7 @@ void Projectile::move(){
 }
 
 void Projectile::execute(){
+    collide();
     draw();
     move();
 }

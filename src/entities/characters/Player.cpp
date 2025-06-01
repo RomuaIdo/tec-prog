@@ -28,24 +28,32 @@ Player::Player(float x, float y, const float acel, int life, float coef, int s, 
 }
 
 Player::~Player() {
-    for(list<Projectile*>::iterator it; it != projectiles_list.end(); it++){
-        delete (*it);
-        (*it) = nullptr;
+    for(list<Projectile*>::iterator it = projectiles_list.begin(); it != projectiles_list.end(); it++){
+        if(*it){
+            delete (*it);
+            (*it) = nullptr;
+        }
     }
     projectiles_list.clear();
 }
+
 
 void Player::handleEvent(const sf::Event &event) {
     return;
 }
 
+float modulee(float x){
+    if(x<0) return -x;
+    return x;
+}
+
 void Player::shoot(){
     if(player_num == 1){
         if(Keyboard::isKeyPressed(sf::Keyboard::C)){
-            Projectile* p = new Projectile(position.x, position.y);
+            Projectile* p = new Projectile(position.x, position.y, (getVelocity().x / modulee(getVelocity().x) * 10.f));
             if(p){
                 addProjectile(p);
-            }
+            }else cout << "Projectile not allocated." << endl;
         }
     }
 }
@@ -114,11 +122,17 @@ void Player::collide(){
 }
 
 void Player::execute() {
-    for(list<Projectile*>::iterator it; it != projectiles_list.end(); it++){
-        (*it)->execute();
-    }
+    shoot();
     move();
     draw();
+    for(list<Projectile*>::iterator it = projectiles_list.begin(); it != projectiles_list.end(); it++){
+        if(*it)
+            // if((*it)->getActive()){
+            //     (*it)->execute();
+            // }else 
+            //     delete (*it);
+            (*it)->execute();
+    }
 }
 
 void Player::loseHealth(int damage){
