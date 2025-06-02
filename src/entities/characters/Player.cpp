@@ -37,11 +37,6 @@ Player::~Player() {
     projectiles_list.clear();
 }
 
-
-void Player::handleEvent(const sf::Event &event) {
-    return;
-}
-
 float modulee(float x){
     if(x<0) return -x;
     return x;
