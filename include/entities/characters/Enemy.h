@@ -2,7 +2,6 @@
 #define ENEMY_H
 #include <list>
 #include "Character.h"
-#include "Entity.h"
 #include "Player.h"
 #include <SFML/Graphics.hpp>
 #include <list>

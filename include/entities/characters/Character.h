@@ -1,6 +1,6 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
-#include "entities/Entity.h"
+#include "../Entity.h"
 #include <SFML/Graphics.hpp>
 using namespace sf;
 using namespace std;

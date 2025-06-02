@@ -1,19 +1,4 @@
 #include "../../include/game/Game.h"
-<<<<<<< HEAD
-
-Game::Game():
-pGM(nullptr), pCM(nullptr), entes_list(), it(), player1(nullptr), player2(nullptr){
-    entes_list.clear();
-    pGM = GraphicsManager::getInstance();
-    pCM = CollisionManager::getInstance();
-    player1 = new Player(200, 100, 50.f, 10, 1, 4, 1, 60.f);
-    player2 = new Player(100, 100, 50.f, 10, 1, 4, 2, 60.f);
-    create_entes();
-    pCM->addPlayer(player1);
-    pCM->addPlayer(player2);
-    execute();
-=======
-#include "../../include/entities/Player.h"
 #include "../../include/graphicalelements/Button.h"
 #include "../../include/menu/Menu.h"
 Game::Game()
@@ -27,7 +12,6 @@ Game::Game()
   create_menu();
   game_state = GameState::MAIN_MENU;
   execute();
->>>>>>> ad317a32e35cc3f6ff773c379935c4e283a8948c
 }
 
 Game::~Game() {
@@ -54,38 +38,6 @@ Game::~Game() {
 }
 
 void Game::execute() {
-<<<<<<< HEAD
-    RenderWindow window(VideoMode(800, 600), "Good Game");
-    window.setFramerateLimit(60);
-    pGM->setWindow(&window);
-    RenderWindow* pWindow = pGM->getWindow();
-
-    while (pGM->openWindow()) {
-        Event event;
-        pGM->setClock();
-        pGM->operator++();
-        while (pWindow->pollEvent(event)) {
-            if (event.type == Event::Closed || 
-                (event.type == Event::KeyPressed && event.key.code == sf::Keyboard::Escape)) {
-                window.close();
-            }
-            player1->handleEvent(event);
-            player2->handleEvent(event);
-        }
-        
-        pGM->clean();
-        for(it = entes_list.begin(); it != entes_list.end(); it++){
-            if(*it){
-                (*it)->execute();
-            }
-            else 
-                cout << "Not executed." << endl;
-        }
-        player1->execute();
-        player2->execute();
-        pCM->execute();
-        pGM->show();
-=======
   RenderWindow window(VideoMode(800, 600), "Good Game");
   window.setFramerateLimit(60);
   pGM->setWindow(&window);
@@ -107,7 +59,6 @@ void Game::execute() {
       if (event.type == Event::MouseButtonPressed) {
         mouseSubject.notifyObservers(event.mouseButton);
       }
->>>>>>> ad317a32e35cc3f6ff773c379935c4e283a8948c
     }
 
     pGM->clean();
@@ -123,33 +74,7 @@ void Game::execute() {
   }
 }
 
-<<<<<<< HEAD
-void Game::create_entes(){
-    for(int i = 0; i < 1; i++){
-        Enemy* e = nullptr;
-        e = new Enemy((float) (i*150) , (float) ((i+1)*150),  10.f , 5, 1.f , 2);
-        if(e){
-            e->addPlayer(player1);
-            e->addPlayer(player2);
-            pCM->addEnemy(e);
-            entes_list.push_back(e);
-            cout << "Players added to enemy" << endl;
-        }else 
-            cout << "Enemy not allocated." << endl;
-    }
-    for(int i = 0; i < 2; i++){
-        Obstacle* o = nullptr;
-        o = new Obstacle(false, (i+2) * 100.f, 570.f);
-        if(o){
-            pCM->addObstacle(o);
-            entes_list.push_back(o);
-            cout << "Obstacle created" << endl;
-        }else 
-            cout << "Obstacle not allocated." << endl;
-    }
-=======
 void Game::running() {
->>>>>>> ad317a32e35cc3f6ff773c379935c4e283a8948c
 
   for (it = entes_list.begin(); it != entes_list.end(); it++) {
     if (*it) {
