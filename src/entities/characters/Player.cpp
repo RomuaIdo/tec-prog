@@ -117,9 +117,9 @@ void Player::collide(){
 }
 
 void Player::execute() {
-    shoot();
     move();
     draw();
+    shoot();
     for(list<Projectile*>::iterator it = projectiles_list.begin(); it != projectiles_list.end(); it++){
         if(*it)
             // if((*it)->getActive()){

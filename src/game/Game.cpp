@@ -3,14 +3,16 @@
 #include "../../include/menu/Menu.h"
 Game::Game()
     : pGM(nullptr), entes_list(), it(), player1(nullptr), player2(nullptr),
-      mouseSubject()
+      mouseSubject(), pCM(nullptr)
 {
     entes_list.clear();
+    pCM = CollisionManager::getInstance();
     pGM = GraphicsManager::getInstance();
     player1 = new Player(200, 100, 50.f, 10, 1, 4, 1, 60.f);
     player2 = new Player(100, 100, 50.f, 10, 1, 4, 2, 60.f);
     create_entes();
     create_menu();
+
     game_state = GameState::MAIN_MENU;
     execute();
 }
@@ -29,12 +31,12 @@ Game::~Game()
     {
         if (*ite)
         {
-            cout << "Deleting entity..." << endl;
+            cout << "Deleting ente..." << endl;
             delete (*ite);
             (*ite) = nullptr;
         }
     }
-    cout << "Deletado com sucesso" << endl;
+    cout << "Successfully Deleted!" << endl;
     entes_list.clear();
 
     pGM = nullptr;
@@ -125,9 +127,9 @@ void Game::create_entes(){
         Enemy *e = nullptr;
         e = new Enemy((float)(i * 150), (float)((i + 1) * 150), 40.f, 5, 1.f, 2);
         if (e){
-            pCM->addEnemy(e);
             e->addPlayer(player1);
             e->addPlayer(player2);
+            pCM->addEnemy(e);
             entes_list.push_back(e);
             cout << "Players added to enemy" << endl;
         }else

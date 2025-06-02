@@ -14,7 +14,7 @@ CollisionManager* CollisionManager::getInstance(){
 }
 
 CollisionManager::CollisionManager():
-    enemies_vector(), obstacles_list(), projectiles_set(){
+    enemies_vector(), obstacles_list(), projectiles_set(), players_vector(){
     enemies_vector.clear();
     obstacles_list.clear();
     projectiles_set.clear();
@@ -24,10 +24,10 @@ CollisionManager::~CollisionManager(){
     projectiles_set.clear();
     enemies_vector.clear();
     obstacles_list.clear();
+    players_vector.clear();
 }
 
-float vectorModule(Vector2f vector){
-    
+float vectorModule(Vector2f vector){  
     return sqrt(vector.x*vector.x + vector.y*vector.y);
 }
 
@@ -294,7 +294,7 @@ void CollisionManager::execute(){
     treatEnemiesCollision();
     treatObstaclesCollision();
     treatProjectilesCollision();
-    treatWallCollision();
     if(players_vector.size()>1) 
         treatPlayersCollision();
+    treatWallCollision();
 }
