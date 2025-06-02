@@ -46,6 +46,14 @@ void GraphicsManager::draw(Ente* ente) {
   } 
 }
 
+void GraphicsManager::draw(Text* text) {
+  if (pWindow != nullptr) {
+    pWindow->draw(*text);
+  } else {
+    std::cerr << "Window not initialized." << std::endl;
+  }
+}
+
 void GraphicsManager::clean() {
   if (pWindow != nullptr) {
     pWindow->clear();

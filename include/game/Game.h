@@ -6,6 +6,8 @@
 #include "../managers/GraphicsManager.h"
 #include <list>
 
+
+class CollisionManager;
 enum class GameState { MAIN_MENU, PLAYING, PAUSED, GAME_OVER };
 class Menu;
 class Button;

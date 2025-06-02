@@ -3,6 +3,7 @@
 #include "Character.h"
 #include "../Projectile.h"
 #include <SFML/Graphics.hpp>
+#include <list>
 using namespace sf;
 using namespace std;
 

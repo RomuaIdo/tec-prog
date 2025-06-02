@@ -1,7 +1,7 @@
 #include "../../include/game/Game.h"
 #include "../../include/graphicalelements/Button.h"
 #include "../../include/menu/Menu.h"
-
+#include "../../include/managers/CollisionManager.h"
 
 Game::Game()
     : pGM(nullptr), pCM(nullptr), entes_list(), it(), player1(nullptr), player2(nullptr),
@@ -10,6 +10,7 @@ Game::Game()
     entes_list.clear();
     pCM = CollisionManager::getInstance();
     pGM = GraphicsManager::getInstance();
+    Ente::setGraphicsManager(pGM);
     player1 = new Player(200, 100, 50.f, 10, 1, 4, 1, 60.f);
     player2 = new Player(100, 100, 50.f, 10, 1, 4, 2, 60.f);
     create_entes();
@@ -40,8 +41,6 @@ Game::~Game()
     }
     cout << "Successfully Deleted!" << endl;
     entes_list.clear();
-
-    pGM = nullptr;
 }
 
 void Game::execute(){

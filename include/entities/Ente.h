@@ -22,6 +22,7 @@ class Ente {
         Vector2f getSize() const;
         virtual Vector2f getPosition() const;
         virtual void setPosition(Vector2f pos);
+        static void setGraphicsManager(GraphicsManager* pGM); 
 };
 
 #endif

@@ -1,7 +1,6 @@
 #ifndef COLLISION_MANAGER_H
 #define COLLISION_MANAGER_H
 #include <SFML/Graphics.hpp>
-#include "CollisionManager.h"
 #include <map>
 #include <string>
 #include <iostream>

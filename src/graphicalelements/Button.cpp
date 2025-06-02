@@ -42,11 +42,13 @@ Button::~Button() {
   mouseSubject = nullptr;
 }
 
-Drawable &Button::getDrawable() { return sprite; }
+Drawable &Button::getDrawable() { 
+  return sprite; 
+}
 
 void Button::draw() {
-  pGM->getWindow()->draw(sprite);
-  pGM->getWindow()->draw(label);
+  pGM->draw(this);
+  pGM->draw(&label);
 }
 
 void Button::setPosition(Vector2f pos) {

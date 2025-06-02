@@ -1,7 +1,6 @@
 #ifndef GRAPHICS_MANAGER_H
 #define GRAPHICS_MANAGER_H
 #include <SFML/Graphics.hpp>
-#include "CollisionManager.h"
 #include <map>
 #include <string>
 #include <iostream>
@@ -29,7 +28,6 @@ class GraphicsManager {
         GraphicsManager& operator=(const GraphicsManager&) = delete;
 
         static GraphicsManager  *getInstance();
-        static CollisionManager *getCollisionManager();
         bool openWindow() const;
         RenderWindow* getWindow() const;
         void setWindow(RenderWindow* window);
@@ -39,6 +37,7 @@ class GraphicsManager {
 
         void setClock();
         void draw(Ente* ente);
+        void draw(Text* text);
         void clean();
         void show();
 
