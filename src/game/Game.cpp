@@ -1,9 +1,11 @@
 #include "../../include/game/Game.h"
 #include "../../include/graphicalelements/Button.h"
 #include "../../include/menu/Menu.h"
+
+
 Game::Game()
-    : pGM(nullptr), entes_list(), it(), player1(nullptr), player2(nullptr),
-      mouseSubject(), pCM(nullptr)
+    : pGM(nullptr), pCM(nullptr), entes_list(), it(), player1(nullptr), player2(nullptr),
+      mouseSubject()
 {
     entes_list.clear();
     pCM = CollisionManager::getInstance();

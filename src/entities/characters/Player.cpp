@@ -1,8 +1,9 @@
 #include "../../../include/entities/characters/Player.h"
 #include <SFML/Window.hpp>
 
+
 Player::Player(float x, float y, const float acel, int life, float coef, int s, int p_num, const float v_max): 
-    Character(x, y, acel, life, coef, s), player_num(p_num), score(0), vel_max(v_max), projectiles_list(){
+    Character(x, y, acel, life, coef, s), projectiles_list(), player_num(p_num), score(0), vel_max(v_max){
     projectiles_list.clear();
     
     if(p_num == 1){
