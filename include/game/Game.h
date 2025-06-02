@@ -10,22 +10,25 @@ enum class GameState { MAIN_MENU, PLAYING, PAUSED, GAME_OVER };
 class Menu;
 class Button;
 class Game {
+
 private:
-  GraphicsManager *pGM;
-  List<Ente *> entes_list;
-  List<Ente *>::iterator it;
-  Player *player1;
-  Player *player2;
-  Menu *menu;
-  void execute();
-  void running();
-  void main_menu();
-  GameState game_state;
-  MouseSubject mouseSubject;
+    GraphicsManager  *pGM;
+    CollisionManager *pCM;
+    List<Ente *> entes_list;
+    List<Ente *>::iterator it;
+    Player *player1;
+    Player *player2;
+    Menu *menu;
+    void execute();
+    void running();
+    void main_menu();
+    GameState game_state;
+    MouseSubject mouseSubject;
 
 public:
-  Game();
-  ~Game();
-  void create_entes();
-  void create_menu();
+    Game();
+    ~Game();
+    void create_entes();
+    void create_menu();
+
 };
