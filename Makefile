@@ -1,5 +1,7 @@
 CXX := g++
-CXXFLAGS := -Wall -Wextra -std=c++17 -DPROGRAM_VERSION=\"tec-prog\" -D_GNU_SOURCE
+# CXXFLAGS := -Wall -Wextra -std=c++17 -DPROGRAM_VERSION=\"tec-prog\" -D_GNU_SOURCE
+CXXFLAGS := -Wall -Wextra -std=c++17 -g -DPROGRAM_VERSION=\"tec-prog\" -D_GNU_SOURCE
+
 LDFLAGS := $(shell pkg-config --libs sfml-graphics sfml-window sfml-system)
 INCLUDES := $(shell pkg-config --cflags sfml-graphics sfml-window sfml-system)
 

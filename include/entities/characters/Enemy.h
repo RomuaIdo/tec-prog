@@ -3,12 +3,13 @@
 #include <list>
 #include "Character.h"
 #include "Player.h"
-#include <math.h>
 #include <SFML/Graphics.hpp>
+#include <list>
+#include <math.h>
 using namespace sf;
 using namespace std;
 
-class Enemy : public Character{
+class Enemy : public Character {
 
     protected:
         list<Player*> players_list;
@@ -25,6 +26,5 @@ class Enemy : public Character{
         virtual void move();
         void collide();
 };
-
 
 #endif

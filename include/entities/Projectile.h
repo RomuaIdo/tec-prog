@@ -19,6 +19,7 @@ class Projectile : public Entity{
         Drawable& getDrawable();
         void execute();
         void move();
+        bool getActive();
 
 };  
 

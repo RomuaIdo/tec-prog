@@ -1,6 +1,6 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
-#include "entities/Entity.h"
+#include "../Entity.h"
 #include <SFML/Graphics.hpp>
 using namespace sf;
 using namespace std;
@@ -11,7 +11,7 @@ class Character : public Entity {
         int health;
         float friction_coef;
         Vector2f friction;
-        
+        float clock;
         int strength;
         const float aceleration;
         Vector2f speed;
