@@ -2,23 +2,28 @@
 #include <SFML/Window.hpp>
 
 Projectile::Projectile(float x, float y, float vel):
-    Entity(x,y), velocity(vel){
+    Entity(x,y), velocity(vel) {
+    
+    pGM = GraphicsManager::getInstance();  // <== ADD THIS LINE
+
     if (!texture.loadFromFile("assets/textures/Player1Sprite.png")) {
-            std::cerr << "Failed to load PlayerSprite.png!" << std::endl;
+        std::cerr << "Failed to load PlayerSprite.png!" << std::endl;
     }    
-   
+
     texture.setSmooth(true);
     sprite.setTexture(texture);
     size.x = sprite.getLocalBounds().width;
     size.y = sprite.getLocalBounds().height;
     sprite.setScale(    
-    size.x / sprite.getLocalBounds().width,
-    size.y / sprite.getLocalBounds().height
+        size.x / sprite.getLocalBounds().width,
+        size.y / sprite.getLocalBounds().height
     );
     active = true;
 }
 
+
 Projectile::~Projectile(){ 
+    cout << "Projectile deleted" << endl;
 }
 
 bool Projectile::getActive(){ return active; }
@@ -30,9 +35,7 @@ void Projectile::collide(){
 }
 
 void Projectile::draw() {
-    if(active && pGM){
-        pGM->draw(this);
-    }
+    pGM->draw(this);
 }
 
 Drawable& Projectile::getDrawable() {
@@ -45,7 +48,7 @@ void Projectile::move(){
 }
 
 void Projectile::execute(){
-    collide();
     draw();
     move();
+    collide();
 }

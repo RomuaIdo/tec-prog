@@ -126,13 +126,15 @@ void Player::execute() {
     draw();
     shoot();
     for(list<Projectile*>::iterator it = projectiles_list.begin(); it != projectiles_list.end(); it++){
-        if(*it)
+        if(*it){
             if(!(*it)->getActive()){
-                delete (*it);
+                // delete (*it); // essa porra da seg fault
                 (*it) = nullptr;
                 it = projectiles_list.erase(it);
+                if(it == projectiles_list.end()) break;
             }else
                 (*it)->execute();
+        }
     }
 }
 
