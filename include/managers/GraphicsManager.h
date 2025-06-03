@@ -9,7 +9,6 @@ using namespace sf;
 
 class Ente;
 
-
 class GraphicsManager {
     private:
         static GraphicsManager* instance;

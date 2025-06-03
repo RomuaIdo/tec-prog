@@ -1,4 +1,5 @@
 #include "../../include/managers/GraphicsManager.h"
+#include "../../include/managers/CollisionManager.h"
 #include "../../include/entities/Ente.h"
 
 
@@ -22,7 +23,6 @@ GraphicsManager::GraphicsManager():
   if (!font->loadFromFile("assets/fonts/arial.ttf")) {
     std::cerr << "Error when trying to load the font." << std::endl;
   }
-
 }
 
 GraphicsManager::~GraphicsManager() {

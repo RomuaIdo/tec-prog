@@ -16,6 +16,7 @@ class Character : public Entity {
         const float aceleration;
         Vector2f speed;
         static Vector2f gravity;
+        bool onGround;
 
     public:
         Character(float x, float y, const float acel,
@@ -27,6 +28,8 @@ class Character : public Entity {
         void moveCharacter();
         Vector2f getVelocity() const;
         void setVelocity(Vector2f vel);
+        void setOnGround(bool onground);
+        bool isOnGround() const;
 };
 
 #endif

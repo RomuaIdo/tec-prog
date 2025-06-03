@@ -14,7 +14,9 @@ class Enemy;
 class Obstacle;
 class Player;
 class Projectile;
-class Entity; 
+class Entity;
+class GraphicsManager;
+class Character;
 
 class CollisionManager{
 
@@ -23,14 +25,19 @@ class CollisionManager{
         list<Obstacle*> obstacles_list;
         set<Projectile*> projectiles_set;
         vector<Player*> players_vector;
-
+        GraphicsManager* pGM;
         static CollisionManager* instance;
-
+        
         CollisionManager();
     public:
         
         ~CollisionManager();
         static CollisionManager* getInstance();
+
+        CollisionManager(const CollisionManager&) = delete;
+        CollisionManager& operator=(const CollisionManager&) = delete;
+
+
         bool verifyCollision(Entity* ent1, Entity* ent2) const;
         void treatEnemiesCollision();
         void treatObstaclesCollision();
@@ -42,7 +49,7 @@ class CollisionManager{
         void addObstacle(Obstacle* o);
         void addProjectile(Projectile* p);
         void execute();
-
+        void resolveCollisionObstacle(Character* c, Obstacle* o); 
 };
 
 #endif
