@@ -8,28 +8,43 @@ using namespace std;
 class Character : public Entity {
 
     protected:
+        /* ------ STATUS ------- */
         int health;
-        float friction_coef;
-        Vector2f friction;
-        float clock;
-        int strength;
+        const int strength;
         const float aceleration;
         Vector2f speed;
+
+        /* ------- FLAGS ------- */
+        int faced_right;
+        bool in_air;
+
+        /* --- COEFFICIENTS ---- */
+        Vector2f friction;
         static Vector2f gravity;
         bool onGround;
-
+        float friction_coef;
+        float clock;
+        
     public:
+
         Character(float x, float y, const float acel,
         int life = 5, float coef = 0.5, int s = 1);
         virtual ~Character();
+
         virtual void execute() = 0;
         virtual void move() = 0;
         virtual void collide() = 0;
+
+        /* ---- OWN FUNCTIONS ---- */
         void moveCharacter();
+        void setOnGround(bool onground);
+        bool isOnGround() const;        
+        /* ----- GETS & SETS ----- */
         Vector2f getVelocity() const;
         void setVelocity(Vector2f vel);
-        void setOnGround(bool onground);
-        bool isOnGround() const;
+        
+        int getStrength() const;
+        
 };
 
 #endif

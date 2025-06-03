@@ -6,11 +6,18 @@ Vector2f Character::gravity(0.f, 30.f);
 Character::Character(float x, float y, const float movSpeed, int life, float coef, int s):
     Entity(x, y), health(life), friction_coef(coef), friction(0.f,0.f), strength(s), aceleration(movSpeed), speed(0.f, 0.f), onGround(false) {
     
+
 }
 
 Character::~Character(){
 
 }
+
+
+
+/* ------------------------------------------- */
+/*                OWN FUNCTIONS                */
+/* ------------------------------------------- */
 
 void Character::moveCharacter() {
     if (!onGround) {
@@ -23,6 +30,11 @@ void Character::moveCharacter() {
     onGround = false; // Resetar para o próximo frame
 }
 
+
+
+/* ------------------------------------------- */
+/*                 GETS & SETS                 */
+/* ------------------------------------------- */
 
 Vector2f Character::getVelocity() const{
     return speed;
@@ -39,3 +51,4 @@ void Character::setOnGround(bool onground){
 bool Character::isOnGround() const{
     return onGround;
 }
+

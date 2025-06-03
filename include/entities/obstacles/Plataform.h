@@ -8,12 +8,15 @@ using namespace std;
 class Plataform : public Obstacle{
 
     private:
+        /* ------ STATUS ------- */
         float width;
         float height;
 
     public:
         Plataform(float x, float y, bool harm = false);
         ~Plataform();
+
+        /* ----- GETS & SETS ----- */
         void setWidth(float w);
         float getWidth() const;
         void setHeight(float h);

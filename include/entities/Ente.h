@@ -7,18 +7,25 @@ using namespace sf;
 
 class Ente {
     protected:
+        /* -- GRAPHIC MANAGER -- */
         static GraphicsManager* pGM;
+
+        /* ------ STATUS ------- */
         Sprite sprite;
         Texture texture;
         Vector2f size;
         
-
     public:
         Ente();
         virtual ~Ente();
-        virtual void draw() = 0;
-        virtual Drawable& getDrawable() = 0;
+        
         virtual void execute() = 0;
+
+        /* ---- OWN FUNCTIONS ---- */
+        virtual void draw();
+        virtual Drawable& getDrawable();
+
+        /* ----- GETS & SETS ----- */
         Vector2f getSize() const;
         virtual Vector2f getPosition() const;
         virtual void setPosition(Vector2f pos);

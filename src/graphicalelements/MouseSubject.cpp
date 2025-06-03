@@ -7,6 +7,10 @@ MouseSubject::~MouseSubject() {
   cout << "MouseSubject destroyed, observers cleared." << endl;
 }
 
+/* ------------------------------------------- */
+/*             OBSERVER FUNCTIONS              */
+/* ------------------------------------------- */
+
 void MouseSubject::addObserver(MouseObserver *observer) {
   if (observer != nullptr) {
     observers.push_back(observer);

@@ -7,16 +7,19 @@ using namespace sf;
 class Projectile : public Entity{
 
     private:
-        bool active;
+        /* ------ STATUS ------- */
         float velocity;
+        
+        /* ------ FLAGS ------- */
+        bool active;
     
     public:
         Projectile(float x, float y, float vel = 10.f);
         ~Projectile();
-        void changeActive();
+
+        /* --- OWN FUNCTIONS --- */
         void collide();
-        void draw();
-        Drawable& getDrawable();
+
         void execute();
         void move();
         bool getActive();

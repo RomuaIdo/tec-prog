@@ -43,12 +43,15 @@ Game::~Game()
     entes_list.clear();
 }
 
+/* ------------------------------------------- */
+/*                OWN FUNCTIONS                */
+/* ------------------------------------------- */
+
 void Game::execute(){
     RenderWindow window(VideoMode(800, 600), "Good Game");
     window.setFramerateLimit(60);
     pGM->setWindow(&window);
     RenderWindow *pWindow = pGM->getWindow();
-    // Teste de botao
     while (pGM->openWindow()){
         Event event;
         pGM->setClock();
@@ -106,6 +109,10 @@ void Game::main_menu(){
     }
 }
 
+/* ------------------------------------------- */
+/*               CREATE FUNCTIONS              */
+/* ------------------------------------------- */
+
 void Game::create_menu(){
     menu = new Menu(this);
     if (menu){
@@ -126,7 +133,7 @@ void Game::create_menu(){
 void Game::create_entes(){
     for (int i = 0; i < 1; i++){
         Enemy *e = nullptr;
-        e = new Enemy((float)(i * 150), (float)((i + 1) * 150), 40.f, 5, 1.f, 2);
+        e = new Enemy((float)(i * 150), (float)((i + 1) * 150), 15.f, 5, 1.f, 2);
         if (e){
             e->addPlayer(player1);
             e->addPlayer(player2);

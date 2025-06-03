@@ -12,14 +12,18 @@ Obstacle::Obstacle(bool harm, float x, float y):
     size.x = sprite.getLocalBounds().width;
     size.y = sprite.getLocalBounds().height;
     sprite.setScale(    
-    size.x / sprite.getLocalBounds().width,
-    size.y / sprite.getLocalBounds().height
+        size.x / sprite.getLocalBounds().width,
+        size.y / sprite.getLocalBounds().height
     );
 }
 
 Obstacle::~Obstacle(){
 
 }
+
+/* ------------------------------------------- */
+/*                OWN FUNCTIONS                */
+/* ------------------------------------------- */
 
 void Obstacle::execute(){
     draw();
@@ -33,6 +37,3 @@ void Obstacle::collide(){
 
 }
 
-void Obstacle::dealDamage(){
-
-}

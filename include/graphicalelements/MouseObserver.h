@@ -5,11 +5,11 @@
 using namespace sf;
 
 class MouseObserver{
-public:
-  virtual ~MouseObserver();
-  MouseObserver();
-  virtual void onMouseEvent(const Event::MouseMoveEvent& event) = 0;
-  virtual void onMouseEvent(const Event::MouseButtonEvent& event) = 0;
+    public:
+        virtual ~MouseObserver();
+        MouseObserver();
+        virtual void onMouseEvent(const Event::MouseMoveEvent& event) = 0;
+        virtual void onMouseEvent(const Event::MouseButtonEvent& event) = 0;
 };
 
 

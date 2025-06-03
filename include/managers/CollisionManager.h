@@ -21,6 +21,7 @@ class Character;
 class CollisionManager{
 
     private:
+        /* ------- VARIABLES ------ */
         vector<Enemy*> enemies_vector;
         list<Obstacle*> obstacles_list;
         set<Projectile*> projectiles_set;
@@ -37,17 +38,21 @@ class CollisionManager{
         CollisionManager(const CollisionManager&) = delete;
         CollisionManager& operator=(const CollisionManager&) = delete;
 
-
+        /* ------- COLLISION ------- */
         bool verifyCollision(Entity* ent1, Entity* ent2) const;
         void treatEnemiesCollision();
         void treatObstaclesCollision();
         void treatProjectilesCollision();
-        void treatWallCollision();
         void treatPlayersCollision();
+        void treatWallCollision();
+
+        /* ------ ADD ENTITIES ------ */
         void addPlayer(Player* p);
         void addEnemy(Enemy* e);
         void addObstacle(Obstacle* o);
         void addProjectile(Projectile* p);
+
+        
         void execute();
         void resolveCollisionObstacle(Character* c, Obstacle* o); 
 };

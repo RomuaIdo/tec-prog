@@ -36,29 +36,16 @@ Player::~Player() {
   projectiles_list.clear();
 }
 
+/* ------------------------------------------- */
+/*                OWN FUNCTIONS                */
+/* ------------------------------------------- */
+
 float modulee(float x) {
   if (x < 0)
     return -x;
   return x;
 }
 
-void Player::shoot() {
-    if (player_num == 1) {
-        if (Keyboard::isKeyPressed(sf::Keyboard::C)) {
-            Vector2f velocity = getVelocity();
-            float dirX = (velocity.x != 0) ? velocity.x / modulee(velocity.x) : 1.f;
-            
-            Projectile *p = new Projectile(position.x, position.y, dirX * 10.f);
-            if (p) {
-                addProjectile(p);
-            } else {
-                cout << "Projectile not allocated." << endl;
-            }
-        }
-    }
-}
-
-void Player::addProjectile(Projectile *p) { projectiles_list.push_back(p); }
 
 void Player::move() {
 
@@ -67,6 +54,24 @@ void Player::move() {
       if (isOnGround()) {
         speed.y += -(15);
         setOnGround(false);
+      }
+
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+        speed.x += -aceleration * pGM->getdt();
+      }
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+        speed.x += aceleration * pGM->getdt();
+      }
+    } else {
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+        if (speed.y == 0)
+          speed.y += -(15);
+      }
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+        speed.x += -aceleration * pGM->getdt();
+      }
+      if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+        speed.x += aceleration * pGM->getdt();
       }
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
@@ -78,7 +83,7 @@ void Player::move() {
       if (isOnGround()) {
         speed.y += -(15);
         setOnGround(false);
-      } 
+      }
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
       speed.x += -aceleration * pGM->getdt();
@@ -134,5 +139,52 @@ void Player::execute() {
 }
 
 void Player::loseHealth(int damage) { health -= damage; }
+
+/* ------------------------------------------- */
+/*                GUN FUNCTIONS                */
+/* ------------------------------------------- */
+
+void Player::shoot() {
+  if (player_num == 1) {
+    if (Keyboard::isKeyPressed(sf::Keyboard::C)) {
+      // Shoot after 0.5 sec
+      if (shoot_delay >= 0.5f) {
+        Projectile *p =
+            new Projectile(position.x, position.y, faced_right * 10.f);
+        if (p) {
+          addProjectile(p);
+        } else
+          cout << "Projectile not allocated." << endl;
+        shoot_delay = 0.f;
+      }
+    }
+  }
+  // Increment the shoot_delay
+  reload();
+}
+
+void Player::shootProjectiles() {
+  for (list<Projectile *>::iterator it = projectiles_list.begin();
+       it != projectiles_list.end(); it++) {
+    if (*it) {
+      if (!(*it)->getActive()) {
+        // delete (*it); // essa porra da seg fault
+        (*it) = nullptr;
+        it = projectiles_list.erase(it);
+        if (it == projectiles_list.end())
+          break;
+      } else
+        (*it)->execute();
+    }
+  }
+}
+
+void Player::addProjectile(Projectile *p) { projectiles_list.push_back(p); }
+
+void Player::reload() { shoot_delay += pGM->getdt(); }
+
+/* ------------------------------------------- */
+/*                 GETS & SETS                 */
+/* ------------------------------------------- */
 
 int Player::getHealth() { return health; }
