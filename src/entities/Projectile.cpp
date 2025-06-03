@@ -23,13 +23,9 @@ Projectile::~Projectile(){
 
 bool Projectile::getActive(){ return active; }
 
-void Projectile::changeActive(){
-    active = !active;
-}
-
 void Projectile::collide(){
     if(position.x < 0.f || position.x + size.x > 800.f){
-        changeActive();
+        active = false;
     }
 }
 

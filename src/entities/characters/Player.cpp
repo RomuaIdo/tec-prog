@@ -1,9 +1,8 @@
 #include "../../../include/entities/characters/Player.h"
 #include <SFML/Window.hpp>
 
-
 Player::Player(float x, float y, const float acel, int life, float coef, int s, int p_num, const float v_max): 
-    Character(x, y, acel, life, coef, s), projectiles_list(), player_num(p_num), score(0), vel_max(v_max){
+    Character(x, y, acel, life, coef, s), player_num(p_num), score(0), vel_max(v_max), projectiles_list(), shoot_delay(0.f){
     projectiles_list.clear();
     
     if(p_num == 1){
@@ -25,7 +24,7 @@ Player::Player(float x, float y, const float acel, int life, float coef, int s, 
         size.x / sprite.getLocalBounds().width,
         size.y / sprite.getLocalBounds().height
     );
-
+    
 }
 
 Player::~Player() {
@@ -46,12 +45,17 @@ float modulee(float x){
 void Player::shoot(){
     if(player_num == 1){
         if(Keyboard::isKeyPressed(sf::Keyboard::C)){
-            Projectile* p = new Projectile(position.x, position.y, (getSpeed().x / modulee(getSpeed().x) * 10.f));
-            if(p){
-                addProjectile(p);
-            }else cout << "Projectile not allocated." << endl;
+                // Shoot after 1 sec
+            if(shoot_delay >= 1.f){
+                Projectile* p = new Projectile(position.x, position.y, (getSpeed().x / modulee(getSpeed().x) * 10.f));
+                if(p){
+                    addProjectile(p);
+                }else cout << "Projectile not allocated." << endl;
+                shoot_delay = 0.f;
+            }
         }
     }
+    reload();
 }
 
 void Player::addProjectile(Projectile* p){
@@ -123,11 +127,12 @@ void Player::execute() {
     shoot();
     for(list<Projectile*>::iterator it = projectiles_list.begin(); it != projectiles_list.end(); it++){
         if(*it)
-            // if((*it)->getActive()){
-            //     (*it)->execute();
-            // }else 
-            //     delete (*it);
-            (*it)->execute();
+            if(!(*it)->getActive()){
+                delete (*it);
+                (*it) = nullptr;
+                it = projectiles_list.erase(it);
+            }else
+                (*it)->execute();
     }
 }
 
@@ -137,4 +142,8 @@ void Player::loseHealth(int damage){
 
 int Player::getHealth(){
     return health;
+}
+
+void Player::reload(){
+    shoot_delay += pGM->getdt();
 }

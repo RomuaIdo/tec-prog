@@ -12,6 +12,7 @@ private:
     int player_num;
     int score;
     const float vel_max;
+    float shoot_delay;
 
 public:
     Player(float x, float y, const float acel, int life = 5, float coef = 0.5, int s = 1, int p_num = 1, const float v_max = 50.f);
@@ -23,6 +24,8 @@ public:
     void collide();
     void shoot();
     void addProjectile(Projectile* p);
+    void reload();
+
 };
 
 #endif

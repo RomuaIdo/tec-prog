@@ -13,7 +13,6 @@ class Projectile : public Entity{
     public:
         Projectile(float x, float y, float vel = 10.f);
         ~Projectile();
-        void changeActive();
         void collide();
         void draw();
         Drawable& getDrawable();
