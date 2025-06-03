@@ -37,17 +37,12 @@ Player::~Player() {
     projectiles_list.clear();
 }
 
-float modulee(float x){
-    if(x<0) return -x;
-    return x;
-}
-
 void Player::shoot(){
     if(player_num == 1){
         if(Keyboard::isKeyPressed(sf::Keyboard::C)){
-                // Shoot after 1 sec
-            if(shoot_delay >= 1.f){
-                Projectile* p = new Projectile(position.x, position.y, (getSpeed().x / modulee(getSpeed().x) * 10.f));
+                // Shoot after 0.5 sec
+            if(shoot_delay >= 0.5f){
+                Projectile* p = new Projectile(position.x, position.y, faced_right * 10.f);
                 if(p){
                     addProjectile(p);
                 }else cout << "Projectile not allocated." << endl;
@@ -69,19 +64,27 @@ void Player::move() {
             if(speed.y == 0)
                 speed.y += -(15);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
             speed.x += -aceleration * pGM->getdt();
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+            faced_right = -1;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
             speed.x += aceleration * pGM->getdt();
+            faced_right = 1;
+        }
     } else {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
             if(speed.y == 0)
                 speed.y += -(15);
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
             speed.x += -aceleration * pGM->getdt();
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+            faced_right = -1;
+        }
+        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
             speed.x += aceleration * pGM->getdt();
+            faced_right = 1;
+        }
     }
 
     const float vel_max = 15.f;

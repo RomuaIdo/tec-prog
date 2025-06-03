@@ -16,6 +16,7 @@ class Character : public Entity {
         Vector2f speed;
         static Vector2f gravity;
         float clock;
+        int faced_right;
 
     public:
         Character(float x, float y, const float acel,
