@@ -57,7 +57,7 @@ void CollisionManager::treatWallCollision(){
         if(*it){
             Player* p = (*it);
             Vector2f pos = p->getPosition();
-            Vector2f vel = p->getVelocity();
+            Vector2f vel = p->getSpeed();
             // Left wall
             if (pos.x < 0){
                 pos.x = 0;
@@ -79,7 +79,7 @@ void CollisionManager::treatWallCollision(){
                 vel.y = 0;
             }
             p->setPosition(pos);
-            p->setVelocity(vel);
+            p->setSpeed(vel);
         }
     }
     // For each Enemy
@@ -87,7 +87,7 @@ void CollisionManager::treatWallCollision(){
         if(*itEnemy){
             Enemy* e = (*itEnemy);
             Vector2f pos = e->getPosition();
-            Vector2f vel = e->getVelocity();
+            Vector2f vel = e->getSpeed();
             // Left wall
             if (pos.x < 0){
                 pos.x = 0;
@@ -109,7 +109,7 @@ void CollisionManager::treatWallCollision(){
                 vel.y = 0;
             }
             e->setPosition(pos);
-            e->setVelocity(vel);
+            e->setSpeed(vel);
         }
     }
     
@@ -137,27 +137,27 @@ void resolveCollisionCharacter(Character* a, Character* b) {
                 aPos.x += push;
                 bPos.x -= push;
             }
-            a->setVelocity({0.f, a->getVelocity().y});
-            b->setVelocity({0.f, b->getVelocity().y});
+            a->setSpeed({0.f, a->getSpeed().y});
+            b->setSpeed({0.f, b->getSpeed().y});
         } else {
             float push = intersectY / 2.f;
             if (deltaY > 0) {
                 // a is above b
                 aPos.y -= push;
                 bPos.y += push;
-                if (a->getVelocity().y > 0)  // only cancel downward movement
-                    a->setVelocity({a->getVelocity().x, 0.f});
-                if (b->getVelocity().y > 0)
-                    b->setVelocity({b->getVelocity().x, 0.f});
+                if (a->getSpeed().y > 0)  // only cancel downward movement
+                    a->setSpeed({a->getSpeed().x, 0.f});
+                if (b->getSpeed().y > 0)
+                    b->setSpeed({b->getSpeed().x, 0.f});
             } else {
                 // a is below b (jumping up)
                 aPos.y += push;
                 bPos.y -= push;
                 // don't cancel a's velocity — it's jumping
-                if (a->getVelocity().y > 0)  // only cancel downward movement
-                    a->setVelocity({a->getVelocity().x, 0.f});
-                if (b->getVelocity().y > 0)
-                    b->setVelocity({b->getVelocity().x, 0.f});
+                if (a->getSpeed().y > 0)  // only cancel downward movement
+                    a->setSpeed({a->getSpeed().x, 0.f});
+                if (b->getSpeed().y > 0)
+                    b->setSpeed({b->getSpeed().x, 0.f});
             }
         }
 
@@ -186,20 +186,20 @@ void resolveCollisionObstacle(Character* c, Obstacle* o) {
             } else {
                 cPos.x += push;
             }
-            c->setVelocity({0.f, c->getVelocity().y});
+            c->setSpeed({0.f, c->getSpeed().y});
         } else {
             float push = intersectY;
             if (deltaY > 0) {
                 // a is above b
                 cPos.y -= push;
-                if (c->getVelocity().y > 0)  // only cancel downward movement
-                    c->setVelocity({c->getVelocity().x, 0.f});
+                if (c->getSpeed().y > 0)  // only cancel downward movement
+                    c->setSpeed({c->getSpeed().x, 0.f});
                 } else {
                 // a is below b (jumping up)
                 cPos.y += push;
                 // don't cancel a's velocity — it's jumping
-                if (c->getVelocity().y > 0)  // only cancel downward movement
-                    c->setVelocity({c->getVelocity().x, 0.f});
+                if (c->getSpeed().y > 0)  // only cancel downward movement
+                    c->setSpeed({c->getSpeed().x, 0.f});
             }
         }
 

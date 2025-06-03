@@ -19,10 +19,10 @@ void Character::moveCharacter(){
 
 }
 
-Vector2f Character::getVelocity() const{
+Vector2f Character::getSpeed() const{
     return speed;
 }
 
-void Character::setVelocity(Vector2f vel){
-    speed = vel;
+void Character::setSpeed(Vector2f spd){
+    speed = spd;
 }

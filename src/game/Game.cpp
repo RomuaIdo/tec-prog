@@ -127,7 +127,7 @@ void Game::create_menu(){
 void Game::create_entes(){
     for (int i = 0; i < 1; i++){
         Enemy *e = nullptr;
-        e = new Enemy((float)(i * 150), (float)((i + 1) * 150), 40.f, 5, 1.f, 2);
+        e = new Enemy((float)(i * 150), (float)((i + 1) * 150), 15.f, 5, 1.f, 2);
         if (e){
             e->addPlayer(player1);
             e->addPlayer(player2);

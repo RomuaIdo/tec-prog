@@ -46,7 +46,7 @@ float modulee(float x){
 void Player::shoot(){
     if(player_num == 1){
         if(Keyboard::isKeyPressed(sf::Keyboard::C)){
-            Projectile* p = new Projectile(position.x, position.y, (getVelocity().x / modulee(getVelocity().x) * 10.f));
+            Projectile* p = new Projectile(position.x, position.y, (getSpeed().x / modulee(getSpeed().x) * 10.f));
             if(p){
                 addProjectile(p);
             }else cout << "Projectile not allocated." << endl;

@@ -11,11 +11,11 @@ class Character : public Entity {
         int health;
         float friction_coef;
         Vector2f friction;
-        float clock;
-        int strength;
+        const int strength;
         const float aceleration;
         Vector2f speed;
         static Vector2f gravity;
+        float clock;
 
     public:
         Character(float x, float y, const float acel,
@@ -25,8 +25,8 @@ class Character : public Entity {
         virtual void move() = 0;
         virtual void collide() = 0;
         void moveCharacter();
-        Vector2f getVelocity() const;
-        void setVelocity(Vector2f vel);
+        Vector2f getSpeed() const;
+        void setSpeed(Vector2f spd);
 };
 
 #endif
