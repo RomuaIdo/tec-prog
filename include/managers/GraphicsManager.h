@@ -12,14 +12,19 @@ class Ente;
 
 
 class GraphicsManager {
+
     private:
+        /* ----- VARIABLES ----- */
         static GraphicsManager* instance;
         RenderWindow* pWindow;
         map<string, Texture*> textures;
+
+        /* ------ STATUS ------- */
         Font* font;
         float dt;
         Clock dt_clock;
         static float clock_time;
+        
         GraphicsManager();
     public:
 
@@ -30,22 +35,24 @@ class GraphicsManager {
 
         static GraphicsManager  *getInstance();
         static CollisionManager *getCollisionManager();
+
+        /* ---- OWN FUNCTIONS ---- */
         bool openWindow() const;
-        RenderWindow* getWindow() const;
-        void setWindow(RenderWindow* window);
         Texture loadTexture(const string& path);
-
-        Font* getFont();
-
-        void setClock();
         void draw(Ente* ente);
         void clean();
         void show();
-
         void operator++();
+        
+        /* ----- GETS & SETS ----- */
+        RenderWindow* getWindow() const;
+        void setWindow(RenderWindow* window);
+        Font* getFont();
+        void setClock();
         float getdt() const;
         const Clock getClockdt() const;
         float getClockTime() const;
         void resetClock();
+        
 };
 #endif

@@ -12,12 +12,19 @@ Character::~Character(){
 
 }
 
+/* ------------------------------------------- */
+/*                OWN FUNCTIONS                */
+/* ------------------------------------------- */
+
 void Character::moveCharacter(){
     speed += gravity * pGM->getdt();
     position += speed;
     sprite.setPosition(position);
-
 }
+
+/* ------------------------------------------- */
+/*                 GETS & SETS                 */
+/* ------------------------------------------- */
 
 Vector2f Character::getSpeed() const{
     return speed;
@@ -25,4 +32,16 @@ Vector2f Character::getSpeed() const{
 
 void Character::setSpeed(Vector2f spd){
     speed = spd;
+}
+
+int Character::getStrength() const{
+    return strength;
+}
+
+bool Character::getInAir() const{
+    return in_air;
+}
+
+void Character::changeInAir(){
+    in_air = !in_air;
 }

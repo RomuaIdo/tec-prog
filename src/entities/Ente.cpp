@@ -10,6 +10,22 @@ Ente::~Ente() {
     pGM = nullptr;
 }
 
+/* ------------------------------------------- */
+/*                OWN FUNCTIONS                */
+/* ------------------------------------------- */
+
+void Ente::draw() {
+    pGM->draw(this);
+}
+
+Drawable& Ente::getDrawable() {
+    return sprite;
+}
+
+/* ------------------------------------------- */
+/*                 GETS & SETS                 */
+/* ------------------------------------------- */
+
 Vector2f Ente::getPosition() const {
     return sprite.getPosition();
 }
@@ -21,6 +37,4 @@ Vector2f Ente::getSize() const{
 void Ente::setPosition(Vector2f pos){
     sprite.setPosition(pos);
 }
-
-
 

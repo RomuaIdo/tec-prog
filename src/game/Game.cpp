@@ -2,7 +2,6 @@
 #include "../../include/graphicalelements/Button.h"
 #include "../../include/menu/Menu.h"
 
-
 Game::Game()
     : pGM(nullptr), pCM(nullptr), entes_list(), it(), player1(nullptr), player2(nullptr),
       mouseSubject()
@@ -10,8 +9,8 @@ Game::Game()
     entes_list.clear();
     pCM = CollisionManager::getInstance();
     pGM = GraphicsManager::getInstance();
-    player1 = new Player(200, 100, 50.f, 10, 1, 4, 1, 60.f);
-    player2 = new Player(100, 100, 50.f, 10, 1, 4, 2, 60.f);
+    player1 = new Player(200, 100, 50.f, 10, 1, 4, 1, 40.f);
+    player2 = new Player(100, 100, 50.f, 10, 1, 4, 2, 40.f);
     create_entes();
     create_menu();
 
@@ -44,12 +43,15 @@ Game::~Game()
     pGM = nullptr;
 }
 
+/* ------------------------------------------- */
+/*                OWN FUNCTIONS                */
+/* ------------------------------------------- */
+
 void Game::execute(){
     RenderWindow window(VideoMode(800, 600), "Good Game");
     window.setFramerateLimit(60);
     pGM->setWindow(&window);
     RenderWindow *pWindow = pGM->getWindow();
-    // Teste de botao
     while (pGM->openWindow()){
         Event event;
         pGM->setClock();
@@ -106,6 +108,10 @@ void Game::main_menu(){
         }
     }
 }
+
+/* ------------------------------------------- */
+/*               CREATE FUNCTIONS              */
+/* ------------------------------------------- */
 
 void Game::create_menu(){
     menu = new Menu(this);

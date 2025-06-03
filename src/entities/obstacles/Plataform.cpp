@@ -8,6 +8,10 @@ Plataform::Plataform(float x, float y, bool harm):
 
 Plataform::~Plataform(){}
 
+/* ------------------------------------------- */
+/*                 GETS & SETS                 */
+/* ------------------------------------------- */
+
 void Plataform::setHeight(float h){
     height = h;
 }

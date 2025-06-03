@@ -8,16 +8,19 @@ using namespace std;
 
 
 class MouseSubject{
-private:
-  list<MouseObserver*> observers;
+    private:
+        /* ---- VARIABLES ---- */
+        list<MouseObserver*> observers;
 
-public:
-  MouseSubject();
-  ~MouseSubject();
-  void addObserver(MouseObserver* observer);
-  void removeObserver(MouseObserver* observer);
-  void notifyObservers(const Event::MouseMoveEvent& event);
-  void notifyObservers(const Event::MouseButtonEvent& event);
+    public:
+        MouseSubject();
+        ~MouseSubject();
+
+        /* ----- OBSERVER ---- */
+        void addObserver(MouseObserver* observer);
+        void removeObserver(MouseObserver* observer);
+        void notifyObservers(const Event::MouseMoveEvent& event);
+        void notifyObservers(const Event::MouseButtonEvent& event);
 };
 
 

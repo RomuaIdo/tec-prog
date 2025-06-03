@@ -27,6 +27,10 @@ CollisionManager::~CollisionManager(){
     players_vector.clear();
 }
 
+/* ------------------------------------------- */
+/*               LOCAL FUNCTIONS               */
+/* ------------------------------------------- */
+
 float vectorModule(Vector2f vector){  
     return sqrt(vector.x*vector.x + vector.y*vector.y);
 }
@@ -34,85 +38,6 @@ float vectorModule(Vector2f vector){
 float module(float val){
     if(val < 0) return -val;
     return val;
-}
-
-bool CollisionManager::verifyCollision(Entity* ent1, Entity* ent2) const{
-
-    Vector2f ent1center = ent1->getPosition() + (ent1->getSize() / static_cast<float> (2));    
-    Vector2f ent2center = ent2->getPosition() + (ent2->getSize() / static_cast<float> (2));
-
-    if(module(vectorModule(ent1center - ent2center)) < 
-       module(vectorModule(ent1->getSize() / static_cast<float>(2) + ent2->getSize() / static_cast<float>(2) ))){
-        return true;
-    }
-    return false;
-}
-
-void CollisionManager::treatWallCollision(){
-    float window_width = 800.0f;  // example
-    float window_height = 600.0f; // example
-
-    // For each Player
-    for(vector<Player*>::iterator it = players_vector.begin(); it != players_vector.end(); it++){
-        if(*it){
-            Player* p = (*it);
-            Vector2f pos = p->getPosition();
-            Vector2f vel = p->getSpeed();
-            // Left wall
-            if (pos.x < 0){
-                pos.x = 0;
-                vel.x = 0;
-            }    
-            // Right wall
-            if (pos.x + p->getSize().x > window_width){
-                pos.x = window_width - p->getSize().x;
-                vel.x = 0;
-            }   
-            // Top wall
-            if (pos.y < 0){
-                pos.y = 0;
-                vel.y = 0;
-            } 
-            // Bottom wall
-            if (pos.y + p->getSize().y > window_height){
-                pos.y = window_height - p->getSize().y;
-                vel.y = 0;
-            }
-            p->setPosition(pos);
-            p->setSpeed(vel);
-        }
-    }
-    // For each Enemy
-    for(vector<Enemy*>::iterator itEnemy = enemies_vector.begin(); itEnemy != enemies_vector.end(); itEnemy++){
-        if(*itEnemy){
-            Enemy* e = (*itEnemy);
-            Vector2f pos = e->getPosition();
-            Vector2f vel = e->getSpeed();
-            // Left wall
-            if (pos.x < 0){
-                pos.x = 0;
-                vel.x = 0;
-            }    
-            // Right wall
-            if (pos.x + e->getSize().x > window_width){
-                pos.x = window_width - e->getSize().x;
-                vel.x = 0;
-            }   
-            // Top wall
-            if (pos.y < 0){
-                pos.y = 0;
-                vel.y = 0;
-            } 
-            // Bottom wall
-            if (pos.y + e->getSize().y > window_height){
-                pos.y = window_height - e->getSize().y;
-                vel.y = 0;
-            }
-            e->setPosition(pos);
-            e->setSpeed(vel);
-        }
-    }
-    
 }
 
 void resolveCollisionCharacter(Character* a, Character* b) {
@@ -207,8 +132,90 @@ void resolveCollisionObstacle(Character* c, Obstacle* o) {
     }
 }
 
-void CollisionManager::treatPlayersCollision(){
+/* ------------------------------------------- */
+/*             COLLISION FUNCTIONS             */
+/* ------------------------------------------- */
+
+bool CollisionManager::verifyCollision(Entity* ent1, Entity* ent2) const{
+
+    Vector2f ent1center = ent1->getPosition() + (ent1->getSize() / static_cast<float> (2));    
+    Vector2f ent2center = ent2->getPosition() + (ent2->getSize() / static_cast<float> (2));
+
+    if(module(vectorModule(ent1center - ent2center)) < 
+       module(vectorModule(ent1->getSize() / static_cast<float>(2) + ent2->getSize() / static_cast<float>(2) ))){
+        return true;
+    }
+    return false;
+}
+
+void CollisionManager::treatWallCollision(){
+    float window_width = 800.0f;  // example
+    float window_height = 600.0f; // example
+
+    // For each Player
+    for(vector<Player*>::iterator it = players_vector.begin(); it != players_vector.end(); it++){
+        if(*it){
+            Player* p = (*it);
+            Vector2f pos = p->getPosition();
+            Vector2f vel = p->getSpeed();
+            // Left wall
+            if (pos.x < 0){
+                pos.x = 0;
+                vel.x = 0;
+            }    
+            // Right wall
+            if (pos.x + p->getSize().x > window_width){
+                pos.x = window_width - p->getSize().x;
+                vel.x = 0;
+            }   
+            // Top wall
+            if (pos.y < 0){
+                pos.y = 0;
+                vel.y = 0;
+            } 
+            // Bottom wall
+            if (pos.y + p->getSize().y > window_height){
+                pos.y = window_height - p->getSize().y;
+                vel.y = 0;
+            }
+            p->setPosition(pos);
+            p->setSpeed(vel);
+        }
+    }
+    // For each Enemy
+    for(vector<Enemy*>::iterator itEnemy = enemies_vector.begin(); itEnemy != enemies_vector.end(); itEnemy++){
+        if(*itEnemy){
+            Enemy* e = (*itEnemy);
+            Vector2f pos = e->getPosition();
+            Vector2f vel = e->getSpeed();
+            // Left wall
+            if (pos.x < 0){
+                pos.x = 0;
+                vel.x = 0;
+            }    
+            // Right wall
+            if (pos.x + e->getSize().x > window_width){
+                pos.x = window_width - e->getSize().x;
+                vel.x = 0;
+            }   
+            // Top wall
+            if (pos.y < 0){
+                pos.y = 0;
+                vel.y = 0;
+            } 
+            // Bottom wall
+            if (pos.y + e->getSize().y > window_height){
+                pos.y = window_height - e->getSize().y;
+                vel.y = 0;
+            }
+            e->setPosition(pos);
+            e->setSpeed(vel);
+        }
+    }
     
+}
+
+void CollisionManager::treatPlayersCollision(){
     if(verifyCollision(players_vector[0] , players_vector[1])){
         resolveCollisionCharacter(players_vector[0], players_vector[1]);
     }
@@ -274,6 +281,10 @@ void CollisionManager::treatProjectilesCollision(){
     }
 }
 
+/* ------------------------------------------- */
+/*                ADD ENTITIES                 */
+/* ------------------------------------------- */
+
 void CollisionManager::addEnemy(Enemy *e){
     enemies_vector.push_back(e);
 }
@@ -289,6 +300,10 @@ void CollisionManager::addProjectile(Projectile *p){
 void CollisionManager::addPlayer(Player* p){
     players_vector.push_back(p);
 }
+
+/* ------------------------------------------- */
+/*                   EXECUTE                   */
+/* ------------------------------------------- */
 
 void CollisionManager::execute(){
     treatEnemiesCollision();

@@ -37,25 +37,9 @@ Player::~Player() {
     projectiles_list.clear();
 }
 
-void Player::shoot(){
-    if(player_num == 1){
-        if(Keyboard::isKeyPressed(sf::Keyboard::C)){
-                // Shoot after 0.5 sec
-            if(shoot_delay >= 0.5f){
-                Projectile* p = new Projectile(position.x, position.y, faced_right * 10.f);
-                if(p){
-                    addProjectile(p);
-                }else cout << "Projectile not allocated." << endl;
-                shoot_delay = 0.f;
-            }
-        }
-    }
-    reload();
-}
-
-void Player::addProjectile(Projectile* p){
-    projectiles_list.push_back(p);
-}
+/* ------------------------------------------- */
+/*                OWN FUNCTIONS                */
+/* ------------------------------------------- */
 
 void Player::move() {
 
@@ -63,6 +47,7 @@ void Player::move() {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
             if(speed.y == 0)
                 speed.y += -(15);
+            in_air = true;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
             speed.x += -aceleration * pGM->getdt();
@@ -76,6 +61,7 @@ void Player::move() {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
             if(speed.y == 0)
                 speed.y += -(15);
+            in_air = true;
         }
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
             speed.x += -aceleration * pGM->getdt();
@@ -128,6 +114,35 @@ void Player::execute() {
     move();
     draw();
     shoot();
+    shootProjectiles();
+}
+
+void Player::loseHealth(int damage){
+    health -= damage;
+}
+
+/* ------------------------------------------- */
+/*                GUN FUNCTIONS                */
+/* ------------------------------------------- */
+
+void Player::shoot(){
+    if(player_num == 1){
+        if(Keyboard::isKeyPressed(sf::Keyboard::C)){
+            // Shoot after 0.5 sec
+            if(shoot_delay >= 0.5f){
+                Projectile* p = new Projectile(position.x, position.y, faced_right * 10.f);
+                if(p){
+                    addProjectile(p);
+                }else cout << "Projectile not allocated." << endl;
+                shoot_delay = 0.f;
+            }
+        }
+    }
+    // Increment the shoot_delay
+    reload();
+}
+
+void Player::shootProjectiles(){
     for(list<Projectile*>::iterator it = projectiles_list.begin(); it != projectiles_list.end(); it++){
         if(*it){
             if(!(*it)->getActive()){
@@ -141,14 +156,18 @@ void Player::execute() {
     }
 }
 
-void Player::loseHealth(int damage){
-    health -= damage;
-}
-
-int Player::getHealth(){
-    return health;
+void Player::addProjectile(Projectile* p){
+    projectiles_list.push_back(p);
 }
 
 void Player::reload(){
     shoot_delay += pGM->getdt();
+}
+
+/* ------------------------------------------- */
+/*                 GETS & SETS                 */
+/* ------------------------------------------- */
+
+int Player::getHealth(){
+    return health;
 }

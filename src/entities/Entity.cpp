@@ -7,14 +7,22 @@ Entity::Entity(float x, float y) :
 
 Entity::~Entity() {}
 
-void Entity::draw() {
-    pGM->draw(this);
-}
+/* ------------------------------------------- */
+/*                OWN FUNCTIONS                */
+/* ------------------------------------------- */
 
 Drawable& Entity::getDrawable() {
     sprite.setPosition(position);
     return sprite;
 }
+
+void Entity::draw() {
+    pGM->draw(this);
+}
+
+/* ------------------------------------------- */
+/*                 GETS & SETS                 */
+/* ------------------------------------------- */
 
 Vector2f Entity::getPosition() const{
     return position;

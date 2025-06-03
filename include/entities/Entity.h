@@ -7,6 +7,7 @@ using namespace sf;
 class Entity : public Ente {
     
     protected:
+        /* ------ STATUS ------- */
         Vector2f position;
 
     public:
@@ -14,9 +15,13 @@ class Entity : public Ente {
         virtual ~Entity();
 
         virtual void execute() = 0;
-        virtual void draw();
         virtual void collide() = 0;
-        virtual Drawable& getDrawable();
+
+        /* ---- OWN FUNCTIONS ---- */
+        void draw();
+        Drawable& getDrawable();
+
+        /* ----- GETS & SETS ----- */
         Vector2f getPosition() const;
         void setPosition(Vector2f pos);
 
