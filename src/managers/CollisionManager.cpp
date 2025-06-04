@@ -323,24 +323,39 @@ void CollisionManager::treatObstaclesCollision(){
     }
 }
 
-void CollisionManager::treatProjectilesCollision(){
-    // Treat for each player
-    for(vector<Player*>::iterator it = players_vector.begin(); it != players_vector.end(); it++){
-        if((*it)){
-            for(set<Projectile*>::iterator itProjectile = projectiles_set.begin(); itProjectile != projectiles_set.end(); itProjectile++){
-                if(*itProjectile){
-                    if(verifyCollision( (*it) , (*itProjectile) ) ){
-                        (*it)->collide();
-                        (*itProjectile)->collide();
-                    }
+void CollisionManager::treatProjectilesCollision() {
+    for (std::set<Projectile*>::iterator itProjectile = projectiles_set.begin(); itProjectile != projectiles_set.end(); ) {
+        Projectile* proj = *itProjectile;
+        bool collided = false;
+
+        // Enemies collision
+        for (std::vector<Enemy*>::iterator itEnemy = enemies_vector.begin(); itEnemy != enemies_vector.end(); ++itEnemy) {
+            if (*itEnemy && verifyCollision(proj, *itEnemy)) {
+                collided = true;
+                break;
+            }
+        }
+
+        // Obstacles collision
+        if (!collided) {
+            for (std::list<Obstacle*>::iterator itObstacle = obstacles_list.begin(); itObstacle != obstacles_list.end(); ++itObstacle) {
+                if (*itObstacle && verifyCollision(proj, *itObstacle)) {
+                    collided = true;
+                    break;
                 }
             }
         }
+
+        if (collided) {
+            proj->desactive();
+        }
+        
+        ++itProjectile;
     }
 }
 
 /* ------------------------------------------- */
-/*                ADD ENTITIES                 */
+/*                   ENTITIES                  */
 /* ------------------------------------------- */
 
 void CollisionManager::addEnemy(Enemy *e){
@@ -357,6 +372,13 @@ void CollisionManager::addProjectile(Projectile *p){
 
 void CollisionManager::addPlayer(Player* p){
     players_vector.push_back(p);
+}
+
+void CollisionManager::removeProjectile(Projectile* p) {
+    auto it = projectiles_set.find(p);
+    if (it != projectiles_set.end()) {
+        projectiles_set.erase(it);
+    }
 }
 
 /* ------------------------------------------- */

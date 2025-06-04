@@ -25,7 +25,10 @@ class Player : public Character {
         void execute();
         void move();
         void collide();
-        
+        void handlePlayer1Controls(float dt, float jumpForce);
+        void handlePlayer2Controls(float dt, float jumpForce);
+        void applyFriction(float dt);
+
         /* --- GUN FUNCTIONS --- */
         void shoot();
         void addProjectile(Projectile* p);

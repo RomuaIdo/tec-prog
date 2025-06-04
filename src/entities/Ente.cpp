@@ -1,12 +1,7 @@
 #include "../../include/entities/Ente.h"
 
-GraphicsManager* Ente::pGM = GraphicsManager::getInstance();
 Ente::Ente():
     sprite(), texture(){
-}
-
-Ente::~Ente() {
-    pGM = nullptr;
 }
 
 /* ------------------------------------------- */
@@ -47,3 +42,8 @@ void Ente::setPosition(Vector2f pos){
     sprite.setPosition(pos);
 }
 
+void Ente::setGraphicsManager(GraphicsManager* pGM) {
+    Ente::pGM = pGM;
+}
+
+GraphicsManager* Ente::pGM = nullptr;

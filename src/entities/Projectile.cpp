@@ -45,3 +45,7 @@ bool Projectile::getActive(){
     return active; 
 }
 
+void Projectile::desactive(){
+    active = false;
+}
+

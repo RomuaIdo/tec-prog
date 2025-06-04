@@ -16,8 +16,9 @@ class Ente {
         Vector2f size;
         
     public:
+
         Ente();
-        virtual ~Ente();
+        virtual ~Ente() = default;
         
         virtual void execute() = 0;
 
@@ -30,6 +31,7 @@ class Ente {
         Vector2f getSize() const;
         virtual Vector2f getPosition() const;
         virtual void setPosition(Vector2f pos);
+        static void setGraphicsManager(GraphicsManager* pGM); 
 };
 
 #endif

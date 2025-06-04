@@ -19,10 +19,12 @@ class Projectile : public Entity{
 
         /* --- OWN FUNCTIONS --- */
         void collide();
-
         void execute();
         void move();
+
+        /* ---- GETS & SETS ---- */
         bool getActive();
+        void desactive();
 
 };  
 

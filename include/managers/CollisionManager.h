@@ -33,6 +33,8 @@ class CollisionManager{
         
         ~CollisionManager();
         static CollisionManager* getInstance();
+        void execute();
+
 
         /* ------- COLLISION ------- */
         bool verifyCollision(Entity* ent1, Entity* ent2) const;
@@ -42,14 +44,13 @@ class CollisionManager{
         void treatPlayersCollision();
         void treatWallCollision();
 
-        /* ------ ADD ENTITIES ------ */
+        /* ------ ENTITIES ------ */
         void addPlayer(Player* p);
         void addEnemy(Enemy* e);
         void addObstacle(Obstacle* o);
         void addProjectile(Projectile* p);
-
+        void removeProjectile(Projectile* p);
         
-        void execute();
 
 };
 

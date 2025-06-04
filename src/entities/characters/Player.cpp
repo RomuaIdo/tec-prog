@@ -15,7 +15,7 @@ Player::Player(float x, float y, const float acel, int life, float coef, int s, 
             std::cerr << "Failed to load PlayerSprite.png!" << std::endl;
         }  
     }
-    
+
     configSprite();
 }
 
@@ -34,68 +34,76 @@ Player::~Player() {
 /* ------------------------------------------- */
 
 void Player::move() {
+    const float dt = pGM->getdt();
+    const float jumpForce = 15.0f;
+    const float max_vel = 15.0f;
 
     if (player_num == 1) {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
-            if(speed.y == 0 && !in_air)
-                speed.y += -(15);
+        handlePlayer1Controls(dt, jumpForce);
+    } else {
+        handlePlayer2Controls(dt, jumpForce);
+    }
+
+    // Limits for the horizontal velocity
+    if (speed.x > max_vel)
+        speed.x = max_vel;
+    if (speed.x < -max_vel)
+        speed.x = -max_vel;
+
+    applyFriction(dt);
+    moveCharacter();
+}
+
+void Player::handlePlayer1Controls(float dt, float jumpForce) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+        if (!in_air) {
+            speed.y = -jumpForce;
             in_air = true;
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)){
-            speed.x += -aceleration * pGM->getdt();
-            faced_right = -1;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+        speed.x -= aceleration * dt;
+        faced_right = -1;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+        speed.x += aceleration * dt;
+        faced_right = 1;
+    }
+}
+
+void Player::handlePlayer2Controls(float dt, float jumpForce) {
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+        if (!in_air) {
+            speed.y = -jumpForce;
+            in_air = true;
         }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)){
-            speed.x += aceleration * pGM->getdt();
-            faced_right = 1;
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+        speed.x -= aceleration * dt;
+        faced_right = 1;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+        speed.x += aceleration * dt;
+        faced_right = -1;
+    }
+}
+
+void Player::applyFriction(float dt) {
+    if (speed.x > 0) {
+        friction.x = -20.0f * friction_coef;
+        if (speed.x + friction.x * dt < 0) {
+            speed.x = 0;
+        }
+    } else if (speed.x < 0) {
+        friction.x = 20.0f * friction_coef;
+        if (speed.x + friction.x * dt > 0) {
+        speed.x = 0;
         }
     } else {
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
-            if(speed.y == 0 && !in_air)
-                speed.y += -(15);
-            in_air = true;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)){
-            speed.x += -aceleration * pGM->getdt();
-            faced_right = -1;
-        }
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)){
-            speed.x += aceleration * pGM->getdt();
-            faced_right = 1;
-        }
-    }
-
-    const float vel_max = 15.f;
-
-    // See if velocity ultrapassed vel_max
-    if (speed.x > vel_max){
-        speed.x = vel_max;
-    }
-    if (speed.x < -vel_max){
-        speed.x = -vel_max;
-    }
-
-    // Apply friction
-    if(speed.x > 0){
-        friction.x = -20.f * friction_coef;
-        if(speed.x + friction.x * pGM->getdt() < 0) {
-           speed.x = 0;
-            friction.x = 0;
-        }
-    }
-    else if(speed.x < 0){
-        friction.x = 20.f * friction_coef;
-        if(speed.x + friction.x * pGM->getdt() > 0) {
-            speed.x = 0;
-            friction.x = 0;
-        }
-    }
-    else
         friction.x = 0;
-        
-    speed += friction * pGM->getdt();
-    moveCharacter();
-    
+    }
+    speed += friction * dt;
 }
 
 void Player::collide(){
@@ -114,32 +122,39 @@ void Player::execute() {
 /* ------------------------------------------- */
 
 void Player::shoot(){
-    if(player_num == 1){
-        if(Keyboard::isKeyPressed(sf::Keyboard::C)){
-            // Shoot after 0.5 sec
-            if(shoot_delay >= 0.5f){
-                Projectile* p = new Projectile(position.x + faced_right*size.x, position.y, faced_right * 10.f);
-                if(p){
+    if (player_num == 1) {
+        if (Keyboard::isKeyPressed(sf::Keyboard::C)) {
+            // Shoot after 0.5 seconds
+            if (shoot_delay >= 0.5f) {
+                Projectile *p = new Projectile(
+                    position.x + (size.x * faced_right), position.y, faced_right * 10.f);
+
+                if (p) {
                     addProjectile(p);
-                }else cout << "Projectile not allocated." << endl;
+                    // Register the projectile in the CollisionManager
+                    CollisionManager::getInstance()->addProjectile(p); 
+                }
                 shoot_delay = 0.f;
             }
         }
     }
-    // Increment the shoot_delay
     reload();
 }
 
 void Player::shootProjectiles(){
-    for(list<Projectile*>::iterator it = projectiles_list.begin(); it != projectiles_list.end(); it++){
-        if(*it){
-            if(!(*it)->getActive()){
-                // delete (*it); // essa porra da seg fault
-                (*it) = nullptr;
-                it = projectiles_list.erase(it);
-                if(it == projectiles_list.end()) break;
-            }else
-                (*it)->execute();
+    list<Projectile *>::iterator it = projectiles_list.begin();
+    while (it != projectiles_list.end()) {
+        Projectile *p = *it;
+        if (p && p->getActive()) {
+            p->execute();
+            ++it;
+        } else {
+            // Remove from CollisionManager before deleting
+            CollisionManager::getInstance()->removeProjectile(p);
+
+            // Delete the projectile
+            delete p; 
+            it = projectiles_list.erase(it);
         }
     }
 }
