@@ -69,13 +69,16 @@ void resolveCollisionCharacter(Character* a, Character* b) {
             if (dx > 0) {
                 aPos.x += push;
                 bPos.x -= push;
+                a->setSpeed({0.f + push, a->getSpeed().y});
+                b->setSpeed({0.f - push, b->getSpeed().y});
             } else {
                 aPos.x -= push;
                 bPos.x += push;
+                a->setSpeed({0.f - push, a->getSpeed().y});
+                b->setSpeed({0.f + push, b->getSpeed().y});
             }
 
-            a->setSpeed({0.f + push, a->getSpeed().y});
-            b->setSpeed({0.f - push, b->getSpeed().y});
+            
 
         /* If intersection in y is less then intersection in x
         /*  means that one is on top of the other             */
@@ -147,12 +150,15 @@ void resolveCollisionObstacle(Character* c, Obstacle* o) {
             /* To push the character the amount he is inside */                       
             float push = abs(intersection.x / 2.f);
 
-            if (dx > 0) 
+            if (dx > 0) {
                 cPos.x += push;
-            else 
+                c->setSpeed({0.f + push, c->getSpeed().y});
+            }
+            else{
                 cPos.x -= push;
+                c->setSpeed({0.f - push, c->getSpeed().y});
+            } 
 
-            c->setSpeed({0.f + push, c->getSpeed().y});
 
         /* If intersection in y is less then intersection in x
         /*  means that character collided in y with obstacle */

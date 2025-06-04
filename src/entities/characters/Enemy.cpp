@@ -58,7 +58,10 @@ void Enemy::move(){
 
     speed.x += closer_direction.x * pGM->getdt();
     speed.y += closer_direction.y;
-    
+    if ( abs(speed.x) > 10.f){
+        speed.x = (speed.x/abs(speed.x)) * 10.f;
+    }
+
     moveCharacter();
 }
 
