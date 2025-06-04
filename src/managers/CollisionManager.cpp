@@ -35,99 +35,140 @@ float vectorModule(Vector2f vector){
     return sqrt(vector.x*vector.x + vector.y*vector.y);
 }
 
-float module(float val){
-    if(val < 0) return -val;
-    return val;
-}
-
 void resolveCollisionCharacter(Character* a, Character* b) {
     Vector2f aPos = a->getPosition();
     Vector2f bPos = b->getPosition();
     Vector2f aSize = a->getSize();
     Vector2f bSize = b->getSize();
 
-    float deltaX = (aPos.x + aSize.x / 2) - (bPos.x + bSize.x / 2);
-    float deltaY = (aPos.y + aSize.y / 2) - (bPos.y + bSize.y / 2);
+    float dx = (aPos.x - bPos.x);
+    float dy = (aPos.y - bPos.y);
+    // Vector2f variation = Vector2f(dx, dy);
 
-    float intersectX = std::abs(deltaX) - (aSize.x + bSize.x) / 2;
-    float intersectY = std::abs(deltaY) - (aSize.y + bSize.y) / 2;
+    /* If dx > 0 -> a in b's right  */
+    
+    /* If dy > 0 -> a is below b    */
 
-    if (intersectX < 0.0f && intersectY < 0.0f) {
-        if (std::abs(intersectX) < std::abs(intersectY)) {
-            float push = intersectX / 2.f;
-            if (deltaX > 0) {
-                aPos.x -= push;
-                bPos.x += push;
-            } else {
+    /* The intersection between a and b ,
+    *   if they collide, the vector will be
+    *   negative in x and y                */
+
+    Vector2f intersection = Vector2f( abs(dx) - (aSize.x + bSize.x), 
+                                      abs(dy) - (aSize.y + bSize.y) );
+
+    if (intersection.x < 0.0f && intersection.y < 0.0f) {
+
+        /* If intersection in x is less then intersection in y
+        /*  means that they are side by side                 */
+
+        if (std::abs(intersection.x) < std::abs(intersection.y)) {
+            
+            /* To push the character the amount he is inside */                       
+            float push = abs(intersection.x / 2.f);
+
+            if (dx > 0) {
                 aPos.x += push;
                 bPos.x -= push;
-            }
-            a->setSpeed({0.f, a->getSpeed().y});
-            b->setSpeed({0.f, b->getSpeed().y});
-        } else {
-            float push = intersectY / 2.f;
-            if (deltaY > 0) {
-                // a is above b
-                aPos.y -= push;
-                bPos.y += push;
-                if (a->getSpeed().y > 0)  // only cancel downward movement
-                    a->setSpeed({a->getSpeed().x, 0.f});
-                if (b->getSpeed().y > 0)
-                    b->setSpeed({b->getSpeed().x, 0.f});
             } else {
-                // a is below b (jumping up)
+                aPos.x -= push;
+                bPos.x += push;
+            }
+
+            a->setSpeed({0.f + push, a->getSpeed().y});
+            b->setSpeed({0.f - push, b->getSpeed().y});
+
+        /* If intersection in y is less then intersection in x
+        /*  means that one is on top of the other             */
+
+        } else {
+
+            /* To push the character the amount he is inside */ 
+            float push = abs(intersection.y / 2.f);
+
+            /* a is below b */
+            if (dy > 0) {
+
+                /* b can jump */
+                b->changeInAir();
+
                 aPos.y += push;
                 bPos.y -= push;
-                // don't cancel a's velocity — it's jumping
-                if (a->getSpeed().y > 0)  // only cancel downward movement
-                    a->setSpeed({a->getSpeed().x, 0.f});
-                if (b->getSpeed().y > 0)
-                    b->setSpeed({b->getSpeed().x, 0.f});
+
+            /* a is on top of b */
+            } else {
+
+                /* a can jump */
+                a->changeInAir();
+
+                aPos.y -= push;
+                bPos.y += push;
             }
         }
-
         a->setPosition(aPos);
         b->setPosition(bPos);
     }
 }
 
 void resolveCollisionObstacle(Character* c, Obstacle* o) {
-    Vector2f cPos =  c->getPosition();
-    Vector2f oPos =  o->getPosition();
+    Vector2f cPos = c->getPosition();
+    Vector2f oPos = o->getPosition();
     Vector2f cSize = c->getSize();
     Vector2f oSize = o->getSize();
 
-    float deltaX = (cPos.x + cSize.x / 2) - (oPos.x + oSize.x / 2);
-    float deltaY = (cPos.y + cSize.y / 2) - (oPos.y + oSize.y / 2);
+    float dx = (cPos.x - oPos.x);
+    float dy = (cPos.y - oPos.y);
+    // Vector2f variation = Vector2f(dx, dy);
 
-    float intersectX = std::abs(deltaX) - (cSize.x + oSize.x) / 2;
-    float intersectY = std::abs(deltaY) - (cSize.y + oSize.y) / 2;
+    /* If dx > 0 -> a in b's right  */
+    
+    /* If dy > 0 -> a is below b    */
 
-    if (intersectX < 0.0f && intersectY < 0.0f) {
-        if (std::abs(intersectX) < std::abs(intersectY)) {
-            float push = intersectX;
-            if (deltaX > 0) {
-                cPos.x -= push;
-            } else {
+    /* The intersection between a and b ,
+    *   if they collide, the vector will be
+    *   negative in x and y                */
+
+    Vector2f intersection = Vector2f( abs(dx) - (cSize.x + oSize.x), 
+                                      abs(dy) - (cSize.y + oSize.y) );
+
+    if (intersection.x < 0.0f && intersection.y < 0.0f) {
+
+        /* If intersection in x is less then intersection in y
+        /*  means that they are side by side                 */
+
+        if (std::abs(intersection.x) < std::abs(intersection.y)) {
+            
+            /* To push the character the amount he is inside */                       
+            float push = abs(intersection.x / 2.f);
+
+            if (dx > 0) 
                 cPos.x += push;
-            }
-            c->setSpeed({0.f, c->getSpeed().y});
+            else 
+                cPos.x -= push;
+
+            c->setSpeed({0.f + push, c->getSpeed().y});
+
+        /* If intersection in y is less then intersection in x
+        /*  means that character collided in y with obstacle */
+
         } else {
-            float push = intersectY;
-            if (deltaY > 0) {
-                // a is above b
-                cPos.y -= push;
-                if (c->getSpeed().y > 0)  // only cancel downward movement
-                    c->setSpeed({c->getSpeed().x, 0.f});
-                } else {
-                // a is below b (jumping up)
+
+            /* To push the character the amount he is inside */ 
+            float push = abs(intersection.y / 2.f);
+
+            /* c is below o */
+            if (dy > 0) {
+
                 cPos.y += push;
-                // don't cancel a's velocity — it's jumping
-                if (c->getSpeed().y > 0)  // only cancel downward movement
-                    c->setSpeed({c->getSpeed().x, 0.f});
+
+            /* c is on top of o */
+            } else {
+
+                /* a can jump */
+                c->changeInAir();
+
+                cPos.y -= push;
             }
         }
-
         c->setPosition(cPos);
     }
 }
@@ -138,11 +179,8 @@ void resolveCollisionObstacle(Character* c, Obstacle* o) {
 
 bool CollisionManager::verifyCollision(Entity* ent1, Entity* ent2) const{
 
-    Vector2f ent1center = ent1->getPosition() + (ent1->getSize() / static_cast<float> (2));    
-    Vector2f ent2center = ent2->getPosition() + (ent2->getSize() / static_cast<float> (2));
-
-    if(module(vectorModule(ent1center - ent2center)) < 
-       module(vectorModule(ent1->getSize() / static_cast<float>(2) + ent2->getSize() / static_cast<float>(2) ))){
+    if(abs( vectorModule(ent1->getPosition() - ent2->getPosition()) ) < 
+       abs( vectorModule(ent1->getSize()     + ent2->getSize()) )){
         return true;
     }
     return false;
@@ -158,26 +196,29 @@ void CollisionManager::treatWallCollision(){
             Player* p = (*it);
             Vector2f pos = p->getPosition();
             Vector2f vel = p->getSpeed();
+            Vector2f size = p->getSize(); 
             // Left wall
-            if (pos.x < 0){
+            if (pos.x - size.x < 0){
                 pos.x = 0;
                 vel.x = 0;
             }    
             // Right wall
-            if (pos.x + p->getSize().x > window_width){
-                pos.x = window_width - p->getSize().x;
+            if (pos.x + size.x > window_width){
+                pos.x = window_width - size.x;
                 vel.x = 0;
             }   
             // Top wall
-            if (pos.y < 0){
+            if (pos.y - size.y < 0){
                 pos.y = 0;
                 vel.y = 0;
             } 
             // Bottom wall
-            if (pos.y + p->getSize().y > window_height){
-                pos.y = window_height - p->getSize().y;
+            if (pos.y + size.y > window_height){
+                pos.y = window_height - size.y;
                 vel.y = 0;
+                p->changeInAir();
             }
+
             p->setPosition(pos);
             p->setSpeed(vel);
         }
@@ -188,26 +229,29 @@ void CollisionManager::treatWallCollision(){
             Enemy* e = (*itEnemy);
             Vector2f pos = e->getPosition();
             Vector2f vel = e->getSpeed();
+            Vector2f size = e->getSize();
             // Left wall
-            if (pos.x < 0){
+            if (pos.x - size.x < 0){
                 pos.x = 0;
                 vel.x = 0;
             }    
             // Right wall
-            if (pos.x + e->getSize().x > window_width){
-                pos.x = window_width - e->getSize().x;
+            if (pos.x + size.x > window_width){
+                pos.x = window_width - size.x;
                 vel.x = 0;
             }   
             // Top wall
-            if (pos.y < 0){
+            if (pos.y - size.y < 0){
                 pos.y = 0;
                 vel.y = 0;
             } 
             // Bottom wall
-            if (pos.y + e->getSize().y > window_height){
-                pos.y = window_height - e->getSize().y;
+            if (pos.y + size.y > window_height){
+                pos.y = window_height - size.y;
                 vel.y = 0;
+                e->changeInAir();
             }
+            
             e->setPosition(pos);
             e->setSpeed(vel);
         }

@@ -3,7 +3,9 @@
 GraphicsManager* Ente::pGM = GraphicsManager::getInstance();
 Ente::Ente():
     sprite(), texture(){
-
+    sprite.setOrigin(Vector2f(sprite.getPosition().x + sprite.getGlobalBounds().width  / static_cast<float> (2), 
+                              sprite.getPosition().y + sprite.getGlobalBounds().height / static_cast<float> (2)));
+    size = Vector2f(sprite.getGlobalBounds().width / 2.f, sprite.getGlobalBounds().height / 2.f);
 }
 
 Ente::~Ente() {

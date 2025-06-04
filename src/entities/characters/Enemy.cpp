@@ -13,8 +13,8 @@ Enemy::Enemy(float x, float y, const float acel, int life, float coef , int s):
     size.x = sprite.getLocalBounds().width;
     size.y = sprite.getLocalBounds().height;
     sprite.setScale(    
-    size.x / sprite.getLocalBounds().width,
-    size.y / sprite.getLocalBounds().height
+        size.x / sprite.getLocalBounds().width,
+        size.y / sprite.getLocalBounds().height
     );
 
     players_list.clear();
@@ -55,7 +55,7 @@ void Enemy::move(){
         }
     }
 
-    if(closer_direction.y < 0 && speed.y == 0.f){
+    if(closer_direction.y < 0 && speed.y == 0.f && !in_air){
         closer_direction.y = -10.f;
     }else closer_direction.y = 0.f;
     

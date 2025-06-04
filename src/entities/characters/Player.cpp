@@ -24,6 +24,10 @@ Player::Player(float x, float y, const float acel, int life, float coef, int s, 
         size.x / sprite.getLocalBounds().width,
         size.y / sprite.getLocalBounds().height
     );
+
+    sprite.setOrigin(Vector2f(sprite.getPosition().x + sprite.getGlobalBounds().width  / static_cast<float> (2), 
+                              sprite.getPosition().y + sprite.getGlobalBounds().height / static_cast<float> (2)));
+    size = Vector2f(sprite.getGlobalBounds().width / 2.f, sprite.getGlobalBounds().height / 2.f);
     
 }
 
@@ -45,7 +49,7 @@ void Player::move() {
 
     if (player_num == 1) {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)){
-            if(speed.y == 0)
+            if(speed.y == 0 && !in_air)
                 speed.y += -(15);
             in_air = true;
         }
@@ -59,7 +63,7 @@ void Player::move() {
         }
     } else {
         if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)){
-            if(speed.y == 0)
+            if(speed.y == 0 && !in_air)
                 speed.y += -(15);
             in_air = true;
         }

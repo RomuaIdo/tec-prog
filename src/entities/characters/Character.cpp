@@ -43,5 +43,5 @@ bool Character::getInAir() const{
 }
 
 void Character::changeInAir(){
-    in_air = !in_air;
+    in_air = false;
 }
