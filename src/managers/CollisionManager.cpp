@@ -332,7 +332,6 @@ void CollisionManager::treatProjectilesCollision() {
     }
 }
 
-// Adicione esta função para limpeza
 void CollisionManager::removeProjectile(Projectile* p) {
     auto it = projectiles_set.find(p);
     if (it != projectiles_set.end()) {
@@ -360,7 +359,7 @@ void CollisionManager::addPlayer(Player *p) { players_vector.push_back(p); }
 void CollisionManager::execute() {
   treatEnemiesCollision();
   treatObstaclesCollision();
-  //treatProjectilesCollision();
+  treatProjectilesCollision();
   if (players_vector.size() > 1)
     treatPlayersCollision();
   treatWallCollision();
