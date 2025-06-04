@@ -12,7 +12,7 @@ class Entity : public Ente {
 
     public:
         Entity(float x, float y);
-        virtual ~Entity();
+        virtual ~Entity() = default;
 
         virtual void execute() = 0;
         virtual void collide() = 0;

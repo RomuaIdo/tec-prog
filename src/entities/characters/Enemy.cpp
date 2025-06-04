@@ -56,20 +56,20 @@ void Enemy::move(){
         }
     }
 
-    if(closer_direction.y < 0 && speed.y == 0.f){
+    if(closer_direction.y < 0 && velocity.y == 0.f){
         closer_direction.y = -10.f;
     }else closer_direction.y = 0.f;
     
 
-    speed.x += closer_direction.x * pGM->getdt();
-    speed.y += closer_direction.y;
+    velocity.x += closer_direction.x * pGM->getdt();
+    velocity.y += closer_direction.y;
     
     moveCharacter();
 }
 
 
 void Enemy::collide(){
-    speed = Vector2f(0.f,0.f);
+    velocity = Vector2f(0.f,0.f);
 }
 
 /* ------------------------------------------- */

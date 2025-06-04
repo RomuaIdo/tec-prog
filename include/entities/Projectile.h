@@ -15,7 +15,7 @@ class Projectile : public Entity{
     
     public:
         Projectile(float x, float y, float vel = 10.f);
-        ~Projectile();
+        ~Projectile() override = default;
 
         /* --- OWN FUNCTIONS --- */
         void collide();
@@ -23,7 +23,7 @@ class Projectile : public Entity{
         void execute();
         void move();
         bool getActive();
-
+        void setActive(bool Active);
 };  
 
 #endif

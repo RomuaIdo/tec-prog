@@ -27,7 +27,6 @@ class GraphicsManager {
     public:
 
         ~GraphicsManager();
-
         GraphicsManager(const GraphicsManager&) = delete;
         GraphicsManager& operator=(const GraphicsManager&) = delete;
 

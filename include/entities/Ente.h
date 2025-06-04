@@ -17,7 +17,7 @@ class Ente {
         
     public:
         Ente();
-        virtual ~Ente();
+        virtual ~Ente() = default;
         
         virtual void execute() = 0;
 

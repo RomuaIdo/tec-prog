@@ -1,10 +1,11 @@
 #include "../../../include/entities/characters/Player.h"
+#include "../../../include/managers/CollisionManager.h"
 #include <SFML/Window.hpp>
 
 Player::Player(float x, float y, const float acel, int life, float coef, int s,
                int p_num, const float v_max)
-    : Character(x, y, acel, life, coef, s), projectiles_list(),
-      player_num(p_num), score(0), vel_max(v_max) {
+    : Character(x, y, acel, life, coef, s), player_num(p_num), score(0),
+      vel_max(v_max), projectiles_list() {
   projectiles_list.clear();
 
   if (p_num == 1) {
@@ -40,101 +41,103 @@ Player::~Player() {
 /*                OWN FUNCTIONS                */
 /* ------------------------------------------- */
 
-float modulee(float x) {
-  if (x < 0)
-    return -x;
-  return x;
-}
-
-
 void Player::move() {
+  Ente::setGraphicsManager(GraphicsManager::getInstance());
+  const float dt = pGM->getdt();
+  const float jumpForce = 15.0f;
+  const float maxVel = 15.0f;
 
   if (player_num == 1) {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-      if (isOnGround()) {
-        speed.y += -(15);
-        setOnGround(false);
-      }
-
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        speed.x += -aceleration * pGM->getdt();
-      }
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-        speed.x += aceleration * pGM->getdt();
-      }
-    } else {
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-        if (speed.y == 0)
-          speed.y += -(15);
-      }
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-        speed.x += -aceleration * pGM->getdt();
-      }
-      if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-        speed.x += aceleration * pGM->getdt();
-      }
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-      speed.x += -aceleration * pGM->getdt();
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-      speed.x += aceleration * pGM->getdt();
+    handlePlayer1Controls(dt, jumpForce);
   } else {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-      if (isOnGround()) {
-        speed.y += -(15);
-        setOnGround(false);
-      }
-    }
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-      speed.x += -aceleration * pGM->getdt();
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-      speed.x += aceleration * pGM->getdt();
+    handlePlayer2Controls(dt, jumpForce);
   }
 
-  const float vel_max = 15.f;
+  // Limits for the horizontal velocity
+  if (velocity.x > maxVel)
+    velocity.x = maxVel;
+  if (velocity.x < -maxVel)
+    velocity.x = -maxVel;
 
-  // See if velocity ultrapassed vel_max
-  if (speed.x > vel_max) {
-    speed.x = vel_max;
-  }
-  if (speed.x < -vel_max) {
-    speed.x = -vel_max;
-  }
-
-  // Apply friction
-  if (speed.x > 0) {
-    friction.x = -20.f * friction_coef;
-    if (speed.x + friction.x * pGM->getdt() < 0) {
-      speed.x = 0;
-      friction.x = 0;
-    }
-  } else if (speed.x < 0) {
-    friction.x = 20.f * friction_coef;
-    if (speed.x + friction.x * pGM->getdt() > 0) {
-      speed.x = 0;
-      friction.x = 0;
-    }
-  } else
-    friction.x = 0;
-
-  speed += friction * pGM->getdt();
+  applyFriction(dt);
   moveCharacter();
 }
 
-void Player::collide() { speed = Vector2f(speed.x * -0.1f, speed.y * -0.1f); }
+void Player::handlePlayer1Controls(float dt, float jumpForce) {
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+    if (isOnGround()) {
+      velocity.y = -jumpForce;
+      setOnGround(false);
+    }
+  }
+
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+    velocity.x -= aceleration * dt;
+    faced_right = false;
+  }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+    velocity.x += aceleration * dt;
+    faced_right = true;
+  }
+}
+
+void Player::handlePlayer2Controls(float dt, float jumpForce) {
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+    if (isOnGround()) {
+      velocity.y = -jumpForce;
+      setOnGround(false);
+    }
+  }
+
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+    velocity.x -= aceleration * dt;
+    faced_right = false;
+  }
+  if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+    velocity.x += aceleration * dt;
+    faced_right = true;
+  }
+}
+
+void Player::applyFriction(float dt) {
+  if (velocity.x > 0) {
+    friction.x = -20.0f * friction_coef;
+    if (velocity.x + friction.x * dt < 0) {
+      velocity.x = 0;
+    }
+  } else if (velocity.x < 0) {
+    friction.x = 20.0f * friction_coef;
+    if (velocity.x + friction.x * dt > 0) {
+      velocity.x = 0;
+    }
+  } else {
+    friction.x = 0;
+  }
+  velocity += friction * dt;
+}
+
+void Player::collide() {
+  velocity = Vector2f(velocity.x * -0.1f, velocity.y * -0.1f);
+}
 
 void Player::execute() {
   move();
   draw();
   shoot();
-  for (list<Projectile *>::iterator it = projectiles_list.begin();
-       it != projectiles_list.end(); it++) {
-    if (*it)
-      // if((*it)->getActive()){
-      //     (*it)->execute();
-      // }else
-      //     delete (*it);
-      (*it)->execute();
+
+  std::list<Projectile *>::iterator it = projectiles_list.begin();
+  while (it != projectiles_list.end()) {
+    Projectile *p = *it;
+    if (p && p->getActive()) {
+      p->execute();
+      ++it;
+    } else {
+      // Remove from CollisionManager before deleting
+      CollisionManager::getInstance()->removeProjectile(p);
+
+      delete p; // Delete the projectile
+      it = projectiles_list.erase(it);
+    }
   }
 }
 
@@ -147,19 +150,22 @@ void Player::loseHealth(int damage) { health -= damage; }
 void Player::shoot() {
   if (player_num == 1) {
     if (Keyboard::isKeyPressed(sf::Keyboard::C)) {
-      // Shoot after 0.5 sec
       if (shoot_delay >= 0.5f) {
-        Projectile *p =
-            new Projectile(position.x, position.y, faced_right * 10.f);
+        // Determine the direction based on facing
+        float direction = faced_right ? 1.0f : -1.0f;
+        Projectile *p = new Projectile(
+            position.x + (faced_right ? size.x : 0), position.y + size.y / 2,
+            direction * 10.f // Velocity with direction
+        );
         if (p) {
           addProjectile(p);
-        } else
-          cout << "Projectile not allocated." << endl;
+          CollisionManager::getInstance()->addProjectile(
+              p); // Register the projectile in the CollisionManager
+        }
         shoot_delay = 0.f;
       }
     }
   }
-  // Increment the shoot_delay
   reload();
 }
 

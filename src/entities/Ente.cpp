@@ -5,9 +5,6 @@ Ente::Ente():
 
 }
 
-Ente::~Ente() {
-    pGM = nullptr;
-}
 
 /* ------------------------------------------- */
 /*                OWN FUNCTIONS                */

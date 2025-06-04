@@ -1,8 +1,8 @@
 #include "../../include/managers/GraphicsManager.h"
-#include "../../include/managers/CollisionManager.h"
 #include "../../include/entities/Ente.h"
+#include "../../include/managers/CollisionManager.h"
 
-GraphicsManager  *GraphicsManager::instance(nullptr);
+GraphicsManager *GraphicsManager::instance(nullptr);
 
 float GraphicsManager::clock_time(0.f);
 
@@ -11,16 +11,6 @@ GraphicsManager *GraphicsManager::getInstance() {
     instance = new GraphicsManager();
   }
   return instance;
-}
-
-GraphicsManager::GraphicsManager():
-  pWindow(nullptr),
-  font(NULL)
-{
-  font = new Font();
-  if (!font->loadFromFile("assets/fonts/arial.ttf")) {
-    std::cerr << "Error when trying to load the font." << std::endl;
-  }
 }
 
 GraphicsManager::~GraphicsManager() {
@@ -32,19 +22,27 @@ GraphicsManager::~GraphicsManager() {
   delete font;
 }
 
+GraphicsManager::GraphicsManager() : pWindow(nullptr), font(NULL) {
+  setClock();
+  font = new Font();
+  if (!font->loadFromFile("assets/fonts/arial.ttf")) {
+    std::cerr << "Error when trying to load the font." << std::endl;
+  }
+}
+
 /* ------------------------------------------- */
 /*                OWN FUNCTIONS                */
 /* ------------------------------------------- */
 
-void GraphicsManager::draw(Ente* ente) {
+void GraphicsManager::draw(Ente *ente) {
   if (pWindow != nullptr) {
     pWindow->draw(ente->getDrawable());
-  } else{
+  } else {
     std::cerr << "Window not initialized." << std::endl;
-  } 
+  }
 }
 
-void GraphicsManager::draw(Text* text) {
+void GraphicsManager::draw(Text *text) {
   if (pWindow != nullptr) {
     pWindow->draw(*text);
   } else {
@@ -72,42 +70,24 @@ void GraphicsManager::show() {
   }
 }
 
-void GraphicsManager::operator++(){
-    clock_time += dt;
-}
+void GraphicsManager::operator++() { clock_time += dt; }
 
 /* ------------------------------------------- */
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */
 
-RenderWindow *GraphicsManager::getWindow() const {
-  return pWindow;
-}
+RenderWindow *GraphicsManager::getWindow() const { return pWindow; }
 
-void GraphicsManager::setWindow(RenderWindow *window) { 
-    pWindow = window; 
-}
+void GraphicsManager::setWindow(RenderWindow *window) { pWindow = window; }
 
-Font *GraphicsManager::getFont() { 
-    return font; 
-}
+Font *GraphicsManager::getFont() { return font; }
 
-void GraphicsManager::setClock(){ 
-    dt = dt_clock.restart().asSeconds(); 
-}
+void GraphicsManager::setClock() { dt = dt_clock.restart().asSeconds(); }
 
-float GraphicsManager::getdt() const{ 
-    return dt; 
-}
+float GraphicsManager::getdt() const { return dt; }
 
-const Clock GraphicsManager::getClockdt() const { 
-    return dt_clock; 
-}
+const Clock GraphicsManager::getClockdt() const { return dt_clock; }
 
-float GraphicsManager::getClockTime() const { 
-    return clock_time; 
-}
+float GraphicsManager::getClockTime() const { return clock_time; }
 
-void GraphicsManager::resetClock(){ 
-    clock_time = 0;
-}
+void GraphicsManager::resetClock() { clock_time = 0; }

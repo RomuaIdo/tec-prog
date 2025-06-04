@@ -51,7 +51,7 @@ class CollisionManager{
         void addEnemy(Enemy* e);
         void addObstacle(Obstacle* o);
         void addProjectile(Projectile* p);
-
+        void removeProjectile(Projectile* p);
         
         void execute();
         void resolveCollisionObstacle(Character* c, Obstacle* o); 

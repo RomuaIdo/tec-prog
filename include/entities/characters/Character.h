@@ -12,7 +12,7 @@ class Character : public Entity {
         int health;
         const int strength;
         const float aceleration;
-        Vector2f speed;
+        Vector2f velocity;
 
         /* ------- FLAGS ------- */
         int faced_right;
@@ -21,10 +21,11 @@ class Character : public Entity {
         /* --- COEFFICIENTS ---- */
         Vector2f friction;
         static Vector2f gravity;
-        bool onGround;
         float friction_coef;
         float clock;
-        
+        bool onGround;
+
+
     public:
 
         Character(float x, float y, const float acel,

@@ -19,16 +19,13 @@ Projectile::Projectile(float x, float y, float vel):
     active = true;
 }
 
-Projectile::~Projectile(){ 
-    cout << "Projectile deleted" << endl;
-}
 
 /* ------------------------------------------- */
 /*                OWN FUNCTIONS                */
 /* ------------------------------------------- */
 
 void Projectile::collide(){
-    if(position.x < 0.f || position.x + size.x > 800.f){
+    if(position.x < 0.f || position.x + size.x > pGM->getWindow()->getSize().x){
         active = false;
     }
 }
@@ -51,3 +48,6 @@ bool Projectile::getActive(){
     return active; 
 }
 
+void Projectile::setActive(bool Active){ 
+    active = Active; 
+}

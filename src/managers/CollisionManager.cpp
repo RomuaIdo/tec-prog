@@ -38,124 +38,6 @@ float vectorModule(Vector2f vector) {
   return sqrt(vector.x * vector.x + vector.y * vector.y);
 }
 
-float module(float val) {
-  if (val < 0)
-    return -val;
-  return val;
-}
-
-void resolveCollisionCharacter(Character *a, Character *b) {
-  Vector2f aPos = a->getPosition();
-  Vector2f bPos = b->getPosition();
-  Vector2f aSize = a->getSize();
-  Vector2f bSize = b->getSize();
-
-  float deltaX = (aPos.x + aSize.x / 2) - (bPos.x + bSize.x / 2);
-  float deltaY = (aPos.y + aSize.y / 2) - (bPos.y + bSize.y / 2);
-
-  float intersectX = std::abs(deltaX) - (aSize.x + bSize.x) / 2;
-  float intersectY = std::abs(deltaY) - (aSize.y + bSize.y) / 2;
-
-  if (intersectX < 0.0f && intersectY < 0.0f) {
-    if (std::abs(intersectX) < std::abs(intersectY)) {
-      // Colisão horizontal
-      float push = intersectX / 2.f;
-      if (deltaX > 0) {
-        aPos.x -= push;
-        bPos.x += push;
-      } else {
-        aPos.x += push;
-        bPos.x -= push;
-      }
-      a->setVelocity({0.f, a->getVelocity().y});
-      b->setVelocity({0.f, b->getVelocity().y});
-    } else {
-      // Colisão vertical
-      float push = intersectY / 2.f;
-      if (deltaY > 0) {
-        // 'a' está abaixo de 'b'
-        aPos.y -= push;
-        bPos.y += push;
-
-        // Marca 'b' (personagem de cima) como no chão
-        if (b->getVelocity().y > 0) {
-          b->setVelocity({b->getVelocity().x, 0.f});
-          b->setOnGround(true);
-        }
-
-      } else {
-        // 'a' está acima de 'b'
-        aPos.y += push;
-        bPos.y -= push;
-
-        // Marca 'a' (personagem de cima) como no chão
-        if (a->getVelocity().y > 0) {
-          a->setVelocity({a->getVelocity().x, 0.f});
-          a->setOnGround(true);
-        }
-      }
-    }
-
-    a->setPosition(aPos);
-    b->setPosition(bPos);
-  }
-}
-
-void CollisionManager::resolveCollisionObstacle(Character *c, Obstacle *o) {
-  Vector2f cPos = c->getPosition();
-  Vector2f oPos = o->getPosition();
-  Vector2f cSize = c->getSize();
-  Vector2f oSize = o->getSize();
-
-  // Calcula as bordas
-  float cTop = cPos.y;
-  float cBottom = cPos.y + cSize.y;
-  float cLeft = cPos.x;
-  float cRight = cPos.x + cSize.x;
-
-  float oTop = oPos.y;
-  float oBottom = oPos.y + oSize.y;
-  float oLeft = oPos.x;
-  float oRight = oPos.x + oSize.x;
-
-  // Calcula interseção
-  float intersectX = std::min(cRight, oRight) - std::max(cLeft, oLeft);
-  float intersectY = std::min(cBottom, oBottom) - std::max(cTop, oTop);
-
-  if (intersectX > 0 && intersectY > 0) {
-    // Calcula as distâncias de cada lado
-    float topOverlap = cBottom - oTop;
-    float bottomOverlap = oBottom - cTop;
-    float leftOverlap = cRight - oLeft;
-    float rightOverlap = oRight - cLeft;
-
-    // Encontra o menor overlap
-    float minOverlap =
-        std::min({topOverlap, bottomOverlap, leftOverlap, rightOverlap});
-
-    // Resolve na direção do menor overlap
-    if (minOverlap == topOverlap) {
-      // Colisão pelo topo (player está acima do obstáculo)
-      cPos.y = oTop - cSize.y;
-      c->setOnGround(true);
-      c->setVelocity(Vector2f(c->getVelocity().x, 0.f));
-    } else if (minOverlap == bottomOverlap) {
-      // Colisão pela base (player está abaixo do obstáculo)
-      cPos.y = oBottom;
-      c->setVelocity(Vector2f(c->getVelocity().x, 0.f));
-    } else if (minOverlap == leftOverlap) {
-      // Colisão pela esquerda
-      cPos.x = oLeft - cSize.x;
-      c->setVelocity(Vector2f(0.f, c->getVelocity().y));
-    } else if (minOverlap == rightOverlap) {
-      // Colisão pela direita
-      cPos.x = oRight;
-      c->setVelocity(Vector2f(0.f, c->getVelocity().y));
-    }
-
-    c->setPosition(cPos);
-  }
-}
 
 /* ------------------------------------------- */
 /*             COLLISION FUNCTIONS             */
@@ -193,6 +75,7 @@ void CollisionManager::treatWallCollision() {
         pos.y = 0;
         if (vel.y < 0) {
           vel.y = 0; // Prevents jumping through the top wall
+          p->setOnGround(false); // Not on ground if jumping through top wall
         }
       }
       // Bottom wall
@@ -240,6 +123,123 @@ void CollisionManager::treatWallCollision() {
     }
   }
 }
+
+void resolveCollisionCharacter(Character *a, Character *b) {
+  Vector2f aPos = a->getPosition();
+  Vector2f bPos = b->getPosition();
+  Vector2f aSize = a->getSize();
+  Vector2f bSize = b->getSize();
+
+  float deltaX = (aPos.x + aSize.x / 2) - (bPos.x + bSize.x / 2);
+  float deltaY = (aPos.y + aSize.y / 2) - (bPos.y + bSize.y / 2);
+
+  float intersectX = std::abs(deltaX) - (aSize.x + bSize.x) / 2;
+  float intersectY = std::abs(deltaY) - (aSize.y + bSize.y) / 2;
+
+  if (intersectX < 0.0f && intersectY < 0.0f) {
+    if (std::abs(intersectX) < std::abs(intersectY)) {
+      // Horizontal collision
+      float push = intersectX / 2.f;
+      if (deltaX > 0) {
+        aPos.x -= push;
+        bPos.x += push;
+      } else {
+        aPos.x += push;
+        bPos.x -= push;
+      }
+      a->setVelocity({0.f, a->getVelocity().y});
+      b->setVelocity({0.f, b->getVelocity().y});
+    } else {
+      // Vertical collision
+      float push = intersectY / 2.f;
+      if (deltaY > 0) {
+        // 'a' is below 'b'
+        aPos.y -= push;
+        bPos.y += push;
+
+        // Set 'b' (character below) as on ground
+        if (b->getVelocity().y > 0) {
+          b->setVelocity({b->getVelocity().x, 0.f});
+          b->setOnGround(true);
+        }
+
+      } else {
+        // 'a' is above 'b'
+        aPos.y += push;
+        bPos.y -= push;
+
+        // Set 'a' (character above) as on ground
+        if (a->getVelocity().y > 0) {
+          a->setVelocity({a->getVelocity().x, 0.f});
+          a->setOnGround(true);
+        }
+      }
+    }
+
+    a->setPosition(aPos);
+    b->setPosition(bPos);
+  }
+}
+
+void CollisionManager::resolveCollisionObstacle(Character *c, Obstacle *o) {
+  Vector2f cPos = c->getPosition();
+  Vector2f oPos = o->getPosition();
+  Vector2f cSize = c->getSize();
+  Vector2f oSize = o->getSize();
+
+  // Define the limits of the character and obstacle
+  float cTop = cPos.y;
+  float cBottom = cPos.y + cSize.y;
+  float cLeft = cPos.x;
+  float cRight = cPos.x + cSize.x;
+
+  float oTop = oPos.y;
+  float oBottom = oPos.y + oSize.y;
+  float oLeft = oPos.x;
+  float oRight = oPos.x + oSize.x;
+
+  // Calculate the intersection area
+  float intersectX = std::min(cRight, oRight) - std::max(cLeft, oLeft);
+  float intersectY = std::min(cBottom, oBottom) - std::max(cTop, oTop);
+
+  if (intersectX > 0 && intersectY > 0) {
+    // Calculate the distance between each side
+    float topOverlap = cBottom - oTop;
+    float bottomOverlap = oBottom - cTop;
+    float leftOverlap = cRight - oLeft;
+    float rightOverlap = oRight - cLeft;
+
+    // Find the smallest overlap
+    float minOverlap =
+        std::min({topOverlap, bottomOverlap, leftOverlap, rightOverlap});
+
+    // Resolve in the direction of the smallest overlap
+    if (minOverlap == topOverlap) {
+      // Top collision (player is above the obstacle)
+      cPos.y = oTop - cSize.y;
+      c->setOnGround(true);
+      c->setVelocity(Vector2f(c->getVelocity().x, 0.f));
+    } else if (minOverlap == bottomOverlap) {
+      // Bottom collision (player is below the obstacle)
+      cPos.y = oBottom;
+      c->setVelocity(Vector2f(c->getVelocity().x, 0.f));
+    } else if (minOverlap == leftOverlap) {
+      // Left collision
+      cPos.x = oLeft - cSize.x;
+      c->setVelocity(Vector2f(0.f, c->getVelocity().y));
+    } else if (minOverlap == rightOverlap) {
+      // Right collision
+      cPos.x = oRight;
+      c->setVelocity(Vector2f(0.f, c->getVelocity().y));
+    }
+
+    c->setPosition(cPos);
+  }
+}
+
+
+
+
 
 void CollisionManager::treatPlayersCollision() {
 
@@ -297,23 +297,49 @@ void CollisionManager::treatObstaclesCollision() {
   }
 }
 
+
 void CollisionManager::treatProjectilesCollision() {
-  // Treat for each player
-  for (vector<Player *>::iterator it = players_vector.begin();
-       it != players_vector.end(); it++) {
-    if ((*it)) {
-      for (set<Projectile *>::iterator itProjectile = projectiles_set.begin();
-           itProjectile != projectiles_set.end(); itProjectile++) {
-        if (*itProjectile) {
-          if (verifyCollision((*it), (*itProjectile))) {
-            (*it)->collide();
-            (*itProjectile)->collide();
-          }
+    for (std::set<Projectile*>::iterator itProjectile = projectiles_set.begin(); 
+         itProjectile != projectiles_set.end(); ) {
+        Projectile* proj = *itProjectile;
+        bool collided = false;
+
+        // Colisão com inimigos
+        for (std::vector<Enemy*>::iterator itEnemy = enemies_vector.begin(); 
+             itEnemy != enemies_vector.end(); ++itEnemy) {
+            if (*itEnemy && verifyCollision(proj, *itEnemy)) {
+                collided = true;
+                break;
+            }
         }
-      }
+
+        // Colisão com obstáculos
+        if (!collided) {
+            for (std::list<Obstacle*>::iterator itObstacle = obstacles_list.begin(); 
+                 itObstacle != obstacles_list.end(); ++itObstacle) {
+                if (*itObstacle && verifyCollision(proj, *itObstacle)) {
+                    collided = true;
+                    break;
+                }
+            }
+        }
+
+        if (collided) {
+            proj->setActive(false);
+        }
+        
+        ++itProjectile;
     }
-  }
 }
+
+// Adicione esta função para limpeza
+void CollisionManager::removeProjectile(Projectile* p) {
+    auto it = projectiles_set.find(p);
+    if (it != projectiles_set.end()) {
+        projectiles_set.erase(it);
+    }
+}
+
 
 /* ------------------------------------------- */
 /*                ADD ENTITIES                 */
@@ -334,7 +360,7 @@ void CollisionManager::addPlayer(Player *p) { players_vector.push_back(p); }
 void CollisionManager::execute() {
   treatEnemiesCollision();
   treatObstaclesCollision();
-  treatProjectilesCollision();
+  //treatProjectilesCollision();
   if (players_vector.size() > 1)
     treatPlayersCollision();
   treatWallCollision();

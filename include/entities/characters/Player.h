@@ -13,7 +13,8 @@ class Player : public Character {
         int player_num;
         int score;
         const float vel_max;
-        
+        bool faced_right;
+
         /* -------- GUN -------- */
         list<Projectile*> projectiles_list;
         float shoot_delay;
@@ -25,6 +26,9 @@ class Player : public Character {
         /* --- OWN FUNCTIONS --- */
         void execute();
         void move();
+        void handlePlayer1Controls(float dt, float jumpForce);
+        void handlePlayer2Controls(float dt, float jumpForce);
+        void applyFriction(float dt);
         void collide();
         
         void loseHealth(int damage);

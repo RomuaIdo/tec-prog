@@ -3,8 +3,8 @@
 Button::Button(const string fontPath, const string info,
                const string normalTexturePath, const string hoveredTexturePath,
                MouseSubject *subject, unsigned int fontSize, Vector2f position)
-    : Ente(), fontSize(fontSize), position(position),
-      state(ButtonState::NORMAL), mouseSubject(subject), clicked(false)
+    : Ente(), mouseSubject(subject), fontSize(fontSize), position(position),
+      state(ButtonState::NORMAL), clicked(false)
 {
 
     if (!texture.loadFromFile(normalTexturePath))
