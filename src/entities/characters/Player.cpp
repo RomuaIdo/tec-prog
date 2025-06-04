@@ -16,19 +16,7 @@ Player::Player(float x, float y, const float acel, int life, float coef, int s, 
         }  
     }
     
-    texture.setSmooth(true);
-    sprite.setTexture(texture);
-    size.x = sprite.getLocalBounds().width;
-    size.y = sprite.getLocalBounds().height;
-    sprite.setScale(    
-        size.x / sprite.getLocalBounds().width,
-        size.y / sprite.getLocalBounds().height
-    );
-
-    sprite.setOrigin(Vector2f(sprite.getPosition().x + sprite.getGlobalBounds().width  / static_cast<float> (2), 
-                              sprite.getPosition().y + sprite.getGlobalBounds().height / static_cast<float> (2)));
-    size = Vector2f(sprite.getGlobalBounds().width / 2.f, sprite.getGlobalBounds().height / 2.f);
-    
+    configSprite();
 }
 
 Player::~Player() {
@@ -130,7 +118,7 @@ void Player::shoot(){
         if(Keyboard::isKeyPressed(sf::Keyboard::C)){
             // Shoot after 0.5 sec
             if(shoot_delay >= 0.5f){
-                Projectile* p = new Projectile(position.x, position.y, faced_right * 10.f);
+                Projectile* p = new Projectile(position.x + faced_right*size.x, position.y, faced_right * 10.f);
                 if(p){
                     addProjectile(p);
                 }else cout << "Projectile not allocated." << endl;

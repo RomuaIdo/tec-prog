@@ -8,14 +8,8 @@ Projectile::Projectile(float x, float y, float vel):
         std::cerr << "Failed to load PlayerSprite.png!" << std::endl;
     }    
 
-    texture.setSmooth(true);
-    sprite.setTexture(texture);
-    size.x = sprite.getLocalBounds().width;
-    size.y = sprite.getLocalBounds().height;
-    sprite.setScale(    
-        size.x / sprite.getLocalBounds().width,
-        size.y / sprite.getLocalBounds().height
-    );
+    configSprite();
+
     active = true;
 }
 
@@ -28,7 +22,7 @@ Projectile::~Projectile(){
 /* ------------------------------------------- */
 
 void Projectile::collide(){
-    if(position.x < 0.f || position.x + size.x > 800.f){
+    if(position.x - size.x < 0.f || position.x + size.x > 800.f){
         active = false;
     }
 }

@@ -24,6 +24,7 @@ class Ente {
         /* ---- OWN FUNCTIONS ---- */
         virtual void draw();
         virtual Drawable& getDrawable();
+        void configSprite();
 
         /* ----- GETS & SETS ----- */
         Vector2f getSize() const;

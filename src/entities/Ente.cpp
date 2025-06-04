@@ -3,9 +3,6 @@
 GraphicsManager* Ente::pGM = GraphicsManager::getInstance();
 Ente::Ente():
     sprite(), texture(){
-    sprite.setOrigin(Vector2f(sprite.getPosition().x + sprite.getGlobalBounds().width  / static_cast<float> (2), 
-                              sprite.getPosition().y + sprite.getGlobalBounds().height / static_cast<float> (2)));
-    size = Vector2f(sprite.getGlobalBounds().width / 2.f, sprite.getGlobalBounds().height / 2.f);
 }
 
 Ente::~Ente() {
@@ -22,6 +19,16 @@ void Ente::draw() {
 
 Drawable& Ente::getDrawable() {
     return sprite;
+}
+
+void Ente::configSprite(){
+    texture.setSmooth(true);
+    sprite.setTexture(texture);
+    
+    sprite.setOrigin(Vector2f(sprite.getPosition().x + sprite.getGlobalBounds().width  / static_cast<float> (2), 
+                              sprite.getPosition().y + sprite.getGlobalBounds().height / static_cast<float> (2)));
+    sprite.setScale(1.f, 1.f);
+    size = Vector2f(sprite.getGlobalBounds().width / 2.f, sprite.getGlobalBounds().height / 2.f);
 }
 
 /* ------------------------------------------- */
