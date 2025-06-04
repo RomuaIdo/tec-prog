@@ -121,10 +121,6 @@ void Player::execute() {
     shootProjectiles();
 }
 
-void Player::loseHealth(int damage){
-    health -= damage;
-}
-
 /* ------------------------------------------- */
 /*                GUN FUNCTIONS                */
 /* ------------------------------------------- */
@@ -174,4 +170,8 @@ void Player::reload(){
 
 int Player::getHealth(){
     return health;
+}
+
+void Player::loseHealth(int damage){
+    health -= damage;
 }

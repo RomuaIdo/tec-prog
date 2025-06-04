@@ -2,7 +2,6 @@
 
 Entity::Entity(float x, float y) :
     Ente(), position(x,y){
-
 }
 
 Entity::~Entity() {}

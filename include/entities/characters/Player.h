@@ -26,8 +26,6 @@ class Player : public Character {
         void move();
         void collide();
         
-        void loseHealth(int damage);
-
         /* --- GUN FUNCTIONS --- */
         void shoot();
         void addProjectile(Projectile* p);
@@ -36,6 +34,7 @@ class Player : public Character {
         
         /* ---- GETS & SETS ---- */
         int getHealth();
+        void loseHealth(int damage);
 
 };
 

@@ -93,6 +93,9 @@ void resolveCollisionCharacter(Character* a, Character* b) {
 
                 aPos.y += push;
                 bPos.y -= push;
+                // a->setSpeed({ a->getSpeed().x, 0.f });
+                if(b->getSpeed().y > 0)
+                    b->setSpeed({ b->getSpeed().x, 0.f });
 
             /* a is on top of b */
             } else {
@@ -102,6 +105,10 @@ void resolveCollisionCharacter(Character* a, Character* b) {
 
                 aPos.y -= push;
                 bPos.y += push;
+                // b->setSpeed({ b->getSpeed().x, 0.f });
+                if(a->getSpeed().y > 0)
+                    a->setSpeed({ a->getSpeed().x, 0.f });
+
             }
         }
         a->setPosition(aPos);
@@ -163,10 +170,11 @@ void resolveCollisionObstacle(Character* c, Obstacle* o) {
             /* c is on top of o */
             } else {
 
-                /* a can jump */
+                /* c can jump */
                 c->changeInAir();
-
                 cPos.y -= push;
+                
+                c->setSpeed({ c->getSpeed().x, 0.f });
             }
         }
         c->setPosition(cPos);
@@ -199,7 +207,7 @@ void CollisionManager::treatWallCollision(){
             Vector2f size = p->getSize(); 
             // Left wall
             if (pos.x - size.x < 0){
-                pos.x = 0;
+                pos.x = size.x;
                 vel.x = 0;
             }    
             // Right wall
@@ -209,7 +217,7 @@ void CollisionManager::treatWallCollision(){
             }   
             // Top wall
             if (pos.y - size.y < 0){
-                pos.y = 0;
+                pos.y = size.y;
                 vel.y = 0;
             } 
             // Bottom wall
@@ -232,7 +240,7 @@ void CollisionManager::treatWallCollision(){
             Vector2f size = e->getSize();
             // Left wall
             if (pos.x - size.x < 0){
-                pos.x = 0;
+                pos.x = size.x;
                 vel.x = 0;
             }    
             // Right wall
@@ -242,7 +250,7 @@ void CollisionManager::treatWallCollision(){
             }   
             // Top wall
             if (pos.y - size.y < 0){
-                pos.y = 0;
+                pos.y = size.y;
                 vel.y = 0;
             } 
             // Bottom wall

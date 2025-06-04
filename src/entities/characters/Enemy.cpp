@@ -10,14 +10,15 @@ Enemy::Enemy(float x, float y, const float acel, int life, float coef , int s):
 
     texture.setSmooth(true);
     sprite.setTexture(texture);
-    size.x = sprite.getLocalBounds().width;
-    size.y = sprite.getLocalBounds().height;
-    sprite.setScale(    
-        size.x / sprite.getLocalBounds().width,
-        size.y / sprite.getLocalBounds().height
-    );
 
-    players_list.clear();
+
+    sprite.setOrigin(Vector2f(sprite.getPosition().x + sprite.getGlobalBounds().width  / static_cast<float> (2), 
+                              sprite.getPosition().y + sprite.getGlobalBounds().height / static_cast<float> (2)));
+    size = Vector2f(sprite.getGlobalBounds().width / 2.f, sprite.getGlobalBounds().height / 2.f);
+
+    sprite.setScale( 1.f, 1.f );    
+
+        players_list.clear();
 }
 
 Enemy::~Enemy(){
@@ -34,19 +35,14 @@ void Enemy::move(){
 
     for(it = players_list.begin(); it != players_list.end(); it++){
         if(*it){
-            // Get direction to player
-            Vector2f direction = ((*it)->getPosition() - position);
+            // Get direction to player (feet to feet)
+            Vector2f direction = ( ((*it)->getPosition() + (*it)->getSize()) - (position + size) );
             float module = sqrt(direction.x*direction.x + direction.y*direction.y);
-
-            // To improve
-            if(module == 0) {
-                attack((*it));
-                continue;
-            }    
 
             if(module < closer ){
                 closer = module;
                 closer_direction = direction;
+
                 // Normalize vector
                 closer_direction /= closer;
 
@@ -93,7 +89,7 @@ void Enemy::addPlayer(Player *p){
 }
 
 void Enemy::attack(Player *p){
-    // If player has health and after 2 seconds, then he can attack 
+    /* If player has health and after 2 seconds, then he can attack */
     if(p->getHealth() > 0 && pGM->getClockTime() >= 2.f){
         p->loseHealth(strength);
         cout << "Player got hurt!" << endl;
