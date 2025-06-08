@@ -7,8 +7,9 @@ Enemy::Enemy(float x, float y, const float acel, int life, float coef, int s)
   if (!texture.loadFromFile("assets/textures/EnemySprite.png")) {
     std::cerr << "Failed to load EnemySprite.png!" << std::endl;
   }
- texture.setSmooth(true);
+  texture.setSmooth(true);
   sprite.setTexture(texture);
+  centerOrigin();
   size.x = sprite.getLocalBounds().width;
   size.y = sprite.getLocalBounds().height;
   sprite.setScale(size.x / sprite.getLocalBounds().width,
@@ -68,9 +69,6 @@ void Enemy::move(){
 }
 
 
-void Enemy::collide(){
-    velocity = Vector2f(0.f,0.f);
-}
 
 /* ------------------------------------------- */
 /*              PLAYER FUNCTIONS               */

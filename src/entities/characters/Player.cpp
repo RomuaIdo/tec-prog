@@ -20,6 +20,7 @@ Player::Player(float x, float y, const float acel, int life, float coef, int s,
 
   texture.setSmooth(true);
   sprite.setTexture(texture);
+  centerOrigin();
   size.x = sprite.getLocalBounds().width;
   size.y = sprite.getLocalBounds().height;
   sprite.setScale(size.x / sprite.getLocalBounds().width,
@@ -65,9 +66,9 @@ void Player::move() {
 
 void Player::handlePlayer1Controls(float dt, float jumpForce) {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-    if (isOnGround()) {
+    if (!isInAir()) {
       velocity.y = -jumpForce;
-      setOnGround(false);
+      setInAir(true);
     }
   }
 
@@ -83,9 +84,9 @@ void Player::handlePlayer1Controls(float dt, float jumpForce) {
 
 void Player::handlePlayer2Controls(float dt, float jumpForce) {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-    if (isOnGround()) {
+    if (!isInAir()) {
       velocity.y = -jumpForce;
-      setOnGround(false);
+      setInAir(true);
     }
   }
 
@@ -116,9 +117,6 @@ void Player::applyFriction(float dt) {
   velocity += friction * dt;
 }
 
-void Player::collide() {
-  velocity = Vector2f(velocity.x * -0.1f, velocity.y * -0.1f);
-}
 
 void Player::execute() {
   move();

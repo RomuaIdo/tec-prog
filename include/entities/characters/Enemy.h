@@ -24,7 +24,6 @@ class Enemy : public Character {
         /* ---- OWN FUNCTIONS ---- */
         virtual void execute();
         virtual void move();
-        void collide();
 
         /* ------- PLAYER -------- */
         virtual void addPlayer(Player *p);

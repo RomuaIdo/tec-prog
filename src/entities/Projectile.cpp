@@ -10,6 +10,7 @@ Projectile::Projectile(float x, float y, float vel):
 
     texture.setSmooth(true);
     sprite.setTexture(texture);
+    centerOrigin();
     size.x = sprite.getLocalBounds().width;
     size.y = sprite.getLocalBounds().height;
     sprite.setScale(    
@@ -24,11 +25,7 @@ Projectile::Projectile(float x, float y, float vel):
 /*                OWN FUNCTIONS                */
 /* ------------------------------------------- */
 
-void Projectile::collide(){
-    if(position.x < 0.f || position.x + size.x > pGM->getWindow()->getSize().x){
-        active = false;
-    }
-}
+
 
 void Projectile::move(){
     position.x += velocity;
@@ -37,7 +34,6 @@ void Projectile::move(){
 void Projectile::execute(){
     draw();
     move();
-    collide();
 }
 
 /* ------------------------------------------- */

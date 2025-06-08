@@ -32,6 +32,7 @@ class Button : public Ente, public MouseObserver {
         /* ---- OWN FUNCTIONS ---- */
         void activate();
         void deactivate();
+        void centerOrigin() override;
         void execute() override;
         void draw() override;
         Drawable &getDrawable() override;

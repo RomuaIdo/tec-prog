@@ -18,7 +18,6 @@ class Projectile : public Entity{
         ~Projectile() override = default;
 
         /* --- OWN FUNCTIONS --- */
-        void collide();
 
         void execute();
         void move();

@@ -3,52 +3,38 @@
 
 Vector2f Character::gravity(0.f, 30.f);
 
-
-Character::Character(float x, float y, const float movSpeed, int life, float coef, int s):
-    Entity(x, y), health(life), strength(s), aceleration(movSpeed), velocity(0.f, 0.f),  friction(0.f,0.f), friction_coef(coef), onGround(false) {
-    
-
+Character::Character(float x, float y, const float movSpeed, int life,
+                     float coef, int s)
+    : Entity(x, y), health(life), strength(s), aceleration(movSpeed),
+      velocity(0.f, 0.f), in_air(true), friction(0.f, 0.f),
+      friction_coef(coef) {
+  centerOrigin();
 }
 
-Character::~Character(){
-
-}
-
-
+Character::~Character() {}
 
 /* ------------------------------------------- */
 /*                OWN FUNCTIONS                */
 /* ------------------------------------------- */
 
 void Character::moveCharacter() {
-    if (!onGround) {
-        velocity.y += gravity.y * pGM->getdt();
-    }
-    
-    position += velocity;
-    sprite.setPosition(position);
-    onGround = false; // Reset for the next frame
+  if (in_air) {
+    velocity.y += gravity.y * pGM->getdt();
+  }
+
+  position += velocity;
+  sprite.setPosition(position);
+  in_air = true; // Reset for the next frame
 }
-
-
 
 /* ------------------------------------------- */
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */
 
-Vector2f Character::getVelocity() const{
-    return velocity;
-}
+Vector2f Character::getVelocity() const { return velocity; }
 
-void Character::setVelocity(Vector2f vel){
-    velocity = vel;
-}
+void Character::setVelocity(Vector2f vel) { velocity = vel; }
 
-void Character::setOnGround(bool onground){
-    onGround = onground;
-}
+void Character::setInAir(bool inair) { in_air = inair; }
 
-bool Character::isOnGround() const{
-    return onGround;
-}
-
+bool Character::isInAir() const { return in_air; }

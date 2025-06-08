@@ -20,7 +20,6 @@ class Obstacle : public Entity{
         /* ---- OWN FUNCTIONS ---- */
         virtual void execute();
         virtual void ObstacleAction();
-        virtual void collide();
 
 };
 

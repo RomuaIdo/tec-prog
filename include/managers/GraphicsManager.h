@@ -18,7 +18,6 @@ class GraphicsManager {
         map<string, Texture*> textures;
 
         /* ------ STATUS ------- */
-        Font* font;
         float dt;
         Clock dt_clock;
         static float clock_time;
@@ -44,7 +43,6 @@ class GraphicsManager {
         /* ----- GETS & SETS ----- */
         RenderWindow* getWindow() const;
         void setWindow(RenderWindow* window);
-        Font* getFont();
         void setClock();
         float getdt() const;
         const Clock getClockdt() const;

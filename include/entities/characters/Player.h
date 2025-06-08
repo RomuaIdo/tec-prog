@@ -29,7 +29,6 @@ class Player : public Character {
         void handlePlayer1Controls(float dt, float jumpForce);
         void handlePlayer2Controls(float dt, float jumpForce);
         void applyFriction(float dt);
-        void collide();
         
         void loseHealth(int damage);
 

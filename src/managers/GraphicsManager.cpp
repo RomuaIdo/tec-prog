@@ -19,16 +19,9 @@ GraphicsManager::~GraphicsManager() {
     delete it->second;
     it->second = nullptr;
   }
-  delete font;
 }
 
-GraphicsManager::GraphicsManager() : pWindow(nullptr), font(NULL) {
-  setClock();
-  font = new Font();
-  if (!font->loadFromFile("assets/fonts/arial.ttf")) {
-    std::cerr << "Error when trying to load the font." << std::endl;
-  }
-}
+GraphicsManager::GraphicsManager() : pWindow(nullptr) { setClock(); }
 
 /* ------------------------------------------- */
 /*                OWN FUNCTIONS                */
@@ -79,8 +72,6 @@ void GraphicsManager::operator++() { clock_time += dt; }
 RenderWindow *GraphicsManager::getWindow() const { return pWindow; }
 
 void GraphicsManager::setWindow(RenderWindow *window) { pWindow = window; }
-
-Font *GraphicsManager::getFont() { return font; }
 
 void GraphicsManager::setClock() { dt = dt_clock.restart().asSeconds(); }
 

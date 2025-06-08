@@ -23,7 +23,6 @@ class Character : public Entity {
         static Vector2f gravity;
         float friction_coef;
         float clock;
-        bool onGround;
 
 
     public:
@@ -34,12 +33,11 @@ class Character : public Entity {
 
         virtual void execute() = 0;
         virtual void move() = 0;
-        virtual void collide() = 0;
 
         /* ---- OWN FUNCTIONS ---- */
         void moveCharacter();
-        void setOnGround(bool onground);
-        bool isOnGround() const;        
+        void setInAir(bool inair);
+        bool isInAir() const;        
         /* ----- GETS & SETS ----- */
         Vector2f getVelocity() const;
         void setVelocity(Vector2f vel);

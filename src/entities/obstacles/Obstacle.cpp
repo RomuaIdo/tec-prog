@@ -9,6 +9,7 @@ Obstacle::Obstacle(bool harm, float x, float y):
 
     texture.setSmooth(true);
     sprite.setTexture(texture);
+    centerOrigin();
     size.x = sprite.getLocalBounds().width;
     size.y = sprite.getLocalBounds().height;
     sprite.setScale(    
@@ -33,7 +34,4 @@ void Obstacle::ObstacleAction(){
 
 }
 
-void Obstacle::collide(){
-
-}
 

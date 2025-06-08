@@ -22,6 +22,7 @@ class Ente {
         virtual void execute() = 0;
 
         /* ---- OWN FUNCTIONS ---- */
+        virtual void centerOrigin();
         virtual void draw();
         virtual Drawable& getDrawable();
 
