@@ -130,7 +130,7 @@ void CollisionManager::treatWallCollision() {
   }
 }
 
-void resolveCollisionCharacter(Character *a, Character *b) {
+void CollisionManager::resolveCollisionCharacter(Character *a, Character *b) {
   Vector2f aPos = a->getPosition();
   Vector2f bPos = b->getPosition();
   Vector2f aSize = a->getSize();

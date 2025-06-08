@@ -45,7 +45,8 @@ class CollisionManager{
         void treatProjectilesCollision();
         void treatPlayersCollision();
         void treatWallCollision();
-
+        void resolveCollisionObstacle(Character* c, Obstacle* o); 
+        void resolveCollisionCharacter(Character* c1, Character* c2);
         /* ------ ADD ENTITIES ------ */
         void addPlayer(Player* p);
         void addEnemy(Enemy* e);
@@ -54,7 +55,7 @@ class CollisionManager{
         void removeProjectile(Projectile* p);
         
         void execute();
-        void resolveCollisionObstacle(Character* c, Obstacle* o); 
+
 };
 
 #endif
