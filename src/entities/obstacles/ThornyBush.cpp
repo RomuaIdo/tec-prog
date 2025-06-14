@@ -1,28 +1,28 @@
-#include "../../../include/entities/obstacles/TornyBush.h"
+#include "../../../include/entities/obstacles/ThornyBush.h"
 #include <SFML/Window.hpp>
 
 
-TornyBush::TornyBush(float x, float y, bool harm):
+ThornyBush::ThornyBush(float x, float y, bool harm):
     Obstacle(harm,x,y){
 }
 
-TornyBush::~TornyBush(){}
+ThornyBush::~ThornyBush(){}
 
 /* ------------------------------------------- */
 /*                OWN FUNCTIONS                */
 /* ------------------------------------------- */
 
-void TornyBush::execute(){
+void ThornyBush::execute(){
     draw();
 }
 
-void TornyBush::obstacleAction(Entity* e){
+void ThornyBush::obstacleAction(Entity* e){
     if(Character* p = dynamic_cast<Character*>(e)){
         dealDamage(p);
     }
 }
 
-void TornyBush::collide(Entity* e){
+void ThornyBush::collide(Entity* e){
     obstacleAction(e);
 }
 
@@ -30,7 +30,7 @@ void TornyBush::collide(Entity* e){
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */
 
-void TornyBush::dealDamage(Character* character){
+void ThornyBush::dealDamage(Character* character){
     if (character) {
         character->takeDamage(spikes);
     }

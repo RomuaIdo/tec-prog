@@ -1,20 +1,20 @@
-#ifndef TORNY_BUSH_H
-#define TORNY_BUSH_H
+#ifndef THORNY_BUSH_H
+#define THORNY_BUSH_H
 #include "Obstacle.h"
 #include "../characters/Character.h"
 #include <SFML/Graphics.hpp>
 using namespace sf;
 using namespace std;
 
-class TornyBush : public Obstacle{
+class ThornyBush : public Obstacle{
 
     private:
         /* ------ STATUS ------- */
         int spikes; // Number of spikes in the bush
 
     public:
-        TornyBush(float x, float y, bool harm = true);
-        ~TornyBush();
+        ThornyBush(float x, float y, bool harm = true);
+        ~ThornyBush();
 
         /* ---- OWN FUNCTIONS ---- */
         void obstacleAction(Entity* e);

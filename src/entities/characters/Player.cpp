@@ -6,13 +6,13 @@ Player::Player(float x, float y, const float acel, int life, float coef, int s, 
     projectiles_list.clear();
     
     if(p_num == 1){
-        if (!texture.loadFromFile("assets/textures/Player1Sprite.png")) {
-            std::cerr << "Failed to load PlayerSprite.png!" << std::endl;
+        if (!texture.loadFromFile("assets/textures/EmiliaSprite.png")) {
+            std::cerr << "Failed to load EmiliaSprite.png!" << std::endl;
         }    
     }
     else {
         if (!texture.loadFromFile("assets/textures/Player2Sprite.png")) {
-            std::cerr << "Failed to load PlayerSprite.png!" << std::endl;
+            std::cerr << "Failed to load Player2Sprite.png!" << std::endl;
         }  
     }
 
