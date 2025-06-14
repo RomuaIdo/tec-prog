@@ -15,7 +15,7 @@ Player::Player(float x, float y, const float acel, int life, float coef, int s, 
             std::cerr << "Failed to load Player2Sprite.png!" << std::endl;
         }  
     }
-
+    
     configSprite();
 }
 
@@ -52,6 +52,11 @@ void Player::move() {
 
     applyFriction(dt);
     moveCharacter();
+    if(faced_right == 1) {
+        sprite.setScale(1.f, 1.f);
+    } else {
+        sprite.setScale(-1.f, 1.f);
+    }
 }
 
 void Player::handlePlayer1Controls(float dt, float jumpForce) {
