@@ -16,6 +16,11 @@ class Plataform : public Obstacle{
         Plataform(float x, float y, bool harm = false);
         ~Plataform();
 
+        /* ---- OWN FUNCTIONS ---- */
+        void obstacleAction(Entity* e);
+        void execute();
+        void collide(Entity* e);
+
         /* ----- GETS & SETS ----- */
         void setWidth(float w);
         float getWidth() const;

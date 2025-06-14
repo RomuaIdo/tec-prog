@@ -106,8 +106,70 @@ void Player::applyFriction(float dt) {
     speed += friction * dt;
 }
 
-void Player::collide(){
-    speed = Vector2f(speed.x * -0.1f, speed.y * -0.1f);
+void Player::collide(Entity* e){
+    Vector2f ePos = e->getPosition();
+    Vector2f eSize = e->getSize();
+
+    float dx = (position.x - ePos.x);
+    float dy = (position.y - ePos.y);
+    // Vector2f variation = Vector2f(dx, dy);
+
+    /* If dx > 0 -> a in b's right  */
+    
+    /* If dy > 0 -> a is below b    */
+
+    /* The intersection between a and b ,
+    *   if they collide, the vector will be
+    *   negative in x and y                */
+
+    Vector2f intersection = Vector2f( abs(dx) - (size.x + eSize.x), 
+                                      abs(dy) - (size.y + eSize.y) );
+
+    if (intersection.x < 0.0f && intersection.y < 0.0f) {
+
+        /* If intersection in x is less then intersection in y
+        /*  means that they are side by side                 */
+
+        if (std::abs(intersection.x) < std::abs(intersection.y)) {
+            
+            /* To push the character the amount he is inside */                       
+            float push = abs(intersection.x / 2.f);
+
+            if (dx > 0) {
+                position.x += push;
+                setSpeed({0.f + push, getSpeed().y});
+            }
+            else{
+                position.x -= push;
+                setSpeed({0.f - push, getSpeed().y});
+            } 
+
+
+        /* If intersection in y is less then intersection in x
+        /*  means that character collided in y with obstacle */
+
+        } else {
+
+            /* To push the character the amount he is inside */ 
+            float push = abs(intersection.y / 2.f);
+
+            /* c is below o */
+            if (dy > 0) {
+
+                position.y += push;
+
+            /* c is on top of o */
+            } else {
+
+                /* c can jump */
+                changeInAir();
+                position.y -= push;
+                
+                setSpeed({ getSpeed().x, 0.f });
+            }
+        }
+        setPosition(position);
+    }
 }
 
 void Player::execute() {
@@ -126,8 +188,7 @@ void Player::shoot(){
         if (Keyboard::isKeyPressed(sf::Keyboard::C)) {
             // Shoot after 0.5 seconds
             if (shoot_delay >= 0.5f) {
-                Projectile *p = new Projectile(
-                    position.x + (size.x * faced_right), position.y, faced_right * 10.f);
+                Projectile *p = new Projectile(position.x + (size.x * faced_right), position.y, faced_right * 10.f);
 
                 if (p) {
                     addProjectile(p);

@@ -15,7 +15,7 @@ class Entity : public Ente {
         virtual ~Entity();
 
         virtual void execute() = 0;
-        virtual void collide() = 0;
+        virtual void collide(Entity* e)= 0;
 
         /* ---- OWN FUNCTIONS ---- */
         void draw();

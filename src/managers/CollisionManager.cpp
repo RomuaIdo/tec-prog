@@ -303,7 +303,8 @@ void CollisionManager::treatObstaclesCollision(){
             for(list<Obstacle*>::iterator itObstacle = obstacles_list.begin(); itObstacle != obstacles_list.end(); itObstacle++){
                 if(*itObstacle){
                     if(verifyCollision( (*it) , (*itObstacle) ) ){
-                        resolveCollisionObstacle((*it), (*itObstacle));
+                        (*it)->collide(*itObstacle);
+                        (*itObstacle)->collide(*it);
                     }
                 }
             }
@@ -315,7 +316,8 @@ void CollisionManager::treatObstaclesCollision(){
             for(list<Obstacle*>::iterator itObstacle = obstacles_list.begin(); itObstacle != obstacles_list.end(); itObstacle++){
                 if(*itObstacle){
                     if(verifyCollision( (*it) , (*itObstacle) ) ){
-                        resolveCollisionObstacle((*it), (*itObstacle));
+                        (*it)->collide(*itObstacle);
+                        (*itObstacle)->collide(*it);
                     }
                 }
             }

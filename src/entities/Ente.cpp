@@ -19,7 +19,6 @@ Drawable& Ente::getDrawable() {
 void Ente::configSprite(){
     texture.setSmooth(true);
     sprite.setTexture(texture);
-    
     sprite.setOrigin(Vector2f(sprite.getPosition().x + sprite.getGlobalBounds().width  / static_cast<float> (2), 
                               sprite.getPosition().y + sprite.getGlobalBounds().height / static_cast<float> (2)));
     sprite.setScale(1.f, 1.f);

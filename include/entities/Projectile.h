@@ -18,7 +18,8 @@ class Projectile : public Entity{
         ~Projectile();
 
         /* --- OWN FUNCTIONS --- */
-        void collide();
+        void verifyWallCollision();
+        void collide(Entity* e);
         void execute();
         void move();
 

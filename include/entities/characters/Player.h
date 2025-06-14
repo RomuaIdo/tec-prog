@@ -24,7 +24,7 @@ class Player : public Character {
         /* --- OWN FUNCTIONS --- */
         void execute();
         void move();
-        void collide();
+        void collide(Entity* e);
         void handlePlayer1Controls(float dt, float jumpForce);
         void handlePlayer2Controls(float dt, float jumpForce);
         void applyFriction(float dt);

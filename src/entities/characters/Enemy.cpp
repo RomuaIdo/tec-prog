@@ -43,10 +43,10 @@ void Enemy::move(){
         }
     }
 
-    if(closer_direction.y < 0 && speed.y == 0.f && !in_air){
-        closer_direction.y = -10.f;
-    }else closer_direction.y = 0.f;
-    
+    // if(closer_direction.y < 0 && speed.y == 0.f && !in_air){
+    //     closer_direction.y = -10.f;
+    // }else closer_direction.y = 0.f;
+    closer_direction.y = 0.f;
 
     speed.x += closer_direction.x * pGM->getdt();
     speed.y += closer_direction.y;
@@ -57,8 +57,70 @@ void Enemy::move(){
     moveCharacter();
 }
 
-void Enemy::collide(){
-    speed = Vector2f(0.f,0.f);
+void Enemy::collide(Entity* e){
+    Vector2f ePos = e->getPosition();
+    Vector2f eSize = e->getSize();
+
+    float dx = (position.x - ePos.x);
+    float dy = (position.y - ePos.y);
+    // Vector2f variation = Vector2f(dx, dy);
+
+    /* If dx > 0 -> a in b's right  */
+    
+    /* If dy > 0 -> a is below b    */
+
+    /* The intersection between a and b ,
+    *   if they collide, the vector will be
+    *   negative in x and y                */
+
+    Vector2f intersection = Vector2f( abs(dx) - (size.x + eSize.x), 
+                                      abs(dy) - (size.y + eSize.y) );
+
+    if (intersection.x < 0.0f && intersection.y < 0.0f) {
+
+        /* If intersection in x is less then intersection in y
+        /*  means that they are side by side                 */
+
+        if (std::abs(intersection.x) < std::abs(intersection.y)) {
+            
+            /* To push the character the amount he is inside */                       
+            float push = abs(intersection.x / 2.f);
+
+            if (dx > 0) {
+                position.x += push;
+                setSpeed({0.f + push, getSpeed().y});
+            }
+            else{
+                position.x -= push;
+                setSpeed({0.f - push, getSpeed().y});
+            } 
+
+
+        /* If intersection in y is less then intersection in x
+        /*  means that character collided in y with obstacle */
+
+        } else {
+
+            /* To push the character the amount he is inside */ 
+            float push = abs(intersection.y / 2.f);
+
+            /* c is below o */
+            if (dy > 0) {
+
+                position.y += push;
+
+            /* c is on top of o */
+            } else {
+
+                /* c can jump */
+                changeInAir();
+                position.y -= push;
+                
+                setSpeed({ getSpeed().x, 0.f });
+            }
+        }
+        setPosition(position);
+    }
 }
 
 void Enemy::execute(){

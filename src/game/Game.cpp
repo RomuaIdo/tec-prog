@@ -52,6 +52,7 @@ void Game::execute(){
     window.setFramerateLimit(60);
     pGM->setWindow(&window);
     RenderWindow *pWindow = pGM->getWindow();
+    Ente::setGraphicsManager(pGM);
     while (pGM->openWindow()){
         Event event;
         pGM->setClock();

@@ -22,11 +22,11 @@ void Obstacle::execute(){
     draw();
 }
 
-void Obstacle::ObstacleAction(){
+void Obstacle::obstacleAction(Entity* e){
 
 }
 
-void Obstacle::collide(){
+void Obstacle::collide(Entity* e){
 
 }
 

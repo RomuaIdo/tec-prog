@@ -9,6 +9,22 @@ Plataform::Plataform(float x, float y, bool harm):
 Plataform::~Plataform(){}
 
 /* ------------------------------------------- */
+/*                OWN FUNCTIONS                */
+/* ------------------------------------------- */
+
+void Plataform::execute(){
+    draw();
+}
+
+void Plataform::obstacleAction(Entity* e){
+
+}
+
+void Plataform::collide(Entity* e){
+    obstacleAction(e);
+}
+
+/* ------------------------------------------- */
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */
 
@@ -27,3 +43,4 @@ float Plataform::getHeight() const {
 float Plataform::getWidth() const {
     return width;
 }
+

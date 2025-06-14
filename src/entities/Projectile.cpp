@@ -4,10 +4,9 @@
 Projectile::Projectile(float x, float y, float vel):
     Entity(x,y), velocity(vel) {
     
-    if (!texture.loadFromFile("assets/textures/Player1Sprite.png")) {
+    if (!texture.loadFromFile("assets/textures/spriteProjectile.png")) {
         std::cerr << "Failed to load PlayerSprite.png!" << std::endl;
     }    
-
     configSprite();
 
     active = true;
@@ -21,10 +20,14 @@ Projectile::~Projectile(){
 /*                OWN FUNCTIONS                */
 /* ------------------------------------------- */
 
-void Projectile::collide(){
+void Projectile::verifyWallCollision(){
     if(position.x - size.x < 0.f || position.x + size.x > 800.f){
         active = false;
     }
+}
+
+void Projectile::collide(Entity* e){
+    
 }
 
 void Projectile::move(){
@@ -34,7 +37,7 @@ void Projectile::move(){
 void Projectile::execute(){
     draw();
     move();
-    collide();
+    verifyWallCollision();
 }
 
 /* ------------------------------------------- */

@@ -18,9 +18,13 @@ class Obstacle : public Entity{
         // virtual void dealDamage() = 0;
         
         /* ---- OWN FUNCTIONS ---- */
+        virtual void obstacleAction(Entity* e);
         virtual void execute();
-        virtual void ObstacleAction();
-        virtual void collide();
+        virtual void collide(Entity* e);
+        // virtual void execute()        = 0;
+        // virtual void collide()        = 0;
+        // virtual void ObstacleAction() = 0;
+
 
 };
 
