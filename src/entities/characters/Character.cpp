@@ -3,6 +3,12 @@
 
 Vector2f Character::gravity(0.f, 30.f);
 
+Character::Character()
+    : Entity(), health(5), strength(1), aceleration(0.f), velocity(0.f, 0.f),
+      in_air(true), friction(0.f, 0.f), friction_coef(0.5f) {
+  centerOrigin();
+}
+
 Character::Character(float x, float y, const float movSpeed, int life,
                      float coef, int s)
     : Entity(x, y), health(life), strength(s), aceleration(movSpeed),

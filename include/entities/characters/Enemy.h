@@ -14,10 +14,9 @@ class Enemy : public Character {
     protected:
         /* ------- PLAYER -------- */
         list<Player*> players_list;
-        list<Player*>::iterator it;
 
     public:
-
+        Enemy();
         Enemy(float x, float y, const float acel, int life = 5, float coef = 0.5, int s = 1);
         virtual ~Enemy();
 

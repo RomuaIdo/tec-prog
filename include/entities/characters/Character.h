@@ -22,11 +22,10 @@ class Character : public Entity {
         Vector2f friction;
         static Vector2f gravity;
         float friction_coef;
-        float clock;
 
 
     public:
-
+        Character();
         Character(float x, float y, const float acel,
         int life = 5, float coef = 0.5, int s = 1);
         virtual ~Character();

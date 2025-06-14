@@ -2,10 +2,29 @@
 #include "../../../include/managers/CollisionManager.h"
 #include <SFML/Window.hpp>
 
+
+Player::Player()
+    : Character(), player_num(1), score(0), vel_max(50.f), projectiles_list(),
+      shoot_delay(0.f) {
+  projectiles_list.clear();
+
+  if (!texture.loadFromFile("assets/textures/Player1Sprite.png")) {
+    std::cerr << "Failed to load PlayerSprite.png!" << std::endl;
+  }
+
+  texture.setSmooth(true);
+  sprite.setTexture(texture);
+  centerOrigin();
+  size.x = sprite.getLocalBounds().width;
+  size.y = sprite.getLocalBounds().height;
+  sprite.setScale(size.x / sprite.getLocalBounds().width,
+                  size.y / sprite.getLocalBounds().height);
+}
+
 Player::Player(float x, float y, const float acel, int life, float coef, int s,
                int p_num, const float v_max)
     : Character(x, y, acel, life, coef, s), player_num(p_num), score(0),
-      vel_max(v_max), projectiles_list() {
+      vel_max(v_max), projectiles_list(), shoot_delay(0.f) {
   projectiles_list.clear();
 
   if (p_num == 1) {
@@ -117,7 +136,6 @@ void Player::applyFriction(float dt) {
   velocity += friction * dt;
 }
 
-
 void Player::execute() {
   move();
   draw();
@@ -147,6 +165,7 @@ void Player::loseHealth(int damage) { health -= damage; }
 
 void Player::shoot() {
   if (player_num == 1) {
+
     if (Keyboard::isKeyPressed(sf::Keyboard::C)) {
       if (shoot_delay >= 0.5f) {
         // Determine the direction based on facing
@@ -155,6 +174,7 @@ void Player::shoot() {
             position.x + (faced_right ? size.x : 0), position.y + size.y / 2,
             direction * 10.f // Velocity with direction
         );
+
         if (p) {
           addProjectile(p);
           CollisionManager::getInstance()->addProjectile(
@@ -166,7 +186,7 @@ void Player::shoot() {
   }
   reload();
 }
-
+/*
 void Player::shootProjectiles() {
   for (list<Projectile *>::iterator it = projectiles_list.begin();
        it != projectiles_list.end(); it++) {
@@ -182,7 +202,7 @@ void Player::shootProjectiles() {
     }
   }
 }
-
+*/
 void Player::addProjectile(Projectile *p) { projectiles_list.push_back(p); }
 
 void Player::reload() { shoot_delay += pGM->getdt(); }

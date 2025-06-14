@@ -289,7 +289,7 @@ void CollisionManager::treatObstaclesCollision() {
 }
 
 void CollisionManager::treatProjectilesCollision() {
-  for (std::set<Projectile *>::iterator itProjectile = projectiles_set.begin();
+  for (set<Projectile *>::iterator itProjectile = projectiles_set.begin();
        itProjectile != projectiles_set.end();) {
     Projectile *proj = *itProjectile;
     bool collided = false;
@@ -343,11 +343,31 @@ void CollisionManager::treatProjectilesCollision() {
 }
 
 void CollisionManager::removeProjectile(Projectile *p) {
-  auto it = projectiles_set.find(p);
+  set<Projectile *>::iterator it =
+      projectiles_set.find(p);
   if (it != projectiles_set.end()) {
     projectiles_set.erase(it);
   }
 }
+
+void CollisionManager::removeEnemy(Enemy *e) {
+  auto it = std::find(enemies_vector.begin(), enemies_vector.end(), e);
+  if (it != enemies_vector.end()) {
+    enemies_vector.erase(it);
+  }
+}
+
+void CollisionManager::removeObstacle(Obstacle *o) {
+  obstacles_list.remove(o);
+}
+
+void CollisionManager::removePlayer(Player *p) {
+  auto it = std::find(players_vector.begin(), players_vector.end(), p);
+  if (it != players_vector.end()) {
+    players_vector.erase(it);
+  }
+}
+
 
 /* ------------------------------------------- */
 /*                ADD ENTITIES                 */

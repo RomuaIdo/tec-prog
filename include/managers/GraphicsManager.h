@@ -15,6 +15,7 @@ class GraphicsManager {
         /* ----- VARIABLES ----- */
         static GraphicsManager* instance;
         RenderWindow* pWindow;
+        View camera;
         map<string, Texture*> textures;
 
         /* ------ STATUS ------- */

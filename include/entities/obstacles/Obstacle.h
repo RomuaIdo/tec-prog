@@ -5,22 +5,22 @@
 using namespace sf;
 using namespace std;
 
-class Obstacle : public Entity{
+class Obstacle : public Entity {
 
-    private:
-        /* ------ STATUS ------- */
-        bool harmful;
+protected:
+  /* ------ STATUS ------- */
+  bool harmful;
 
-    public:
-        Obstacle(bool harm, float x, float y);
-        virtual ~Obstacle();
+public:
+  Obstacle();
+  Obstacle(bool harm, float x, float y);
+  virtual ~Obstacle();
 
-        // virtual void dealDamage() = 0;
-        
-        /* ---- OWN FUNCTIONS ---- */
-        virtual void execute();
-        virtual void ObstacleAction();
+  // virtual void dealDamage() = 0;
 
+  /* ---- OWN FUNCTIONS ---- */
+  virtual void execute();
+  virtual void ObstacleAction();
 };
 
 #endif

@@ -11,6 +11,7 @@ class Entity : public Ente {
         Vector2f position;
 
     public:
+        Entity();
         Entity(float x, float y);
         virtual ~Entity() = default;
 

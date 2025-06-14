@@ -46,7 +46,6 @@ public:
     return tmp;
   }
 
-  // Em iterator.h (para ListIterator)
   ListIterator &operator=(const ListIterator &other) {
     ptr = other.ptr;
     return *this;
@@ -66,7 +65,7 @@ private:
 
 
 /*
-// Iterador constante (const)
+// const_iterator (read-only)
 template <typename T> class ConstListIterator {
 public:
   //typedef const T *pointer;

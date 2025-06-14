@@ -1,5 +1,10 @@
 #include "../../include/entities/Entity.h"
 
+Entity::Entity() :
+    Ente(), position(0.f, 0.f) {
+    centerOrigin();
+}
+
 Entity::Entity(float x, float y) :
     Ente(), position(x,y){
     centerOrigin();

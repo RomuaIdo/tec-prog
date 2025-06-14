@@ -13,8 +13,10 @@ class Plataform : public Obstacle{
         float height;
 
     public:
+        Plataform();
         Plataform(float x, float y, bool harm = false);
         ~Plataform();
+        void ObstacleAction() override;
 
         /* ----- GETS & SETS ----- */
         void setWidth(float w);
