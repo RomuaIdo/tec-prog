@@ -13,7 +13,6 @@ Game::Game()
     player2 = new Player(100, 100, 50.f, 10, 1, 4, 2, 40.f);
     create_entes();
     create_menu();
-    
     game_state = GameState::MAIN_MENU;
     execute();
 }

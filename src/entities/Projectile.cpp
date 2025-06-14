@@ -21,7 +21,7 @@ Projectile::~Projectile(){
 /* ------------------------------------------- */
 
 void Projectile::verifyWallCollision(){
-    if(position.x - size.x < 0.f || position.x + size.x > 800.f){
+    if(position.x - size.x < 0.f || position.x + size.x > pGM->getWindow()->getSize().x ){
         active = false;
     }
 }

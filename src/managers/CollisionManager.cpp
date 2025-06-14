@@ -201,8 +201,12 @@ bool CollisionManager::verifyCollision(Entity* ent1, Entity* ent2) const{
 }
 
 void CollisionManager::treatWallCollision(){
-    float window_width = 800.0f;  // example
-    float window_height = 600.0f; // example
+
+    // float window_width  = Player::getGraphicsManager()->getWindow()->getSize().x;
+    // float window_height = Player::getGraphicsManager()->getWindow()->getSize().y; 
+
+    float window_height = 600.f;
+    float window_width = 800.f;
 
     // For each Player
     for(vector<Player*>::iterator it = players_vector.begin(); it != players_vector.end(); it++){
