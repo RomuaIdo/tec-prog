@@ -22,6 +22,10 @@ void Character::moveCharacter(){
     sprite.setPosition(position);
 }
 
+void Character::takeDamage(int damage){
+    health -= damage;
+}
+
 /* ------------------------------------------- */
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */

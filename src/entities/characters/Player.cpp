@@ -235,7 +235,3 @@ void Player::reload(){
 int Player::getHealth(){
     return health;
 }
-
-void Player::loseHealth(int damage){
-    health -= damage;
-}

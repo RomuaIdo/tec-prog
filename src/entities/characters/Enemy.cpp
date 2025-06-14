@@ -148,7 +148,7 @@ void Enemy::addPlayer(Player *p){
 void Enemy::attack(Player *p){
     /* If player has health and after 2 seconds, then he can attack */
     if(p->getHealth() > 0 && pGM->getClockTime() >= 2.f){
-        p->loseHealth(strength);
+        p->takeDamage(strength);
         cout << "Player got hurt!" << endl;
         cout << "He now has:" << p->getHealth() << endl;
         pGM->resetClock();

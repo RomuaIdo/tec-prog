@@ -37,7 +37,8 @@ class Character : public Entity {
 
         /* ---- OWN FUNCTIONS ---- */
         void moveCharacter();
-        
+        void takeDamage(int damage);
+
         /* ----- GETS & SETS ----- */
         Vector2f getSpeed() const;
         void setSpeed(Vector2f spd);

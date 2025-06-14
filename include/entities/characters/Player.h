@@ -37,7 +37,6 @@ class Player : public Character {
         
         /* ---- GETS & SETS ---- */
         int getHealth();
-        void loseHealth(int damage);
 
 };
 
