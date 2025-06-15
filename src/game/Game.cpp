@@ -127,16 +127,16 @@ void Game::updateCamera() {
   }
 
   Vector2f phaseSize = currentPhase->getPhaseSize();
-  // Calcula a média das posições X dos jogadores
+  // Find the average X position of both players
   float avgX = (player1->getPosition().x + player2->getPosition().x) / 2.0f;
 
-  // Mantém Y fixo (ex: metade da altura da janela)
+  // Y positional fix
   float fixedY = 300.f;
 
   // Limita a câmera aos limites do mundo
   float cameraHalfWidth = pGM->getWindow()->getSize().x / 2.0f;
   avgX =
-      std::max(cameraHalfWidth, std::min(avgX, phaseSize.x - cameraHalfWidth));
+      max(cameraHalfWidth, min(avgX, phaseSize.x - cameraHalfWidth));
 
   cameraCenter = sf::Vector2f(avgX, fixedY);
   pGM->setCameraCenter(cameraCenter);
@@ -148,7 +148,7 @@ void Game::createFirstPhase() {
   }
   currentPhase = new FirstPhase(Vector2f(1600.f, 600.f), player1, player2);
 
-  // Adiciona jogadores ao collision manager
+  // Add players to collision manager
   pCM->addPlayer(player1);
   pCM->addPlayer(player2);
   pCM->setPhaseSize(currentPhase->getPhaseSize());
@@ -160,7 +160,7 @@ void Game::createSecondPhase() {
   }
   currentPhase = new SecondPhase(Vector2f(2000.f, 600.f), player1, player2);
 
-  // Adiciona jogadores ao collision manager
+  // Add players to collision manager
   pCM->addPlayer(player1);
   pCM->addPlayer(player2);
   pCM->setPhaseSize(currentPhase->getPhaseSize());

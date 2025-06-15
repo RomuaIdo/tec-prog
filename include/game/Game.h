@@ -26,7 +26,7 @@ private:
   Vector2f phase_size;
   Vector2f cameraCenter;
   FirstPhase* firstPhase;
-  SecondPhase* secondPhase; // Ponteiro para segunda fase
+  SecondPhase* secondPhase;   
   Phase* currentPhase;
   /* ---- OWN FUNCTIONS ----- */
   void execute();

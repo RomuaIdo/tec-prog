@@ -62,23 +62,18 @@ bool Button::wasClicked() {
 
 void Button::adjustSize() {
   FloatRect bounds = label.getLocalBounds();
-  Vector2f padding(40.f, 20.f); // Aumentar o padding para melhor visualização
+  Vector2f padding(40.f, 20.f); 
 
-  // Calcular a escala necessária
   float scaleX = (bounds.width + padding.x) / texture.getSize().x;
   float scaleY = (bounds.height + padding.y) / texture.getSize().y;
 
-  // Aplicar escala ao sprite
   sprite.setScale(scaleX, scaleY);
 
-  // Centralizar origem do sprite
   FloatRect spriteBounds = sprite.getLocalBounds();
   sprite.setOrigin(spriteBounds.width / 2.f, spriteBounds.height / 2.f);
 
-  // Centralizar origem do texto
   label.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
 
-  // Reposicionar elementos
   sprite.setPosition(position);
   label.setPosition(position);
 }

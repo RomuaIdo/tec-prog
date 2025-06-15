@@ -39,7 +39,6 @@ void Plataform::obstacleAction(Player *player) {
   Vector2f cSize = player->getSize();
   Vector2f oSize = getSize();
 
-  // Define os limites do jogador e da plataforma
   float cLeft = cPos.x - cSize.x / 2;
   float cRight = cPos.x + cSize.x / 2;
   float cTop = cPos.y - cSize.y / 2;
@@ -50,37 +49,36 @@ void Plataform::obstacleAction(Player *player) {
   float oTop = oPos.y - oSize.y / 2;
   float oBottom = oPos.y + oSize.y / 2;
 
-  // Calcula a área de interseção
-  float intersectX = std::min(cRight, oRight) - std::max(cLeft, oLeft);
-  float intersectY = std::min(cBottom, oBottom) - std::max(cTop, oTop);
+  float intersectX = min(cRight, oRight) - max(cLeft, oLeft);
+  float intersectY = min(cBottom, oBottom) - max(cTop, oTop);
 
   if (intersectX > 0 && intersectY > 0) {
-    // Calcula as sobreposições em cada direção
+    // Calculate overlaps in each direction
     float topOverlap = cBottom - oTop;
     float bottomOverlap = oBottom - cTop;
     float leftOverlap = cRight - oLeft;
     float rightOverlap = oRight - cLeft;
 
-    // Encontra a menor sobreposição
+    // Find the minimum overlap
     float minOverlap =
-        std::min({topOverlap, bottomOverlap, leftOverlap, rightOverlap});
+        min({topOverlap, bottomOverlap, leftOverlap, rightOverlap});
 
     // Resolve na direção da menor sobreposição
     if (minOverlap == topOverlap) {
-      // Colisão pelo topo (jogador está acima da plataforma)
+      // Top collision (player is above the platform)
       cPos.y -= minOverlap;
       player->setInAir(false);
       player->setVelocity(Vector2f(player->getVelocity().x, 0.f));
     } else if (minOverlap == bottomOverlap) {
-      // Colisão pela base (jogador está abaixo da plataforma)
+      // Bottom collision (player is below the platform)
       cPos.y += minOverlap;
       player->setVelocity(Vector2f(player->getVelocity().x, 0.f));
     } else if (minOverlap == leftOverlap) {
-      // Colisão pela esquerda
+      // Left collision
       cPos.x -= minOverlap;
       player->setVelocity(Vector2f(0.f, player->getVelocity().y));
     } else if (minOverlap == rightOverlap) {
-      // Colisão pela direita
+      // Right collision
       cPos.x += minOverlap;
       player->setVelocity(Vector2f(0.f, player->getVelocity().y));
     }
@@ -95,7 +93,7 @@ void Plataform::obstacleAction(Enemy *enemy) {
   Vector2f cSize = enemy->getSize();
   Vector2f oSize = getSize();
 
-  // Define os limites do jogador e da plataforma
+  // Define the limits of the collision box
   float cLeft = cPos.x - cSize.x / 2;
   float cRight = cPos.x + cSize.x / 2;
   float cTop = cPos.y - cSize.y / 2;
@@ -106,37 +104,37 @@ void Plataform::obstacleAction(Enemy *enemy) {
   float oTop = oPos.y - oSize.y / 2;
   float oBottom = oPos.y + oSize.y / 2;
 
-  // Calcula a área de interseção
-  float intersectX = std::min(cRight, oRight) - std::max(cLeft, oLeft);
-  float intersectY = std::min(cBottom, oBottom) - std::max(cTop, oTop);
+  // Calculate the intersection area
+  float intersectX = min(cRight, oRight) - max(cLeft, oLeft);
+  float intersectY = min(cBottom, oBottom) - max(cTop, oTop);
 
   if (intersectX > 0 && intersectY > 0) {
-    // Calcula as sobreposições em cada direção
+    // Calculate overlaps in each direction
     float topOverlap = cBottom - oTop;
     float bottomOverlap = oBottom - cTop;
     float leftOverlap = cRight - oLeft;
     float rightOverlap = oRight - cLeft;
 
-    // Encontra a menor sobreposição
+    // Find the minimum overlap
     float minOverlap =
         std::min({topOverlap, bottomOverlap, leftOverlap, rightOverlap});
 
-    // Resolve na direção da menor sobreposição
+    // Resolve in the direction of the smallest overlap
     if (minOverlap == topOverlap) {
-      // Colisão pelo topo (jogador está acima da plataforma)
+      // Top collision (enemy is above the platform)
       cPos.y -= minOverlap;
       enemy->setInAir(false);
       enemy->setVelocity(Vector2f(enemy->getVelocity().x, 0.f));
     } else if (minOverlap == bottomOverlap) {
-      // Colisão pela base (jogador está abaixo da plataforma)
+      // Bottom collision (enemy is below the platform)
       cPos.y += minOverlap;
       enemy->setVelocity(Vector2f(enemy->getVelocity().x, 0.f));
     } else if (minOverlap == leftOverlap) {
-      // Colisão pela esquerda
+      // Left collision
       cPos.x -= minOverlap;
       enemy->setVelocity(Vector2f(0.f, enemy->getVelocity().y));
     } else if (minOverlap == rightOverlap) {
-      // Colisão pela direita
+      // Right collision
       cPos.x += minOverlap;
       enemy->setVelocity(Vector2f(0.f, enemy->getVelocity().y));
     }
