@@ -23,8 +23,13 @@ void Character::moveCharacter(){
 }
 
 void Character::takeDamage(int damage){
+    if(health - damage < 0){
+        health = 0;
+        cout << "Character is dead!" << endl;
+        return;
+    }
     health -= damage;
-    cout << "Losed Health:" << health << endl;
+    cout << "Lost Health:" << health << endl;
 }
 
 /* ------------------------------------------- */

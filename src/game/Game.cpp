@@ -146,9 +146,13 @@ void Game::create_entes(){
     for (int i = 0; i < 2; i++){
         ThornyBush *o = nullptr;
         o = new ThornyBush((i + 2) * 100.f, 580.f);
-        if (o){
+        Honey* h = nullptr;
+        h = new Honey((i + 1) * 50.f, 500.f);
+        if (o && h){
+            pCM->addObstacle(h);
             pCM->addObstacle(o);
             entes_list.push_back(o);
+            entes_list.push_back(h);
             cout << "Obstacle created" << endl;
         }else
             cout << "Obstacle not allocated." << endl;

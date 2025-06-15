@@ -13,16 +13,15 @@ class Obstacle : public Entity{
         bool is_active;
 
     public:
-        Obstacle(bool harm, float x, float y);
+        Obstacle(float x, float y,bool harm = false);
         virtual ~Obstacle();
 
         // virtual void dealDamage() = 0;
         
         /* ---- OWN FUNCTIONS ---- */
-        virtual void update()                = 0;
         virtual void execute()                 = 0;
         virtual void collide(Entity* e)        = 0;
-        virtual void ObstacleAction(Entity* e) = 0;
+        virtual void obstacleAction(Entity* e) = 0;
 
         /* ----- GETS & SETS ----- */
 
