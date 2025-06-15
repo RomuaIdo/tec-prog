@@ -24,6 +24,7 @@ void Character::moveCharacter(){
 
 void Character::takeDamage(int damage){
     health -= damage;
+    cout << "Losed Health:" << health << endl;
 }
 
 /* ------------------------------------------- */

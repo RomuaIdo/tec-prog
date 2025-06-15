@@ -7,9 +7,10 @@ using namespace std;
 
 class Obstacle : public Entity{
 
-    private:
+    protected:
         /* ------ STATUS ------- */
         bool harmful;
+        bool is_active;
 
     public:
         Obstacle(bool harm, float x, float y);
@@ -18,12 +19,16 @@ class Obstacle : public Entity{
         // virtual void dealDamage() = 0;
         
         /* ---- OWN FUNCTIONS ---- */
-        virtual void obstacleAction(Entity* e);
-        virtual void execute();
-        virtual void collide(Entity* e);
-        // virtual void execute()        = 0;
-        // virtual void collide()        = 0;
-        // virtual void ObstacleAction() = 0;
+        virtual void update()                = 0;
+        virtual void execute()                 = 0;
+        virtual void collide(Entity* e)        = 0;
+        virtual void ObstacleAction(Entity* e) = 0;
+
+        /* ----- GETS & SETS ----- */
+
+        void setActive(bool active);
+        bool isActive() const;
+
 
 
 };

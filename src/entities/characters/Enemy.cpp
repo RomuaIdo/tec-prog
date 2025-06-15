@@ -8,6 +8,7 @@ Enemy::Enemy(float x, float y, const float acel, int life, float coef , int s):
         std::cerr << "Failed to load EnemySprite.png!" << std::endl;
     }    
 
+    sprite.setTexture(texture);
     configSprite(); 
 
     players_list.clear();
@@ -149,8 +150,6 @@ void Enemy::attack(Player *p){
     /* If player has health and after 2 seconds, then he can attack */
     if(p->getHealth() > 0 && pGM->getClockTime() >= 2.f){
         p->takeDamage(strength);
-        cout << "Player got hurt!" << endl;
-        cout << "He now has:" << p->getHealth() << endl;
         pGM->resetClock();
     }
 

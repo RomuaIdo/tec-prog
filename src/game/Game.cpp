@@ -144,8 +144,8 @@ void Game::create_entes(){
             cout << "Enemy not allocated." << endl;
     }
     for (int i = 0; i < 2; i++){
-        Obstacle *o = nullptr;
-        o = new Obstacle(false, (i + 2) * 100.f, 580.f);
+        ThornyBush *o = nullptr;
+        o = new ThornyBush((i + 2) * 100.f, 580.f);
         if (o){
             pCM->addObstacle(o);
             entes_list.push_back(o);

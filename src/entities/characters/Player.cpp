@@ -15,7 +15,7 @@ Player::Player(float x, float y, const float acel, int life, float coef, int s, 
             std::cerr << "Failed to load Player2Sprite.png!" << std::endl;
         }  
     }
-    
+    sprite.setTexture(texture);
     configSprite();
 }
 

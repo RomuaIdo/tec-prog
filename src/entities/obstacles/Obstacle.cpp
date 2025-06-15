@@ -3,11 +3,7 @@
 
 Obstacle::Obstacle(bool harm, float x, float y):
     Entity(x,y), harmful(harm){
-    if (!texture.loadFromFile("assets/textures/Obstacle.png")) {
-        std::cerr << "Failed to load Obstacle.png!" << std::endl;
-    }    
 
-    configSprite();
 }
 
 Obstacle::~Obstacle(){
@@ -15,18 +11,14 @@ Obstacle::~Obstacle(){
 }
 
 /* ------------------------------------------- */
-/*                OWN FUNCTIONS                */
+/*                 GETS & SETS                 */
 /* ------------------------------------------- */
 
-void Obstacle::execute(){
-    draw();
+void Obstacle::setActive(bool active){
+    is_active = active;
 }
 
-void Obstacle::obstacleAction(Entity* e){
-
-}
-
-void Obstacle::collide(Entity* e){
-
+bool Obstacle::isActive() const {
+    return is_active;
 }
 
