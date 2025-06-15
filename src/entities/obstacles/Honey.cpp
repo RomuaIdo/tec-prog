@@ -3,7 +3,7 @@
 
 
 Honey::Honey(float x, float y, bool harm):
-    Obstacle(x,y,harm), viscosity(0.5f){
+    Obstacle(x,y,harm), viscosity(0.6f){
     if (!texture.loadFromFile("assets/textures/Honey.png")) {
         std::cerr << "Failed to load Honey.png!" << std::endl;
     }
@@ -28,7 +28,7 @@ void Honey::obstacleAction(Entity* e){
         if (character) {
             Vector2f speed = character->getSpeed();
             speed.x *= viscosity; // Slow down the character's speed
-            speed.y *= viscosity; // Slow down the character's jump
+            speed.y *= (viscosity + 0.2f); // Slow down the character's jump
             character->setSpeed(speed);
         }
     }

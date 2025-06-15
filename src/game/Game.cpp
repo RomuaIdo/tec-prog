@@ -145,9 +145,9 @@ void Game::create_entes(){
     }
     for (int i = 0; i < 2; i++){
         ThornyBush *o = nullptr;
-        o = new ThornyBush((i + 2) * 100.f, 580.f);
+        o = new ThornyBush((i + 2) * 100.f, 580.f, true);
         Honey* h = nullptr;
-        h = new Honey((i + 1) * 50.f, 500.f);
+        h = new Honey((i + 1) * 50.f, 500.f, false);
         if (o && h){
             pCM->addObstacle(h);
             pCM->addObstacle(o);
