@@ -2,12 +2,13 @@
 #define ENEMY_H
 #include <list>
 #include "Character.h"
-#include "Player.h"
 #include <SFML/Graphics.hpp>
 #include <list>
 #include <math.h>
 using namespace sf;
 using namespace std;
+
+class Player;
 
 class Enemy : public Character {
 
@@ -21,6 +22,7 @@ class Enemy : public Character {
         virtual ~Enemy();
 
         /* ---- OWN FUNCTIONS ---- */
+        virtual void collide(Entity *other);
         virtual void execute();
         virtual void move();
 

@@ -1,5 +1,7 @@
 #include "../../../include/entities/characters/Player.h"
 #include "../../../include/managers/CollisionManager.h"
+#include "../../../include/entities/characters/Enemy.h"
+#include "../../../include/entities/Projectile.h"
 #include <SFML/Window.hpp>
 
 
@@ -135,6 +137,17 @@ void Player::applyFriction(float dt) {
   }
   velocity += friction * dt;
 }
+
+
+void Player::collide(Entity* other) {
+    if (Enemy* enemy = dynamic_cast<Enemy*>(other)) {
+        loseHealth(10);
+    }
+    else if (Projectile* proj = dynamic_cast<Projectile*>(other)) {
+        loseHealth(1);
+    }
+}
+
 
 void Player::execute() {
   move();

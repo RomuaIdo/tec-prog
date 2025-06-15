@@ -1,18 +1,18 @@
 #include "../../include/game/Game.h"
 #include "../../include/graphicalelements/Button.h"
 #include "../../include/managers/CollisionManager.h"
-#include "../../include/menu/Menu.h"
+#include "../../include/menu/MainMenu.h"
+#include <algorithm>
 
 Game::Game()
-    : pGM(nullptr), pCM(nullptr), entes_list(), it(), player1(nullptr),
-      player2(nullptr), mouseSubject() {
-  entes_list.clear();
+    : pGM(nullptr), pCM(nullptr), player1(nullptr),
+      player2(nullptr), mouseSubject(), phase_size(1600.f, 600.f),
+      firstPhase(nullptr), secondPhase(nullptr), currentPhase(nullptr) {
   pCM = CollisionManager::getInstance();
   pGM = GraphicsManager::getInstance();
   Ente::setGraphicsManager(pGM);
   player1 = new Player(200, 100, 50.f, 10, 1, 4, 1, 60.f);
   player2 = new Player(100, 100, 50.f, 10, 1, 4, 2, 60.f);
-  create_entes();
   create_menu();
 
   game_state = GameState::MAIN_MENU;
@@ -27,16 +27,15 @@ Game::~Game() {
   delete menu;
   menu = nullptr;
 
-  List<Ente *>::iterator ite;
-  for (ite = entes_list.begin(); ite != entes_list.end(); ite++) {
-    if (*ite) {
-      cout << "Deleting ente..." << endl;
-      delete (*ite);
-      (*ite) = nullptr;
-    }
+  if(firstPhase) {
+    delete firstPhase;
+    firstPhase = nullptr;
   }
-  cout << "Successfully Deleted!" << endl;
-  entes_list.clear();
+  if(secondPhase) {
+    delete secondPhase;
+    secondPhase = nullptr;
+  }
+  currentPhase = nullptr;
 }
 
 /* ------------------------------------------- */
@@ -64,7 +63,7 @@ void Game::execute() {
       if (event.type == Event::MouseButtonPressed) {
         mouseSubject.notifyObservers(event.mouseButton);
       }
-   }
+    }
 
     pGM->clean();
     switch (game_state) {
@@ -80,25 +79,23 @@ void Game::execute() {
 }
 
 void Game::running() {
-  for (it = entes_list.begin(); it != entes_list.end(); it++) {
-    if (*it) {
-      (*it)->execute();
-    } else
-      cout << "Not executed." << endl;
+  if (currentPhase) {
+    currentPhase->execute();
+  } else {
+    cerr << "Current phase is not set." << endl;
   }
+  updateCamera();
   player1->execute();
   player2->execute();
-  pCM->execute();
 }
 
 void Game::main_menu() {
-
   menu->execute();
   map<string, Button *>::iterator it;
   for (it = menu->getButtons().begin(); it != menu->getButtons().end(); ++it) {
     if (it->second->wasClicked()) {
       game_state = GameState::PLAYING;
-      cout << "Button pressed: " << it->first << endl;
+      createFirstPhase(); // Cria a primeira fase
       break;
     }
   }
@@ -108,45 +105,63 @@ void Game::main_menu() {
 /*               CREATE FUNCTIONS              */
 /* ------------------------------------------- */
 
-void Game::create_menu() {
-  menu = new Menu(this);
-  if (menu) {
-    menu->setBackground("assets/textures/menu_background.png");
-    Button *playButton = new Button("assets/fonts/Minecraft.ttf", "Play",
-                                    "assets/textures/button.png",
-                                    "assets/textures/button_hovered.png",
-                                    &mouseSubject, 20, Vector2f(300.f, 400.f));
-    playButton->activate();
-    menu->addButton("play", playButton);
-    menu->activateButtons();
-  } else {
-    cerr << "Menu not allocated." << endl;
-  }
+MouseSubject &Game::getMouseSubject() {
+  return mouseSubject;
 }
 
-void Game::create_entes() {
-  for (int i = 0; i < 1; i++) {
-    Enemy *e = nullptr;
-    e = new Enemy((float)(i * 150), (float)((i + 1) * 150), 15.f, 5, 1.f, 2);
-    if (e) {
-      e->addPlayer(player1);
-      e->addPlayer(player2);
-      pCM->addEnemy(e);
-      entes_list.push_back(e);
-      cout << "Players added to enemy" << endl;
-    } else
-      cout << "Enemy not allocated." << endl;
+void Game::setGameState(GameState state) {
+  game_state = state;
+}
+
+
+void Game::create_menu() {
+  menu = new MainMenu(this);
+  menu->activateButtons();
+}
+
+
+void Game::updateCamera() {
+  if (!currentPhase) {
+    cerr << "Current phase is not set. Cannot update camera." << endl;
+    return;
   }
-  for (int i = 0; i < 2; i++) {
-    Obstacle *o = nullptr;
-    o = new Obstacle(false, (i + 2) * 100.f, 570.f);
-    if (o) {
-      pCM->addObstacle(o);
-      entes_list.push_back(o);
-      cout << "Obstacle created" << endl;
-    } else
-      cout << "Obstacle not allocated." << endl;
+
+  Vector2f phaseSize = currentPhase->getPhaseSize();
+  // Calcula a média das posições X dos jogadores
+  float avgX = (player1->getPosition().x + player2->getPosition().x) / 2.0f;
+
+  // Mantém Y fixo (ex: metade da altura da janela)
+  float fixedY = 300.f;
+
+  // Limita a câmera aos limites do mundo
+  float cameraHalfWidth = pGM->getWindow()->getSize().x / 2.0f;
+  avgX =
+      std::max(cameraHalfWidth, std::min(avgX, phaseSize.x - cameraHalfWidth));
+
+  cameraCenter = sf::Vector2f(avgX, fixedY);
+  pGM->setCameraCenter(cameraCenter);
+}
+
+void Game::createFirstPhase() {
+  if (currentPhase) {
+    delete currentPhase;
   }
+  currentPhase = new FirstPhase(Vector2f(1600.f, 600.f), player1, player2);
+
+  // Adiciona jogadores ao collision manager
   pCM->addPlayer(player1);
   pCM->addPlayer(player2);
+  pCM->setPhaseSize(currentPhase->getPhaseSize());
+}
+
+void Game::createSecondPhase() {
+  if (currentPhase) {
+    delete currentPhase;
+  }
+  currentPhase = new SecondPhase(Vector2f(2000.f, 600.f), player1, player2);
+
+  // Adiciona jogadores ao collision manager
+  pCM->addPlayer(player1);
+  pCM->addPlayer(player2);
+  pCM->setPhaseSize(currentPhase->getPhaseSize());
 }

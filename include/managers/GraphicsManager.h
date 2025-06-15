@@ -15,7 +15,7 @@ class GraphicsManager {
         /* ----- VARIABLES ----- */
         static GraphicsManager* instance;
         RenderWindow* pWindow;
-        View camera;
+        View* view;
         map<string, Texture*> textures;
 
         /* ------ STATUS ------- */
@@ -44,6 +44,8 @@ class GraphicsManager {
         /* ----- GETS & SETS ----- */
         RenderWindow* getWindow() const;
         void setWindow(RenderWindow* window);
+        void setCameraCenter(Vector2f center);
+        void setCamera(View* view);
         void setClock();
         float getdt() const;
         const Clock getClockdt() const;

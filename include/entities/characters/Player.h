@@ -26,6 +26,7 @@ public:
   ~Player();
 
   /* --- OWN FUNCTIONS --- */
+  void collide(Entity *other);
   void execute();
   void move();
   void handlePlayer1Controls(float dt, float jumpForce);

@@ -1,4 +1,5 @@
 #include "../../../include/entities/characters/Enemy.h"
+#include "../../../include/entities/characters/Player.h"
 #include <SFML/Window.hpp>
 
 
@@ -48,6 +49,16 @@ void Enemy::execute() {
 /*                OWN FUNCTIONS                */
 /* ------------------------------------------- */
 
+void Enemy::collide(Entity* other) {
+    if (Player* player = dynamic_cast<Player*>(other)) {
+        attack(player);
+    }
+    else if (Projectile* proj = dynamic_cast<Projectile*>(other)) {
+        //loseHealth(1);
+    }
+}
+
+
 void Enemy::move(){
     float closer = sqrt(800 * 800 + 600 * 600);
     Vector2f closer_direction = Vector2f(0.f,0.f);
@@ -76,7 +87,7 @@ void Enemy::move(){
         }
     }
 
-    if(closer_direction.y < 0 && velocity.y == 0.f){
+    if(closer_direction.y < 0 && !isInAir()){
         closer_direction.y = -10.f;
     }else closer_direction.y = 0.f;
     

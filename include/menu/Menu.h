@@ -1,38 +1,37 @@
 #ifndef MENU_H
-#include <map>
 #include "../entities/Ente.h"
 #include "../graphicalelements/Button.h"
-
+#include <map>
 
 class Game;
-class Menu : public Ente{
-    
-    private:
-        /* ----- VARIABLES ----- */
-        Game* pGame; 
-        map<string, Button*> buttons;
-        
-        /* ------ STATUS ------- */
-        Texture background;
+class Menu : public Ente {
 
-    public:
-        Menu();
-        Menu(Game* game);
-        virtual ~Menu();
+protected:
+  /* ----- VARIABLES ----- */
+  Game *pGame;
+  map<string, Button *> buttons;
 
-        /* ---- OWN FUNCTIONS ---- */
-        void execute() override;
-        Drawable& getDrawable() override;
-        void draw() override;
+  /* ------ STATUS ------- */
+  Texture background;
 
-        /* ------ BUTTON ------- */
-        void addButton(string name, Button* button);
-        void deactivateButtons();
-        void activateButtons();
-        
-        /* ----- GETS & SETS ----- */
-        void setBackground(const string filePath);
-        map<string, Button*>& getButtons();
+public:
+  Menu();
+  Menu(Game *game);
+  virtual ~Menu();
+
+  /* ---- OWN FUNCTIONS ---- */
+  void execute() override;
+  Drawable &getDrawable() override;
+  void draw() override;
+
+  /* ------ BUTTON ------- */
+  void addButton(string name, Button *button);
+  void deactivateButtons();
+  void activateButtons();
+
+  /* ----- GETS & SETS ----- */
+  void setBackground(const string filePath);
+  map<string, Button *> &getButtons();
 };
 
 #endif

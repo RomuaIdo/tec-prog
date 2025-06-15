@@ -14,7 +14,9 @@ class Entity : public Ente {
         Entity();
         Entity(float x, float y);
         virtual ~Entity() = default;
-
+        
+        /* ---- PURE VIRTUAL FUNCTIONS ---- */
+        virtual void collide(Entity* other) = 0;
         virtual void execute() = 0;
 
         /* ---- OWN FUNCTIONS ---- */

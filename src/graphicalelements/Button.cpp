@@ -47,12 +47,6 @@ void Button::draw() {
 
 void Button::execute() { draw(); }
 
-void Button::centerOrigin() {
-  FloatRect bounds = sprite.getLocalBounds();
-  sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
-  label.setOrigin(label.getLocalBounds().width / 2.f,
-                  label.getLocalBounds().height / 2.f);
-}
 
 /* ------------------------------------------- */
 /*              BUTTON FUNCTIONS               */
@@ -68,18 +62,25 @@ bool Button::wasClicked() {
 
 void Button::adjustSize() {
   FloatRect bounds = label.getLocalBounds();
-  Vector2f padding(20.f, 10.f);
-  sprite.setScale(1.f, 1.f);
-  sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
-  sprite.setScale((bounds.width + padding.x) / texture.getSize().x,
-                  (bounds.height + padding.y) / texture.getSize().y);
+  Vector2f padding(40.f, 20.f); // Aumentar o padding para melhor visualização
 
-  FloatRect buttonBounds = sprite.getGlobalBounds();
-  label.setPosition(
-      buttonBounds.left + (buttonBounds.width - bounds.width) / 2.f,
-      buttonBounds.top + (buttonBounds.height - bounds.height) / 2.f -
-          bounds.top);
-  centerOrigin();
+  // Calcular a escala necessária
+  float scaleX = (bounds.width + padding.x) / texture.getSize().x;
+  float scaleY = (bounds.height + padding.y) / texture.getSize().y;
+
+  // Aplicar escala ao sprite
+  sprite.setScale(scaleX, scaleY);
+
+  // Centralizar origem do sprite
+  FloatRect spriteBounds = sprite.getLocalBounds();
+  sprite.setOrigin(spriteBounds.width / 2.f, spriteBounds.height / 2.f);
+
+  // Centralizar origem do texto
+  label.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
+
+  // Reposicionar elementos
+  sprite.setPosition(position);
+  label.setPosition(position);
 }
 
 void Button::onMouseEvent(const Event::MouseMoveEvent &event) {
@@ -106,14 +107,7 @@ void Button::onMouseEvent(const Event::MouseButtonEvent &event) {
 void Button::setPosition(Vector2f pos) {
   position = pos;
   sprite.setPosition(pos);
-
-  FloatRect textbounds = label.getLocalBounds();
-  FloatRect buttonounds = sprite.getLocalBounds();
-
-  Vector2f textposition(pos.x + (buttonounds.width - textbounds.width) / 2.f,
-                        pos.y + (buttonounds.height - textbounds.height) / 2.f);
-
-  label.setPosition(textposition);
+  label.setPosition(pos);
 }
 
 Vector2f Button::getPosition() const { return position; }

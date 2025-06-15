@@ -25,7 +25,9 @@ Projectile::Projectile(float x, float y, float vel):
 /*                OWN FUNCTIONS                */
 /* ------------------------------------------- */
 
-
+void Projectile::collide(Entity* other) {
+    setActive(false);
+}
 
 void Projectile::move(){
     position.x += velocity;

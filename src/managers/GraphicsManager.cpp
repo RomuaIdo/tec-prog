@@ -21,7 +21,7 @@ GraphicsManager::~GraphicsManager() {
   }
 }
 
-GraphicsManager::GraphicsManager() : pWindow(nullptr) { setClock(); }
+GraphicsManager::GraphicsManager() : pWindow(nullptr), view(nullptr) { setClock(); }
 
 /* ------------------------------------------- */
 /*                OWN FUNCTIONS                */
@@ -72,6 +72,30 @@ void GraphicsManager::operator++() { clock_time += dt; }
 RenderWindow *GraphicsManager::getWindow() const { return pWindow; }
 
 void GraphicsManager::setWindow(RenderWindow *window) { pWindow = window; }
+
+void GraphicsManager::setCameraCenter(Vector2f center) {
+  if (pWindow != nullptr) {
+    if (view == nullptr) {
+      view = new View();
+      view->setSize(pWindow->getSize().x, pWindow->getSize().y);
+    }
+    
+    // Mantém Y fixo (300.f) e só ajusta X
+    Vector2f newCenter(center.x, 300.f); 
+    view->setCenter(newCenter);
+    pWindow->setView(*view);
+  } else {
+    cerr << "Window not initialized." << endl;
+  }
+}
+
+void GraphicsManager::setCamera(View *view) {
+  if (pWindow != nullptr) {
+    pWindow->setView(*view);
+  } else {
+    cerr << "Window not initialized." << endl;
+  }
+}
 
 void GraphicsManager::setClock() { dt = dt_clock.restart().asSeconds(); }
 

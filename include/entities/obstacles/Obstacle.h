@@ -5,6 +5,9 @@
 using namespace sf;
 using namespace std;
 
+class Player;
+class Enemy;
+
 class Obstacle : public Entity {
 
 protected:
@@ -19,8 +22,10 @@ public:
   // virtual void dealDamage() = 0;
 
   /* ---- OWN FUNCTIONS ---- */
-  virtual void execute();
-  virtual void ObstacleAction();
+  virtual void collide(Entity *other) = 0;
+  virtual void execute() = 0;
+  virtual void obstacleAction(Player *player) = 0;
+  virtual void obstacleAction(Enemy* enemy) = 0;
 };
 
 #endif
