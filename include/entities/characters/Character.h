@@ -14,6 +14,7 @@ class Character : public Entity {
         const float aceleration;
         Vector2f speed;
         float clock;
+        
 
         /* ------- FLAGS ------- */
         int faced_right;
@@ -27,8 +28,7 @@ class Character : public Entity {
 
     public:
         Character();
-        Character(float x, float y, const float acel,
-        int life = 5, float coef = 0.5, int s = 1);
+        Character(float x, float y, const float acel, int life = 5, float coef = 0.5, int s = 1);
         virtual ~Character();
 
         virtual void execute() = 0;

@@ -6,23 +6,22 @@
 
 class Honey : public Obstacle {
 
-private:
-  /* ------ STATUS ------- */
-  float viscosity; // Honey viscosity, how much it slows down the player
+    private:
+        /* ------ STATUS ------- */
+        float viscosity; // Honey viscosity, how much it slows down the player
 
-public:
-  Honey(float x, float y, bool harm, const string &texturePath);
-  ~Honey();
+    public:
+        Honey(float x, float y, bool harm);
+        ~Honey();
 
-  /* ---- OWN FUNCTIONS ---- */
-  void obstacleAction(Player *p);
-  void obstacleAction(Enemy *e);
-  void execute();
-  void collide(Entity *e);
+        /* ---- OWN FUNCTIONS ---- */
+        void obstacleAction(Entity* e);
+        void execute();
+        void collide(Entity *e);
 
-  /* ----- GETS & SETS ----- */
-  void setViscosity(float v);
-  float getViscosity() const;
+        /* ----- GETS & SETS ----- */
+        void setViscosity(float v);
+        float getViscosity() const;
 };
 
 #endif
