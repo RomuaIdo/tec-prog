@@ -20,48 +20,51 @@ class Character;
 
 class CollisionManager {
 
-private:
-  /* ------- VARIABLES ------ */
-  vector<Enemy *> enemies_vector;
-  list<Obstacle *> obstacles_list;
-  set<Projectile *> projectiles_set;
-  vector<Player *> players_vector;
-  GraphicsManager *pGM;
-  Vector2f phaseSize;
-  /* ------- SINGLETON ------- */
-  static CollisionManager *instance;
+    private:
+    /* ------- VARIABLES ------ */
+    vector<Enemy *> enemies_vector;
+    list<Obstacle *> obstacles_list;
+    set<Projectile *> projectiles_set;
+    vector<Player *> players_vector;
+    GraphicsManager *pGM;
+    Vector2f phaseSize;
+    /* ------- SINGLETON ------- */
+    static CollisionManager *instance;
 
-  CollisionManager();
+    CollisionManager();
 
-public:
-  ~CollisionManager();
-  static CollisionManager *getInstance();
+    public:
+    ~CollisionManager();
+    static CollisionManager *getInstance();
 
-  CollisionManager(const CollisionManager &) = delete;
-  CollisionManager &operator=(const CollisionManager &) = delete;
+    CollisionManager(const CollisionManager &) = delete;
+    CollisionManager &operator=(const CollisionManager &) = delete;
 
-  /* ------- COLLISION ------- */
-  bool verifyCollision(Entity *ent1, Entity *ent2) const;
-  void treatEnemiesCollision();
-  void treatObstaclesCollision();
-  void treatProjectilesCollision();
-  void treatPlayersCollision();
-  void treatWallCollision();
-  void resolveCollisionObstacle(Character *c, Obstacle *o);
-  void resolveCollisionCharacter(Character *c1, Character *c2);
-  void removeProjectile(Projectile *p);
-  void removeEnemy(Enemy *e);
-  void removeObstacle(Obstacle *o);
-  void removePlayer(Player *p);
-  /* ------ ADD ENTITIES ------ */
-  void addPlayer(Player *p);
-  void addEnemy(Enemy *e);
-  void addObstacle(Obstacle *o);
-  void addProjectile(Projectile *p);
-  void clearEntities();
-  /* ------ GETTERS/SETTERS ------ */
-  void setPhaseSize(Vector2f size);
-  void execute();
+    /* ------- COLLISION ------- */
+    bool verifyCollision(Entity *ent1, Entity *ent2) const;
+    void treatEnemiesCollision();
+    void treatObstaclesCollision();
+    void treatProjectilesCollision();
+    void treatPlayersCollision();
+    void treatWallCollision();
+    
+    
+    /* -------- ENTITIES -------- */
+    void addPlayer(Player *p);
+    void addEnemy(Enemy *e);
+    void addObstacle(Obstacle *o);
+    void addProjectile(Projectile *p);
+
+    void removeProjectile(Projectile *p);
+    void removeEnemy(Enemy *e);
+    void removeObstacle(Obstacle *o);
+    void removePlayer(Player *p);
+    
+    void clearEntities();
+
+    /* ------ GETTERS/SETTERS ------ */
+    void setPhaseSize(Vector2f size);
+    void execute();
 };
 
 #endif
