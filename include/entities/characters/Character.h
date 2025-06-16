@@ -37,8 +37,6 @@ class Character : public Entity {
 
         /* ---- OWN FUNCTIONS ---- */
         void moveCharacter();
-        void setInAir(bool inair);
-        bool isInAir() const;       
         void takeDamage(int damage);
         
         /* ----- GETS & SETS ----- */

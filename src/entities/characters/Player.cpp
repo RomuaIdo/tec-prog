@@ -1,4 +1,5 @@
 #include "../../../include/entities/characters/Player.h"
+#include "../../../include/managers/CollisionManager.h"
 #include <SFML/Window.hpp>
 
 Player::Player(float x, float y, const float acel, int life, float coef, int s, int p_num, const float v_max): 
