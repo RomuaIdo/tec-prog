@@ -1,152 +1,166 @@
 #include "../../../../include/entities/characters/enemies/Cuca.h"
-#include "../../../../include/entities/characters/Player.h"
 #include "../../../../include/managers/CollisionManager.h"
 
-Cuca::Cuca(float x, float y, const float acel, int life, float coef, int s)
-    : Enemy(x, y, acel, life, coef, s), makingPotion(0.f),
-      currentState(CucaState::IDLE), stateTimer(0.0f) {
+Cuca::Cuca(float x, float y, const float acel, int life, float coef, int s) :
+    Enemy(x, y, acel, life, coef, s), makingPotion(0.f) {
 
-  if (!texture.loadFromFile("assets/textures/Cuca.png")) {
-    std::cerr << "Failed to load Cuca.png!" << std::endl;
-  }
-  texture.setSmooth(true);
-  sprite.setTexture(texture);
-  centerOrigin();
-
-  // CORREÇÃO: Ajustar tamanho após carregar textura
-  size.x = sprite.getLocalBounds().width;
-  size.y = sprite.getLocalBounds().height;
-  sprite.setScale(size.x / sprite.getLocalBounds().width,
-                  size.y / sprite.getLocalBounds().height);
-  speed = Vector2f(0.f, 0.f);
-  faced_right = true;
+    if (!texture.loadFromFile("assets/textures/Cuca.png")) {
+            std::cerr << "Failed to load Cuca.png!" << std::endl;
+    }
+    sprite.setTexture(texture);
+    configSprite();
 }
 
-Cuca::~Cuca() {}
+Cuca::~Cuca() {
+}
 
 /* ------------------------------------------- */
 /*                OWN FUNCTIONS                */
 /* ------------------------------------------- */
 
 void Cuca::execute() {
-  move();
-  draw();
-  makePotion();
-  throwPotion();
+    move();
+    draw();
+    makePotion();
+    throwPotion();
 }
 
 void Cuca::move() {
-  stateTimer += pGM->getdt();
 
-  // Transição de estados após 2 segundos
-  if (stateTimer >= STATE_DURATION) {
-    stateTimer = 0.0f;
-
-    switch (currentState) {
-    case CucaState::IDLE:
-      // Alterna entre esquerda e direita após pausa
-      currentState =
-          (rand() % 2 == 0) ? CucaState::MOVING_LEFT : CucaState::MOVING_RIGHT;
-      break;
-
-    case CucaState::MOVING_LEFT:
-    case CucaState::MOVING_RIGHT:
-      // Volta para estado de pausa
-      currentState = CucaState::IDLE;
-      speed.x = 0.0f; // Para completamente
-      break;
+    // Change direction after 2 seconds
+    if(clock > 2.f){
+        faced_right *= -1;
+        clock = 0;
+    }else{
+        clock += pGM->getdt();
     }
-  }
-
-  // Executa ações baseadas no estado atual
-  switch (currentState) {
-  case CucaState::MOVING_LEFT:
-    speed.x = -aceleration;
-    faced_right = false;
-    break;
-
-  case CucaState::MOVING_RIGHT:
-    speed.x = aceleration;
-    faced_right = true;
-    break;
-
-  case CucaState::IDLE:
-    // Nada a fazer, já está parado
-    break;
-  }
-
-  // Aplica movimento e gravidade
-  moveCharacter();
+    speed.x = faced_right*(aceleration);
+    
+    moveCharacter();
 }
 
-void Cuca::collide(Entity *e) {
+void Cuca::collide(Entity* e) {
+    Vector2f ePos = e->getPosition();
+    Vector2f eSize = e->getSize();
 
-  // If the entity is a Player, attack it
-  if (dynamic_cast<Player *>(e)) {
-    Player *p = static_cast<Player *>(e);
-    if (p) {
-      attack(p);
+    float dx = (position.x - ePos.x);
+    float dy = (position.y - ePos.y);
+
+    Vector2f intersection = Vector2f( abs(dx) - (size.x + eSize.x), 
+                                      abs(dy) - (size.y + eSize.y) );
+
+    if (intersection.x < 0.0f && intersection.y < 0.0f) {
+
+        /* If intersection in x is less then intersection in y
+        /*  means that they are side by side                 */
+
+        if (std::abs(intersection.x) < std::abs(intersection.y)) {
+            
+            /* To push the character the amount he is inside */                       
+            float push = abs(intersection.x / 2.f);
+
+            if (dx > 0) {
+                position.x += push;
+                setSpeed({0.f + push, getSpeed().y});
+            }
+            else{
+                position.x -= push;
+                setSpeed({0.f - push, getSpeed().y});
+            } 
+        /* If intersection in y is less then intersection in x
+        /*  means that character collided in y with obstacle */
+        } else {
+
+            /* To push the character the amount he is inside */ 
+            float push = abs(intersection.y / 2.f);
+
+            /* c is below o */
+            if (dy > 0) {
+
+                position.y += push;
+
+            /* c is on top of o */
+            } else {
+
+                /* c can jump */
+                setInAir(false);
+                position.y -= push;
+                
+                setSpeed({ getSpeed().x, 0.f });
+            }
+        }
+        setPosition(position);
+        // If the entity is a Player, attack it
+        if(dynamic_cast<Player*>(e)) {
+            Player *p = static_cast<Player*>(e);
+            if(p) {
+                attack(p);
+            }
+        }
     }
-  }
 }
 
 /* ------------------------------------------- */
 /*              POTIONS FUNCTIONS              */
 /* ------------------------------------------- */
 
-void Cuca::makePotion() {
-  if (makingPotion >= 1.f) {
-    Projectile *potion =
-        new Projectile(position.x + (faced_right * (10.f + size.x)), position.y,
-                       faced_right * 10.f);
+void Cuca::makePotion(){
+    // Delay to throw potion
+    if (makingPotion >= 1.f) {
+        Projectile *potion = new Projectile(position.x + (faced_right*(10.f+size.x)), position.y, faced_right*10.f);
 
-    if (potion) {
-      Texture potionTexture;
-      if (potionTexture.loadFromFile("assets/textures/Potion.png")) {
-        potion->setTexture(potionTexture);
-      } else {
-        std::cerr << "Failed to load Potion.png!" << std::endl;
-        delete potion; // CORREÇÃO: Liberar memória se falhar
+        if(potion){
+            Texture potionTexture;
+            if (potionTexture.loadFromFile("assets/textures/Potion.png")) {
+                potion->setTexture(potionTexture);
+            } else {
+                std::cerr << "Failed to load Potion.png!" << std::endl;
+                // Optionally, delete potion or handle error
+                delete potion;
+                makingPotion = 0.f;
+                return;
+            }
+
+            addPotion(potion);
+            CollisionManager::getInstance()->addProjectile(potion);
+
+        }else cout << "Potion not allocated" <<endl;
+
         makingPotion = 0.f;
-        return;
-      }
-
-      addPotion(potion);
-      CollisionManager::getInstance()->addProjectile(potion);
     }
-    makingPotion = 0.f;
-  }
-  makingPotion += pGM->getdt();
+    makingPotion += pGM->getdt();
 }
 
 void Cuca::throwPotion() {
-  list<Projectile *>::iterator it = potions.begin();
-  while (it != potions.end()) {
-    Projectile *p = *it;
-    if (p && p->getActive()) {
-      p->execute();
-      ++it;
-    } else {
-      // Remove from CollisionManager before deleting
-      CollisionManager::getInstance()->removeProjectile(p);
+    list<Projectile *>::iterator it = potions.begin();
+    while (it != potions.end()) {
+        Projectile *p = *it;
+        if (p && p->getActive()) {
+            p->execute();
+            ++it;
+        } else {
+            // Remove from CollisionManager before deleting
+            CollisionManager::getInstance()->removeProjectile(p);
 
-      // Delete the projectile
-      delete p;
-      it = potions.erase(it);
+            // Delete the projectile
+            delete p; 
+            it = potions.erase(it);
+        }
     }
-  }
 }
 
-void Cuca::addPotion(Projectile *pot) { potions.push_back(pot); }
+void Cuca::addPotion(Projectile* pot){
+    potions.push_back(pot);
+}
 
 /* ------------------------------------------- */
 /*              PLAYER FUNCTIONS               */
 /* ------------------------------------------- */
 
 void Cuca::attack(Player *p) {
-  /* If player has health and after 2 seconds, then he can attack */
-  if (p->getHealth() > 0 && pGM->getClockTime() >= 2.f) {
-    p->loseHealth(strength);
-    pGM->resetClock();
-  }
+    /* If player has health and after 2 seconds, then he can attack */
+    if(p->getHealth() > 0 && pGM->getClockTime() >= 2.f){
+        p->takeDamage(strength);
+        pGM->resetClock();
+    }
 }
