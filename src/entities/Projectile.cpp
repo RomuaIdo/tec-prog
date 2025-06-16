@@ -49,3 +49,15 @@ bool Projectile::getActive(){
 void Projectile::setActive(bool Active){ 
     active = Active; 
 }
+
+void Projectile::setTexture(Texture& texture) {
+    this->texture = texture;
+    sprite.setTexture(this->texture);
+    centerOrigin();
+    size.x = sprite.getLocalBounds().width;
+    size.y = sprite.getLocalBounds().height;
+    sprite.setScale(    
+        size.x / sprite.getLocalBounds().width,
+        size.y / sprite.getLocalBounds().height
+    );
+}

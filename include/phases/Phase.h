@@ -16,19 +16,21 @@ protected:
   Vector2f phaseSize;
   Player *player1;
   Player *player2;
-  short int maxPlatforms;
-
-public:
+  const int maxPlatforms = 10;
+  const int maxSaci = 3;
   Phase(Vector2f size, Player *p1, Player *p2, const string &backgroundPath);
-  virtual ~Phase();
 
-  virtual void execute() = 0;
+
   virtual void createEnemies() = 0;
   virtual void createObstacles() = 0;
+  void createSaci();
   void createPlatforms();
   void createScenery();
 
+public:
+  virtual ~Phase();
   Vector2f getPhaseSize() const;
+  virtual void execute() = 0;
 };
 
 #endif

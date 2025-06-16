@@ -20,6 +20,7 @@ class Projectile : public Entity{
         /* --- OWN FUNCTIONS --- */
         void collide(Entity* other) override;
         void execute();
+        void setTexture(Texture& texture);
         void move();
         bool getActive();
         void setActive(bool Active);

@@ -25,21 +25,17 @@ void FirstPhase::execute() {
   pCM->execute();
 }
 
-void FirstPhase::createEnemies() { createMediumEnemies(); }
-
-void FirstPhase::createObstacles() { createMediumObstacles(); }
-
-void FirstPhase::createMediumEnemies() {
-  for (int i = 0; i < maxMediumEnemies; i++) {
-    Enemy *e = new Enemy(i * 200.f, 100.f, 15.f, 5, 1.f, 2);
-    e->addPlayer(player1);
-    e->addPlayer(player2);
-    entities_list.add(e);
-    pCM->addEnemy(e);
-  }
+void FirstPhase::createEnemies() { 
+  createSaci();
+  createMediumEnemies(); 
 }
 
-void FirstPhase::createMediumObstacles() {
+void FirstPhase::createObstacles() { createHoney(); }
+
+void FirstPhase::createMediumEnemies() {
+}
+
+void FirstPhase::createHoney() {
   const float tileWidth = 50.0f;
   const float groundY = phaseSize.y - 25.0f; // Ground level (tile center)
   vector<float> availablePositions;

@@ -11,7 +11,7 @@ public:
 
     void createButtons();
     void updatePhaseDisplay();
-    virtual void execute() override;
+    void execute() override;
 private:
     Font font;
     Text phaseText;

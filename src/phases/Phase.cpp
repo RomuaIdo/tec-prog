@@ -1,6 +1,8 @@
 #include "../../include/phases/Phase.h"
 #include "../../include/graphicalelements/Tile.h"
 #include "../../include/entities/obstacles/Plataform.h"
+#include "../../include/entities/characters/enemies/Saci.h"
+
 
 Phase::Phase(Vector2f size, Player *p1, Player *p2,
              const string &backgroundPath)
@@ -8,7 +10,6 @@ Phase::Phase(Vector2f size, Player *p1, Player *p2,
       player2(p2) {
   entities_list.clear();
   tiles.clear();
-  maxPlatforms = 10;
 }
 
 Phase::~Phase() {
@@ -35,7 +36,7 @@ void Phase::createScenery() {
       float posX = x * tileWidth + tileWidth / 2;
       float posY = phaseSize.y - (tileHeight / 2) - (y * tileHeight);
 
-      tiles.push_back(new Tile(posX, posY, texturePath));
+      tiles.push_back(new Tile(posX, posY, 0.0f, texturePath));
     }
   }
   Vector2f newphaseSize = getPhaseSize();
@@ -59,3 +60,23 @@ void Phase::createPlatforms() {
     pCM->addObstacle(p);
   }
 }
+
+
+void Phase::createSaci() {
+    const float tileHeight = 50.0f;
+    const float groundY = phaseSize.y - (tileHeight / 2); // Centro do tile do chão
+    const float saciHeight = 64.0f; // Altura do sprite do Saci
+    const float saciY = groundY - (tileHeight / 2) - (saciHeight / 2); // Ajuste para ficar no chão
+
+    for (int i = 0; i < maxSaci; i++) {
+        // Gera posição X aleatória (evitando bordas)
+        float x = 100.f + static_cast<float>(rand() % static_cast<int>(phaseSize.x - 200.f));
+        
+        Saci* saci = new Saci(x, saciY, 15.f, 5, 1.f, 1);
+        saci->addPlayer(player1);
+        saci->addPlayer(player2);
+        entities_list.add(saci);
+        pCM->addEnemy(saci);
+    }
+}
+

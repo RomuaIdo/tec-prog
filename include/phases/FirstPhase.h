@@ -15,7 +15,7 @@ public:
     void createObstacles() override;
 
     void createMediumEnemies();
-    void createMediumObstacles();
+    void createHoney();
 };
 
 #endif
