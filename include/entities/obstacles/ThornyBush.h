@@ -20,8 +20,7 @@ public:
   ~ThornyBush();
 
   /* ---- OWN FUNCTIONS ---- */
-  void obstacleAction(Player *p);
-  void obstacleAction(Enemy *e);
+  void obstacleAction(Entity *e);
   void execute();
   void collide(Entity *e);
   void dealDamage(Player *p);
