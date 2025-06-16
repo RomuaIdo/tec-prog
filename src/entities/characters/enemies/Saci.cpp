@@ -1,135 +1,152 @@
 #include "../../../../include/entities/characters/enemies/Saci.h"
-#include "../../../../include/entities/characters/Player.h"
-#include <cmath>
-#include <limits>
 
+Saci::Saci(float x, float y, const float acel, int life, float coef, int s) :
+    Enemy(x, y, acel, life, coef, s), teleportTime(0.f),
+    lastPosition(Vector2f(x,y)) , far(false) {
 
-Saci::Saci(float x, float y, const float acel, int life, float coef, int s)
-    : Enemy(x, y, acel, life, coef, s), teleportTime(0.f),
-      lastPositionTime(0.f), far(false), clock(0.f),
-      minDistance(50.f), tooClose(false) { // Adicionado minDistance e tooClose
-
-    lastPosition = Vector2f(x, y);
-    
     if (!texture.loadFromFile("assets/textures/Saci.png")) {
-        std::cerr << "Failed to load Saci.png!" << std::endl;
+            std::cerr << "Failed to load Saci.png!" << std::endl;
     }
-    texture.setSmooth(true);
     sprite.setTexture(texture);
-    centerOrigin();
-    
-    // Ajustar altura real do Saci
-    const float actualHeight = sprite.getLocalBounds().height;
-    position.y = y - actualHeight/2;
-    sprite.setPosition(position);
-    
-    teleportTime = 5.f; // Tempo entre teleportes
+    configSprite();
+
+    teleportTime = 5.f; // Set teleport time to 5 seconds
     lastPositionTime = 0.f;
 }
 
-Saci::~Saci() {}
+Saci::~Saci() {
+}
 
 /* ------------------------------------------- */
 /*                OWN FUNCTIONS                */
 /* ------------------------------------------- */
 
 void Saci::execute() {
-  move();
-  draw();
-  teleport();
+    move();
+    draw();
+    teleport(getPlayerLastPosition());
 }
 
 void Saci::move() {
-  Player *closestPlayer = nullptr;
-  float closestDistance = numeric_limits<float>::max();
+    float closer = sqrt(pGM->getWindow()->getSize().x * pGM->getWindow()->getSize().x + 
+    pGM->getWindow()->getSize().y * pGM->getWindow()->getSize().y);
+    Vector2f closer_direction = Vector2f(0.f,0.f);
 
-  // Encontrar jogador mais próximo
-  for (auto player : players_list) {
-    if (!player)
-      continue;
+    for(it = players_list.begin(); it != players_list.end(); it++){
+        if(*it){
+            // Get direction to player (feet to feet)
+            Vector2f direction = ( ((*it)->getPosition() + (*it)->getSize()) - (position + size) );
+            float module = sqrt(direction.x*direction.x + direction.y*direction.y);
 
-    Vector2f direction = player->getPosition() - position;
-    float distance =
-        sqrt(direction.x * direction.x + direction.y * direction.y);
-
-    if (distance < closestDistance) {
-      closestDistance = distance;
-      closestPlayer = player;
+            if(module < closer){
+                closer = module;
+                closer_direction = direction;
+                if(lastPositionTime >= 2.f){
+                    lastPosition = (*it)->getPosition();
+                    lastPositionTime = 0.f;
+                }
+            }else{
+                lastPosition = position;
+            }
+            lastPositionTime += pGM->getdt();
+        }
     }
-  }
-
-  if (closestPlayer) {
-    // Atualizar última posição conhecida periodicamente (aumentar intervalo)
-    lastPositionTime += pGM->getdt();
-    if (lastPositionTime >= 4.f) { // Aumentado de 2s para 4s
-      lastPosition = closestPlayer->getPosition();
-      lastPositionTime = 0.f;
+    if(abs(closer_direction.x) < 300.f){
+        far = false;
+    }else{
+        far = true;
     }
 
-    // Determinar se está longe (aumentar distância)
-    far = (closestDistance > 500.f); // Aumentado de 300 para 500
-
-    // Determinar se está muito perto (nova verificação)
-    tooClose = (closestDistance < minDistance); // <-- Adicionado
-
-    // Determinar direção do jogador
-    faced_right = (closestPlayer->getPosition().x > position.x) ? 1 : -1;
-
-    // Se estiver muito perto, parar o movimento
-    if (tooClose) {
-      speed.x = 0; // <-- Para de se mover
-    } else if (!far) {
-      // Movimento suavizado com aceleração reduzida
-      speed.x =
-          faced_right * (aceleration * 0.6f); // Reduzido para 60% da aceleração
-
-      // Pular menos frequentemente
-      if (!isInAir() && clock > 2.f) {
-        speed.y = -aceleration * 0.7f; // Reduzir altura do pulo
-        setInAir(true);
-        clock = 0.f;
-      }
-    } else {
-      // Movimento mais lento quando longe
-      speed.x = faced_right * (aceleration * 0.4f);
+    if(closer_direction.x < 0){
+        faced_right = -1;
+    }else{
+        faced_right = 1;
     }
-    clock += pGM->getdt();
-  }
-
-  moveCharacter();
+    if(!far){
+        speed.x = faced_right*(aceleration - 5);
+        // para reaproveitar o lastPositionTime e pular a cada 2 seg
+        if(!getInAir() && lastPositionTime >= 2.f) {
+            speed.y = -aceleration;
+            setInAir(true);
+        }
+    }else{
+        speed.x = 0.f;
+    }
+    moveCharacter();
 }
 
-void Saci::collide(Entity *e) {
-  if (Player *p = dynamic_cast<Player *>(e)) {
-    attack(p);
-  }
+void Saci::collide(Entity* e) {
+    Vector2f ePos = e->getPosition();
+    Vector2f eSize = e->getSize();
+
+    float dx = (position.x - ePos.x);
+    float dy = (position.y - ePos.y);
+
+    Vector2f intersection = Vector2f( abs(dx) - (size.x + eSize.x), 
+                                      abs(dy) - (size.y + eSize.y) );
+
+    if (intersection.x < 0.0f && intersection.y < 0.0f) {
+
+        /* If intersection in x is less then intersection in y
+        /*  means that they are side by side                 */
+
+        if (std::abs(intersection.x) < std::abs(intersection.y)) {
+            
+            /* To push the character the amount he is inside */                       
+            float push = abs(intersection.x / 2.f);
+
+            if (dx > 0) {
+                position.x += push;
+                setSpeed({0.f + push, getSpeed().y});
+            }
+            else{
+                position.x -= push;
+                setSpeed({0.f - push, getSpeed().y});
+            } 
+        /* If intersection in y is less then intersection in x
+        /*  means that character collided in y with obstacle */
+        } else {
+
+            /* To push the character the amount he is inside */ 
+            float push = abs(intersection.y / 2.f);
+
+            /* c is below o */
+            if (dy > 0) {
+
+                position.y += push;
+
+            /* c is on top of o */
+            } else {
+
+                /* c can jump */
+                setInAir(false);
+                position.y -= push;
+                
+                setSpeed({ getSpeed().x, 0.f });
+            }
+        }
+        setPosition(position);
+        // If the entity is a Player, attack it
+        if(dynamic_cast<Player*>(e)) {
+            Player *p = static_cast<Player*>(e);
+            if(p) {
+                attack(p);
+            }
+        }
+    }
 }
 
-Vector2f Saci::getPlayerLastPosition() { return lastPosition; }
+Vector2f Saci::getPlayerLastPosition(){
+    return lastPosition;
+}
 
-void Saci::teleport() {
-    // Não teleporta se estiver longe OU muito perto
-    if (far || tooClose) return; // <-- Adicionado tooClose
-    
-    clock += pGM->getdt();
-    if (clock >= teleportTime) {
-        Vector2f pos = getPlayerLastPosition();
-        
-        // Limitar teleporte à área jogável
-        Vector2f windowSize = Vector2f(
-            static_cast<float>(pGM->getWindow()->getSize().x),
-            static_cast<float>(pGM->getWindow()->getSize().y)
-        );
-        const float margin = 100.f;
-        
-        // Garantir que não teleporte para fora da tela
-        if (pos.x < margin) pos.x = margin;
-        if (pos.x > windowSize.x - margin) pos.x = windowSize.x - margin;
-        if (pos.y < margin) pos.y = margin;
-        if (pos.y > windowSize.y - margin) pos.y = windowSize.y - margin;
-        
+void Saci::teleport(Vector2f pos) {
+    if(!far && clock >= teleportTime) {
+        cout << "Saci is teleporting" <<endl;
+        clock = 0;
         setPosition(pos);
-        clock = 0.f;
+    }else{
+        clock += pGM->getdt();
     }
 }
 
@@ -138,8 +155,9 @@ void Saci::teleport() {
 /* ------------------------------------------- */
 
 void Saci::attack(Player *p) {
-  if (p->getHealth() > 0 && pGM->getClockTime() >= 2.f) {
-    p->loseHealth(strength);
-    pGM->resetClock();
-  }
+    /* If player has health and after 2 seconds, then he can attack */
+    if(p->getHealth() > 0 && pGM->getClockTime() >= 2.f){
+        p->takeDamage(strength);
+        pGM->resetClock();
+    }
 }
