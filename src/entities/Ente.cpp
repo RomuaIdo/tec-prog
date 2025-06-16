@@ -21,7 +21,6 @@ Drawable& Ente::getDrawable() {
 
 void Ente::configSprite(){
     sprite.setOrigin(sprite.getGlobalBounds().width / 2.f, sprite.getGlobalBounds().height / 2.f);
-    // sprite.setScale(1.f, 1.f);
     size = Vector2f(sprite.getGlobalBounds().width / 2.f, sprite.getGlobalBounds().height / 2.f);
 }
 

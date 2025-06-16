@@ -1,62 +1,32 @@
 #include "../../../include/entities/characters/Player.h"
-#include "../../../include/managers/CollisionManager.h"
-#include "../../../include/entities/characters/Enemy.h"
-#include "../../../include/entities/Projectile.h"
 #include <SFML/Window.hpp>
 
-
-Player::Player()
-    : Character(), player_num(1), score(0), vel_max(50.f), projectiles_list(),
-      shoot_delay(0.f) {
-  projectiles_list.clear();
-
-  if (!texture.loadFromFile("assets/textures/Player1Sprite.png")) {
-    std::cerr << "Failed to load PlayerSprite.png!" << std::endl;
-  }
-
-  texture.setSmooth(true);
-  sprite.setTexture(texture);
-  centerOrigin();
-  size.x = sprite.getLocalBounds().width;
-  size.y = sprite.getLocalBounds().height;
-  sprite.setScale(size.x / sprite.getLocalBounds().width,
-                  size.y / sprite.getLocalBounds().height);
-}
-
-Player::Player(float x, float y, const float acel, int life, float coef, int s,
-               int p_num, const float v_max)
-    : Character(x, y, acel, life, coef, s), player_num(p_num), score(0),
-      vel_max(v_max), projectiles_list(), shoot_delay(0.f) {
-  projectiles_list.clear();
-
-  if (p_num == 1) {
-    if (!texture.loadFromFile("assets/textures/Player1Sprite.png")) {
-      std::cerr << "Failed to load PlayerSprite.png!" << std::endl;
+Player::Player(float x, float y, const float acel, int life, float coef, int s, int p_num, const float v_max): 
+    Character(x, y, acel, life, coef, s), player_num(p_num), score(0), vel_max(v_max), projectiles_list(), shoot_delay(0.f){
+    projectiles_list.clear();
+    
+    if(p_num == 1){
+        if (!texture.loadFromFile("assets/textures/EmiliaSprite.png")) {
+            std::cerr << "Failed to load EmiliaSprite.png!" << std::endl;
+        }    
     }
-  } else {
-    if (!texture.loadFromFile("assets/textures/Player2Sprite.png")) {
-      std::cerr << "Failed to load PlayerSprite.png!" << std::endl;
+    else {
+        if (!texture.loadFromFile("assets/textures/Player2Sprite.png")) {
+            std::cerr << "Failed to load Player2Sprite.png!" << std::endl;
+        }  
     }
-  }
-
-  texture.setSmooth(true);
-  sprite.setTexture(texture);
-  centerOrigin();
-  size.x = sprite.getLocalBounds().width;
-  size.y = sprite.getLocalBounds().height;
-  sprite.setScale(size.x / sprite.getLocalBounds().width,
-                  size.y / sprite.getLocalBounds().height);
+    sprite.setTexture(texture);
+    configSprite();
 }
 
 Player::~Player() {
-  for (list<Projectile *>::iterator it = projectiles_list.begin();
-       it != projectiles_list.end(); it++) {
-    if (*it) {
-      delete (*it);
-      (*it) = nullptr;
+    for(list<Projectile*>::iterator it = projectiles_list.begin(); it != projectiles_list.end(); it++){
+        if(*it){
+            delete (*it);
+            (*it) = nullptr;
+        }
     }
-  }
-  projectiles_list.clear();
+    projectiles_list.clear();
 }
 
 /* ------------------------------------------- */
@@ -64,164 +34,210 @@ Player::~Player() {
 /* ------------------------------------------- */
 
 void Player::move() {
-  Ente::setGraphicsManager(GraphicsManager::getInstance());
-  const float dt = pGM->getdt();
-  const float jumpForce = 15.0f;
-  const float maxVel = 15.0f;
+    const float dt = pGM->getdt();
+    const float jumpForce = 15.0f;
+    const float max_vel = 15.0f;
 
-  if (player_num == 1) {
-    handlePlayer1Controls(dt, jumpForce);
-  } else {
-    handlePlayer2Controls(dt, jumpForce);
-  }
+    if (player_num == 1) {
+        handlePlayer1Controls(dt, jumpForce);
+    } else {
+        handlePlayer2Controls(dt, jumpForce);
+    }
 
-  // Limits for the horizontal velocity
-  if (velocity.x > maxVel)
-    velocity.x = maxVel;
-  if (velocity.x < -maxVel)
-    velocity.x = -maxVel;
+    // Limits for the horizontal velocity
+    if (speed.x > max_vel)
+        speed.x = max_vel;
+    if (speed.x < -max_vel)
+        speed.x = -max_vel;
 
-  applyFriction(dt);
-  moveCharacter();
+    applyFriction(dt);
+    moveCharacter();
+    if(faced_right == 1) {
+        sprite.setScale(1.f, 1.f);
+    } else {
+        sprite.setScale(-1.f, 1.f);
+    }
 }
 
 void Player::handlePlayer1Controls(float dt, float jumpForce) {
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
-    if (!isInAir()) {
-      velocity.y = -jumpForce;
-      setInAir(true);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
+        if (!in_air) {
+            speed.y = -jumpForce;
+            in_air = true;
+        }
     }
-  }
-
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-    velocity.x -= aceleration * dt;
-    faced_right = false;
-  }
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-    velocity.x += aceleration * dt;
-    faced_right = true;
-  }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
+        speed.x -= aceleration * dt;
+        faced_right = -1;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
+        speed.x += aceleration * dt;
+        faced_right = 1;
+    }
 }
 
 void Player::handlePlayer2Controls(float dt, float jumpForce) {
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
-    if (!isInAir()) {
-      velocity.y = -jumpForce;
-      setInAir(true);
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
+        if (!in_air) {
+            speed.y = -jumpForce;
+            in_air = true;
+        }
     }
-  }
 
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-    velocity.x -= aceleration * dt;
-    faced_right = false;
-  }
-  if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-    velocity.x += aceleration * dt;
-    faced_right = true;
-  }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
+        speed.x -= aceleration * dt;
+        faced_right = 1;
+    }
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
+        speed.x += aceleration * dt;
+        faced_right = -1;
+    }
 }
 
 void Player::applyFriction(float dt) {
-  if (velocity.x > 0) {
-    friction.x = -20.0f * friction_coef;
-    if (velocity.x + friction.x * dt < 0) {
-      velocity.x = 0;
+    if (speed.x > 0) {
+        friction.x = -20.0f * friction_coef;
+        if (speed.x + friction.x * dt < 0) {
+            speed.x = 0;
+        }
+    } else if (speed.x < 0) {
+        friction.x = 20.0f * friction_coef;
+        if (speed.x + friction.x * dt > 0) {
+        speed.x = 0;
+        }
+    } else {
+        friction.x = 0;
     }
-  } else if (velocity.x < 0) {
-    friction.x = 20.0f * friction_coef;
-    if (velocity.x + friction.x * dt > 0) {
-      velocity.x = 0;
-    }
-  } else {
-    friction.x = 0;
-  }
-  velocity += friction * dt;
+    speed += friction * dt;
 }
 
+void Player::collide(Entity* e){
+    Vector2f ePos = e->getPosition();
+    Vector2f eSize = e->getSize();
 
-void Player::collide(Entity* other) {
-    if (Enemy* enemy = dynamic_cast<Enemy*>(other)) {
-        loseHealth(10);
-    }
-    else if (Projectile* proj = dynamic_cast<Projectile*>(other)) {
-        loseHealth(1);
+    float dx = (position.x - ePos.x);
+    float dy = (position.y - ePos.y);
+    // Vector2f variation = Vector2f(dx, dy);
+
+    /* If dx > 0 -> a in b's right  */
+    
+    /* If dy > 0 -> a is below b    */
+
+    /* The intersection between a and b ,
+    *   if they collide, the vector will be
+    *   negative in x and y                */
+
+    Vector2f intersection = Vector2f( abs(dx) - (size.x + eSize.x), 
+                                      abs(dy) - (size.y + eSize.y) );
+
+    if (intersection.x < 0.0f && intersection.y < 0.0f) {
+
+        /* If intersection in x is less then intersection in y
+        /*  means that they are side by side                 */
+
+        if (std::abs(intersection.x) < std::abs(intersection.y)) {
+            
+            /* To push the character the amount he is inside */                       
+            float push = abs(intersection.x / 2.f);
+
+            if (dx > 0) {
+                position.x += push;
+                setSpeed({0.f + push, getSpeed().y});
+            }
+            else{
+                position.x -= push;
+                setSpeed({0.f - push, getSpeed().y});
+            } 
+
+
+        /* If intersection in y is less then intersection in x
+        /*  means that character collided in y with obstacle */
+
+        } else {
+
+            /* To push the character the amount he is inside */ 
+            float push = abs(intersection.y / 2.f);
+
+            /* c is below o */
+            if (dy > 0) {
+
+                position.y += push;
+
+            /* c is on top of o */
+            } else {
+
+                /* c can jump */
+                setInAir(false);
+                position.y -= push;
+                
+                setSpeed({ getSpeed().x, 0.f });
+            }
+        }
+        setPosition(position);
     }
 }
-
 
 void Player::execute() {
-  move();
-  draw();
-  shoot();
-
-  std::list<Projectile *>::iterator it = projectiles_list.begin();
-  while (it != projectiles_list.end()) {
-    Projectile *p = *it;
-    if (p && p->getActive()) {
-      p->execute();
-      ++it;
-    } else {
-      // Remove from CollisionManager before deleting
-      CollisionManager::getInstance()->removeProjectile(p);
-
-      delete p; // Delete the projectile
-      it = projectiles_list.erase(it);
-    }
-  }
+    move();
+    draw();
+    shoot();
+    shootProjectiles();
 }
-
-void Player::loseHealth(int damage) { health -= damage; }
 
 /* ------------------------------------------- */
 /*                GUN FUNCTIONS                */
 /* ------------------------------------------- */
 
-void Player::shoot() {
-  if (player_num == 1) {
+void Player::shoot(){
+    if (player_num == 1) {
+        if (Keyboard::isKeyPressed(sf::Keyboard::C)) {
+            // Shoot after 0.5 seconds
+            if (shoot_delay >= 0.5f) {
+                Projectile *p = new Projectile(position.x + (size.x * faced_right), position.y, faced_right * 10.f);
 
-    if (Keyboard::isKeyPressed(sf::Keyboard::C)) {
-      if (shoot_delay >= 0.5f) {
-        // Determine the direction based on facing
-        float direction = faced_right ? 1.0f : -1.0f;
-        Projectile *p = new Projectile(
-            position.x + (faced_right ? size.x : 0), position.y + size.y / 2,
-            direction * 10.f // Velocity with direction
-        );
-
-        if (p) {
-          addProjectile(p);
-          CollisionManager::getInstance()->addProjectile(
-              p); // Register the projectile in the CollisionManager
+                if (p) {
+                    addProjectile(p);
+                    // Register the projectile in the CollisionManager
+                    CollisionManager::getInstance()->addProjectile(p); 
+                }
+                shoot_delay = 0.f;
+            }
         }
-        shoot_delay = 0.f;
-      }
     }
-  }
-  reload();
+    reload();
 }
-/*
-void Player::shootProjectiles() {
-  for (list<Projectile *>::iterator it = projectiles_list.begin();
-       it != projectiles_list.end(); it++) {
-    if (*it) {
-      if (!(*it)->getActive()) {
-        // delete (*it); // essa porra da seg fault
-        (*it) = nullptr;
-        it = projectiles_list.erase(it);
-        if (it == projectiles_list.end())
-          break;
-      } else
-        (*it)->execute();
-    }
-  }
-}
-*/
-void Player::addProjectile(Projectile *p) { projectiles_list.push_back(p); }
 
-void Player::reload() { shoot_delay += pGM->getdt(); }
+void Player::shootProjectiles(){
+    list<Projectile *>::iterator it = projectiles_list.begin();
+    while (it != projectiles_list.end()) {
+        Projectile *p = *it;
+        
+        if (p && p->getActive()) {
+            p->execute();
+            ++it;
+        } else {
+            // Remove from CollisionManager before deleting
+            CollisionManager::getInstance()->removeProjectile(p);
+
+            // Delete the projectile
+            delete p; 
+            it = projectiles_list.erase(it);
+        }
+    }
+}
+
+void Player::addProjectile(Projectile* p){
+    projectiles_list.push_back(p);
+}
+
+void Player::reload(){
+    shoot_delay += pGM->getdt();
+}
 
 /* ------------------------------------------- */
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */
 
-int Player::getHealth() { return health; }
+int Player::getHealth(){
+    return health;
+}
