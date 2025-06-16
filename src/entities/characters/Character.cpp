@@ -44,3 +44,9 @@ void Character::setVelocity(Vector2f vel) { velocity = vel; }
 void Character::setInAir(bool inair) { in_air = inair; }
 
 bool Character::isInAir() const { return in_air; }
+
+void Character::loseHealth(int damage) {
+  health -= damage;
+  if (health <= 0) {
+  }
+}

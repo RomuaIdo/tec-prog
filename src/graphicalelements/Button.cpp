@@ -47,7 +47,6 @@ void Button::draw() {
 
 void Button::execute() { draw(); }
 
-
 /* ------------------------------------------- */
 /*              BUTTON FUNCTIONS               */
 /* ------------------------------------------- */
@@ -61,18 +60,22 @@ bool Button::wasClicked() {
 }
 
 void Button::adjustSize() {
-  FloatRect bounds = label.getLocalBounds();
-  Vector2f padding(40.f, 20.f); 
+  FloatRect textBounds = label.getLocalBounds();
+  Vector2f padding(40.f, 20.f);
 
-  float scaleX = (bounds.width + padding.x) / texture.getSize().x;
-  float scaleY = (bounds.height + padding.y) / texture.getSize().y;
+  float buttonWidth = textBounds.width + padding.x;
+  float buttonHeight = textBounds.height + padding.y;
+
+  float scaleX = buttonWidth / texture.getSize().x;
+  float scaleY = buttonHeight / texture.getSize().y;
 
   sprite.setScale(scaleX, scaleY);
 
   FloatRect spriteBounds = sprite.getLocalBounds();
   sprite.setOrigin(spriteBounds.width / 2.f, spriteBounds.height / 2.f);
 
-  label.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
+  label.setOrigin(textBounds.left + textBounds.width / 2.f,
+                  textBounds.top + textBounds.height / 2.f);
 
   sprite.setPosition(position);
   label.setPosition(position);

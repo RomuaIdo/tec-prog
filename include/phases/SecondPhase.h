@@ -5,14 +5,12 @@
 
 class SecondPhase : public Phase {
 public:
-    SecondPhase(Vector2f size, Player* p1, Player* p2);
+    SecondPhase(Vector2f size, Player* p1, Player* p2, const string &backgroundPath);
     ~SecondPhase();
 
     void execute() override;
     void createEnemies() override;
     void createObstacles() override;
-    void createPlatforms() override;
-    void createScenery() override;
 };
 
 #endif

@@ -32,14 +32,14 @@ void MainMenu::createButtons() {
     Button* leftButton = new Button("assets/fonts/Minecraft.ttf", "<",
                                    "assets/textures/button.png",
                                    "assets/textures/button_hovered.png",
-                                   &mouseSubject, 24, Vector2f(350.f, 400.f));
+                                   &mouseSubject, 24, Vector2f(300.f, 400.f));
     leftButton->activate();
     addButton("left_phase", leftButton);
 
     Button* rightButton = new Button("assets/fonts/Minecraft.ttf", ">",
                                     "assets/textures/button.png",
                                     "assets/textures/button_hovered.png",
-                                    &mouseSubject, 24, Vector2f(450.f, 400.f));
+                                    &mouseSubject, 24, Vector2f(500.f, 400.f));
     rightButton->activate();
     addButton("right_phase", rightButton);
 
@@ -77,7 +77,7 @@ void MainMenu::execute() {
         if (it->second->wasClicked()) {
             if (it->first == "new_game") {
                 pGame->setGameState(GameState::PLAYING);
-                pGame->createFirstPhase();
+                pGame->createPhase(currentPhase);
             }
             else if (it->first == "left_phase") {
                 currentPhase = (currentPhase == 1) ? 2 : 1;
@@ -95,3 +95,4 @@ void MainMenu::execute() {
     
     pGM->draw(&phaseText);
 }
+

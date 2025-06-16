@@ -2,6 +2,9 @@
 #define ENTE_H
 #include <SFML/Graphics.hpp>
 #include "../managers/GraphicsManager.h"
+#include <cstdlib>
+#include <ctime>
+#include <random>
 using namespace sf;
 
 

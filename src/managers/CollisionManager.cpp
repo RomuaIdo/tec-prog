@@ -58,7 +58,6 @@ bool CollisionManager::verifyCollision(Entity *ent1, Entity *ent2) const {
 void CollisionManager::treatWallCollision() {
   float phase_width = phaseSize.x;
   float phase_height = phaseSize.y;
-
   // For each Player
   for (vector<Player *>::iterator it = players_vector.begin();
        it != players_vector.end(); it++) {
@@ -66,7 +65,6 @@ void CollisionManager::treatWallCollision() {
       Player *p = (*it);
       Vector2f pos = p->getPosition();
       Vector2f vel = p->getVelocity();
-
 
       float cameraLeft = pGM->getWindow()->getView().getCenter().x -
                          pGM->getWindow()->getSize().x / 2;
@@ -193,13 +191,13 @@ void CollisionManager::resolveCollisionCharacter(Character *a, Character *b) {
 }
 
 void CollisionManager::treatPlayersCollision() {
-  if (players_vector.size() > 1 && verifyCollision(players_vector[0], players_vector[1])) {
+  if (players_vector.size() > 1 &&
+      verifyCollision(players_vector[0], players_vector[1])) {
     resolveCollisionCharacter(players_vector[0], players_vector[1]);
     players_vector[0]->collide(players_vector[1]);
     players_vector[1]->collide(players_vector[0]);
   }
 }
-
 
 void CollisionManager::treatEnemiesCollision() {
   for (vector<Player *>::iterator it = players_vector.begin();
@@ -219,7 +217,6 @@ void CollisionManager::treatEnemiesCollision() {
   }
 }
 
-
 void CollisionManager::treatObstaclesCollision() {
   // Tratamento de colisão para inimigos
   for (vector<Enemy *>::iterator it = enemies_vector.begin();
@@ -235,7 +232,7 @@ void CollisionManager::treatObstaclesCollision() {
       }
     }
   }
-  
+
   for (vector<Player *>::iterator it = players_vector.begin();
        it != players_vector.end(); it++) {
     if ((*it)) {
@@ -243,7 +240,7 @@ void CollisionManager::treatObstaclesCollision() {
            itObstacle != obstacles_list.end(); itObstacle++) {
         if (*itObstacle) {
           if (verifyCollision((*it), (*itObstacle))) {
-            (*itObstacle)->collide(*it);           
+            (*itObstacle)->collide(*it);
           }
         }
       }
@@ -251,13 +248,12 @@ void CollisionManager::treatObstaclesCollision() {
   }
 }
 
-
 void CollisionManager::treatProjectilesCollision() {
   for (set<Projectile *>::iterator itProjectile = projectiles_set.begin();
        itProjectile != projectiles_set.end();) {
     Projectile *proj = *itProjectile;
     bool collided = false;
-    Entity* collidedEntity = nullptr;
+    Entity *collidedEntity = nullptr;
 
     // Enemy collision
     for (vector<Enemy *>::iterator itEnemy = enemies_vector.begin();
@@ -297,8 +293,8 @@ void CollisionManager::treatProjectilesCollision() {
     if (!collided) {
       Vector2f pos = proj->getPosition();
       Vector2f size = proj->getSize();
-      if (pos.x - size.x/2 < 0 || pos.x + size.x/2 > phaseSize.x ||
-          pos.y - size.y/2 < 0 || pos.y + size.y/2 > phaseSize.y) {
+      if (pos.x - size.x / 2 < 0 || pos.x + size.x / 2 > phaseSize.x ||
+          pos.y - size.y / 2 < 0 || pos.y + size.y / 2 > phaseSize.y) {
         collided = true;
       }
     }
@@ -314,7 +310,6 @@ void CollisionManager::treatProjectilesCollision() {
     ++itProjectile;
   }
 }
-
 
 void CollisionManager::removeProjectile(Projectile *p) {
   set<Projectile *>::iterator it = projectiles_set.find(p);
@@ -363,8 +358,9 @@ void CollisionManager::addPlayer(Player *p) { players_vector.push_back(p); }
 /*                   EXECUTE                   */
 /* ------------------------------------------- */
 
-void CollisionManager::setPhaseSize(Vector2f size) { phaseSize = size; }
-
+void CollisionManager::setPhaseSize(Vector2f size) {
+  phaseSize = size;
+}
 
 void CollisionManager::execute() {
   treatEnemiesCollision();

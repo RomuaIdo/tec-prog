@@ -19,7 +19,6 @@ public:
   Obstacle(bool harm, float x, float y);
   virtual ~Obstacle();
 
-  // virtual void dealDamage() = 0;
 
   /* ---- OWN FUNCTIONS ---- */
   virtual void collide(Entity *other) = 0;

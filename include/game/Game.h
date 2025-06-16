@@ -33,6 +33,9 @@ private:
   void running();
   void main_menu();
   void updateCamera();
+  void createFirstPhase();
+  void createSecondPhase();
+
 
 public:
   Game();
@@ -41,7 +44,6 @@ public:
   MouseSubject& getMouseSubject();
   void setGameState(GameState state);
   /* ---- CREATE ----- */
+  void createPhase(short int phaseNumber);
   void create_menu();
-  void createFirstPhase();
-  void createSecondPhase();
 };

@@ -16,6 +16,7 @@ Game::Game()
   create_menu();
 
   game_state = GameState::MAIN_MENU;
+  srand(time(nullptr));
   execute();
 }
 
@@ -142,26 +143,36 @@ void Game::updateCamera() {
   pGM->setCameraCenter(cameraCenter);
 }
 
+
+void Game::createPhase(short int phaseNumber) {
+  if (phaseNumber == 1) {
+    createFirstPhase();
+  } else if (phaseNumber == 2) {
+    createSecondPhase();
+  } else {
+    cerr << "Invalid phase number: " << phaseNumber << endl;
+  }
+}
+
+
 void Game::createFirstPhase() {
   if (currentPhase) {
     delete currentPhase;
   }
-  currentPhase = new FirstPhase(Vector2f(1600.f, 600.f), player1, player2);
+  currentPhase = new FirstPhase(Vector2f(1600.f, 600.f), player1, player2, "background.png");
 
   // Add players to collision manager
   pCM->addPlayer(player1);
   pCM->addPlayer(player2);
-  pCM->setPhaseSize(currentPhase->getPhaseSize());
 }
 
 void Game::createSecondPhase() {
   if (currentPhase) {
     delete currentPhase;
   }
-  currentPhase = new SecondPhase(Vector2f(2000.f, 600.f), player1, player2);
+  currentPhase = new SecondPhase(Vector2f(2000.f, 600.f), player1, player2, "background2.png");
 
   // Add players to collision manager
   pCM->addPlayer(player1);
   pCM->addPlayer(player2);
-  pCM->setPhaseSize(currentPhase->getPhaseSize());
 }

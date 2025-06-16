@@ -3,8 +3,8 @@
 #include "../../include/entities/obstacles/Obstacle.h"
 #include "../../include/entities/obstacles/Plataform.h"
 
-SecondPhase::SecondPhase(Vector2f size, Player* p1, Player* p2) : 
-    Phase(size, p1, p2) {
+SecondPhase::SecondPhase(Vector2f size, Player* p1, Player* p2, const string &backgroundPath) : 
+    Phase(size, p1, p2, backgroundPath) {
     createEnemies();
     createObstacles();
     createPlatforms();
@@ -24,8 +24,3 @@ void SecondPhase::createEnemies() {
 void SecondPhase::createObstacles() {
 }
 
-void SecondPhase::createPlatforms() {
-}
-
-void SecondPhase::createScenery() {
-}
