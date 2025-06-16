@@ -4,6 +4,8 @@
 #include "Phase.h"
 
 class SecondPhase : public Phase {
+private:
+    const int maxSpikes = 10;
 public:
     SecondPhase(Vector2f size, Player* p1, Player* p2, const string &backgroundPath);
     ~SecondPhase();
@@ -11,6 +13,7 @@ public:
     void execute() override;
     void createEnemies() override;
     void createObstacles() override;
+    void createHardObstacles();
 };
 
 #endif

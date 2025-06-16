@@ -1,19 +1,30 @@
 #include "../../../include/entities/obstacles/ThornyBush.h"
 
-ThornyBush::ThornyBush(float x, float y, bool harm)
-    : Obstacle(x, y, harm), spikes(2), time_between_attacks(2.0f),
-      own_clock(0.0f) {
+ThornyBush::ThornyBush(float x, float baseY, bool harm)
+    : Obstacle(harm, x, baseY), spikes(2), time_between_attacks(2.0f),
+      own_clock(0.0f) 
+{
   if (!texture_hide.loadFromFile("assets/textures/ThornyBushHide.png")) {
     std::cerr << "Failed to load ThornyBushHide.png!" << std::endl;
   }
   if (!texture_spikes.loadFromFile("assets/textures/ThornyBushSpikes.png")) {
     std::cerr << "Failed to load ThornyBushSpikes.png!" << std::endl;
   }
-  is_active = false; // Initially not active
+  
+  is_active = false;
   harmful = true;
-  texture = texture_hide;
-  sprite.setTexture(texture_hide); // Start hidden
+  
+  // Definir textura inicial
+  sprite.setTexture(texture_hide);
+  
+  // Obter tamanho do sprite
+  size = Vector2f(sprite.getGlobalBounds().width, sprite.getGlobalBounds().height);
+  
   centerOrigin();
+  // Calcular posição Y correta: baseY - altura do sprite
+  position.y = baseY - size.y/2.0f;
+  
+  sprite.setPosition(position);  
 }
 
 ThornyBush::~ThornyBush() {}
@@ -69,7 +80,7 @@ void ThornyBush::setState() {
 }
 
 void ThornyBush::collide(Entity *e) {
-  if(Player *p = dynamic_cast<Player *>(e)) {
+  if (Player *p = dynamic_cast<Player *>(e)) {
     obstacleAction(p);
   } else if (Enemy *en = dynamic_cast<Enemy *>(e)) {
     obstacleAction(en);

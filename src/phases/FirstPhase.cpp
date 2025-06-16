@@ -2,6 +2,7 @@
 #include "../../include/entities/characters/Enemy.h"
 #include "../../include/entities/obstacles/Honey.h"
 #include "../../include/graphicalelements/Tile.h"
+#include <cmath>
 
 FirstPhase::FirstPhase(Vector2f size, Player *p1, Player *p2,
                        const string &backgroundPath)
@@ -40,16 +41,15 @@ void FirstPhase::createMediumEnemies() {
 
 void FirstPhase::createMediumObstacles() {
   const float tileWidth = 50.0f;
-  const float groundY = phaseSize.y - 250.0f;
+  const float groundY = phaseSize.y - 25.0f; // Ground level (tile center)
   vector<float> availablePositions;
 
-  // Gerar posições no centro dos tiles (25, 75, 125...)
-  for (float x = tileWidth / 2; x <= phaseSize.x - tileWidth / 2;
-       x += tileWidth) {
+  // Generate all possible x positions (multiples of 50)
+  for (float x = tileWidth; x < phaseSize.x - tileWidth; x += tileWidth) {
     availablePositions.push_back(x);
   }
 
-  // Embaralhar posições
+  // Simple Fisher-Yates shuffle using rand()
   for (int i = availablePositions.size() - 1; i > 0; --i) {
     int j = rand() % (i + 1);
     float temp = availablePositions[i];
@@ -57,7 +57,7 @@ void FirstPhase::createMediumObstacles() {
     availablePositions[j] = temp;
   }
 
-  // Criar honeys
+  // Create honeys without overlapping
   int honeyCount = 0;
   vector<float> usedPositions;
 
@@ -66,9 +66,10 @@ void FirstPhase::createMediumObstacles() {
     float x = availablePositions[i];
     bool positionValid = true;
 
-    // Verificar proximidade com outros honeys
-    for (size_t k = 0; k < usedPositions.size(); ++k) {
-      if (std::abs(x - usedPositions[k]) < tileWidth * 2) {
+    // Check if position is too close to existing honeys
+    for (vector<float>::iterator it = usedPositions.begin();
+         it != usedPositions.end(); ++it) {
+      if (fabs(x - *it) < tileWidth * 2) {
         positionValid = false;
         break;
       }
@@ -80,23 +81,6 @@ void FirstPhase::createMediumObstacles() {
       pCM->addObstacle(h);
       usedPositions.push_back(x);
       honeyCount++;
-
-      // Calcular índice do tile (fórmula: (x - 25) / 50)
-      int tileIndex = static_cast<int>((x - tileWidth / 2) / tileWidth);
-
-      // Verificar se o índice é válido
-      if (tileIndex >= 0 && tileIndex < static_cast<int>(tiles.size())) {
-        // Remover e deletar o tile
-        delete tiles[tileIndex];
-        tiles[tileIndex] = NULL;
-      }
-    }
-  }
-
-  // Remover tiles nulos do vetor
-  for (int i = tiles.size() - 1; i >= 0; --i) {
-    if (tiles[i] == NULL) {
-      tiles.erase(tiles.begin() + i);
     }
   }
 }

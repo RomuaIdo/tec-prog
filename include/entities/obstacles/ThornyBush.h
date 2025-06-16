@@ -16,7 +16,7 @@ private:
   bool is_active; // Whether the bush is currently active or not
 
 public:
-  ThornyBush(float x, float y, bool harm = true);
+  ThornyBush(float x, float baseY, bool harm = true);
   ~ThornyBush();
 
   /* ---- OWN FUNCTIONS ---- */

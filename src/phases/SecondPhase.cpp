@@ -1,26 +1,75 @@
 #include "../../include/phases/SecondPhase.h"
+#include "../../include/graphicalelements/Tile.h"
 #include "../../include/entities/characters/Enemy.h"
-#include "../../include/entities/obstacles/Obstacle.h"
-#include "../../include/entities/obstacles/Plataform.h"
+#include "../../include/entities/obstacles/ThornyBush.h"
 
-SecondPhase::SecondPhase(Vector2f size, Player* p1, Player* p2, const string &backgroundPath) : 
-    Phase(size, p1, p2, backgroundPath) {
-    createEnemies();
-    createObstacles();
-    createPlatforms();
-    createScenery();
+SecondPhase::SecondPhase(Vector2f size, Player *p1, Player *p2,
+                         const string &backgroundPath)
+    : Phase(size, p1, p2, backgroundPath) {
+  createScenery();
+  createEnemies();
+  createObstacles();
+  createPlatforms();
 }
 
 SecondPhase::~SecondPhase() {}
 
 void SecondPhase::execute() {
-  entities_list.clear();
+  vector<Tile *>::iterator it;
+  for (it = tiles.begin(); it != tiles.end(); ++it) {
+    (*it)->execute();
+  }
+  entities_list.traverse();
+
   pCM->execute();
 }
 
-void SecondPhase::createEnemies() {
-}
+void SecondPhase::createEnemies() {}
 
 void SecondPhase::createObstacles() {
+  createHardObstacles();
 }
 
+void SecondPhase::createHardObstacles() {
+    const float groundY = phaseSize.y - 50.0f; // Altura do chão
+    std::vector<float> availablePositions;
+    
+    // Gerar posições X disponíveis (evitando bordas)
+    for (float x = 100.f; x < phaseSize.x - 100.f; x += 50.f) {
+        availablePositions.push_back(x);
+    }
+    
+    // Embaralhar posições (Fisher-Yates shuffle)
+    for (int i = availablePositions.size() - 1; i > 0; --i) {
+        int j = std::rand() % (i + 1);
+        float temp = availablePositions[i];
+        availablePositions[i] = availablePositions[j];
+        availablePositions[j] = temp;
+    }
+    
+    // Criar spikes sem sobreposição
+    vector<float> usedPositions;
+    int createdSpikes = 0;
+    
+    for (size_t i = 0; i < availablePositions.size() && createdSpikes < maxSpikes; i++) {
+        float x = availablePositions[i];
+        bool positionValid = true;
+        
+        // Verificar distância mínima (100 pixels)
+        for (vector<float>::iterator it = usedPositions.begin(); it != usedPositions.end(); ++it) {
+            if (fabs(x - *it) < 100.f) {
+                positionValid = false;
+                break;
+            }
+        }
+        
+        if (positionValid) {
+            ThornyBush* tb = new ThornyBush(x, groundY, true);
+            entities_list.add(tb);
+            pCM->addObstacle(tb);
+            usedPositions.push_back(x);
+            createdSpikes++;
+        }
+    }
+}  
+  
