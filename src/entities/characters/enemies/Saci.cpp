@@ -42,17 +42,22 @@ void Saci::move() {
                 closer_direction = direction;
                 if(lastPositionTime >= 2.f){
                     lastPosition = (*it)->getPosition();
-                }
+                    lastPositionTime = 0.f;
+                }else 
+                    lastPositionTime += pGM->getdt();
             } 
         }
     }
 
     if(closer_direction.x < 0){
         faced_right = -1;
+    }else{
+        faced_right = 1;
     }
-    speed.x = faced_right*aceleration;
-    if(!getInAir()) {
-        speed.y = aceleration;
+    speed.x = faced_right*(aceleration - 5);
+    if(!getInAir() && lastPositionTime >= 2.f) {
+        speed.y = -aceleration;
+        setInAir(true);
     }
     moveCharacter();
 }
@@ -108,12 +113,12 @@ void Saci::collide(Entity* e) {
             }
         }
         setPosition(position);
-    }
-    // If the entity is a Player, attack it
-    if(dynamic_cast<Player*>(e)) {
-        Player *p = static_cast<Player*>(e);
-        if(p) {
-            attack(p);
+        // If the entity is a Player, attack it
+        if(dynamic_cast<Player*>(e)) {
+            Player *p = static_cast<Player*>(e);
+            if(p) {
+                attack(p);
+            }
         }
     }
 }
@@ -124,9 +129,10 @@ Vector2f Saci::getPlayerLastPosition(){
 
 void Saci::teleport(Vector2f pos) {
     if(!isTeleporting && clock >= teleportTime) {
+        cout << "Saci is teleporting" <<endl;
         isTeleporting = true;
         clock = 0;
-        setPosition(position);
+        setPosition(pos);
         isTeleporting = false;
     }else{
         clock += pGM->getdt();
