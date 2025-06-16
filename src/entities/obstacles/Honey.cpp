@@ -22,19 +22,19 @@ void Honey::execute() { draw(); }
 
 void Honey::obstacleAction(Player *p) {
   if (p) {
-    Vector2f velocity = p->getVelocity();
+    Vector2f velocity = p->getSpeed();
     velocity.x *= viscosity;          // Slow down the character's speed
     velocity.y *= (viscosity + 0.2f); // Slow down the character's jump
-    p->setVelocity(velocity);
+    p->setSpeed(velocity);
   }
 }
 
 void Honey::obstacleAction(Enemy *e) {
   if (e) {
-    Vector2f velocity = e->getVelocity();
+    Vector2f velocity = e->getSpeed();
     velocity.x *= viscosity;          // Slow down the enemy's speed
     velocity.y *= (viscosity + 0.2f); // Slow down the enemy's jump
-    e->setVelocity(velocity);
+    e->setSpeed(velocity);
   }
 }
 

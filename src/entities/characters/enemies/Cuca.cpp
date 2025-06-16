@@ -18,7 +18,7 @@ Cuca::Cuca(float x, float y, const float acel, int life, float coef, int s)
   size.y = sprite.getLocalBounds().height;
   sprite.setScale(size.x / sprite.getLocalBounds().width,
                   size.y / sprite.getLocalBounds().height);
-  velocity = Vector2f(0.f, 0.f);
+  speed = Vector2f(0.f, 0.f);
   faced_right = true;
 }
 
@@ -53,7 +53,7 @@ void Cuca::move() {
     case CucaState::MOVING_RIGHT:
       // Volta para estado de pausa
       currentState = CucaState::IDLE;
-      velocity.x = 0.0f; // Para completamente
+      speed.x = 0.0f; // Para completamente
       break;
     }
   }
@@ -61,12 +61,12 @@ void Cuca::move() {
   // Executa ações baseadas no estado atual
   switch (currentState) {
   case CucaState::MOVING_LEFT:
-    velocity.x = -aceleration;
+    speed.x = -aceleration;
     faced_right = false;
     break;
 
   case CucaState::MOVING_RIGHT:
-    velocity.x = aceleration;
+    speed.x = aceleration;
     faced_right = true;
     break;
 

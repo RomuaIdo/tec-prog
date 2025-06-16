@@ -12,7 +12,7 @@ class Character : public Entity {
         int health;
         const int strength;
         const float aceleration;
-        Vector2f velocity;
+        Vector2f speed;
 
         /* ------- FLAGS ------- */
         int faced_right;
@@ -37,10 +37,11 @@ class Character : public Entity {
         /* ---- OWN FUNCTIONS ---- */
         void moveCharacter();
         void setInAir(bool inair);
-        bool isInAir() const;        
+        bool isInAir() const;       
+        
         /* ----- GETS & SETS ----- */
-        Vector2f getVelocity() const;
-        void setVelocity(Vector2f vel);
+        Vector2f getSpeed() const;
+        void setSpeed(Vector2f vel);
         
         int getStrength() const;
         

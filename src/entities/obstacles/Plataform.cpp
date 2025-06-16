@@ -79,19 +79,19 @@ void Plataform::obstacleAction(Player *player) {
       // Top collision (player is above the platform)
       cPos.y -= minOverlap;
       player->setInAir(false);
-      player->setVelocity(Vector2f(player->getVelocity().x, 0.f));
+      player->setSpeed(Vector2f(player->getSpeed().x, 0.f));
     } else if (minOverlap == bottomOverlap) {
       // Bottom collision (player is below the platform)
       cPos.y += minOverlap;
-      player->setVelocity(Vector2f(player->getVelocity().x, 0.f));
+      player->setSpeed(Vector2f(player->getSpeed().x, 0.f));
     } else if (minOverlap == leftOverlap) {
       // Left collision
       cPos.x -= minOverlap;
-      player->setVelocity(Vector2f(0.f, player->getVelocity().y));
+      player->setSpeed(Vector2f(0.f, player->getSpeed().y));
     } else if (minOverlap == rightOverlap) {
       // Right collision
       cPos.x += minOverlap;
-      player->setVelocity(Vector2f(0.f, player->getVelocity().y));
+      player->setSpeed(Vector2f(0.f, player->getSpeed().y));
     }
 
     player->setPosition(cPos);
@@ -135,19 +135,19 @@ void Plataform::obstacleAction(Enemy *enemy) {
       // Top collision (enemy is above the platform)
       cPos.y -= minOverlap;
       enemy->setInAir(false);
-      enemy->setVelocity(Vector2f(enemy->getVelocity().x, 0.f));
+      enemy->setSpeed(Vector2f(enemy->getSpeed().x, 0.f));
     } else if (minOverlap == bottomOverlap) {
       // Bottom collision (enemy is below the platform)
       cPos.y += minOverlap;
-      enemy->setVelocity(Vector2f(enemy->getVelocity().x, 0.f));
+      enemy->setSpeed(Vector2f(enemy->getSpeed().x, 0.f));
     } else if (minOverlap == leftOverlap) {
       // Left collision
       cPos.x -= minOverlap;
-      enemy->setVelocity(Vector2f(0.f, enemy->getVelocity().y));
+      enemy->setSpeed(Vector2f(0.f, enemy->getSpeed().y));
     } else if (minOverlap == rightOverlap) {
       // Right collision
       cPos.x += minOverlap;
-      enemy->setVelocity(Vector2f(0.f, enemy->getVelocity().y));
+      enemy->setSpeed(Vector2f(0.f, enemy->getSpeed().y));
     }
 
     enemy->setPosition(cPos);

@@ -77,21 +77,21 @@ void Saci::move() {
 
     // Se estiver muito perto, parar o movimento
     if (tooClose) {
-      velocity.x = 0; // <-- Para de se mover
+      speed.x = 0; // <-- Para de se mover
     } else if (!far) {
       // Movimento suavizado com aceleração reduzida
-      velocity.x =
+      speed.x =
           faced_right * (aceleration * 0.6f); // Reduzido para 60% da aceleração
 
       // Pular menos frequentemente
       if (!isInAir() && clock > 2.f) {
-        velocity.y = -aceleration * 0.7f; // Reduzir altura do pulo
+        speed.y = -aceleration * 0.7f; // Reduzir altura do pulo
         setInAir(true);
         clock = 0.f;
       }
     } else {
       // Movimento mais lento quando longe
-      velocity.x = faced_right * (aceleration * 0.4f);
+      speed.x = faced_right * (aceleration * 0.4f);
     }
     clock += pGM->getdt();
   }
