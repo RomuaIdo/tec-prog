@@ -204,7 +204,7 @@ void CollisionManager::treatProjectilesCollision() {
         }
 
         if (collided) {
-            proj->desactive();
+            proj->setActive(false);
         }
         
         ++itProjectile;

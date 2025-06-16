@@ -26,10 +26,13 @@ class Ente {
 
         /* ---- OWN FUNCTIONS ---- */
         virtual void centerOrigin();
+        void configSprite();
         virtual void draw();
         virtual Drawable& getDrawable();
 
         /* ----- GETS & SETS ----- */
+
+        void setTexture(Texture t);
         Vector2f getSize() const;
         virtual Vector2f getPosition() const;
         virtual void setPosition(Vector2f pos);

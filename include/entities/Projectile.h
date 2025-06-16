@@ -9,6 +9,8 @@ class Projectile : public Entity{
     private:
         /* ------ STATUS ------- */
         float velocity;
+        Texture potion;
+        Texture bullet;
         
         /* ------ FLAGS ------- */
         bool active;
@@ -20,10 +22,9 @@ class Projectile : public Entity{
         /* --- OWN FUNCTIONS --- */
         void collide(Entity* other) override;
         void execute();
-        void setTexture(Texture& texture);
         void move();
         bool getActive();
-        void setActive(bool Active);
+        void setActive(bool Active = false);
 };  
 
 #endif

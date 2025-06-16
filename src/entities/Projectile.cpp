@@ -4,9 +4,13 @@
 Projectile::Projectile(float x, float y, float vel):
     Entity(x,y), velocity(vel) {
     
-    if (!texture.loadFromFile("assets/textures/Player1Sprite.png")) {
-        std::cerr << "Failed to load PlayerSprite.png!" << std::endl;
-    }    
+    if (!potion.loadFromFile("assets/textures/Potion.png")) {
+        std::cerr << "Failed to load Potion.png!" << std::endl;
+    }
+    if (!bullet.loadFromFile("assets/textures/Bullet.png")) {
+        std::cerr << "Failed to load Bullet.png!" << std::endl;
+    }
+    
     sprite.setTexture(texture);
     configSprite();
     
@@ -42,14 +46,3 @@ void Projectile::setActive(bool Active){
     active = Active; 
 }
 
-void Projectile::setTexture(Texture& texture) {
-    this->texture = texture;
-    sprite.setTexture(this->texture);
-    centerOrigin();
-    size.x = sprite.getLocalBounds().width;
-    size.y = sprite.getLocalBounds().height;
-    sprite.setScale(    
-        size.x / sprite.getLocalBounds().width,
-        size.y / sprite.getLocalBounds().height
-    );
-}

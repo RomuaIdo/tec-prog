@@ -11,28 +11,44 @@ void Ente::centerOrigin() {
   sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
 }
 
-void Ente::draw() { pGM->draw(this); }
+void Ente::draw() {
+    pGM->draw(this);
+}
 
-Drawable &Ente::getDrawable() { return sprite; }
+Drawable& Ente::getDrawable() {
+    return sprite;
+}
+
+void Ente::configSprite(){
+    sprite.setOrigin(sprite.getGlobalBounds().width / 2.f, sprite.getGlobalBounds().height / 2.f);
+    // sprite.setScale(1.f, 1.f);
+    size = Vector2f(sprite.getGlobalBounds().width / 2.f, sprite.getGlobalBounds().height / 2.f);
+}
 
 /* ------------------------------------------- */
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */
 
-Vector2f Ente::getPosition() const { 
-    return sprite.getPosition(); 
+void Ente::setTexture(Texture t){
+    texture = t;
+    sprite.setTexture(t);
+    configSprite();
 }
 
-Vector2f Ente::getSize() const { 
-    return size; 
+Vector2f Ente::getPosition() const {
+    return sprite.getPosition();
 }
 
-void Ente::setPosition(Vector2f pos) { 
-    sprite.setPosition(pos); 
+Vector2f Ente::getSize() const{
+    return size;
 }
 
-void Ente::setGraphicsManager(GraphicsManager *pGM) { 
-    Ente::pGM = pGM; 
+void Ente::setPosition(Vector2f pos){
+    sprite.setPosition(pos);
 }
 
-GraphicsManager *Ente::pGM = nullptr;
+void Ente::setGraphicsManager(GraphicsManager* pGM) {
+    Ente::pGM = pGM;
+}
+
+GraphicsManager* Ente::pGM = nullptr;
