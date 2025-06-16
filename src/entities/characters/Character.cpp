@@ -3,50 +3,64 @@
 
 Vector2f Character::gravity(0.f, 30.f);
 
-Character::Character()
-    : Entity(), health(5), strength(1), aceleration(0.f), speed(0.f, 0.f),
-      in_air(true), friction(0.f, 0.f), friction_coef(0.5f) {
-  centerOrigin();
+Character::Character(float x, float y, const float movSpeed, int life, float coef, int s):
+    Entity(x, y), health(life), friction_coef(coef), friction(0.f,0.f), strength(s), aceleration(movSpeed), speed(0.f, 0.f){
+    faced_right = 1;
+    clock = 0.f;
 }
 
-Character::Character(float x, float y, const float movSpeed, int life,
-                     float coef, int s)
-    : Entity(x, y), health(life), strength(s), aceleration(movSpeed),
-      speed(0.f, 0.f), in_air(true), friction(0.f, 0.f),
-      friction_coef(coef) {
-  centerOrigin();
-}
+Character::~Character(){
 
-Character::~Character() {}
+}
 
 /* ------------------------------------------- */
 /*                OWN FUNCTIONS                */
 /* ------------------------------------------- */
 
-void Character::moveCharacter() {
-  if (in_air) {
-    speed.y += gravity.y * pGM->getdt();
-  }
+void Character::moveCharacter(){
+    speed += gravity * pGM->getdt();
+    position += speed;
 
-  position += speed;
-  sprite.setPosition(position);
-  in_air = true; // Reset for the next frame
+    // Flip sprite based on direction
+    if (faced_right == -1) {
+        sprite.setScale(-1.f, 1.f); // Facing left
+    } else{
+        sprite.setScale(1.f, 1.f); // Facing right
+    }
+
+    sprite.setPosition(position);
+}
+
+void Character::takeDamage(int damage){
+    if(health - damage < 0){
+        health = 0;
+        cout << "Character is dead!" << endl;
+        return;
+    }
+    health -= damage;
+    cout << "Lost Health:" << health << endl;
 }
 
 /* ------------------------------------------- */
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */
 
-Vector2f Character::getSpeed() const { return speed; }
+Vector2f Character::getSpeed() const{
+    return speed;
+}
 
-void Character::setSpeed(Vector2f vel) { speed = vel; }
+void Character::setSpeed(Vector2f spd){
+    speed = spd;
+}
 
-void Character::setInAir(bool inair) { in_air = inair; }
+int Character::getStrength() const{
+    return strength;
+}
 
-bool Character::isInAir() const { return in_air; }
+bool Character::getInAir() const{
+    return in_air;
+}
 
-void Character::loseHealth(int damage) {
-  health -= damage;
-  if (health <= 0) {
-  }
+void Character::setInAir(bool inAir){
+    in_air = inAir;
 }

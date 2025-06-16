@@ -13,6 +13,7 @@ class Character : public Entity {
         const int strength;
         const float aceleration;
         Vector2f speed;
+        float clock;
 
         /* ------- FLAGS ------- */
         int faced_right;
@@ -38,13 +39,14 @@ class Character : public Entity {
         void moveCharacter();
         void setInAir(bool inair);
         bool isInAir() const;       
+        void takeDamage(int damage);
         
         /* ----- GETS & SETS ----- */
         Vector2f getSpeed() const;
         void setSpeed(Vector2f vel);
-        
         int getStrength() const;
-        
+        bool getInAir() const;
+        void setInAir(bool inair);
 };
 
 #endif
