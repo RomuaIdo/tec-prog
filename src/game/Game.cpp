@@ -80,26 +80,26 @@ void Game::execute() {
 }
 
 void Game::running() {
-  if (currentPhase) {
-    currentPhase->execute();
-  } else {
-    cerr << "Current phase is not set." << endl;
-  }
-  updateCamera();
-  player1->execute();
-  player2->execute();
+    if (currentPhase) {
+        currentPhase->execute();
+    } else {
+        cerr << "Current phase is not set." << endl;
+    }
+    updateCamera();
+    player1->execute();
+    player2->execute();
 }
 
 void Game::main_menu() {
-  menu->execute();
-  map<string, Button *>::iterator it;
-  for (it = menu->getButtons().begin(); it != menu->getButtons().end(); ++it) {
-    if (it->second->wasClicked()) {
-      game_state = GameState::PLAYING;
-      createFirstPhase(); // Cria a primeira fase
-      break;
+    menu->execute();
+    map<string, Button *>::iterator it;
+    for (it = menu->getButtons().begin(); it != menu->getButtons().end(); ++it) {
+        if (it->second->wasClicked()) {
+        game_state = GameState::PLAYING;
+        createFirstPhase(); // Cria a primeira fase
+        break;
+        }
     }
-  }
 }
 
 /* ------------------------------------------- */
@@ -107,72 +107,72 @@ void Game::main_menu() {
 /* ------------------------------------------- */
 
 MouseSubject &Game::getMouseSubject() {
-  return mouseSubject;
+    return mouseSubject;
 }
 
 void Game::setGameState(GameState state) {
-  game_state = state;
+    game_state = state;
 }
 
 
 void Game::create_menu() {
-  menu = new MainMenu(this);
-  menu->activateButtons();
+    menu = new MainMenu(this);
+    menu->activateButtons();
 }
 
 
 void Game::updateCamera() {
-  if (!currentPhase) {
-    cerr << "Current phase is not set. Cannot update camera." << endl;
-    return;
-  }
+    if (!currentPhase) {
+        cerr << "Current phase is not set. Cannot update camera." << endl;
+        return;
+    }
 
-  Vector2f phaseSize = currentPhase->getPhaseSize();
-  // Find the average X position of both players
-  float avgX = (player1->getPosition().x + player2->getPosition().x) / 2.0f;
+    Vector2f phaseSize = currentPhase->getPhaseSize();
+    // Find the average X position of both players
+    float avgX = (player1->getPosition().x + player2->getPosition().x) / 2.0f;
 
-  // Y positional fix
-  float fixedY = 300.f;
+    // Y positional fix
+    float fixedY = 300.f;
 
-  // Limita a câmera aos limites do mundo
-  float cameraHalfWidth = pGM->getWindow()->getSize().x / 2.0f;
-  avgX =
-      max(cameraHalfWidth, min(avgX, phaseSize.x - cameraHalfWidth));
+    // Limita a câmera aos limites do mundo
+    float cameraHalfWidth = pGM->getWindow()->getSize().x / 2.0f;
+    avgX =
+        max(cameraHalfWidth, min(avgX, phaseSize.x - cameraHalfWidth));
 
-  cameraCenter = sf::Vector2f(avgX, fixedY);
-  pGM->setCameraCenter(cameraCenter);
+    cameraCenter = sf::Vector2f(avgX, fixedY);
+    pGM->setCameraCenter(cameraCenter);
 }
 
 
 void Game::createPhase(short int phaseNumber) {
-  if (phaseNumber == 1) {
-    createFirstPhase();
-  } else if (phaseNumber == 2) {
-    createSecondPhase();
-  } else {
-    cerr << "Invalid phase number: " << phaseNumber << endl;
-  }
+    if (phaseNumber == 1) {
+        createFirstPhase();
+    } else if (phaseNumber == 2) {
+        createSecondPhase();
+    } else {
+        cerr << "Invalid phase number: " << phaseNumber << endl;
+    }
 }
 
 
 void Game::createFirstPhase() {
-  if (currentPhase) {
-    delete currentPhase;
-  }
-  currentPhase = new FirstPhase(Vector2f(6000.f, 600.f), player1, player2, "background.png");
+    if (currentPhase) {
+        delete currentPhase;
+    }
+    currentPhase = new FirstPhase(Vector2f(6000.f, 600.f), player1, player2, "background.png");
 
-  // Add players to collision manager
-  pCM->addPlayer(player1);
-  pCM->addPlayer(player2);
+    // Add players to collision manager
+    pCM->addPlayer(player1);
+    pCM->addPlayer(player2);
 }
 
 void Game::createSecondPhase() {
-  if (currentPhase) {
-    delete currentPhase;
-  }
-  currentPhase = new SecondPhase(Vector2f(6000.f, 600.f), player1, player2, "background2.png");
+    if (currentPhase) {
+        delete currentPhase;
+    }
+    currentPhase = new SecondPhase(Vector2f(6000.f, 600.f), player1, player2, "background2.png");
 
-  // Add players to collision manager
-  pCM->addPlayer(player1);
-  pCM->addPlayer(player2);
+    // Add players to collision manager
+    pCM->addPlayer(player1);
+    pCM->addPlayer(player2);
 }
