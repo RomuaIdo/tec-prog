@@ -1,6 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "../Projectile.h"
+#include "../../managers/CollisionManager.h"
 #include "Character.h"
 #include <SFML/Graphics.hpp>
 #include <list>
