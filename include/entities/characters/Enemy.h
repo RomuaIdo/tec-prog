@@ -13,8 +13,8 @@ class Enemy : public Character {
 
     protected:
         /* ------- PLAYER -------- */
-        list<Player*> players_list;
-        list<Player*>::iterator it;
+        vector<Player*> players_list;
+        vector<Player*>::iterator it;
 
     public:
 
@@ -22,14 +22,14 @@ class Enemy : public Character {
         virtual ~Enemy();
 
         /* ---- OWN FUNCTIONS ---- */
-        virtual void execute();
-        virtual void move();
-        void collide(Entity* e);
+        virtual void execute() = 0;
+        virtual void move() = 0;
+        virtual void collide(Entity* e) = 0;
 
         /* ------- PLAYER -------- */
         virtual void addPlayer(Player *p);
         virtual void removePlayer(Player *p);
-        virtual void attack(Player *p);
+        virtual void attack(Player *p) = 0;
 };
 
 #endif

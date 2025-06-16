@@ -167,7 +167,7 @@ void Player::collide(Entity* e){
             } else {
 
                 /* c can jump */
-                changeInAir();
+                setInAir(false);
                 position.y -= push;
                 
                 setSpeed({ getSpeed().x, 0.f });

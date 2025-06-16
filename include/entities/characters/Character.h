@@ -46,7 +46,7 @@ class Character : public Entity {
         int getStrength() const;
         
         bool getInAir() const;
-        void changeInAir();
+        void setInAir(bool inAir);
 };
 
 #endif

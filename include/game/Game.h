@@ -1,6 +1,6 @@
-#include "../entities/characters/Enemy.h"
+#include "../entities/characters/enemies/Saci.h"
+#include "../entities/characters/enemies/Cuca.h"
 #include "../entities/characters/Player.h"
-#include "../entities/obstacles/Obstacle.h"
 #include "../entities/obstacles/ThornyBush.h"
 #include "../entities/obstacles/Plataform.h"
 #include "../entities/obstacles/Honey.h"
