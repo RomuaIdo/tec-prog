@@ -12,9 +12,11 @@ class Saci : public Enemy {
         float teleportTime;
         Vector2f lastPosition;
         float minDistance;
-        bool tooClose;
+        float clock_jump;        
 
     public:
+
+        /* ---- CONSTRUCTORS ---- */
         Saci(float x, float y, const float acel = 5.f, int life = 5, float coef = 0.5, int s = 1);
         ~Saci();
 

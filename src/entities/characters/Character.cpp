@@ -17,7 +17,7 @@ Character::~Character(){
 
 void Character::moveCharacter(){
 
-    position += velocity;
+    position += velocity ;
 
     // Flip sprite based on direction
     if (faced_right == -1) {
@@ -25,8 +25,7 @@ void Character::moveCharacter(){
     } else{
         sprite.setScale(1.f, 1.f); // Facing right
     }
-
-    sprite.setPosition(position);
+    setPosition(position);
 }
 
 void Character::takeDamage(int damage){

@@ -3,7 +3,9 @@
 #include "../../include/entities/characters/Enemy.h"
 #include "../../include/entities/characters/Player.h"
 #include "../../include/entities/obstacles/Obstacle.h"
+#include "../../include/entities/obstacles/ThornyBush.h"
 #include "../../include/managers/GraphicsManager.h"
+
 
 CollisionManager *CollisionManager::instance(nullptr);
 
@@ -183,8 +185,9 @@ void CollisionManager::treatObstaclesCollision() {
             for (list<Obstacle *>::iterator itObstacle = obstacles_list.begin();itObstacle != obstacles_list.end(); itObstacle++) {
                 if (*itObstacle) {
                     if (verifyCollision((*it), (*itObstacle))) {
+                        if(!(dynamic_cast<ThornyBush*>(*itObstacle)))
+                            (*it)->collide(*itObstacle);
                         (*itObstacle)->collide(*it);
-                        (*it)->collide(*itObstacle);
                     }
                 }
             }
@@ -197,8 +200,9 @@ void CollisionManager::treatObstaclesCollision() {
                 itObstacle != obstacles_list.end(); itObstacle++) {
                 if (*itObstacle) {
                     if (verifyCollision((*it), (*itObstacle))) {
+                        if(!(dynamic_cast<ThornyBush*>(*itObstacle)))
+                            (*it)->collide(*itObstacle);
                         (*itObstacle)->collide(*it);
-                        (*it)->collide(*itObstacle);
                     }
                 }
             }

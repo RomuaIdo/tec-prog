@@ -93,14 +93,14 @@ void Player::handlePlayer2Controls(float dt, float jumpForce) {
 
 void Player::applyFriction(float dt) {
     if (velocity.x > 0) {
-        friction.x = -20.0f * friction_coef;
+        friction.x = -20.f * friction_coef;
         if (velocity.x + friction.x * dt < 0) {
             velocity.x = 0;
         }
     } else if (velocity.x < 0) {
-        friction.x = 20.0f * friction_coef;
+        friction.x = 20.f * friction_coef;
         if (velocity.x + friction.x * dt > 0) {
-        velocity.x = 0;
+            velocity.x = 0;
         }
     } else {
         friction.x = 0;
