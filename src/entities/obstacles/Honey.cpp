@@ -25,10 +25,7 @@ void Honey::obstacleAction(Entity* e){
     if (e) {
         Character* character = dynamic_cast<Character*>(e);
         if (character) {
-            Vector2f velocity = character->getVelocity();
-            velocity.x *= viscosity; // Slow down the character's velocity
-            velocity.y *= (viscosity); // Slow down the character's jump
-            character->setVelocity(velocity);
+            character->setVelocity(character->getVelocity()* viscosity);
         }
     }
 }

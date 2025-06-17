@@ -44,10 +44,18 @@ void Plataform::obstacleAction(Entity *e) {
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */
 
-void Plataform::setHeight(float h) { height = h; }
+void Plataform::setHeight(float h) { 
+    height = h; 
+}
 
-void Plataform::setWidth(float w) { width = w; }
+void Plataform::setWidth(float w) { 
+    width = w; 
+}
 
-float Plataform::getHeight() const { return height; }
+float Plataform::getHeight() const { 
+    return height; 
+}
 
-float Plataform::getWidth() const { return width; }
+float Plataform::getWidth() const { 
+    return width; 
+}

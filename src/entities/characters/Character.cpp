@@ -1,10 +1,9 @@
 #include "../../../include/entities/characters/Character.h"
 #include <SFML/Window.hpp>
 
-Vector2f Character::gravity(0.f, 30.f);
 
 Character::Character(float x, float y, const float movVelocity, int life, float coef, int s):
-    Entity(x, y), health(life), strength(s), aceleration(movVelocity), velocity(0.f, 0.f), clock(0.f), faced_right(1), friction(0.f,0.f), friction_coef(coef){
+    Entity(x, y), health(life), strength(s), aceleration(movVelocity), faced_right(1), friction(0.f,0.f), friction_coef(coef){
 }
 
 Character::~Character(){
@@ -16,7 +15,6 @@ Character::~Character(){
 /* ------------------------------------------- */
 
 void Character::moveCharacter(){
-    velocity += gravity * pGM->getdt();
     position += velocity;
 
     // Flip sprite based on direction
@@ -43,13 +41,6 @@ void Character::takeDamage(int damage){
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */
 
-Vector2f Character::getVelocity() const{
-    return velocity;
-}
-
-void Character::setVelocity(Vector2f spd){
-    velocity = spd;
-}
 
 int Character::getStrength() const{
     return strength;

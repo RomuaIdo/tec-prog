@@ -10,6 +10,8 @@ Saci::Saci(float x, float y, const float acel, int life, float coef, int s) :
     sprite.setTexture(texture);
     configSprite();
 
+    setVelocity(Vector2f(10.f, -10.f));
+
     teleportTime = 5.f; // Set teleport time to 5 seconds
     lastPositionTime = 0.f;
 }
@@ -28,9 +30,11 @@ void Saci::execute() {
 }
 
 void Saci::move() {
+
     float closer = sqrt(pGM->getWindow()->getSize().x * pGM->getWindow()->getSize().x + 
     pGM->getWindow()->getSize().y * pGM->getWindow()->getSize().y);
-    Vector2f closer_direction = Vector2f(0.f,0.f);
+
+    float right = 1.f;
 
     for(list<Player*>::iterator it = players_list.begin(); it != players_list.end(); it++){
         if(*it){
@@ -39,8 +43,11 @@ void Saci::move() {
             float module = sqrt(direction.x*direction.x + direction.y*direction.y);
 
             if(module < closer){
+
+                // See if closer is in right or left
+                right = direction.x;
+
                 closer = module;
-                closer_direction = direction;
                 if(lastPositionTime >= 2.f){
                     lastPosition = (*it)->getPosition();
                     lastPositionTime = 0.f;
@@ -51,28 +58,25 @@ void Saci::move() {
             lastPositionTime += pGM->getdt();
         }
     }
-    if(abs(closer_direction.x) < 300.f){
+
+    // if it is 200 pixels far, the enemy dont move
+    if(abs(right) < 200.f){
         far = false;
     }else{
         far = true;
     }
+ 
+    faced_right = (int) (right/abs(right));
 
-    if(closer_direction.x < 0){
-        faced_right = -1;
-    }else{
-        faced_right = 1;
-    }
     if(!far){
-        velocity.x = faced_right*(aceleration - 5);
         // para reaproveitar o lastPositionTime e pular a cada 2 seg
         if(!getInAir() && lastPositionTime >= 2.f) {
-            velocity.y = -aceleration;
             setInAir(true);
+            moveCharacter();
         }
-    }else{
-        velocity.x = 0.f;
     }
-    moveCharacter();
+    applyGravity();
+
 }
 
 void Saci::collide(Entity* e) {
@@ -82,6 +86,8 @@ void Saci::collide(Entity* e) {
     float dx = (position.x - ePos.x);
     float dy = (position.y - ePos.y);
 
+
+
     Vector2f intersection = Vector2f( abs(dx) - (size.x + eSize.x), 
                                       abs(dy) - (size.y + eSize.y) );
 
@@ -90,10 +96,14 @@ void Saci::collide(Entity* e) {
         /* If intersection in x is less then intersection in y */
         /*  means that they are side by side                 */
 
+        float push = 0.f;
         if (std::abs(intersection.x) < std::abs(intersection.y)) {
-            
-            /* To push the character the amount he is inside */                       
-            float push = abs(intersection.x / 2.f);
+            /* To push the character the amount he is inside */    
+            if(dynamic_cast<Plataform*>(e)){
+                push = abs(intersection.x);
+            }                   
+            else 
+                push = abs(intersection.x / 2.f);
 
             if (dx > 0) {
                 position.x += push;
@@ -108,7 +118,11 @@ void Saci::collide(Entity* e) {
         } else {
 
             /* To push the character the amount he is inside */ 
-            float push = abs(intersection.y / 2.f);
+            if(dynamic_cast<Plataform*>(e)){
+                push = abs(intersection.y);
+            }                   
+            else 
+                push = abs(intersection.y / 2.f);
 
             /* c is below o */
             if (dy > 0) {
@@ -121,7 +135,6 @@ void Saci::collide(Entity* e) {
                 /* c can jump */
                 setInAir(false);
                 position.y -= push;
-                
                 setVelocity({ getVelocity().x, 0.f });
             }
         }

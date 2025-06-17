@@ -1,7 +1,7 @@
 #include "../../include/phases/SecondPhase.h"
 #include "../../include/entities/characters/enemies/Cuca.h"
 #include "../../include/entities/obstacles/ThornyBush.h"
-#include "../../include/graphicalelements/Tile.h"
+#include "../../include/graphicalelements/BackgroundElement.h"
 
 SecondPhase::SecondPhase(Vector2f size, Player *p1, Player *p2,
                          const string &backgroundPath)
@@ -15,7 +15,7 @@ SecondPhase::SecondPhase(Vector2f size, Player *p1, Player *p2,
 SecondPhase::~SecondPhase() {}
 
 void SecondPhase::execute() {
-    vector<Tile *>::iterator it;
+    vector<BackgroundElement *>::iterator it;
     for (it = tiles.begin(); it != tiles.end(); ++it) {
         (*it)->execute();
     }

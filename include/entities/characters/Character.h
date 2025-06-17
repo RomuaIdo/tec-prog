@@ -1,6 +1,7 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 #include "../Entity.h"
+#include "../obstacles/Plataform.h"
 #include <SFML/Graphics.hpp>
 using namespace sf;
 using namespace std;
@@ -12,19 +13,14 @@ class Character : public Entity {
         int health;
         const int strength;
         const float aceleration;
-        Vector2f velocity;
-        float clock;
         
-
+        /* --- COEFFICIENTS ---- */
+        Vector2f friction;
+        float friction_coef;
+        
         /* ------- FLAGS ------- */
         int faced_right;
         bool in_air;
-
-        /* --- COEFFICIENTS ---- */
-        Vector2f friction;
-        static Vector2f gravity;
-        float friction_coef;
-
 
     public:
         Character();
@@ -39,8 +35,7 @@ class Character : public Entity {
         void takeDamage(int damage);
         
         /* ----- GETS & SETS ----- */
-        Vector2f getVelocity() const;
-        void setVelocity(Vector2f vel);
+        
         int getStrength() const;
         bool getInAir() const;
         void setInAir(bool inair);

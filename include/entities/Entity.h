@@ -9,6 +9,10 @@ class Entity : public Ente {
     protected:
         /* ------ STATUS ------- */
         Vector2f position;
+        Vector2f velocity;
+        float clock;
+        static Vector2f gravity;
+
 
     public:
         Entity();
@@ -22,8 +26,11 @@ class Entity : public Ente {
         /* ---- OWN FUNCTIONS ---- */
         void draw();
         Drawable& getDrawable();
+        void applyGravity();
 
         /* ----- GETS & SETS ----- */
+        Vector2f getVelocity() const;
+        void setVelocity(Vector2f vel);
         Vector2f getPosition() const;
         void setPosition(Vector2f pos);
 

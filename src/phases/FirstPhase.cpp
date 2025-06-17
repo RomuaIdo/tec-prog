@@ -1,7 +1,7 @@
 #include "../../include/phases/FirstPhase.h"
 #include "../../include/entities/characters/Enemy.h"
 #include "../../include/entities/obstacles/Honey.h"
-#include "../../include/graphicalelements/Tile.h"
+#include "../../include/graphicalelements/BackgroundElement.h"
 #include <cmath>
 
 FirstPhase::FirstPhase(Vector2f size, Player *p1, Player *p2,
@@ -16,7 +16,7 @@ FirstPhase::FirstPhase(Vector2f size, Player *p1, Player *p2,
 FirstPhase::~FirstPhase() { pCM->clearEntities(); }
 
 void FirstPhase::execute() {
-    vector<Tile *>::iterator it;
+    vector<BackgroundElement *>::iterator it;
     for (it = tiles.begin(); it != tiles.end(); ++it) {
         (*it)->execute();
     }

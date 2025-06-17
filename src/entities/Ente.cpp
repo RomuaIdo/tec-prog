@@ -7,8 +7,8 @@ Ente::Ente() : sprite(), texture() {}
 /* ------------------------------------------- */
 
 void Ente::centerOrigin() {
-  FloatRect bounds = sprite.getLocalBounds();
-  sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
+    FloatRect bounds = sprite.getLocalBounds();
+    sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
 }
 
 void Ente::draw() {

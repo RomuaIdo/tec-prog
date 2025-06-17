@@ -1,5 +1,5 @@
 #include "../../include/phases/Phase.h"
-#include "../../include/graphicalelements/Tile.h"
+#include "../../include/graphicalelements/BackgroundElement.h"
 #include "../../include/entities/obstacles/Plataform.h"
 #include "../../include/entities/characters/enemies/Saci.h"
 
@@ -13,9 +13,9 @@ Phase::Phase(Vector2f size, Player *p1, Player *p2, const string &backgroundPath
 
 Phase::~Phase() {
     entities_list.clear();
-    vector<Tile *>::iterator it;
+    vector<BackgroundElement *>::iterator it;
     for (it = tiles.begin(); it != tiles.end(); it++) {
-        delete *it; // Free memory allocated for each Tile
+        delete *it; // Free memory allocated for each BackgroundElement
     }
     tiles.clear();
 }
@@ -27,19 +27,19 @@ void Phase::createScenery() {
     const float tileWidth = 50.0f;
     const float tileHeight = 50.0f;
 
-    const int numTilesX = static_cast<int>(phaseSize.x / tileWidth) + 1;
-    const int numTilesY = 1;
+    const int numBackgroundElementsX = static_cast<int>(phaseSize.x / tileWidth) + 1;
+    const int numBackgroundElementsY = 1;
 
-    for (int y = 0; y < numTilesY; y++) {
-        for (int x = 0; x < numTilesX; x++) {
+    for (int y = 0; y < numBackgroundElementsY; y++) {
+        for (int x = 0; x < numBackgroundElementsX; x++) {
         float posX = x * tileWidth + tileWidth / 2;
         float posY = phaseSize.y - (tileHeight / 2) - (y * tileHeight);
 
-        tiles.push_back(new Tile(posX, posY, 0.0f, texturePath));
+        tiles.push_back(new BackgroundElement(posX, posY, 0.0f, texturePath));
         }
     }
     Vector2f newphaseSize = getPhaseSize();
-    newphaseSize.y = newphaseSize.y - (numTilesY * tileHeight);
+    newphaseSize.y = newphaseSize.y - (numBackgroundElementsY * tileHeight);
     pCM->setPhaseSize(newphaseSize);
 }
 

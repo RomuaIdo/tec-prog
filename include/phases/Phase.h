@@ -6,12 +6,12 @@
 #include "../lists/EntitiesList.h"
 #include "../managers/CollisionManager.h"
 
-class Tile;
+class BackgroundElement;
 
 class Phase : public Ente {
     protected:
         EntitiesList entities_list;
-        vector<Tile *> tiles;
+        vector<BackgroundElement *> tiles;
         CollisionManager *pCM;
         Vector2f phaseSize;
         Player *player1;

@@ -85,7 +85,6 @@ void Cuca::collide(Entity* e) {
                 /* c can jump */
                 setInAir(false);
                 position.y -= push;
-                
                 setVelocity({ getVelocity().x, 0.f });
             }
         }
@@ -107,7 +106,7 @@ void Cuca::collide(Entity* e) {
 void Cuca::makePotion(){
     // Delay to throw potion
     if (makingPotion >= 1.f) {
-        Projectile *potion = new Projectile(position.x + (faced_right*(10.f+size.x)), position.y, faced_right*10.f);
+        Projectile *potion = new Projectile(position.x + (faced_right*(10.f+size.x)), position.y, Vector2f(faced_right*10.f, -10.f));
 
         if(potion){
             Texture potionTexture;

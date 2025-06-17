@@ -4,12 +4,12 @@
 
 #include "../entities/Ente.h"
 
-class Tile : public Ente {
+class BackgroundElement : public Ente {
 private:
   float parallaxFactor;
 public:
-    Tile(float x, float y, float Parallaxfactor, const string& texturePath);
-    virtual ~Tile();
+    BackgroundElement(float x, float y, float Parallaxfactor, const string& texturePath);
+    virtual ~BackgroundElement();
     virtual void execute() override;
     float getParallaxFactor() const;
 };
