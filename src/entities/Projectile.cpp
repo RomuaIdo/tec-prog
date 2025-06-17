@@ -2,7 +2,7 @@
 #include <SFML/Window.hpp>
 
 Projectile::Projectile():
-    Entity(), velocity(0.f, 0.f), active(true) {
+    Entity(), active(true) {
     
     if (!potion.loadFromFile("assets/textures/Potion.png")) {
         std::cerr << "Failed to load Potion.png!" << std::endl;
@@ -17,7 +17,7 @@ Projectile::Projectile():
 }
 
 Projectile::Projectile(float x, float y, Vector2f vel):
-    Entity(x,y), velocity(vel), active(true) {
+    Entity(x,y), active(true) {
     
     if (!potion.loadFromFile("assets/textures/Potion.png")) {
         std::cerr << "Failed to load Potion.png!" << std::endl;
@@ -26,6 +26,7 @@ Projectile::Projectile(float x, float y, Vector2f vel):
         std::cerr << "Failed to load Bullet.png!" << std::endl;
     }
 
+    setVelocity(vel);
     if(vel.x < 0){
         sprite.setScale(-1.f,1.f);
     }else

@@ -75,6 +75,7 @@ void Saci::move() {
             moveCharacter();
         }
     }
+    applyGravity();
 
 }
 

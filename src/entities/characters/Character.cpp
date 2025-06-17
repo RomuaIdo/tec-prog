@@ -3,7 +3,7 @@
 
 Character::Character(float x, float y, const float movSpeed, int life, float coef, int s):
     Entity(x, y), health(life), strength(s), aceleration(movSpeed), 
-    clock(0.f), friction(0.f,0.f), friction_coef(coef){
+    friction(0.f,0.f), friction_coef(coef){
     faced_right = 1;
 }
 

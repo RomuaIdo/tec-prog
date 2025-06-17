@@ -34,8 +34,8 @@ void Plataform::obstacleAction(Entity *e) {
     if (e) {
         Character *character = dynamic_cast<Character *>(e);
         if (character) {
-            Vector2f speed = character->getSpeed();
-            character->setSpeed(speed);
+            Vector2f velocity = character->getVelocity();
+            character->setVelocity(velocity);
         }
     }
 }
@@ -44,10 +44,18 @@ void Plataform::obstacleAction(Entity *e) {
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */
 
-void Plataform::setHeight(float h) { height = h; }
+void Plataform::setHeight(float h) { 
+    height = h; 
+}
 
-void Plataform::setWidth(float w) { width = w; }
+void Plataform::setWidth(float w) { 
+    width = w; 
+}
 
-float Plataform::getHeight() const { return height; }
+float Plataform::getHeight() const { 
+    return height; 
+}
 
-float Plataform::getWidth() const { return width; }
+float Plataform::getWidth() const { 
+    return width; 
+}

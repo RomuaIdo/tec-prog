@@ -1,10 +1,10 @@
 #include "../../include/entities/Entity.h"
 
 Entity::Entity():
-    Ente(), position(0.f,0.f), velocity(0.f, 0.f) {}
+    Ente(), position(0.f,0.f), velocity(0.f, 0.f), clock(0.f) {}
 
 Entity::Entity(float x, float y) :
-    Ente(), position(x,y), velocity(0.f, 0.f) {
+    Ente(), position(x,y), velocity(0.f, 0.f), clock(0.f) {
 }
 
 Entity::~Entity() {}

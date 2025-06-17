@@ -52,6 +52,7 @@ void Player::move() {
         velocity.x = -max_vel;
 
     applyFriction(dt);
+    applyGravity();
     moveCharacter();
 }
 

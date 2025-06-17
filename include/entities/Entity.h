@@ -10,8 +10,8 @@ class Entity : public Ente {
         /* ------ STATUS ------- */
         Vector2f position;
         Vector2f velocity;
-        static Vector2f gravity;
         float clock;
+        static Vector2f gravity;
 
 
     public:

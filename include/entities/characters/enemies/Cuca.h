@@ -11,7 +11,6 @@ class Cuca : public Enemy {
     protected:
         list<Projectile *> potions;
         float makingPotion;
-        float clock;
 
     public:
         Cuca(float x, float y, const float acel = 10.f, int life = 5,

@@ -59,7 +59,7 @@ void CollisionManager::treatWallCollision() {
         if (*it) {
             Player *p = (*it);
             Vector2f pos = p->getPosition();
-            Vector2f vel = p->getSpeed();
+            Vector2f vel = p->getVelocity();
 
             float cameraLeft = pGM->getWindow()->getView().getCenter().x -
                                 pGM->getWindow()->getSize().x / 2;
@@ -100,7 +100,7 @@ void CollisionManager::treatWallCollision() {
                 p->setInAir(false);
             }
             p->setPosition(pos);
-            p->setSpeed(vel);
+            p->setVelocity(vel);
         }
     }
     // For each Enemy
@@ -108,7 +108,7 @@ void CollisionManager::treatWallCollision() {
         if (*itEnemy) {
             Enemy *e = (*itEnemy);
             Vector2f pos = e->getPosition();
-            Vector2f vel = e->getSpeed();
+            Vector2f vel = e->getVelocity();
             // Left wall
             if (pos.x - e->getSize().x < 0) {
                 pos.x = e->getSize().x;
@@ -133,7 +133,7 @@ void CollisionManager::treatWallCollision() {
                 e->setInAir(false);
             }
             e->setPosition(pos);
-            e->setSpeed(vel);
+            e->setVelocity(vel);
         }
     }
 }
