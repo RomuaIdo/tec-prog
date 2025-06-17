@@ -3,16 +3,16 @@
 #include "../../include/entities/obstacles/ThornyBush.h"
 #include "../../include/graphicalelements/BackgroundElement.h"
 
-SecondPhase::SecondPhase(Vector2f size, Player *p1, Player *p2,
+SecondPhase::SecondPhase(Vector2f size, float limiarX, Player *p1, Player *p2,
                          const string &backgroundPath)
-    : Phase(size, p1, p2, backgroundPath) {
+    : Phase(size, limiarX, p1, p2, backgroundPath) {
   createScenery();
   createEnemies();
   createObstacles();
   createPlatforms();
 }
 
-SecondPhase::~SecondPhase() {}
+SecondPhase::~SecondPhase() { pCM->clearEntities(); }
 
 void SecondPhase::execute() {
     vector<BackgroundElement *>::iterator it;
@@ -20,7 +20,7 @@ void SecondPhase::execute() {
         (*it)->execute();
     }
     entities_list.traverse();
-
+    checkPhaseCompletion();
     pCM->execute();
 }
 

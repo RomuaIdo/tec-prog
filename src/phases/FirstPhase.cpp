@@ -4,9 +4,9 @@
 #include "../../include/graphicalelements/BackgroundElement.h"
 #include <cmath>
 
-FirstPhase::FirstPhase(Vector2f size, Player *p1, Player *p2,
+FirstPhase::FirstPhase(Vector2f size, float limiarX, Player *p1, Player *p2,
                        const string &backgroundPath)
-    : Phase(size, p1, p2, backgroundPath) {
+    : Phase(size, limiarX, p1, p2, backgroundPath) {
     createScenery();
     createEnemies();
     createObstacles();
@@ -21,7 +21,7 @@ void FirstPhase::execute() {
         (*it)->execute();
     }
     entities_list.traverse();
-
+    checkPhaseCompletion();
     pCM->execute();
 }
 

@@ -7,7 +7,7 @@ private:
     const int maxMediumEnemies = 5;
     const int maxHoneys = 3;
 public:
-    FirstPhase(Vector2f size, Player* p1, Player* p2, const string &backgroundPath);
+    FirstPhase(Vector2f size, float limiarX, Player* p1, Player* p2, const string &backgroundPath);
     ~FirstPhase();
 
     void execute() override;
