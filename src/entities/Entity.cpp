@@ -9,6 +9,8 @@ Entity::Entity(float x, float y) :
 
 Entity::~Entity() {}
 
+Vector2f Entity::gravity(0.f, 30.f);
+
 /* ------------------------------------------- */
 /*                OWN FUNCTIONS                */
 /* ------------------------------------------- */

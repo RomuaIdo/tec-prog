@@ -1,7 +1,22 @@
 #include "../../include/entities/Projectile.h"
 #include <SFML/Window.hpp>
 
-Projectile::Projectile(float x, float y, float vel):
+Projectile::Projectile():
+    Entity(), velocity(0.f, 0.f), active(true) {
+    
+    if (!potion.loadFromFile("assets/textures/Potion.png")) {
+        std::cerr << "Failed to load Potion.png!" << std::endl;
+    }
+    if (!bullet.loadFromFile("assets/textures/Bullet.png")) {
+        std::cerr << "Failed to load Bullet.png!" << std::endl;
+    }
+
+    texture = potion;
+    sprite.setTexture(texture);
+    configSprite();
+}
+
+Projectile::Projectile(float x, float y, Vector2f vel):
     Entity(x,y), velocity(vel), active(true) {
     
     if (!potion.loadFromFile("assets/textures/Potion.png")) {
@@ -11,7 +26,7 @@ Projectile::Projectile(float x, float y, float vel):
         std::cerr << "Failed to load Bullet.png!" << std::endl;
     }
 
-    if(vel < 0){
+    if(vel.x < 0){
         sprite.setScale(-1.f,1.f);
     }else
         sprite.setScale(1.f,1.f);
@@ -38,7 +53,8 @@ void Projectile::collide(Entity* other) {
 }
 
 void Projectile::move(){
-    position.x += velocity;
+    velocity += gravity * pGM->getdt();
+    position += velocity;
 }
 
 void Projectile::execute(){

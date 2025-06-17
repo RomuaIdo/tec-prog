@@ -1,12 +1,10 @@
 #include "../../../include/entities/characters/Character.h"
 #include <SFML/Window.hpp>
 
-Vector2f Character::gravity(0.f, 30.f);
-
 Character::Character(float x, float y, const float movSpeed, int life, float coef, int s):
-    Entity(x, y), health(life), friction_coef(coef), friction(0.f,0.f), strength(s), aceleration(movSpeed), speed(0.f, 0.f){
+    Entity(x, y), health(life), strength(s), aceleration(movSpeed), speed(0.f, 0.f), 
+    clock(0.f), friction(0.f,0.f), friction_coef(coef){
     faced_right = 1;
-    clock = 0.f;
 }
 
 Character::~Character(){
@@ -18,6 +16,7 @@ Character::~Character(){
 /* ------------------------------------------- */
 
 void Character::moveCharacter(){
+
     speed += gravity * pGM->getdt();
     position += speed;
 

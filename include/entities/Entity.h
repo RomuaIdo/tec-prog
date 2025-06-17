@@ -10,6 +10,8 @@ class Entity : public Ente {
         /* ------ STATUS ------- */
         Vector2f position;
 
+        static Vector2f gravity;
+
     public:
         Entity();
         Entity(float x, float y);

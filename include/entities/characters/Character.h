@@ -15,16 +15,13 @@ class Character : public Entity {
         Vector2f speed;
         float clock;
         
-
+        /* --- COEFFICIENTS ---- */
+        Vector2f friction;
+        float friction_coef;
+        
         /* ------- FLAGS ------- */
         int faced_right;
         bool in_air;
-
-        /* --- COEFFICIENTS ---- */
-        Vector2f friction;
-        static Vector2f gravity;
-        float friction_coef;
-
 
     public:
         Character();

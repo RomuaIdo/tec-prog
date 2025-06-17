@@ -9,7 +9,7 @@ class Projectile : public Entity{
 
     private:
         /* ------ STATUS ------- */
-        float velocity;
+        Vector2f velocity;
         Texture potion;
         Texture bullet;
         
@@ -17,7 +17,9 @@ class Projectile : public Entity{
         bool active;
     
     public:
-        Projectile(float x, float y, float vel = 10.f);
+        /* --- CONSTRUCTORS --- */
+        Projectile();
+        Projectile(float x, float y, Vector2f vel);
         ~Projectile();
 
         /* --- OWN FUNCTIONS --- */
