@@ -1,15 +1,9 @@
 #include "../../include/managers/CollisionManager.h"
-
 #include "../../include/entities/Projectile.h"
-
 #include "../../include/entities/characters/Enemy.h"
-
 #include "../../include/entities/characters/Player.h"
-
 #include "../../include/entities/obstacles/Obstacle.h"
-
 #include "../../include/entities/obstacles/ThornyBush.h"
-
 #include "../../include/managers/GraphicsManager.h"
 
 CollisionManager *CollisionManager::instance(nullptr);
@@ -56,7 +50,6 @@ float vectorModule(Vector2f vector) {
 bool CollisionManager::verifyCollision(Entity *ent1, Entity *ent2) const {
   if (abs(vectorModule(ent1->getPosition() - ent2->getPosition())) <
       abs(vectorModule(ent1->getSize() + ent2->getSize()))) {
-
     return true;
   }
   return false;

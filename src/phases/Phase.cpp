@@ -81,6 +81,7 @@ void Phase::createSaci() {
     entities_list.add(saci);
     pCM->addEnemy(saci);
   }
+
 }
 
 bool Phase::passed() const { return passedPhase; }

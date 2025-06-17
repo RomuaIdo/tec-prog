@@ -1,65 +1,55 @@
-#include "../../../../include/entities/characters/enemies/Saci.h"
+#include "../../../../include/entities/characters/enemies/MulaSemCabeca.h"
 
-Saci::Saci(float x, float y, const float acel, int life, float coef, int s) :
-    Enemy(x, y, acel, life, coef, s), far(false), teleportTime(0.f),
-    lastPosition(Vector2f(x,y)){
+MulaSemCabeca::MulaSemCabeca(float x, float y, const float acel, int life, float coef, int s) :
+    Enemy(x, y, acel, life, coef, s), far(false), chargeTime(0.f), chargeCooldown(8.f) {
 
-    if (!texture.loadFromFile("assets/textures/Saci.png")) {
-            std::cerr << "Failed to load Saci.png!" << std::endl;
+    if (!texture.loadFromFile("assets/textures/MulaSemCabeca.png")) {
+        std::cerr << "Failed to load MulaSemCabeca.png!" << std::endl;
     }
+
     sprite.setTexture(texture);
     configSprite();
-    clock_jump = 0.f; // Initialize jump clock
-    teleportTime = 8.f; // Set teleport time to 8 seconds
-    lastPositionTime = 0.f;
+
+    // charge after 6 seconds
+    chargeCooldown = 6.f;
 }
 
-Saci::~Saci() {
+MulaSemCabeca::~MulaSemCabeca() {
 }
 
 /* ------------------------------------------- */
 /*                OWN FUNCTIONS                */
 /* ------------------------------------------- */
 
-void Saci::execute() {
+void MulaSemCabeca::execute() {
     move();
     draw();
-    teleport(getPlayerLastPosition());
 }
 
-void Saci::move() {
+void MulaSemCabeca::move() {
 
     float closer = 100000.f;
 
     float right = 1.f;
 
+
+    // Get the closest player direction 
     for(list<Player*>::iterator it = players_list.begin(); it != players_list.end(); it++){
         if(*it){
-
             // Get direction to player (feet to feet)
             Vector2f direction = ( ((*it)->getPosition() + Vector2f( 0.f, (*it)->getSize().y)) - (position + Vector2f( 0.f, size.y)) );
-
             float module = sqrt(direction.x*direction.x + direction.y*direction.y);
-
             if(module < closer){
-
                 // See if closer is in right or left
                 right = direction.x;
 
                 closer = module;
-
-                if(lastPositionTime >= 1.f){
-                    lastPosition = Vector2f((*it)->getPosition().x, pGM->getWindow()->getSize().y - size.y);
-                    lastPositionTime = 0.f;
-                }
             }
-
-            lastPositionTime += pGM->getdt();
         }
     }
 
-    // if it is 300 pixels far, the enemy dont move
-    if(abs(right) < 300.f){
+    // if it is 500 pixels far, the enemy dont move
+    if(abs(right) < 500.f){
         far = false;
     }else{
         far = true;
@@ -68,25 +58,20 @@ void Saci::move() {
     faced_right = (int) (right/abs(right));
 
     if(!far){
-        if(!getInAir() && clock_jump >= 1.f) {
-            setInAir(true);
-            velocity = (Vector2f(faced_right*aceleration, -10.f));
-            clock_jump = 0.f;
-        }
-    }
-    
-    if(!getInAir()){
+        charge();
+    }else{
         velocity = Vector2f(0.f, 0.f);
     }
     
-    clock_jump += pGM->getdt();
-
+    if(!getInAir()){
+        velocity = Vector2f(aceleration, 0.f);
+    }
+    
     applyGravity();
     moveCharacter();
-
 }
 
-void Saci::collide(Entity* e) {
+void MulaSemCabeca::collide(Entity* e) {
     Vector2f ePos = e->getPosition();
     Vector2f eSize = e->getSize();
 
@@ -101,7 +86,7 @@ void Saci::collide(Entity* e) {
     if (intersection.x < 0.0f && intersection.y < 0.0f) {
 
         /* If intersection in x is less then intersection in y */
-        /*  means that they are side by side                 */
+        /*  means that they are side by side                   */
 
         float push = 0.f;
         if (std::abs(intersection.x) < std::abs(intersection.y)) {
@@ -120,7 +105,7 @@ void Saci::collide(Entity* e) {
                 position.x -= push;
                 setVelocity({0.f - push, getVelocity().y});
             } 
-        /* If intersection in y is less then intersection in x */
+        /* If intersection in y is less then intersection in x
         /*  means that character collided in y with obstacle */
         } else {
 
@@ -142,6 +127,7 @@ void Saci::collide(Entity* e) {
                 /* c can jump */
                 setInAir(false);
                 position.y -= push;
+
                 setVelocity({ getVelocity().x, 0.f });
             }
         }
@@ -156,17 +142,23 @@ void Saci::collide(Entity* e) {
     }
 }
 
-Vector2f Saci::getPlayerLastPosition(){
-    return lastPosition;
-}
+void MulaSemCabeca::charge() {
+    if(chargeTime >= chargeCooldown) {
+        // stay active for 2 seconds (showing that will charge)
 
-void Saci::teleport(Vector2f pos) {
-    if(!far && clock >= teleportTime) {
-        cout << "Saci is teleporting" <<endl;
-        clock = 0;
-        setPosition(pos);
-    }else{
-        clock += pGM->getdt();
+        // texture = chargeTexture;
+        // sprite.setTexture(texture);
+        // configSprite();
+        if(chargeTime >= 2.f){
+            setVelocity(Vector2f(faced_right * 100.f, 0.f));
+            chargeTime = 0.f;
+            
+            // texture = runTexture;
+            // sprite.setTexture(texture);
+            // configSprite();
+        }
+    } else {
+        chargeTime += pGM->getdt();
     }
 }
 
@@ -174,10 +166,12 @@ void Saci::teleport(Vector2f pos) {
 /*              PLAYER FUNCTIONS               */
 /* ------------------------------------------- */
 
-void Saci::attack(Player *p) {
+void MulaSemCabeca::attack(Player *p) {
     /* If player has health and after 2 seconds, then he can attack */
-    if(p->getHealth() > 0 && pGM->getClockTime() >= 2.f){
+    if(p->getHealth() > 0 && 
+      (p->getDamageClock() >= p->getDamageCooldown())) {
+
         p->takeDamage(strength);
-        pGM->resetClock();
+        p->resetDamageClock();
     }
 }
