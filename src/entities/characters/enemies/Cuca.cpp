@@ -34,7 +34,7 @@ void Cuca::move() {
     }else{
         clock += pGM->getdt();
     }
-    speed.x = faced_right*(aceleration);
+    velocity.x = faced_right*(aceleration);
     
     moveCharacter();
 }
@@ -61,14 +61,14 @@ void Cuca::collide(Entity* e) {
 
             if (dx > 0) {
                 position.x += push;
-                setSpeed({0.f + push, getSpeed().y});
+                setVelocity({0.f + push, getVelocity().y});
             }
             else{
                 position.x -= push;
-                setSpeed({0.f - push, getSpeed().y});
+                setVelocity({0.f - push, getVelocity().y});
             } 
-        /* If intersection in y is less then intersection in x
-        /*  means that character collided in y with obstacle */
+        /* If intersection in y is less then intersection in x */
+        /*  means that character collided in y with obstacle   */
         } else {
 
             /* To push the character the amount he is inside */ 
@@ -85,8 +85,8 @@ void Cuca::collide(Entity* e) {
                 /* c can jump */
                 setInAir(false);
                 position.y -= push;
-                
-                setSpeed({ getSpeed().x, 0.f });
+
+                setVelocity({ getVelocity().x, 0.f });
             }
         }
         setPosition(position);
@@ -107,7 +107,7 @@ void Cuca::collide(Entity* e) {
 void Cuca::makePotion(){
     // Delay to throw potion
     if (makingPotion >= 1.f) {
-        Projectile *potion = new Projectile(position.x + (faced_right*(10.f+size.x)), position.y, faced_right*10.f);
+        Projectile *potion = new Projectile(position.x + (faced_right*(10.f+size.x)), position.y, Vector2f(faced_right*10.f, -10.f));
 
         if(potion){
             Texture potionTexture;

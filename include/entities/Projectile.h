@@ -9,7 +9,6 @@ class Projectile : public Entity{
 
     private:
         /* ------ STATUS ------- */
-        Vector2f velocity;
         Texture potion;
         Texture bullet;
         

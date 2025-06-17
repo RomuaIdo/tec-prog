@@ -8,16 +8,14 @@ class Saci : public Enemy {
     private:
         /* ---- TELEPORT ---- */
         bool far;
-        float teleportTime;
         float lastPositionTime;
+        float teleportTime;
         Vector2f lastPosition;
-        float clock;
         float minDistance;
         bool tooClose;
 
     public:
-        Saci(float x, float y, const float acel = 5.f, int life = 5,
-            float coef = 0.5, int s = 1);
+        Saci(float x, float y, const float acel = 5.f, int life = 5, float coef = 0.5, int s = 1);
         ~Saci();
 
         /* ---- OWN FUNCTIONS ---- */

@@ -53,7 +53,7 @@ void Projectile::collide(Entity* other) {
 }
 
 void Projectile::move(){
-    velocity += gravity * pGM->getdt();
+    applyGravity();
     position += velocity;
 }
 

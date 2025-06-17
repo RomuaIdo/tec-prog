@@ -1,14 +1,16 @@
 #include "../../../../include/entities/characters/enemies/Saci.h"
 
 Saci::Saci(float x, float y, const float acel, int life, float coef, int s) :
-    Enemy(x, y, acel, life, coef, s), teleportTime(0.f),
-    lastPosition(Vector2f(x,y)) , far(false) {
+    Enemy(x, y, acel, life, coef, s), far(false), teleportTime(0.f),
+    lastPosition(Vector2f(x,y)) {
 
     if (!texture.loadFromFile("assets/textures/Saci.png")) {
             std::cerr << "Failed to load Saci.png!" << std::endl;
     }
     sprite.setTexture(texture);
     configSprite();
+
+    setVelocity(Vector2f(10.f, -10.f));
 
     teleportTime = 5.f; // Set teleport time to 5 seconds
     lastPositionTime = 0.f;
@@ -28,9 +30,11 @@ void Saci::execute() {
 }
 
 void Saci::move() {
+
     float closer = sqrt(pGM->getWindow()->getSize().x * pGM->getWindow()->getSize().x + 
     pGM->getWindow()->getSize().y * pGM->getWindow()->getSize().y);
-    Vector2f closer_direction = Vector2f(0.f,0.f);
+
+    float right = 1.f;
 
     for(list<Player*>::iterator it = players_list.begin(); it != players_list.end(); it++){
         if(*it){
@@ -39,8 +43,11 @@ void Saci::move() {
             float module = sqrt(direction.x*direction.x + direction.y*direction.y);
 
             if(module < closer){
+
+                // See if closer is in right or left
+                right = direction.x;
+
                 closer = module;
-                closer_direction = direction;
                 if(lastPositionTime >= 2.f){
                     lastPosition = (*it)->getPosition();
                     lastPositionTime = 0.f;
@@ -51,28 +58,24 @@ void Saci::move() {
             lastPositionTime += pGM->getdt();
         }
     }
-    if(abs(closer_direction.x) < 300.f){
+
+    // if it is 200 pixels far, the enemy dont move
+    if(abs(right) < 200.f){
         far = false;
     }else{
         far = true;
     }
+ 
+    faced_right = (int) (right/abs(right));
 
-    if(closer_direction.x < 0){
-        faced_right = -1;
-    }else{
-        faced_right = 1;
-    }
     if(!far){
-        speed.x = faced_right*(aceleration - 5);
         // para reaproveitar o lastPositionTime e pular a cada 2 seg
         if(!getInAir() && lastPositionTime >= 2.f) {
-            speed.y = -aceleration;
             setInAir(true);
+            moveCharacter();
         }
-    }else{
-        speed.x = 0.f;
     }
-    moveCharacter();
+
 }
 
 void Saci::collide(Entity* e) {
@@ -89,8 +92,8 @@ void Saci::collide(Entity* e) {
 
     if (intersection.x < 0.0f && intersection.y < 0.0f) {
 
-        /* If intersection in x is less then intersection in y
-        /*  means that they are side by side                 */
+        /* If intersection in x is less then intersection in y */
+        /*  means that they are side by side                   */
 
         float push = 0.f;
         if (std::abs(intersection.x) < std::abs(intersection.y)) {
@@ -103,11 +106,11 @@ void Saci::collide(Entity* e) {
 
             if (dx > 0) {
                 position.x += push;
-                setSpeed({0.f + push, getSpeed().y});
+                setVelocity({0.f + push, getVelocity().y});
             }
             else{
                 position.x -= push;
-                setSpeed({0.f - push, getSpeed().y});
+                setVelocity({0.f - push, getVelocity().y});
             } 
         /* If intersection in y is less then intersection in x
         /*  means that character collided in y with obstacle */
@@ -131,8 +134,8 @@ void Saci::collide(Entity* e) {
                 /* c can jump */
                 setInAir(false);
                 position.y -= push;
-                
-                setSpeed({ getSpeed().x, 0.f });
+
+                setVelocity({ getVelocity().x, 0.f });
             }
         }
         setPosition(position);

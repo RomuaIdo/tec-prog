@@ -13,8 +13,6 @@ class Character : public Entity {
         int health;
         const int strength;
         const float aceleration;
-        Vector2f speed;
-        float clock;
         
         /* --- COEFFICIENTS ---- */
         Vector2f friction;
@@ -37,8 +35,7 @@ class Character : public Entity {
         void takeDamage(int damage);
         
         /* ----- GETS & SETS ----- */
-        Vector2f getSpeed() const;
-        void setSpeed(Vector2f vel);
+        
         int getStrength() const;
         bool getInAir() const;
         void setInAir(bool inair);

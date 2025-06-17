@@ -1,10 +1,10 @@
 #include "../../include/entities/Entity.h"
 
 Entity::Entity():
-    Ente(), position(0.f,0.f) {}
+    Ente(), position(0.f,0.f), velocity(0.f, 0.f) {}
 
 Entity::Entity(float x, float y) :
-    Ente(), position(x,y){
+    Ente(), position(x,y), velocity(0.f, 0.f) {
 }
 
 Entity::~Entity() {}
@@ -24,9 +24,21 @@ void Entity::draw() {
     pGM->draw(this);
 }
 
+void Entity::applyGravity(){
+    velocity += gravity * pGM->getdt();
+}
+
 /* ------------------------------------------- */
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */
+
+Vector2f Entity::getVelocity() const{
+    return velocity;
+}
+
+void Entity::setVelocity(Vector2f vel){
+    velocity = vel;
+}
 
 Vector2f Entity::getPosition() const{
     return position;
