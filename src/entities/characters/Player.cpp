@@ -3,7 +3,8 @@
 #include <SFML/Window.hpp>
 
 Player::Player(float x, float y, const float acel, int life, float coef, int s, int p_num, const float v_max): 
-    Character(x, y, acel, life, coef, s), player_num(p_num), score(0), vel_max(v_max), projectiles_list(), shoot_delay(0.f){
+    Character(x, y, acel, life, coef, s), player_num(p_num), score(0), vel_max(v_max), 
+    damageClock(0.f), damageCooldown(2.f), projectiles_list(), shoot_delay(0.f){
     projectiles_list.clear();
     
     if(p_num == 1){
@@ -236,4 +237,24 @@ void Player::reload(){
 
 int Player::getHealth(){
     return health;
+}
+
+float Player::getDamageClock(){
+    return damageClock;
+}
+
+void Player::increaseDamageClock(){
+    damageClock += pGM->getdt();
+}
+
+void Player::resetDamageClock(){
+    damageClock = 0.f;
+}
+
+float Player::getDamageCooldown(){
+    return damageCooldown;
+}
+
+void Player::setDamageCooldown(float cooldown){
+    damageCooldown = cooldown;
 }
