@@ -82,6 +82,8 @@ void Saci::collide(Entity* e) {
     float dx = (position.x - ePos.x);
     float dy = (position.y - ePos.y);
 
+
+
     Vector2f intersection = Vector2f( abs(dx) - (size.x + eSize.x), 
                                       abs(dy) - (size.y + eSize.y) );
 
@@ -90,10 +92,14 @@ void Saci::collide(Entity* e) {
         /* If intersection in x is less then intersection in y
         /*  means that they are side by side                 */
 
+        float push = 0.f;
         if (std::abs(intersection.x) < std::abs(intersection.y)) {
-            
-            /* To push the character the amount he is inside */                       
-            float push = abs(intersection.x / 2.f);
+            /* To push the character the amount he is inside */    
+            if(dynamic_cast<Plataform*>(e)){
+                push = abs(intersection.x);
+            }                   
+            else 
+                push = abs(intersection.x / 2.f);
 
             if (dx > 0) {
                 position.x += push;
@@ -108,7 +114,11 @@ void Saci::collide(Entity* e) {
         } else {
 
             /* To push the character the amount he is inside */ 
-            float push = abs(intersection.y / 2.f);
+            if(dynamic_cast<Plataform*>(e)){
+                push = abs(intersection.y);
+            }                   
+            else 
+                push = abs(intersection.y / 2.f);
 
             /* c is below o */
             if (dy > 0) {
