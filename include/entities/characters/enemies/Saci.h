@@ -1,7 +1,6 @@
 #ifndef SACI_H
 #define SACI_H
 #include "../Enemy.h"
-#include <list>
 
 class Saci : public Enemy {
 

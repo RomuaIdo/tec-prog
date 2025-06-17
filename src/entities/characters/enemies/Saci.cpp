@@ -47,9 +47,9 @@ void Saci::move() {
                 right = direction.x;
 
                 closer = module;
-                
+
                 if(lastPositionTime >= 1.f){
-                    lastPosition = Vector2f((*it)->getPosition().x, 0.f);
+                    lastPosition = Vector2f((*it)->getPosition().x, pGM->getWindow()->getSize().y - size.y);
                     lastPositionTime = 0.f;
                 }
             }
@@ -70,7 +70,7 @@ void Saci::move() {
     if(!far){
         if(!getInAir() && clock_jump >= 1.f) {
             setInAir(true);
-            velocity = (Vector2f(faced_right*5.f, -10.f));
+            velocity = (Vector2f(faced_right*aceleration, -10.f));
             clock_jump = 0.f;
         }
     }

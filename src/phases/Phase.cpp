@@ -70,8 +70,8 @@ void Phase::createSaci() {
     for (int i = 0; i < maxSaci; i++) {
         // Gera posição X aleatória (evitando bordas)
         float x = 100.f + static_cast<float>(rand() % static_cast<int>(phaseSize.x - 200.f));
-        
-        Saci* saci = new Saci(x, saciY, 15.f, 5, 1.f, 1);
+
+        Saci* saci = new Saci(x, saciY, 5.f, 5, 1.f, 1);
         saci->addPlayer(player1);
         saci->addPlayer(player2);
         entities_list.add(saci);

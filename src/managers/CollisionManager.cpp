@@ -52,7 +52,6 @@ bool CollisionManager::verifyCollision(Entity* ent1, Entity* ent2) const{
     return false;
 }
 
-
 void CollisionManager::treatWallCollision() {
     float phase_width = phaseSize.x;
     float phase_height = phaseSize.y;
