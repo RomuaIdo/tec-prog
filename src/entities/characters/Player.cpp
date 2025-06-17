@@ -46,10 +46,10 @@ void Player::move() {
     }
 
     // Limits for the horizontal velocity
-    if (speed.x > max_vel)
-        speed.x = max_vel;
-    if (speed.x < -max_vel)
-        speed.x = -max_vel;
+    if (velocity.x > max_vel)
+        velocity.x = max_vel;
+    if (velocity.x < -max_vel)
+        velocity.x = -max_vel;
 
     applyFriction(dt);
     moveCharacter();
@@ -58,16 +58,16 @@ void Player::move() {
 void Player::handlePlayer1Controls(float dt, float jumpForce) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
         if (!in_air) {
-            speed.y = -jumpForce;
+            velocity.y = -jumpForce;
             in_air = true;
         }
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left)) {
-        speed.x -= aceleration * dt;
+        velocity.x -= aceleration * dt;
         faced_right = -1;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right)) {
-        speed.x += aceleration * dt;
+        velocity.x += aceleration * dt;
         faced_right = 1;
     }
 }
@@ -75,36 +75,36 @@ void Player::handlePlayer1Controls(float dt, float jumpForce) {
 void Player::handlePlayer2Controls(float dt, float jumpForce) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
         if (!in_air) {
-            speed.y = -jumpForce;
+            velocity.y = -jumpForce;
             in_air = true;
         }
     }
 
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
-        speed.x -= aceleration * dt;
+        velocity.x -= aceleration * dt;
         faced_right = 1;
     }
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
-        speed.x += aceleration * dt;
+        velocity.x += aceleration * dt;
         faced_right = -1;
     }
 }
 
 void Player::applyFriction(float dt) {
-    if (speed.x > 0) {
+    if (velocity.x > 0) {
         friction.x = -20.0f * friction_coef;
-        if (speed.x + friction.x * dt < 0) {
-            speed.x = 0;
+        if (velocity.x + friction.x * dt < 0) {
+            velocity.x = 0;
         }
-    } else if (speed.x < 0) {
+    } else if (velocity.x < 0) {
         friction.x = 20.0f * friction_coef;
-        if (speed.x + friction.x * dt > 0) {
-        speed.x = 0;
+        if (velocity.x + friction.x * dt > 0) {
+        velocity.x = 0;
         }
     } else {
         friction.x = 0;
     }
-    speed += friction * dt;
+    velocity += friction * dt;
 }
 
 void Player::collide(Entity* e){
@@ -138,11 +138,11 @@ void Player::collide(Entity* e){
 
             if (dx > 0) {
                 position.x += push;
-                setSpeed({0.f + push, getSpeed().y});
+                setVelocity({0.f + push, getVelocity().y});
             }
             else{
                 position.x -= push;
-                setSpeed({0.f - push, getSpeed().y});
+                setVelocity({0.f - push, getVelocity().y});
             } 
 
 
@@ -166,7 +166,7 @@ void Player::collide(Entity* e){
                 setInAir(false);
                 position.y -= push;
                 
-                setSpeed({ getSpeed().x, 0.f });
+                setVelocity({ getVelocity().x, 0.f });
             }
         }
         setPosition(position);

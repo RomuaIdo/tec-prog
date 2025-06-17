@@ -3,10 +3,8 @@
 
 Vector2f Character::gravity(0.f, 30.f);
 
-Character::Character(float x, float y, const float movSpeed, int life, float coef, int s):
-    Entity(x, y), health(life), friction_coef(coef), friction(0.f,0.f), strength(s), aceleration(movSpeed), speed(0.f, 0.f){
-    faced_right = 1;
-    clock = 0.f;
+Character::Character(float x, float y, const float movVelocity, int life, float coef, int s):
+    Entity(x, y), health(life), strength(s), aceleration(movVelocity), velocity(0.f, 0.f), clock(0.f), faced_right(1), friction(0.f,0.f), friction_coef(coef){
 }
 
 Character::~Character(){
@@ -18,8 +16,8 @@ Character::~Character(){
 /* ------------------------------------------- */
 
 void Character::moveCharacter(){
-    speed += gravity * pGM->getdt();
-    position += speed;
+    velocity += gravity * pGM->getdt();
+    position += velocity;
 
     // Flip sprite based on direction
     if (faced_right == -1) {
@@ -45,12 +43,12 @@ void Character::takeDamage(int damage){
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */
 
-Vector2f Character::getSpeed() const{
-    return speed;
+Vector2f Character::getVelocity() const{
+    return velocity;
 }
 
-void Character::setSpeed(Vector2f spd){
-    speed = spd;
+void Character::setVelocity(Vector2f spd){
+    velocity = spd;
 }
 
 int Character::getStrength() const{

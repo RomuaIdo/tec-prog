@@ -34,7 +34,7 @@ void Cuca::move() {
     }else{
         clock += pGM->getdt();
     }
-    speed.x = faced_right*(aceleration);
+    velocity.x = faced_right*(aceleration);
     
     moveCharacter();
 }
@@ -61,11 +61,11 @@ void Cuca::collide(Entity* e) {
 
             if (dx > 0) {
                 position.x += push;
-                setSpeed({0.f + push, getSpeed().y});
+                setVelocity({0.f + push, getVelocity().y});
             }
             else{
                 position.x -= push;
-                setSpeed({0.f - push, getSpeed().y});
+                setVelocity({0.f - push, getVelocity().y});
             } 
         /* If intersection in y is less then intersection in x
         /*  means that character collided in y with obstacle */
@@ -86,7 +86,7 @@ void Cuca::collide(Entity* e) {
                 setInAir(false);
                 position.y -= push;
                 
-                setSpeed({ getSpeed().x, 0.f });
+                setVelocity({ getVelocity().x, 0.f });
             }
         }
         setPosition(position);

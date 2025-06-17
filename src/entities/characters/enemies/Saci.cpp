@@ -1,8 +1,8 @@
 #include "../../../../include/entities/characters/enemies/Saci.h"
 
 Saci::Saci(float x, float y, const float acel, int life, float coef, int s) :
-    Enemy(x, y, acel, life, coef, s), teleportTime(0.f),
-    lastPosition(Vector2f(x,y)) , far(false) {
+    Enemy(x, y, acel, life, coef, s), far(false), teleportTime(0.f),
+    lastPosition(Vector2f(x,y)){
 
     if (!texture.loadFromFile("assets/textures/Saci.png")) {
             std::cerr << "Failed to load Saci.png!" << std::endl;
@@ -63,14 +63,14 @@ void Saci::move() {
         faced_right = 1;
     }
     if(!far){
-        speed.x = faced_right*(aceleration - 5);
+        velocity.x = faced_right*(aceleration - 5);
         // para reaproveitar o lastPositionTime e pular a cada 2 seg
         if(!getInAir() && lastPositionTime >= 2.f) {
-            speed.y = -aceleration;
+            velocity.y = -aceleration;
             setInAir(true);
         }
     }else{
-        speed.x = 0.f;
+        velocity.x = 0.f;
     }
     moveCharacter();
 }
@@ -97,11 +97,11 @@ void Saci::collide(Entity* e) {
 
             if (dx > 0) {
                 position.x += push;
-                setSpeed({0.f + push, getSpeed().y});
+                setVelocity({0.f + push, getVelocity().y});
             }
             else{
                 position.x -= push;
-                setSpeed({0.f - push, getSpeed().y});
+                setVelocity({0.f - push, getVelocity().y});
             } 
         /* If intersection in y is less then intersection in x
         /*  means that character collided in y with obstacle */
@@ -122,7 +122,7 @@ void Saci::collide(Entity* e) {
                 setInAir(false);
                 position.y -= push;
                 
-                setSpeed({ getSpeed().x, 0.f });
+                setVelocity({ getVelocity().x, 0.f });
             }
         }
         setPosition(position);
