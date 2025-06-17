@@ -190,7 +190,7 @@ void Player::shoot(){
         if (Keyboard::isKeyPressed(sf::Keyboard::C)) {
             // Shoot after 0.5 seconds
             if (shoot_delay >= 0.5f) {
-                Projectile *p = new Projectile(position.x + (size.x * faced_right), position.y, Vector2f(faced_right * 10.f, -10.f));
+                Projectile *p = new Projectile(position.x + (size.x * faced_right), position.y, Vector2f(faced_right * 20.f, -10.f), this);
 
                 if (p) {
                     addProjectile(p);

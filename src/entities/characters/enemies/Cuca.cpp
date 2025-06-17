@@ -107,7 +107,7 @@ void Cuca::collide(Entity* e) {
 void Cuca::makePotion(){
     // Delay to throw potion
     if (makingPotion >= 1.f) {
-        Projectile *potion = new Projectile(position.x + (faced_right*(10.f+size.x)), position.y, Vector2f(faced_right*10.f, -10.f));
+        Projectile *potion = new Projectile(position.x + (faced_right*(10.f+size.x)), position.y, Vector2f(faced_right*10.f, -10.f), this);
 
         if(potion){
             Texture potionTexture;

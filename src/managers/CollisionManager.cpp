@@ -159,6 +159,21 @@ void CollisionManager::treatEnemiesCollision(){
             }
         }
     }
+
+    for (vector<Enemy*>::iterator it = enemies_vector.begin(); it != enemies_vector.end(); it++) {
+        if ((*it)) {
+            for (vector<Enemy*>::iterator itEnemy = enemies_vector.begin(); itEnemy != enemies_vector.end(); itEnemy++) {
+                if (*itEnemy) {
+                    if((*it) != (*itEnemy)) { 
+                        if (verifyCollision((*it), (*itEnemy))) {
+                        (*itEnemy)->collide(*it);
+                        (*it)->collide(*itEnemy);
+                    }
+                    }
+                }
+            }
+        }
+    }
 }
 
 void CollisionManager::treatObstaclesCollision() {
@@ -199,10 +214,11 @@ void CollisionManager::treatProjectilesCollision() {
 
         // Enemy collision
         for (vector<Enemy *>::iterator itEnemy = enemies_vector.begin(); itEnemy != enemies_vector.end(); ++itEnemy) {
-            if (*itEnemy && verifyCollision(proj, *itEnemy)) {
-                collided = true;
-                collidedEntity = *itEnemy;
-                break;
+            if (*itEnemy)
+                if (verifyCollision(proj, *itEnemy)){
+                    collided = true;
+                    collidedEntity = *itEnemy;
+                    break;
             }
         }
 
@@ -240,10 +256,6 @@ void CollisionManager::treatProjectilesCollision() {
 
         if (collided) {
             proj->collide(collidedEntity);
-            if (collidedEntity) {
-                collidedEntity->collide(proj);
-            }
-            proj->setActive(false);
         }
 
         ++itProjectile;
