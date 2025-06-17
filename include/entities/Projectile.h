@@ -3,14 +3,16 @@
 #include <SFML/Graphics.hpp>
 #include "Entity.h"
 #include "characters/Character.h"
+#include "characters/Enemy.h"
+#include "characters/Player.h"
+
 using namespace sf;
 
 class Projectile : public Entity{
 
     private:
         /* ------ STATUS ------- */
-        Texture potion;
-        Texture bullet;
+        Entity* owner; // Pointer to the owner of the projectile
         
         /* ------ FLAGS ------- */
         bool active;
@@ -18,8 +20,12 @@ class Projectile : public Entity{
     public:
         /* --- CONSTRUCTORS --- */
         Projectile();
-        Projectile(float x, float y, Vector2f vel);
+        Projectile(float x, float y, Vector2f vel, Entity* creator);
         ~Projectile();
+
+        /* ------ STATUS ------- */
+        static Texture potion;
+        static Texture bullet;
 
         /* --- OWN FUNCTIONS --- */
         void collide(Entity* other);

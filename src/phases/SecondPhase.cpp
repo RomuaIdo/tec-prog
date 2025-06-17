@@ -83,7 +83,7 @@ void SecondPhase::createCucas() {
                                             static_cast<int>(phaseSize.x - 200.f));
 
         // Calcular posição Y correta para ficar no chão
-        Cuca *cuca = new Cuca(x, groundY, 15.f, 5, 1.f, 1);
+        Cuca *cuca = new Cuca(x, groundY, 5.f, 5, 1.f, 1);
         if(cuca){
             cuca->setPosition(Vector2f(cuca->getPosition().x, cuca->getPosition().y - cuca->getSize().y));
             cuca->addPlayer(player1);

@@ -1,11 +1,12 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 #include "Character.h"
-#include "../Projectile.h"
 #include <SFML/Graphics.hpp>
 #include <list>
 using namespace sf;
 using namespace std;
+
+class Projectile; // Forward declaration to avoid circular dependency
 
 class Player : public Character {
     private:

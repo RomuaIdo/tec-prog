@@ -3,7 +3,9 @@
 #include "../../include/entities/characters/Enemy.h"
 #include "../../include/entities/characters/Player.h"
 #include "../../include/entities/obstacles/Obstacle.h"
+#include "../../include/entities/obstacles/ThornyBush.h"
 #include "../../include/managers/GraphicsManager.h"
+
 
 CollisionManager *CollisionManager::instance(nullptr);
 
@@ -159,6 +161,21 @@ void CollisionManager::treatEnemiesCollision(){
             }
         }
     }
+
+    for (vector<Enemy*>::iterator it = enemies_vector.begin(); it != enemies_vector.end(); it++) {
+        if ((*it)) {
+            for (vector<Enemy*>::iterator itEnemy = enemies_vector.begin(); itEnemy != enemies_vector.end(); itEnemy++) {
+                if (*itEnemy) {
+                    if((*it) != (*itEnemy)) { 
+                        if (verifyCollision((*it), (*itEnemy))) {
+                        (*itEnemy)->collide(*it);
+                        (*it)->collide(*itEnemy);
+                    }
+                    }
+                }
+            }
+        }
+    }
 }
 
 void CollisionManager::treatObstaclesCollision() {
@@ -168,8 +185,9 @@ void CollisionManager::treatObstaclesCollision() {
             for (list<Obstacle *>::iterator itObstacle = obstacles_list.begin();itObstacle != obstacles_list.end(); itObstacle++) {
                 if (*itObstacle) {
                     if (verifyCollision((*it), (*itObstacle))) {
+                        if(!(dynamic_cast<ThornyBush*>(*itObstacle)))
+                            (*it)->collide(*itObstacle);
                         (*itObstacle)->collide(*it);
-                        (*it)->collide(*itObstacle);
                     }
                 }
             }
@@ -182,8 +200,9 @@ void CollisionManager::treatObstaclesCollision() {
                 itObstacle != obstacles_list.end(); itObstacle++) {
                 if (*itObstacle) {
                     if (verifyCollision((*it), (*itObstacle))) {
+                        if(!(dynamic_cast<ThornyBush*>(*itObstacle)))
+                            (*it)->collide(*itObstacle);
                         (*itObstacle)->collide(*it);
-                        (*it)->collide(*itObstacle);
                     }
                 }
             }
@@ -199,10 +218,11 @@ void CollisionManager::treatProjectilesCollision() {
 
         // Enemy collision
         for (vector<Enemy *>::iterator itEnemy = enemies_vector.begin(); itEnemy != enemies_vector.end(); ++itEnemy) {
-            if (*itEnemy && verifyCollision(proj, *itEnemy)) {
-                collided = true;
-                collidedEntity = *itEnemy;
-                break;
+            if (*itEnemy)
+                if (verifyCollision(proj, *itEnemy)){
+                    collided = true;
+                    collidedEntity = *itEnemy;
+                    break;
             }
         }
 
@@ -240,10 +260,6 @@ void CollisionManager::treatProjectilesCollision() {
 
         if (collided) {
             proj->collide(collidedEntity);
-            if (collidedEntity) {
-                collidedEntity->collide(proj);
-            }
-            proj->setActive(false);
         }
 
         ++itProjectile;

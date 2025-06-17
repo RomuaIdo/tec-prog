@@ -3,7 +3,7 @@
 
 
 Character::Character(float x, float y, const float movVelocity, int life, float coef, int s):
-    Entity(x, y), health(life), strength(s), aceleration(movVelocity), faced_right(1), friction(0.f,0.f), friction_coef(coef){
+    Entity(x, y), health(life), strength(s), aceleration(movVelocity), friction(0.f,0.f), friction_coef(coef), faced_right(1){
 }
 
 Character::~Character(){
@@ -15,7 +15,7 @@ Character::~Character(){
 /* ------------------------------------------- */
 
 void Character::moveCharacter(){
-    position += velocity;
+    position += velocity ;
 
     // Flip sprite based on direction
     if (faced_right == -1) {
@@ -23,8 +23,7 @@ void Character::moveCharacter(){
     } else{
         sprite.setScale(1.f, 1.f); // Facing right
     }
-
-    sprite.setPosition(position);
+    setPosition(position);
 }
 
 void Character::takeDamage(int damage){

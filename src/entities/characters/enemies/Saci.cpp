@@ -9,10 +9,8 @@ Saci::Saci(float x, float y, const float acel, int life, float coef, int s) :
     }
     sprite.setTexture(texture);
     configSprite();
-
-    setVelocity(Vector2f(10.f, -10.f));
-
-    teleportTime = 5.f; // Set teleport time to 5 seconds
+    clock_jump = 0.f; // Initialize jump clock
+    teleportTime = 8.f; // Set teleport time to 8 seconds
     lastPositionTime = 0.f;
 }
 
@@ -31,15 +29,16 @@ void Saci::execute() {
 
 void Saci::move() {
 
-    float closer = sqrt(pGM->getWindow()->getSize().x * pGM->getWindow()->getSize().x + 
-    pGM->getWindow()->getSize().y * pGM->getWindow()->getSize().y);
+    float closer = 100000.f;
 
     float right = 1.f;
 
     for(list<Player*>::iterator it = players_list.begin(); it != players_list.end(); it++){
         if(*it){
+
             // Get direction to player (feet to feet)
-            Vector2f direction = ( ((*it)->getPosition() + (*it)->getSize()) - (position + size) );
+            Vector2f direction = ( ((*it)->getPosition() + Vector2f( 0.f, (*it)->getSize().y)) - (position + Vector2f( 0.f, size.y)) );
+
             float module = sqrt(direction.x*direction.x + direction.y*direction.y);
 
             if(module < closer){
@@ -48,19 +47,19 @@ void Saci::move() {
                 right = direction.x;
 
                 closer = module;
-                if(lastPositionTime >= 2.f){
-                    lastPosition = (*it)->getPosition();
+                
+                if(lastPositionTime >= 1.f){
+                    lastPosition = Vector2f((*it)->getPosition().x, 0.f);
                     lastPositionTime = 0.f;
                 }
-            }else{
-                lastPosition = position;
             }
+
             lastPositionTime += pGM->getdt();
         }
     }
 
-    // if it is 200 pixels far, the enemy dont move
-    if(abs(right) < 200.f){
+    // if it is 300 pixels far, the enemy dont move
+    if(abs(right) < 300.f){
         far = false;
     }else{
         far = true;
@@ -69,13 +68,21 @@ void Saci::move() {
     faced_right = (int) (right/abs(right));
 
     if(!far){
-        // para reaproveitar o lastPositionTime e pular a cada 2 seg
-        if(!getInAir() && lastPositionTime >= 2.f) {
+        if(!getInAir() && clock_jump >= 1.f) {
             setInAir(true);
-            moveCharacter();
+            velocity = (Vector2f(faced_right*5.f, -10.f));
+            clock_jump = 0.f;
         }
     }
+    
+    if(!getInAir()){
+        velocity = Vector2f(0.f, 0.f);
+    }
+    
+    clock_jump += pGM->getdt();
+
     applyGravity();
+    moveCharacter();
 
 }
 

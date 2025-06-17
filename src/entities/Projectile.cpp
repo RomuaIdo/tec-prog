@@ -1,23 +1,16 @@
 #include "../../include/entities/Projectile.h"
 #include <SFML/Window.hpp>
 
-Projectile::Projectile():
-    Entity(), active(true) {
-    
-    if (!potion.loadFromFile("assets/textures/Potion.png")) {
-        std::cerr << "Failed to load Potion.png!" << std::endl;
-    }
-    if (!bullet.loadFromFile("assets/textures/Bullet.png")) {
-        std::cerr << "Failed to load Bullet.png!" << std::endl;
-    }
+Texture Projectile::potion;
+Texture Projectile::bullet;
 
-    texture = potion;
-    sprite.setTexture(texture);
-    configSprite();
+Projectile::Projectile():
+    Entity(), owner(nullptr), active(true){
+    
 }
 
-Projectile::Projectile(float x, float y, Vector2f vel):
-    Entity(x,y), active(true) {
+Projectile::Projectile(float x, float y, Vector2f vel, Entity* creator):
+    Entity(x,y), owner(creator),  active(true){
     
     if (!potion.loadFromFile("assets/textures/Potion.png")) {
         std::cerr << "Failed to load Potion.png!" << std::endl;
@@ -32,13 +25,11 @@ Projectile::Projectile(float x, float y, Vector2f vel):
     }else
         sprite.setScale(1.f,1.f);
 
-    texture = potion;
-    sprite.setTexture(texture);
+    sprite.setTexture(potion);
     configSprite();
 }
 
 Projectile::~Projectile(){ 
-    cout << "Projectile deleted" << endl;
 }
 
 /* ------------------------------------------- */
@@ -46,11 +37,38 @@ Projectile::~Projectile(){
 /* ------------------------------------------- */
 
 void Projectile::collide(Entity* other) {
-    if(dynamic_cast<Character*>(other) != nullptr){
-        // Handle collision with another entity
-        static_cast<Character*>(other)->takeDamage(1); // Example damage value
+    if(dynamic_cast<Enemy*>(owner)){
+
+        if(dynamic_cast<Enemy*>(other)){
+
+            return; // Do not collide with own team
+
+        }else if(dynamic_cast<Player*>(other)){
+
+            active = false; // Enemy projectile hits player
+            static_cast<Player*>(other)->takeDamage(1); // Example damage value
+
+        }else{
+            active = false;
+        }
+    }else if(dynamic_cast<Player*>(owner)){
+
+        if(dynamic_cast<Player*>(other)){
+
+            return; // Do not collide with own team
+
+        }else if(dynamic_cast<Enemy*>(other)){
+
+            active = false; // Player projectile hits enemy
+            static_cast<Enemy*>(other)->takeDamage(1); // Example damage value
+
+        }else{
+            active = false;
+        }
+    }else {
+        cout << "Projectile owner is not a Player or Enemy!" << endl;
+        active = false; // Default behavior for other types
     }
-    setActive(false);
 }
 
 void Projectile::move(){

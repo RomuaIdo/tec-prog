@@ -1,5 +1,6 @@
 #include "../../../include/entities/characters/Player.h"
 #include "../../../include/managers/CollisionManager.h"
+#include "../../../include/entities/Projectile.h"
 #include <SFML/Window.hpp>
 
 Player::Player(float x, float y, const float acel, int life, float coef, int s, int p_num, const float v_max): 
@@ -93,14 +94,14 @@ void Player::handlePlayer2Controls(float dt, float jumpForce) {
 
 void Player::applyFriction(float dt) {
     if (velocity.x > 0) {
-        friction.x = -20.0f * friction_coef;
+        friction.x = -20.f * friction_coef;
         if (velocity.x + friction.x * dt < 0) {
             velocity.x = 0;
         }
     } else if (velocity.x < 0) {
-        friction.x = 20.0f * friction_coef;
+        friction.x = 20.f * friction_coef;
         if (velocity.x + friction.x * dt > 0) {
-        velocity.x = 0;
+            velocity.x = 0;
         }
     } else {
         friction.x = 0;
@@ -120,9 +121,9 @@ void Player::collide(Entity* e){
     
     /* If dy > 0 -> a is below b    */
 
-    /* The intersection between a and b ,
-    *   if they collide, the vector will be
-    *   negative in x and y                */
+    /*  The intersection between a and b ,   */
+    /*   if they collide, the vector will be */
+    /*   negative in x and y                 */
 
     Vector2f intersection = Vector2f( abs(dx) - (size.x + eSize.x), 
                                       abs(dy) - (size.y + eSize.y) );
@@ -146,10 +147,8 @@ void Player::collide(Entity* e){
                 setVelocity({0.f - push, getVelocity().y});
             } 
 
-
         /* If intersection in y is less then intersection in x */
         /*  means that character collided in y with obstacle */
-
         } else {
 
             /* To push the character the amount he is inside */ 
@@ -189,7 +188,7 @@ void Player::shoot(){
         if (Keyboard::isKeyPressed(sf::Keyboard::C)) {
             // Shoot after 0.5 seconds
             if (shoot_delay >= 0.5f) {
-                Projectile *p = new Projectile(position.x + (size.x * faced_right), position.y, Vector2f(faced_right * 10.f, -10.f));
+                Projectile *p = new Projectile(position.x + (size.x * faced_right), position.y, Vector2f(faced_right * 10.f, -10.f), this);
 
                 if (p) {
                     addProjectile(p);
