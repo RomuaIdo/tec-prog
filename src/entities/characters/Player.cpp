@@ -120,17 +120,17 @@ void Player::collide(Entity* e){
     
     /* If dy > 0 -> a is below b    */
 
-    /* The intersection between a and b ,
-    *   if they collide, the vector will be
-    *   negative in x and y                */
+    /*  The intersection between a and b ,   */
+    /*   if they collide, the vector will be */
+    /*   negative in x and y                 */
 
     Vector2f intersection = Vector2f( abs(dx) - (size.x + eSize.x), 
                                       abs(dy) - (size.y + eSize.y) );
 
     if (intersection.x < 0.0f && intersection.y < 0.0f) {
 
-        /* If intersection in x is less then intersection in y
-        /*  means that they are side by side                 */
+        /* If intersection in x is less then intersection in y */
+        /*  means that they are side by side                   */
 
         if (std::abs(intersection.x) < std::abs(intersection.y)) {
             
@@ -146,9 +146,8 @@ void Player::collide(Entity* e){
                 setVelocity({0.f - push, getVelocity().y});
             } 
 
-
-        /* If intersection in y is less then intersection in x
-        /*  means that character collided in y with obstacle */
+        /* If intersection in y is less then intersection in x */
+        /*  means that character collided in y with obstacle   */
 
         } else {
 

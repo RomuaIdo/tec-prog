@@ -12,8 +12,6 @@ class Projectile : public Entity{
 
     private:
         /* ------ STATUS ------- */
-        static Texture potion;
-        static Texture bullet;
         Entity* owner; // Pointer to the owner of the projectile
         
         /* ------ FLAGS ------- */
@@ -24,6 +22,10 @@ class Projectile : public Entity{
         Projectile();
         Projectile(float x, float y, Vector2f vel, Entity* creator);
         ~Projectile();
+
+        /* ------ STATUS ------- */
+        static Texture potion;
+        static Texture bullet;
 
         /* --- OWN FUNCTIONS --- */
         void collide(Entity* other);

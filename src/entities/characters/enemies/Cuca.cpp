@@ -107,22 +107,15 @@ void Cuca::collide(Entity* e) {
 void Cuca::makePotion(){
     // Delay to throw potion
     if (makingPotion >= 1.f) {
-        Projectile *potion = new Projectile(position.x + (faced_right*(10.f+size.x)), position.y, Vector2f(faced_right*10.f, -10.f), this);
+        Projectile *p = new Projectile(position.x + (faced_right*(10.f+size.x)), position.y, Vector2f(faced_right*10.f, -10.f), this);
 
-        if(potion){
-            Texture potionTexture;
-            if (potionTexture.loadFromFile("assets/textures/Potion.png")) {
-                potion->setTexture(potionTexture);
-            } else {
-                std::cerr << "Failed to load Potion.png!" << std::endl;
-                // Optionally, delete potion or handle error
-                delete potion;
-                makingPotion = 0.f;
-                return;
-            }
+        if(p){
+            
+            // p->setTexture(Projectile::potion);
+            // p->configSprite();
 
-            addPotion(potion);
-            CollisionManager::getInstance()->addProjectile(potion);
+            addPotion(p);
+            CollisionManager::getInstance()->addProjectile(p);
 
         }else cout << "Potion not allocated" <<endl;
 
