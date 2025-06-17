@@ -16,10 +16,10 @@ class Plataform : public Obstacle{
         Plataform();
         Plataform(float x, float y, bool harm = false);
         ~Plataform();
+        
         /* ---- OWN FUNCTIONS ---- */
         void collide(Entity* other) override;
-        void obstacleAction(Player* player) override;
-        void obstacleAction(Enemy* enemy) override;
+        void obstacleAction(Entity* e);
         void execute() override;
 
         /* ----- GETS & SETS ----- */

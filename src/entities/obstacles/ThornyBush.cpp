@@ -2,7 +2,7 @@
 #include <SFML/Window.hpp>
 
 ThornyBush::ThornyBush(float x, float y, bool harm):
-    Obstacle(x,y, harm),
+    Obstacle(x, y, harm),
     spikes(2),
     time_between_attacks(2.0f),
     own_clock(0.0f)

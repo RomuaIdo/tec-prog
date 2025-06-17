@@ -24,7 +24,7 @@ class Saci : public Enemy {
         void execute();
         void move();
         void collide(Entity *e);
-        void teleport();
+        void teleport(Vector2f pos);
         Vector2f getPlayerLastPosition();
 
         /* ------- PLAYER -------- */

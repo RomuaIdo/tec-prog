@@ -159,7 +159,7 @@ void Game::createFirstPhase() {
     if (currentPhase) {
         delete currentPhase;
     }
-    currentPhase = new FirstPhase(Vector2f(6000.f, 600.f), player1, player2, "background.png");
+    currentPhase = new FirstPhase(Vector2f(6000.f, 600.f), player1, player2, "forestBackground.jpg");
 
     // Add players to collision manager
     pCM->addPlayer(player1);
@@ -170,7 +170,7 @@ void Game::createSecondPhase() {
     if (currentPhase) {
         delete currentPhase;
     }
-    currentPhase = new SecondPhase(Vector2f(6000.f, 600.f), player1, player2, "background2.png");
+    currentPhase = new SecondPhase(Vector2f(6000.f, 600.f), player1, player2, "forestBackground.jpg");
 
     // Add players to collision manager
     pCM->addPlayer(player1);

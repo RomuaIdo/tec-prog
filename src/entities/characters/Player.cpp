@@ -7,8 +7,8 @@ Player::Player(float x, float y, const float acel, int life, float coef, int s, 
     projectiles_list.clear();
     
     if(p_num == 1){
-        if (!texture.loadFromFile("assets/textures/EmiliaSprite.png")) {
-            std::cerr << "Failed to load EmiliaSprite.png!" << std::endl;
+        if (!texture.loadFromFile("assets/textures/Emilia.png")) {
+            std::cerr << "Failed to load Emilia.png!" << std::endl;
         }    
     }
     else {
@@ -53,11 +53,6 @@ void Player::move() {
 
     applyFriction(dt);
     moveCharacter();
-    if(faced_right == 1) {
-        sprite.setScale(1.f, 1.f);
-    } else {
-        sprite.setScale(-1.f, 1.f);
-    }
 }
 
 void Player::handlePlayer1Controls(float dt, float jumpForce) {

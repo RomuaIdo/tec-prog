@@ -2,6 +2,7 @@
 #define PROJECTILE_H
 #include <SFML/Graphics.hpp>
 #include "Entity.h"
+#include "characters/Character.h"
 using namespace sf;
 
 class Projectile : public Entity{
@@ -17,10 +18,10 @@ class Projectile : public Entity{
     
     public:
         Projectile(float x, float y, float vel = 10.f);
-        ~Projectile() override = default;
+        ~Projectile();
 
         /* --- OWN FUNCTIONS --- */
-        void collide(Entity* other) override;
+        void collide(Entity* other);
         void execute();
         void move();
         bool getActive();

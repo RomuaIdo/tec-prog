@@ -15,80 +15,81 @@ SecondPhase::SecondPhase(Vector2f size, Player *p1, Player *p2,
 SecondPhase::~SecondPhase() {}
 
 void SecondPhase::execute() {
-  vector<Tile *>::iterator it;
-  for (it = tiles.begin(); it != tiles.end(); ++it) {
-    (*it)->execute();
-  }
-  entities_list.traverse();
+    vector<Tile *>::iterator it;
+    for (it = tiles.begin(); it != tiles.end(); ++it) {
+        (*it)->execute();
+    }
+    entities_list.traverse();
 
-  pCM->execute();
+    pCM->execute();
 }
 
 void SecondPhase::createEnemies() {
-  createCucas();
-  createSaci();
+    createCucas();
+    createSaci();
 }
 
 void SecondPhase::createObstacles() { createSpikes(); }
 
 void SecondPhase::createSpikes() {
-  const float groundY = phaseSize.y - 50.0f; // Altura do chão
-  std::vector<float> availablePositions;
+    const float groundY = phaseSize.y - 50.0f; // Altura do chão
+    std::vector<float> availablePositions;
 
-  // Gerar posições X disponíveis (evitando bordas)
-  for (float x = 100.f; x < phaseSize.x - 100.f; x += 50.f) {
-    availablePositions.push_back(x);
-  }
-
-  // Embaralhar posições (Fisher-Yates shuffle)
-  for (int i = availablePositions.size() - 1; i > 0; --i) {
-    int j = std::rand() % (i + 1);
-    float temp = availablePositions[i];
-    availablePositions[i] = availablePositions[j];
-    availablePositions[j] = temp;
-  }
-
-  // Criar spikes sem sobreposição
-  vector<float> usedPositions;
-  int createdSpikes = 0;
-
-  for (size_t i = 0; i < availablePositions.size() && createdSpikes < maxSpikes;
-       i++) {
-    float x = availablePositions[i];
-    bool positionValid = true;
-
-    // Verificar distância mínima (100 pixels)
-    for (vector<float>::iterator it = usedPositions.begin();
-         it != usedPositions.end(); ++it) {
-      if (fabs(x - *it) < 100.f) {
-        positionValid = false;
-        break;
-      }
+    // Gerar posições X disponíveis (evitando bordas)
+    for (float x = 100.f; x < phaseSize.x - 100.f; x += 50.f) {
+        availablePositions.push_back(x);
     }
 
-    if (positionValid) {
-      ThornyBush *tb = new ThornyBush(x, groundY, true);
-      entities_list.add(tb);
-      pCM->addObstacle(tb);
-      usedPositions.push_back(x);
-      createdSpikes++;
+    // Embaralhar posições (Fisher-Yates shuffle)
+    for (int i = availablePositions.size() - 1; i > 0; --i) {
+        int j = std::rand() % (i + 1);
+        float temp = availablePositions[i];
+        availablePositions[i] = availablePositions[j];
+        availablePositions[j] = temp;
     }
-  }
+
+    // Criar spikes sem sobreposição
+    vector<float> usedPositions;
+    int createdSpikes = 0;
+
+    for (size_t i = 0; i < availablePositions.size() && createdSpikes < maxSpikes; i++) {
+        float x = availablePositions[i];
+        bool positionValid = true;
+
+        // Verificar distância mínima (100 pixels)
+        for (vector<float>::iterator it = usedPositions.begin();
+                it != usedPositions.end(); ++it) {
+            if (fabs(x - *it) < 100.f) {
+                positionValid = false;
+                break;
+            }
+        }
+
+        if (positionValid) {
+            ThornyBush *tb = new ThornyBush(x, groundY, true);
+            entities_list.add(tb);
+            pCM->addObstacle(tb);
+            usedPositions.push_back(x);
+            createdSpikes++;
+        }
+    }
 }
 
 void SecondPhase::createCucas() {
-  const float tileHeight = 50.0f;
-  const float groundY = phaseSize.y - tileHeight / 2; // Centro do tile do chão
+    const float groundY = phaseSize.y ; 
 
-  for (int i = 0; i < maxCucas; i++) {
-    float x = 100.f + static_cast<float>(rand() %
-                                         static_cast<int>(phaseSize.x - 200.f));
+    for (int i = 0; i < maxCucas; i++) {
+        float x = 100.f + static_cast<float>(rand() %
+                                            static_cast<int>(phaseSize.x - 200.f));
 
-    // Calcular posição Y correta para ficar no chão
-    Cuca *cuca = new Cuca(x, groundY, 15.f, 5, 1.f, 1);
-    cuca->addPlayer(player1);
-    cuca->addPlayer(player2);
-    entities_list.add(cuca);
-    pCM->addEnemy(cuca);
-  }
+        // Calcular posição Y correta para ficar no chão
+        Cuca *cuca = new Cuca(x, groundY, 15.f, 5, 1.f, 1);
+        if(cuca){
+            cuca->setPosition(Vector2f(cuca->getPosition().x, cuca->getPosition().y - cuca->getSize().y));
+            cuca->addPlayer(player1);
+            cuca->addPlayer(player2);
+            entities_list.add(cuca);
+            pCM->addEnemy(cuca);
+        }
+    }
 }

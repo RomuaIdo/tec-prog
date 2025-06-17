@@ -32,7 +32,7 @@ void Saci::move() {
     pGM->getWindow()->getSize().y * pGM->getWindow()->getSize().y);
     Vector2f closer_direction = Vector2f(0.f,0.f);
 
-    for(it = players_list.begin(); it != players_list.end(); it++){
+    for(list<Player*>::iterator it = players_list.begin(); it != players_list.end(); it++){
         if(*it){
             // Get direction to player (feet to feet)
             Vector2f direction = ( ((*it)->getPosition() + (*it)->getSize()) - (position + size) );

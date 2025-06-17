@@ -10,21 +10,19 @@ class Enemy;
 
 class Obstacle : public Entity {
 
-protected:
-  /* ------ STATUS ------- */
-  bool harmful;
+    protected:
+        /* ------ STATUS ------- */
+        bool harmful;
 
-public:
-  Obstacle();
-  Obstacle(bool harm, float x, float y);
-  virtual ~Obstacle();
+    public:
+        Obstacle();
+        Obstacle(float x, float y, bool harm);
+        virtual ~Obstacle();
 
-
-  /* ---- OWN FUNCTIONS ---- */
-  virtual void collide(Entity *other) = 0;
-  virtual void execute() = 0;
-  virtual void obstacleAction(Player *player) = 0;
-  virtual void obstacleAction(Enemy* enemy) = 0;
+        /* ---- OWN FUNCTIONS ---- */
+        virtual void collide(Entity *e) = 0;
+        virtual void execute() = 0;
+        virtual void obstacleAction(Entity* e) = 0;
 };
 
 #endif

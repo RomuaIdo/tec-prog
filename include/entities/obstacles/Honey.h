@@ -11,7 +11,7 @@ class Honey : public Obstacle {
         float viscosity; // Honey viscosity, how much it slows down the player
 
     public:
-        Honey(float x, float y, bool harm);
+        Honey(float x, float y, bool harm = false);
         ~Honey();
 
         /* ---- OWN FUNCTIONS ---- */

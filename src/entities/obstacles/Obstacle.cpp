@@ -5,7 +5,7 @@ Obstacle::Obstacle():
     Entity(), harmful(false) {
 }
 
-Obstacle::Obstacle(bool harm, float x, float y):
+Obstacle::Obstacle(float x, float y, bool harm):
     Entity(x,y), harmful(harm){
     /**/
 }

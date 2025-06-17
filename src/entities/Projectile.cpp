@@ -30,6 +30,10 @@ Projectile::~Projectile(){
 /* ------------------------------------------- */
 
 void Projectile::collide(Entity* other) {
+    if(dynamic_cast<Character*>(other) != nullptr){
+        // Handle collision with another entity
+        static_cast<Character*>(other)->takeDamage(1); // Example damage value
+    }
     setActive(false);
 }
 

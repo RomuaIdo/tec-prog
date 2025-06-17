@@ -3,155 +3,42 @@
 #include "../../../include/entities/characters/Player.h"
 #include <SFML/Window.hpp>
 
-Plataform::Plataform() : Obstacle(), width(0.f), height(0.f) {
-  if (!texture.loadFromFile("assets/textures/Grass.png")) {
-    cerr << "Failed to load Plataform.png!" << std::endl;
-  }
-
-  texture.setSmooth(true);
-  sprite.setTexture(texture);
-  centerOrigin();
-  size.x = sprite.getLocalBounds().width;
-  size.y = sprite.getLocalBounds().height;
-  sprite.setScale(size.x / sprite.getLocalBounds().width,
-                  size.y / sprite.getLocalBounds().height);
+Plataform::Plataform() 
+    : Obstacle(), width(0.f), height(0.f) {
+    
 }
 
 Plataform::Plataform(float x, float y, bool harm)
-    : Obstacle(harm, x, y), width(0.f), height(0.f) {
-  if (!texture.loadFromFile("assets/textures/Obstacle.png")) {
-    std::cerr << "Failed to load Plataform.png!" << std::endl;
-  }
-
-  texture.setSmooth(true);
-  sprite.setTexture(texture);
-  centerOrigin();
-  size.x = sprite.getLocalBounds().width;
-  size.y = sprite.getLocalBounds().height;
-  sprite.setScale(size.x / sprite.getLocalBounds().width,
-                  size.y / sprite.getLocalBounds().height);
+    : Obstacle(x, y, harm){
+    if (!texture.loadFromFile("assets/textures/Grass.png")) {
+        cerr << "Failed to load Plataform.png!" << std::endl;
+    }
+    sprite.setTexture(texture);
+    configSprite();
 }
 
 Plataform::~Plataform() {}
 
 void Plataform::collide(Entity *other) {
-  if (Player *player = dynamic_cast<Player *>(other)) {
-    obstacleAction(player);
-  } else if (Enemy *enemy = dynamic_cast<Enemy *>(other)) {
-    obstacleAction(enemy);
-  }
+    if (Player *player = dynamic_cast<Player *>(other)) {
+        obstacleAction(player);
+    } else if (Enemy *enemy = dynamic_cast<Enemy *>(other)) {
+        obstacleAction(enemy);
+    }
 }
 
 void Plataform::execute() { draw(); }
 
-void Plataform::obstacleAction(Player *player) {
-  Vector2f cPos = player->getPosition();
-  Vector2f oPos = getPosition();
-  Vector2f cSize = player->getSize();
-  Vector2f oSize = getSize();
 
-  float cLeft = cPos.x - cSize.x / 2;
-  float cRight = cPos.x + cSize.x / 2;
-  float cTop = cPos.y - cSize.y / 2;
-  float cBottom = cPos.y + cSize.y / 2;
-
-  float oLeft = oPos.x - oSize.x / 2;
-  float oRight = oPos.x + oSize.x / 2;
-  float oTop = oPos.y - oSize.y / 2;
-  float oBottom = oPos.y + oSize.y / 2;
-
-  float intersectX = min(cRight, oRight) - max(cLeft, oLeft);
-  float intersectY = min(cBottom, oBottom) - max(cTop, oTop);
-
-  if (intersectX > 0 && intersectY > 0) {
-    // Calculate overlaps in each direction
-    float topOverlap = cBottom - oTop;
-    float bottomOverlap = oBottom - cTop;
-    float leftOverlap = cRight - oLeft;
-    float rightOverlap = oRight - cLeft;
-
-    // Find the minimum overlap
-    float minOverlap =
-        min({topOverlap, bottomOverlap, leftOverlap, rightOverlap});
-
-    // Resolve na direção da menor sobreposição
-    if (minOverlap == topOverlap) {
-      // Top collision (player is above the platform)
-      cPos.y -= minOverlap;
-      player->setInAir(false);
-      player->setSpeed(Vector2f(player->getSpeed().x, 0.f));
-    } else if (minOverlap == bottomOverlap) {
-      // Bottom collision (player is below the platform)
-      cPos.y += minOverlap;
-      player->setSpeed(Vector2f(player->getSpeed().x, 0.f));
-    } else if (minOverlap == leftOverlap) {
-      // Left collision
-      cPos.x -= minOverlap;
-      player->setSpeed(Vector2f(0.f, player->getSpeed().y));
-    } else if (minOverlap == rightOverlap) {
-      // Right collision
-      cPos.x += minOverlap;
-      player->setSpeed(Vector2f(0.f, player->getSpeed().y));
+void Plataform::obstacleAction(Entity *e) {
+    if (e) {
+        Character *character = dynamic_cast<Character *>(e);
+        if (character) {
+            Vector2f speed = character->getSpeed();
+            speed *= 0.1f;
+            character->setSpeed(speed);
+        }
     }
-
-    player->setPosition(cPos);
-  }
-}
-
-void Plataform::obstacleAction(Enemy *enemy) {
-  Vector2f cPos = enemy->getPosition();
-  Vector2f oPos = getPosition();
-  Vector2f cSize = enemy->getSize();
-  Vector2f oSize = getSize();
-
-  // Define the limits of the collision box
-  float cLeft = cPos.x - cSize.x / 2;
-  float cRight = cPos.x + cSize.x / 2;
-  float cTop = cPos.y - cSize.y / 2;
-  float cBottom = cPos.y + cSize.y / 2;
-
-  float oLeft = oPos.x - oSize.x / 2;
-  float oRight = oPos.x + oSize.x / 2;
-  float oTop = oPos.y - oSize.y / 2;
-  float oBottom = oPos.y + oSize.y / 2;
-
-  // Calculate the intersection area
-  float intersectX = min(cRight, oRight) - max(cLeft, oLeft);
-  float intersectY = min(cBottom, oBottom) - max(cTop, oTop);
-
-  if (intersectX > 0 && intersectY > 0) {
-    // Calculate overlaps in each direction
-    float topOverlap = cBottom - oTop;
-    float bottomOverlap = oBottom - cTop;
-    float leftOverlap = cRight - oLeft;
-    float rightOverlap = oRight - cLeft;
-
-    // Find the minimum overlap
-    float minOverlap =
-        std::min({topOverlap, bottomOverlap, leftOverlap, rightOverlap});
-
-    // Resolve in the direction of the smallest overlap
-    if (minOverlap == topOverlap) {
-      // Top collision (enemy is above the platform)
-      cPos.y -= minOverlap;
-      enemy->setInAir(false);
-      enemy->setSpeed(Vector2f(enemy->getSpeed().x, 0.f));
-    } else if (minOverlap == bottomOverlap) {
-      // Bottom collision (enemy is below the platform)
-      cPos.y += minOverlap;
-      enemy->setSpeed(Vector2f(enemy->getSpeed().x, 0.f));
-    } else if (minOverlap == leftOverlap) {
-      // Left collision
-      cPos.x -= minOverlap;
-      enemy->setSpeed(Vector2f(0.f, enemy->getSpeed().y));
-    } else if (minOverlap == rightOverlap) {
-      // Right collision
-      cPos.x += minOverlap;
-      enemy->setSpeed(Vector2f(0.f, enemy->getSpeed().y));
-    }
-
-    enemy->setPosition(cPos);
-  }
 }
 
 /* ------------------------------------------- */

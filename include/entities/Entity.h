@@ -13,7 +13,7 @@ class Entity : public Ente {
     public:
         Entity();
         Entity(float x, float y);
-        virtual ~Entity() = default;
+        virtual ~Entity();
         
         /* ---- PURE VIRTUAL FUNCTIONS ---- */
         virtual void collide(Entity* other) = 0;
