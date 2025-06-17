@@ -10,7 +10,7 @@ Plataform::Plataform()
 
 Plataform::Plataform(float x, float y, bool harm)
     : Obstacle(x, y, harm){
-    if (!texture.loadFromFile("assets/textures/Grass.png")) {
+    if (!texture.loadFromFile("assets/textures/Honey.png")) {
         cerr << "Failed to load Plataform.png!" << std::endl;
     }
     sprite.setTexture(texture);
@@ -35,7 +35,6 @@ void Plataform::obstacleAction(Entity *e) {
         Character *character = dynamic_cast<Character *>(e);
         if (character) {
             Vector2f speed = character->getSpeed();
-            speed *= 0.1f;
             character->setSpeed(speed);
         }
     }
