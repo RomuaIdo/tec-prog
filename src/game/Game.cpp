@@ -6,18 +6,19 @@
 
 Game::Game()
     : pGM(nullptr), pCM(nullptr), player1(nullptr),
-      player2(nullptr), mouseSubject(), phase_size(1600.f, 600.f),
-      firstPhase(nullptr), secondPhase(nullptr), currentPhase(nullptr) {
-  pCM = CollisionManager::getInstance();
-  pGM = GraphicsManager::getInstance();
-  Ente::setGraphicsManager(pGM);
-  player1 = new Player(200, 100, 50.f, 10, 1, 4, 1, 60.f);
-  player2 = new Player(100, 100, 50.f, 10, 1, 4, 2, 60.f);
-  create_menu();
+    player2(nullptr), mouseSubject(), phase_size(1600.f, 600.f),
+    firstPhase(nullptr), secondPhase(nullptr), currentPhase(nullptr) {
 
-  game_state = GameState::MAIN_MENU;
-  srand(time(nullptr));
-  execute();
+    pCM = CollisionManager::getInstance();
+    pGM = GraphicsManager::getInstance();
+    Ente::setGraphicsManager(pGM);
+    player1 = new Player(200, 100, 50.f, 10, 1, 4, 1, 60.f);
+    player2 = new Player(100, 100, 50.f, 10, 1, 4, 2, 60.f);
+    create_menu();
+
+    game_state = GameState::MAIN_MENU;
+    srand(time(nullptr));
+    execute();
 }
 
 Game::~Game() {

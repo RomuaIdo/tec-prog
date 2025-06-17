@@ -1,24 +1,17 @@
 #include "../../include/entities/Projectile.h"
 #include <SFML/Window.hpp>
 
+Texture Projectile::potion;
+Texture Projectile::bullet;
+
 Projectile::Projectile():
     Entity(), active(true) , owner(nullptr) {
     
-    if (!potion.loadFromFile("assets/textures/Potion.png")) {
-        std::cerr << "Failed to load Potion.png!" << std::endl;
-    }
-    if (!bullet.loadFromFile("assets/textures/Bullet.png")) {
-        std::cerr << "Failed to load Bullet.png!" << std::endl;
-    }
-
-    texture = potion;
-    sprite.setTexture(texture);
-    configSprite();
 }
 
 Projectile::Projectile(float x, float y, Vector2f vel, Entity* creator):
     Entity(x,y), active(true), owner(creator) {
-
+    
     if (!potion.loadFromFile("assets/textures/Potion.png")) {
         std::cerr << "Failed to load Potion.png!" << std::endl;
     }
@@ -32,13 +25,11 @@ Projectile::Projectile(float x, float y, Vector2f vel, Entity* creator):
     }else
         sprite.setScale(1.f,1.f);
 
-    texture = potion;
-    sprite.setTexture(texture);
+    sprite.setTexture(potion);
     configSprite();
 }
 
 Projectile::~Projectile(){ 
-    cout << "Projectile deleted" << endl;
 }
 
 /* ------------------------------------------- */

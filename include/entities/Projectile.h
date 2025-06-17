@@ -12,8 +12,8 @@ class Projectile : public Entity{
 
     private:
         /* ------ STATUS ------- */
-        Texture potion;
-        Texture bullet;
+        static Texture potion;
+        static Texture bullet;
         Entity* owner; // Pointer to the owner of the projectile
         
         /* ------ FLAGS ------- */
