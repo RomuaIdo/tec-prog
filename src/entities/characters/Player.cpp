@@ -128,7 +128,7 @@ void Player::collide(Entity* e){
 
     if (intersection.x < 0.0f && intersection.y < 0.0f) {
 
-        /* If intersection in x is less then intersection in y
+        /* If intersection in x is less then intersection in y */
         /*  means that they are side by side                 */
 
         if (std::abs(intersection.x) < std::abs(intersection.y)) {
@@ -146,7 +146,7 @@ void Player::collide(Entity* e){
             } 
 
 
-        /* If intersection in y is less then intersection in x
+        /* If intersection in y is less then intersection in x */
         /*  means that character collided in y with obstacle */
 
         } else {
