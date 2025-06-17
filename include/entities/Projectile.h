@@ -13,7 +13,7 @@ class Projectile : public Entity{
     private:
         /* ------ STATUS ------- */
         Entity* owner; // Pointer to the owner of the projectile
-        
+
         /* ------ FLAGS ------- */
         bool active;
     

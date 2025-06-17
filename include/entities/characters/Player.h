@@ -14,6 +14,8 @@ class Player : public Character {
         int player_num;
         int score;
         const float vel_max;
+        float damageClock;
+        float damageCooldown;
         
         /* -------- GUN -------- */
         list<Projectile*> projectiles_list;
@@ -39,6 +41,11 @@ class Player : public Character {
         
         /* ---- GETS & SETS ---- */
         int getHealth();
+        float getDamageClock();
+        void increaseDamageClock();
+        void resetDamageClock();
+        float getDamageCooldown();
+        void setDamageCooldown(float cooldown);
 
 };
 

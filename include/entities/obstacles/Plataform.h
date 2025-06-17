@@ -9,8 +9,11 @@ class Plataform : public Obstacle{
 
     private:
         /* ------ STATUS ------- */
-        float width;
-        float height;
+
+        bool isActive;
+
+        Texture cloud1;
+        Texture cloud1active;
 
     public:
         Plataform();
@@ -23,11 +26,8 @@ class Plataform : public Obstacle{
         void execute() override;
 
         /* ----- GETS & SETS ----- */
-        void setWidth(float w);
-        float getWidth() const;
-        void setHeight(float h);
-        float getHeight() const;
-
+        bool getIsActive() const;
+        void setIsActive(bool active);
 };
 
 
