@@ -9,18 +9,19 @@ class Enemy : public Character {
 
     protected:
         /* ------- PLAYER -------- */
+        bool far;
         list<Player*> players_list;
 
     public:
         Enemy();
-        Enemy(float x, float y, const float acel, int life = 5, float coef = 0.5,
-                int s = 1);
+        Enemy(float x, float y, const float acel, int life = 5, int s = 1);
         virtual ~Enemy();
 
         /* ---- OWN FUNCTIONS ---- */
         virtual void execute() = 0;
         virtual void move() = 0;
         virtual void collide(Entity *e) = 0;
+        virtual void updateClocks() = 0;
 
         /* ------- PLAYER -------- */
         virtual void addPlayer(Player *p);

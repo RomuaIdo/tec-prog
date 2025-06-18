@@ -1,17 +1,16 @@
 #include "../../../../include/entities/characters/enemies/Saci.h"
 
-Saci::Saci(float x, float y, const float acel, int life, float coef, int s) :
-    Enemy(x, y, acel, life, coef, s), far(false), teleportTime(0.f),
-    lastPosition(Vector2f(x,y)){
+Saci::Saci(float x, float y, const float acel, int life, int s) :
+    Enemy(x, y, acel, life, s), teleportClock(0.f),
+    lastPosition(Vector2f(x,y)), jumpClock(0.f), lastPositionClock(0.f){
+
 
     if (!texture.loadFromFile("assets/textures/Saci.png")) {
             std::cerr << "Failed to load Saci.png!" << std::endl;
     }
+
     sprite.setTexture(texture);
     configSprite();
-    clock_jump = 0.f; // Initialize jump clock
-    teleportTime = 8.f; // Set teleport time to 8 seconds
-    lastPositionTime = 0.f;
 }
 
 Saci::~Saci() {
@@ -25,12 +24,12 @@ void Saci::execute() {
     move();
     draw();
     teleport(getPlayerLastPosition());
+    updateClocks();
 }
 
 void Saci::move() {
 
     float closer = 100000.f;
-
     float right = 1.f;
 
     for(list<Player*>::iterator it = players_list.begin(); it != players_list.end(); it++){
@@ -48,18 +47,16 @@ void Saci::move() {
 
                 closer = module;
 
-                if(lastPositionTime >= 1.f){
+                if(lastPositionClock >= 1.f){
                     lastPosition = Vector2f((*it)->getPosition().x, pGM->getWindow()->getSize().y - size.y);
-                    lastPositionTime = 0.f;
+                    lastPositionClock = 0.f;
                 }
             }
-
-            lastPositionTime += pGM->getdt();
         }
     }
 
-    // if it is 300 pixels far, the enemy dont move
-    if(abs(right) < 300.f){
+    // if it is 600 pixels far, the enemy dont move
+    if(abs(right) < 600.f){
         far = false;
     }else{
         far = true;
@@ -68,22 +65,20 @@ void Saci::move() {
     faced_right = (int) (right/abs(right));
 
     if(!far){
-        if(!getInAir() && clock_jump >= 1.f) {
+        if(!getInAir() && jumpClock >= 1.f) {
             setInAir(true);
-            velocity = (Vector2f(faced_right*aceleration, -10.f));
-            clock_jump = 0.f;
+            velocity = (Vector2f( faced_right*aceleration, -SACIJUMPFORCE ));
+            jumpClock = 0.f;
         }
     }
     
     if(!getInAir()){
         velocity = Vector2f(0.f, 0.f);
     }
-    
-    clock_jump += pGM->getdt();
+
 
     applyGravity();
     moveCharacter();
-
 }
 
 void Saci::collide(Entity* e) {
@@ -156,17 +151,26 @@ void Saci::collide(Entity* e) {
     }
 }
 
+void Saci::updateClocks(){
+    float dt = pGM->getdt();
+    jumpClock += dt;
+    lastPositionClock += dt;
+    teleportClock += dt;
+}
+
+/* ------------------------------------------- */
+/*              TELEPORT FUNCTIONS             */
+/* ------------------------------------------- */
+
 Vector2f Saci::getPlayerLastPosition(){
     return lastPosition;
 }
 
 void Saci::teleport(Vector2f pos) {
-    if(!far && clock >= teleportTime) {
+    if(!far && teleportClock >= TELEPORTCOOLDOWN) {
         cout << "Saci is teleporting" <<endl;
-        clock = 0;
+        teleportClock = 0;
         setPosition(pos);
-    }else{
-        clock += pGM->getdt();
     }
 }
 
@@ -175,9 +179,7 @@ void Saci::teleport(Vector2f pos) {
 /* ------------------------------------------- */
 
 void Saci::attack(Player *p) {
-    /* If player has health and after 2 seconds, then he can attack */
-    if(p->getHealth() > 0 && pGM->getClockTime() >= 2.f){
+    if(p){
         p->takeDamage(strength);
-        pGM->resetClock();
     }
 }

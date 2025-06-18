@@ -10,17 +10,17 @@ class Cuca : public Enemy {
 
     protected:
         list<Projectile *> potions;
-        float makingPotion;
+        float potionClock;
 
     public:
-        Cuca(float x, float y, const float acel = 10.f, int life = 5,
-            float coef = 0.5, int s = 1);
+        Cuca(float x, float y, const float acel = 10.f, int life = 5, int s = 1);
         ~Cuca();
 
         /* ---- OWN FUNCTIONS ---- */
         void execute();
         void move();
         void collide(Entity *e);
+        void updateClocks();
 
         /* ---- POTIONS ---- */
         void makePotion();

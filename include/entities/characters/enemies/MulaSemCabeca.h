@@ -6,9 +6,7 @@ class MulaSemCabeca : public Enemy {
 
     private:
         /* ------ STATUS ------- */
-        bool far;
-        float chargeTime;
-        float chargeCooldown;
+        float chargeClock;
 
         /* ------ TEXTURES ------ */
         Texture chargeTexture;
@@ -16,7 +14,7 @@ class MulaSemCabeca : public Enemy {
 
     public:
         /* ---- CONSTRUCTORS ---- */
-        MulaSemCabeca(float x, float y, const float acel = 5.f, int life = 5, float coef = 0.5, int s = 1);
+        MulaSemCabeca(float x, float y, const float acel = 5.f, int life = 5, int s = 1);
         ~MulaSemCabeca();
 
         /* ---- OWN FUNCTIONS ---- */
@@ -24,6 +22,7 @@ class MulaSemCabeca : public Enemy {
         void move();
         void collide(Entity *e);
         void charge();
+        void updateClocks();
 
         /* ------- PLAYER -------- */
         void attack(Player *p);

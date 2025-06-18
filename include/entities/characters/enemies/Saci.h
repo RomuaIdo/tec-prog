@@ -5,29 +5,31 @@
 class Saci : public Enemy {
 
     private:
-        /* ---- TELEPORT ---- */
-        bool far;
-        float lastPositionTime;
-        float teleportTime;
+        /* ----- CLOCKS ----- */
+        float jumpClock;
+        float lastPositionClock;
+        float teleportClock;
+
+        /* ----- STATUS ----- */
         Vector2f lastPosition;
-        float minDistance;
-        float clock_jump;        
 
     public:
 
         /* ---- CONSTRUCTORS ---- */
-        Saci(float x, float y, const float acel = 5.f, int life = 5, float coef = 0.5, int s = 1);
+        Saci(float x, float y, const float acel = 5.f, int life = 5, int s = 1);
         ~Saci();
 
         /* ---- OWN FUNCTIONS ---- */
         void execute();
         void move();
         void collide(Entity *e);
+        void updateClocks();
+
+        /* ------- TELEPORT -------- */
         void teleport(Vector2f pos);
         Vector2f getPlayerLastPosition();
 
         /* ------- PLAYER -------- */
-
         void attack(Player *p);
 };
 

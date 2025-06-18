@@ -13,10 +13,10 @@ class Character : public Entity {
         int health;
         const int strength;
         const float aceleration;
-        
+        float takeDamageClock;
+
         /* --- COEFFICIENTS ---- */
         Vector2f friction;
-        float friction_coef;
         
         /* ------- FLAGS ------- */
         int faced_right;
@@ -24,18 +24,19 @@ class Character : public Entity {
 
     public:
         Character();
-        Character(float x, float y, const float acel, int life = 5, float coef = 0.5, int s = 1);
+        Character(float x, float y, const float acel, int life = 5, int s = 1);
         virtual ~Character();
 
         virtual void execute() = 0;
         virtual void move() = 0;
-
+        
         /* ---- OWN FUNCTIONS ---- */
         void moveCharacter();
         void takeDamage(int damage);
+        void applyFriction(float dt = 1.f/60.f);
+        virtual void updateClocks() = 0;
         
         /* ----- GETS & SETS ----- */
-        
         int getStrength() const;
         bool getInAir() const;
         void setInAir(bool inair);

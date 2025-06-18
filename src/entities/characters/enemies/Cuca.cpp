@@ -1,12 +1,13 @@
 #include "../../../../include/entities/characters/enemies/Cuca.h"
 #include "../../../../include/managers/CollisionManager.h"
 
-Cuca::Cuca(float x, float y, const float acel, int life, float coef, int s) :
-    Enemy(x, y, acel, life, coef, s), makingPotion(0.f) {
+Cuca::Cuca(float x, float y, const float acel, int life, int s) :
+    Enemy(x, y, acel, life, s), potionClock(0.f) {
 
     if (!texture.loadFromFile("assets/textures/Cuca.png")) {
             std::cerr << "Failed to load Cuca.png!" << std::endl;
     }
+    
     sprite.setTexture(texture);
     configSprite();
 }
@@ -105,7 +106,7 @@ void Cuca::collide(Entity* e) {
 
 void Cuca::makePotion(){
     // Delay to throw potion
-    if (makingPotion >= 1.f) {
+    if (potionClock >= 1.f) {
         Projectile *p = new Projectile(position.x + (faced_right*(10.f+size.x)), position.y, Vector2f(faced_right*10.f, -10.f), this);
 
         if(p){
@@ -118,9 +119,9 @@ void Cuca::makePotion(){
 
         }else cout << "Potion not allocated" <<endl;
 
-        makingPotion = 0.f;
+        potionClock = 0.f;
     }
-    makingPotion += pGM->getdt();
+    potionClock += pGM->getdt();
 }
 
 void Cuca::throwPotion() {

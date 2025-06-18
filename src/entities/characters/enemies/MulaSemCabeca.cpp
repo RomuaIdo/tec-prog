@@ -1,7 +1,7 @@
 #include "../../../../include/entities/characters/enemies/MulaSemCabeca.h"
 
-MulaSemCabeca::MulaSemCabeca(float x, float y, const float acel, int life, float coef, int s) :
-    Enemy(x, y, acel, life, coef, s), far(false), chargeTime(0.f), chargeCooldown(8.f) {
+MulaSemCabeca::MulaSemCabeca(float x, float y, const float acel, int life, int s) :
+    Enemy(x, y, acel, life, s), chargeClock(0.f) {
 
     if (!texture.loadFromFile("assets/textures/MulaSemCabeca.png")) {
         std::cerr << "Failed to load MulaSemCabeca.png!" << std::endl;
@@ -9,9 +9,6 @@ MulaSemCabeca::MulaSemCabeca(float x, float y, const float acel, int life, float
 
     sprite.setTexture(texture);
     configSprite();
-
-    // charge after 6 seconds
-    chargeCooldown = 6.f;
 }
 
 MulaSemCabeca::~MulaSemCabeca() {
@@ -29,7 +26,6 @@ void MulaSemCabeca::execute() {
 void MulaSemCabeca::move() {
 
     float closer = 100000.f;
-
     float right = 1.f;
 
 
@@ -48,23 +44,25 @@ void MulaSemCabeca::move() {
         }
     }
 
-    // if it is 500 pixels far, the enemy dont move
-    if(abs(right) < 500.f){
+    // if it is 700 pixels far, the enemy dont move
+    if(abs(right) < 700.f){
         far = false;
     }else{
         far = true;
     }
- 
-    faced_right = (int) (right/abs(right));
+    
+    // after 3 seconds, the enemy change its direction
+    if(clock >= MULACHANGEDIRECTION){
+        faced_right *= -1;
+        clock = 0.f;
+    }else{  
+        clock += pGM->getdt();
+    }
 
     if(!far){
         charge();
     }else{
-        velocity = Vector2f(0.f, 0.f);
-    }
-    
-    if(!getInAir()){
-        velocity = Vector2f(aceleration, 0.f);
+        velocity = Vector2f(faced_right * aceleration, 0.f);
     }
     
     applyGravity();
@@ -142,23 +140,28 @@ void MulaSemCabeca::collide(Entity* e) {
     }
 }
 
+void MulaSemCabeca::updateClocks(){
+    float dt = pGM->getdt();
+    
+    clock += dt;
+    chargeClock += dt;
+}
+
 void MulaSemCabeca::charge() {
-    if(chargeTime >= chargeCooldown) {
+    if(chargeClock >= CHARGECOOLDOWN) {
         // stay active for 2 seconds (showing that will charge)
 
         // texture = chargeTexture;
         // sprite.setTexture(texture);
         // configSprite();
-        if(chargeTime >= 2.f){
+        if(chargeClock >= 2.f){
             setVelocity(Vector2f(faced_right * 100.f, 0.f));
-            chargeTime = 0.f;
-            
+            chargeClock = 0.f;
+
             // texture = runTexture;
             // sprite.setTexture(texture);
             // configSprite();
         }
-    } else {
-        chargeTime += pGM->getdt();
     }
 }
 
@@ -167,11 +170,7 @@ void MulaSemCabeca::charge() {
 /* ------------------------------------------- */
 
 void MulaSemCabeca::attack(Player *p) {
-    /* If player has health and after 2 seconds, then he can attack */
-    if(p->getHealth() > 0 && 
-      (p->getDamageClock() >= p->getDamageCooldown())) {
-
+    if(p) {
         p->takeDamage(strength);
-        p->resetDamageClock();
     }
 }

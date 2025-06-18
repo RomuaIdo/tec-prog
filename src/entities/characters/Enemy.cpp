@@ -1,8 +1,8 @@
 #include "../../../include/entities/characters/Enemy.h"
 #include <SFML/Window.hpp>
 
-Enemy::Enemy(float x, float y, const float acel, int life, float coef , int s):
-    Character(x, y, acel, life, coef, s), players_list(){
+Enemy::Enemy(float x, float y, const float acel, int life, int s):
+    Character(x, y, acel, life, s), players_list(), far(false){
 }
 
 Enemy::~Enemy(){

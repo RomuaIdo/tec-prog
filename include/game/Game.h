@@ -8,6 +8,7 @@
 #include "../phases/SecondPhase.h"
 #include <list>
 
+/* Forward declarations */
 class CollisionManager;
 enum class GameState { MAIN_MENU, PLAYING, PAUSED, GAME_OVER };
 class Menu;
