@@ -21,6 +21,7 @@ MulaSemCabeca::~MulaSemCabeca() {
 void MulaSemCabeca::execute() {
     move();
     draw();
+    updateClocks();
 }
 
 void MulaSemCabeca::move() {
@@ -55,8 +56,6 @@ void MulaSemCabeca::move() {
     if(clock >= MULACHANGEDIRECTION){
         faced_right *= -1;
         clock = 0.f;
-    }else{  
-        clock += pGM->getdt();
     }
 
     if(!far){
@@ -154,7 +153,7 @@ void MulaSemCabeca::charge() {
         // texture = chargeTexture;
         // sprite.setTexture(texture);
         // configSprite();
-        if(chargeClock >= 2.f){
+        if(chargeClock >= CHARGEPREPARATIONCOOLDOWN){
             setVelocity(Vector2f(faced_right * 100.f, 0.f));
             chargeClock = 0.f;
 

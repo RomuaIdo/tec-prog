@@ -10,26 +10,33 @@ using namespace sf;
 /* =============================================================== */
 
 /* ------- CHARACTERS -------- */
-#define FRICTION 15.f
+#define FRICTION 25.f
 
 /* MULA SEM CABECA */
-#define ACELMULA 10.f
+#define ACELMULA 4.f
 #define CHARGECOOLDOWN 7.f
 #define MULACHANGEDIRECTION 3.f
-#define MULAFAR 700.f
+#define MULAFAR 800.f
+#define CHARGEPREPARATIONCOOLDOWN 2.f
 
 /* SACI */
-#define ACELSACI 10.f
+#define SACIACEL 7.f
+#define SACIHEALTH 5
+#define SACISTRENGTH 2
 #define TELEPORTCOOLDOWN 8.f
 #define JUMPCOOLDOWN 2.f
 #define LASTPOSCOOLDOWN 1.f
 #define SACIJUMPFORCE 15.f
-#define SACIFAR 500.f
+#define SACIFAR 700.f
 
 /* CUCA */
-#define ACELCUCA 15.f
-#define POTIONCOOLDOWN 1.5f
+#define CUCAACEL 6.f
+#define CUCAHEALTH 5
+#define CUCASTRENGTH 2
 #define CUCAFAR 400.f
+#define POTIONSTRENGTH 1
+#define POTIONCOOLDOWN 1.5f
+#define POTIONACEL 10.f
 
 /* PLAYER */
 #define ACELPLAYER 20.f
@@ -40,11 +47,12 @@ using namespace sf;
 
 /* -------- OBSTACLES -------- */
 
-#define VISCOSITYHONEY 0.5f
+/* HONEY */
+#define HONEYVISCOSITY 0.5f
 
-#define DELAYTHORNYBUSH 2.f
-
-
+/* THORNY BUSH */
+#define THORNYBUSHCOOLDOWN 2.f
+#define THORNYBUSHSPIKES 2
 
 /*---------------------------------------------------------------*/
 

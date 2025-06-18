@@ -25,7 +25,9 @@ Phase::~Phase() {
   pCM->clearEntities();
 }
 
-Vector2f Phase::getPhaseSize() const { return phaseSize; }
+Vector2f Phase::getPhaseSize() const { 
+    return phaseSize; 
+}
 
 void Phase::createScenery() {
   const string texturePath = "assets/textures/Grass.png";
@@ -68,12 +70,16 @@ void Phase::createPlatforms() {
   for (int i = 0; i < maxPlatforms; i++) {
     // Generate random position
     float x =
-        static_cast<float>(50 + rand() % static_cast<int>(phaseSize.x - 100));
+        static_cast<float>(50 + rand() % static_cast<int>(phaseSize.x - 500));
     float y = minY + static_cast<float>(rand() % static_cast<int>(maxY - minY));
 
     Plataform *p = new Plataform(x, y, false);
+    Plataform *p2 = new Plataform(x + 50.f, y, false);
+
     entities_list.add(p);
+    entities_list.add(p2);
     pCM->addObstacle(p);
+    pCM->addObstacle(p2);
   }
 }
 
@@ -90,7 +96,7 @@ void Phase::createSaci() {
     float x = 100.f + static_cast<float>(rand() %
                                          static_cast<int>(phaseSize.x - 200.f));
 
-    Saci *saci = new Saci(x, saciY, 15.f, 5, 1.f, 1);
+    Saci *saci = new Saci(x, saciY, SACIACEL, SACIHEALTH, SACISTRENGTH);
     saci->addPlayer(player1);
     saci->addPlayer(player2);
     entities_list.add(saci);

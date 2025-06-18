@@ -3,10 +3,12 @@
 
 
 Honey::Honey(float x, float y, bool harm):
-    Obstacle(x,y,harm), viscosity(0.6f){
+    Obstacle(x,y,harm), viscosity(HONEYVISCOSITY){
+
     if (!texture.loadFromFile("assets/textures/Honey.png")) {
         std::cerr << "Failed to load Honey.png!" << std::endl;
     }
+
     sprite.setTexture(texture);
     configSprite();
 }
@@ -25,7 +27,7 @@ void Honey::obstacleAction(Entity* e){
     if (e) {
         Character* character = dynamic_cast<Character*>(e);
         if (character) {
-            character->setVelocity(character->getVelocity()* viscosity);
+            character->setVelocity(character->getVelocity() * viscosity);
         }
     }
 }

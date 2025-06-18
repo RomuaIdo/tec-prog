@@ -24,6 +24,7 @@ void Cuca::execute() {
     draw();
     makePotion();
     throwPotion();
+    updateClocks();
 }
 
 void Cuca::move() {
@@ -32,8 +33,6 @@ void Cuca::move() {
     if(clock > 2.f){
         faced_right *= -1;
         clock = 0;
-    }else{
-        clock += pGM->getdt();
     }
     velocity.x = faced_right*(aceleration);
     
@@ -106,8 +105,9 @@ void Cuca::collide(Entity* e) {
 
 void Cuca::makePotion(){
     // Delay to throw potion
-    if (potionClock >= 1.f) {
-        Projectile *p = new Projectile(position.x + (faced_right*(10.f+size.x)), position.y, Vector2f(faced_right*10.f, -10.f), this);
+    if (potionClock >= POTIONCOOLDOWN) {
+        Projectile *p = new Projectile(position.x + (faced_right * size.x), position.y - size.y, 
+                                       Vector2f (faced_right * POTIONACEL, -10.f), this);
 
         if(p){
             
@@ -121,7 +121,6 @@ void Cuca::makePotion(){
 
         potionClock = 0.f;
     }
-    potionClock += pGM->getdt();
 }
 
 void Cuca::throwPotion() {
@@ -144,6 +143,13 @@ void Cuca::throwPotion() {
 
 void Cuca::addPotion(Projectile* pot){
     potions.push_back(pot);
+}
+
+void Cuca::updateClocks(){
+    float dt = pGM->getdt();
+
+    clock += dt;
+    potionClock += dt;
 }
 
 /* ------------------------------------------- */
