@@ -77,9 +77,14 @@ void FirstPhase::createHoney() {
 
     if (positionValid) {
       Honey *h = new Honey(x, groundY, false);
+      Honey *h2 = new Honey(x+50.f, groundY, false);
       entities_list.add(h);
+      entities_list.add(h2);
       pCM->addObstacle(h);
+      pCM->addObstacle(h2);
       usedPositions.push_back(x);
+      usedPositions.push_back(x + 50.f); // Add the second honey's position
+
       honeyCount++;
     }
   }

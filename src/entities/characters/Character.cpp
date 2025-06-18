@@ -16,7 +16,7 @@ Character::~Character(){
 /* ------------------------------------------- */
 
 void Character::moveCharacter(){
-    position += velocity ;
+    position += velocity;
 
     // Flip sprite based on direction
     if (faced_right == -1) {
@@ -42,16 +42,19 @@ void Character::applyFriction(float dt) {
         friction.x = -FRICTION;
         if (velocity.x + friction.x * dt < 0) {
             velocity.x = 0;
+            friction.x = 0; // Stop friction when velocity is zero
         }
     } else if (velocity.x < 0) {
         friction.x = FRICTION;
         if (velocity.x + friction.x * dt > 0) {
             velocity.x = 0;
+            friction.x = 0; // Stop friction when velocity is zero
         }
     } else {
         friction.x = 0;
     }
     velocity += friction * dt;
+   
 }
 
 /* ------------------------------------------- */

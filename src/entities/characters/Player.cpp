@@ -42,6 +42,7 @@ void Player::execute() {
     draw();
     shoot();
     shootProjectiles();
+    updateClocks();
 }
 
 void Player::move() {
@@ -58,7 +59,7 @@ void Player::move() {
         velocity.x = PLAYERMAXVEL;
     if (velocity.x < -PLAYERMAXVEL)
         velocity.x = -PLAYERMAXVEL;
-
+    
     applyFriction(dt);
     applyGravity();
     moveCharacter();
