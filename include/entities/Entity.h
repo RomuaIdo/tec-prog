@@ -36,6 +36,7 @@ using namespace sf;
 #define TAKEDAMAGECOOLDOWN 2.5f
 #define SHOOTCOOLDOWN 0.5f
 #define PLAYERJUMPFORCE 15.f
+#define PLAYERMAXVEL 20.f
 
 /* -------- OBSTACLES -------- */
 

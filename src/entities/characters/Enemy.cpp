@@ -2,7 +2,7 @@
 #include <SFML/Window.hpp>
 
 Enemy::Enemy(float x, float y, const float acel, int life, int s):
-    Character(x, y, acel, life, s), players_list(), far(false){
+    Character(x, y, acel, life, s), far(false), players_list(){
 }
 
 Enemy::~Enemy(){

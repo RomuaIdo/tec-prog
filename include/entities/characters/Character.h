@@ -10,9 +10,9 @@ class Character : public Entity {
 
     protected:
         /* ------ STATUS ------- */
+        const float aceleration;
         int health;
         const int strength;
-        const float aceleration;
         float takeDamageClock;
 
         /* --- COEFFICIENTS ---- */
@@ -32,8 +32,8 @@ class Character : public Entity {
         
         /* ---- OWN FUNCTIONS ---- */
         void moveCharacter();
-        void takeDamage(int damage);
         void applyFriction(float dt = 1.f/60.f);
+        virtual void takeDamage(int damage);
         virtual void updateClocks() = 0;
         
         /* ----- GETS & SETS ----- */

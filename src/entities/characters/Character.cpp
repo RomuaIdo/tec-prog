@@ -2,8 +2,9 @@
 #include <SFML/Window.hpp>
 
 
-Character::Character(float x, float y, const float movVelocity, int life, int s):
-    Entity(x, y), health(life), strength(s), aceleration(movVelocity), friction(0.f,0.f), faced_right(1), takeDamageClock(0.f){
+Character::Character(float x, float y, const float acel, int life, int s):
+    Entity(x, y), aceleration(acel), health(life), strength(s), 
+    takeDamageClock(0.f), friction(0.f,0.f), faced_right(1){
 }
 
 Character::~Character(){
@@ -27,11 +28,10 @@ void Character::moveCharacter(){
 }
 
 void Character::takeDamage(int damage){
-    if(health - damage < 0 && takeDamageClock >= TAKEDAMAGECOOLDOWN){
+    if(health - damage < 0){
         health = 0;
         cout << "Character is dead!" << endl;
     }else{
-        takeDamageClock = 0.f;
         health -= damage;
         cout << "Lost Health:" << health << endl;
     }

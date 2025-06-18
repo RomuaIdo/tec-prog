@@ -3,9 +3,9 @@
 #include "../../../include/entities/Projectile.h"
 #include <SFML/Window.hpp>
 
-Player::Player(float x, float y, const float acel, int life, int s, int p_num, const float v_max): 
-    Character(x, y, acel, life, s), player_num(p_num), score(0), vel_max(v_max), 
-    projectiles_list(), shootClock(0.f){
+Player::Player(float x, float y, const float acel, int life, int s, int p_num): 
+    Character(x, y, acel, life, s), shootClock(0.f), player_num(p_num), 
+    score(0), projectiles_list(){
     projectiles_list.clear();
     
     if(p_num == 1){
@@ -46,20 +46,18 @@ void Player::execute() {
 
 void Player::move() {
     const float dt = pGM->getdt();
-    const float jumpForce = 15.0f;
-    const float max_vel = 15.0f;
 
     if (player_num == 1) {
-        handlePlayer1Controls(dt, jumpForce);
+        handlePlayer1Controls(dt);
     } else {
-        handlePlayer2Controls(dt, jumpForce);
+        handlePlayer2Controls(dt);
     }
 
     // Limits for the horizontal velocity
-    if (velocity.x > max_vel)
-        velocity.x = max_vel;
-    if (velocity.x < -max_vel)
-        velocity.x = -max_vel;
+    if (velocity.x > PLAYERMAXVEL)
+        velocity.x = PLAYERMAXVEL;
+    if (velocity.x < -PLAYERMAXVEL)
+        velocity.x = -PLAYERMAXVEL;
 
     applyFriction(dt);
     applyGravity();
@@ -137,9 +135,14 @@ void Player::updateClocks(){
     shootClock += dt;
 }
 
-void takeDamage(int damage){
-    if( health > 0 ){
+void Player::takeDamage(int damage){
+    if(health - damage <= 0 && takeDamageClock >= TAKEDAMAGECOOLDOWN){
+        health = 0;
+        cout << "Character is dead!" << endl;
+    }else{
+        takeDamageClock = 0.f;
         health -= damage;
+        cout << "Lost Health:" << health << endl;
     }
 }
 
@@ -147,10 +150,10 @@ void takeDamage(int damage){
 /*                INPUT HANDLING               */
 /* ------------------------------------------- */
 
-void Player::handlePlayer1Controls(float dt, float jumpForce) {
+void Player::handlePlayer1Controls(float dt) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
         if (!in_air) {
-            velocity.y = -jumpForce;
+            velocity.y = -PLAYERJUMPFORCE;
             in_air = true;
         }
     }
@@ -164,10 +167,10 @@ void Player::handlePlayer1Controls(float dt, float jumpForce) {
     }
 }
 
-void Player::handlePlayer2Controls(float dt, float jumpForce) {
+void Player::handlePlayer2Controls(float dt) {
     if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
         if (!in_air) {
-            velocity.y = -jumpForce;
+            velocity.y = -PLAYERJUMPFORCE;
             in_air = true;
         }
     }

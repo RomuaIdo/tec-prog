@@ -1,8 +1,8 @@
 #include "../../../../include/entities/characters/enemies/Saci.h"
 
 Saci::Saci(float x, float y, const float acel, int life, int s) :
-    Enemy(x, y, acel, life, s), teleportClock(0.f),
-    lastPosition(Vector2f(x,y)), jumpClock(0.f), lastPositionClock(0.f){
+    Enemy(x, y, acel, life, s), jumpClock(0.f), lastPositionClock(0.f), 
+    teleportClock(0.f), lastPosition(Vector2f(x,y)){
 
 
     if (!texture.loadFromFile("assets/textures/Saci.png")) {

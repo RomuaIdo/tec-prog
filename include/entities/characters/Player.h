@@ -16,13 +16,12 @@ class Player : public Character {
         /* ------ STATUS ------- */
         int player_num;
         int score;
-        const float vel_max;
         
         /* -------- GUN -------- */
         list<Projectile*> projectiles_list;
 
     public:
-        Player(float x, float y, const float acel, int life = 5, int s = 1, int p_num = 1, const float v_max = 50.f);
+        Player(float x, float y, const float acel, int life = 5, int s = 1, int p_num = 1);
         ~Player();
 
         /* --- OWN FUNCTIONS --- */
@@ -34,8 +33,8 @@ class Player : public Character {
         void takeDamage(int damage = 1);
 
         /* --- INPUT HANDLING --- */
-        void handlePlayer1Controls(float dt, float jumpForce);
-        void handlePlayer2Controls(float dt, float jumpForce);
+        void handlePlayer1Controls(float dt);
+        void handlePlayer2Controls(float dt);
 
         /* --- GUN FUNCTIONS --- */
         void shoot();
