@@ -12,6 +12,7 @@ class Phase : public Ente {
 protected:
   EntitiesList entities_list;
   vector<BackgroundElement *> tiles;
+  vector<BackgroundElement *> BackgroundLayers;
   CollisionManager *pCM;
   Vector2f phaseSize;
   Player *player1;
@@ -20,8 +21,7 @@ protected:
   bool passedPhase;
   const int maxPlatforms = 10;
   const int maxSaci = 3;
-  Phase(Vector2f size, float limiarX, Player *p1, Player *p2, const string &backgroundPath);
-
+  Phase(Vector2f size, float limiarX, Player *p1, Player *p2);
   virtual void createEnemies() = 0;
   virtual void createObstacles() = 0;
   void createSaci();

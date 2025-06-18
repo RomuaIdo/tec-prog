@@ -82,8 +82,11 @@ void Button::adjustSize() {
 }
 
 void Button::onMouseEvent(const Event::MouseMoveEvent &event) {
-  Vector2f mousepos(static_cast<float>(event.x), static_cast<float>(event.y));
-  FloatRect bounds = sprite.getGlobalBounds();
+    RenderWindow* window = pGM->getWindow();
+    Vector2f mousepos = window->mapPixelToCoords(Vector2i(event.x, event.y));
+    
+    FloatRect bounds = sprite.getGlobalBounds();
+
   if (bounds.contains(mousepos))
     setState(ButtonState::HOVERED);
   else
@@ -91,9 +94,12 @@ void Button::onMouseEvent(const Event::MouseMoveEvent &event) {
 }
 
 void Button::onMouseEvent(const Event::MouseButtonEvent &event) {
-  Vector2f mousePos(static_cast<float>(event.x), static_cast<float>(event.y));
-  FloatRect bounds = sprite.getGlobalBounds();
+    RenderWindow* window = pGM->getWindow();
+    Vector2f mousePos = window->mapPixelToCoords(Vector2i(event.x, event.y));
+    
+    FloatRect bounds = sprite.getGlobalBounds();
 
+ 
   if (bounds.contains(mousePos) && event.button == Mouse::Left)
     clicked = true;
 }

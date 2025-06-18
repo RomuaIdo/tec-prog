@@ -46,6 +46,7 @@ class GraphicsManager {
         void setWindow(RenderWindow* window);
         void setCameraCenter(Vector2f center);
         void setCamera(View* view);
+        Vector2f getCameraCenter() const;
         void setClock();
         float getdt() const;
         const Clock getClockdt() const;

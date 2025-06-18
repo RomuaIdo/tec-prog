@@ -14,39 +14,42 @@ MainMenu::~MainMenu() {
 }
 
 void MainMenu::createButtons() {
-    MouseSubject& mouseSubject = pGame->getMouseSubject();
+    Vector2f viewSize = pGM->getWindow()->getView().getSize();
+    Vector2f center(viewSize.x / 2, viewSize.y / 2);
+
+  MouseSubject& mouseSubject = pGame->getMouseSubject();
     Button* newGameButton = new Button("assets/fonts/Minecraft.ttf", "New Game",
                                       "assets/textures/button.png",
                                       "assets/textures/button_hovered.png",
-                                      &mouseSubject, 24, Vector2f(400.f, 250.f));
+                                      &mouseSubject, 24, Vector2f(center.x, center.y - 100.f));
     newGameButton->activate();
     addButton("new_game", newGameButton);
 
     Button* loadGameButton = new Button("assets/fonts/Minecraft.ttf", "Load Game",
                                        "assets/textures/button.png",
                                        "assets/textures/button_hovered.png",
-                                       &mouseSubject, 24, Vector2f(400.f, 320.f));
+                                       &mouseSubject, 24, Vector2f(center.x, center.y));
     loadGameButton->activate();
     addButton("load_game", loadGameButton);
 
     Button* leftButton = new Button("assets/fonts/Minecraft.ttf", "<",
                                    "assets/textures/button.png",
                                    "assets/textures/button_hovered.png",
-                                   &mouseSubject, 24, Vector2f(300.f, 400.f));
+                                   &mouseSubject, 24, Vector2f(center.x - 100.f, center.y + 100.f));
     leftButton->activate();
     addButton("left_phase", leftButton);
 
     Button* rightButton = new Button("assets/fonts/Minecraft.ttf", ">",
                                     "assets/textures/button.png",
                                     "assets/textures/button_hovered.png",
-                                    &mouseSubject, 24, Vector2f(500.f, 400.f));
+                                    &mouseSubject, 24, Vector2f(center.x + 100.f, center.y + 100.f));
     rightButton->activate();
     addButton("right_phase", rightButton);
 
     Button* leaderboardButton = new Button("assets/fonts/Minecraft.ttf", "LeaderBoard",
                                           "assets/textures/button.png",
                                           "assets/textures/button_hovered.png",
-                                          &mouseSubject, 24, Vector2f(400.f, 480.f));
+                                          &mouseSubject, 24, Vector2f(center.x, center.y + 200.f));
     leaderboardButton->activate();
     addButton("leaderboard", leaderboardButton);
 
@@ -56,15 +59,17 @@ void MainMenu::createButtons() {
     phaseText.setFont(font);
     phaseText.setCharacterSize(24);
     phaseText.setFillColor(Color::White);
-    phaseText.setPosition(400.f, 400.f);
+    phaseText.setPosition(center.x, center.y + 100.f);
 }
 
 void MainMenu::updatePhaseDisplay() {
+    Vector2f viewSize = pGM->getWindow()->getView().getSize();
+    Vector2f center(viewSize.x / 2, viewSize.y / 2);
     phaseText.setString("Phase " + to_string(currentPhase));
     
     FloatRect textBounds = phaseText.getLocalBounds();
     phaseText.setOrigin(textBounds.width/2, textBounds.height/2);
-    phaseText.setPosition(400.f, 400.f);
+    phaseText.setPosition(center.x, center.y + 100.f);
 }
 
 void MainMenu::execute() {

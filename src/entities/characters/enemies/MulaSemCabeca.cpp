@@ -105,7 +105,7 @@ void MulaSemCabeca::collide(Entity* e) {
                 position.x -= push;
                 setVelocity({0.f - push, getVelocity().y});
             } 
-        /* If intersection in y is less then intersection in x
+        /* If intersection in y is less then intersection in x*/
         /*  means that character collided in y with obstacle */
         } else {
 

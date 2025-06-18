@@ -106,3 +106,12 @@ const Clock GraphicsManager::getClockdt() const { return dt_clock; }
 float GraphicsManager::getClockTime() const { return clock_time; }
 
 void GraphicsManager::resetClock() { clock_time = 0; }
+
+Vector2f GraphicsManager::getCameraCenter() const {
+  if (pWindow != nullptr && view != nullptr) {
+    return view->getCenter();
+  } else {
+    cerr << "Window or view not initialized." << endl;
+    return Vector2f(0.f, 0.f);
+  }
+}

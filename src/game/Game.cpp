@@ -14,8 +14,13 @@ Game::Game()
   Ente::setGraphicsManager(pGM);
   player1 = new Player(200, 100, 50.f, 10, 1, 4, 1, 60.f);
   player2 = new Player(100, 100, 50.f, 10, 1, 4, 2, 60.f);
-  create_menu();
 
+  RenderWindow window(VideoMode(1920, 1080), "Good Game", Style::Fullscreen);
+  window.setFramerateLimit(60);
+  pGM->setWindow(&window);
+  pGM->setCameraCenter(Vector2f(window.getSize().x / 2.0f,
+                                window.getSize().y / 2.0f));
+  create_menu();
   game_state = GameState::MAIN_MENU;
   srand(time(nullptr));
   execute();
@@ -45,9 +50,7 @@ Game::~Game() {
 /* ------------------------------------------- */
 
 void Game::execute() {
-  RenderWindow window(VideoMode(800, 600), "Good Game");
-  window.setFramerateLimit(60);
-  pGM->setWindow(&window);
+
   RenderWindow *pWindow = pGM->getWindow();
   while (pGM->openWindow()) {
     Event event;
@@ -57,7 +60,7 @@ void Game::execute() {
       if (event.type == Event::Closed ||
           (event.type == Event::KeyPressed &&
            event.key.code == sf::Keyboard::Escape)) {
-        window.close();
+        pWindow->close();
       }
       if (event.type == Event::MouseMoved) {
         mouseSubject.notifyObservers(event.mouseMove);
@@ -158,8 +161,8 @@ void Game::createFirstPhase() {
   if (currentPhase) {
     delete currentPhase;
   }
-  currentPhase = new FirstPhase(Vector2f(6000.f, 600.f), 5900.0, player1,
-                                player2, "forestBackground.jpg");
+  currentPhase =
+      new FirstPhase(Vector2f(12000.f, 850.f), 11900.0, player1, player2);
 
   player1->setPosition(Vector2f(200.f, 100.f));
   player2->setPosition(Vector2f(100.f, 100.f));
@@ -175,8 +178,8 @@ void Game::createSecondPhase() {
   if (currentPhase) {
     delete currentPhase;
   }
-  currentPhase = new SecondPhase(Vector2f(6000.f, 600.f), 5900.0, player1,
-                                 player2, "forestBackground.jpg");
+  currentPhase =
+      new SecondPhase(Vector2f(12000.f, 850), 11900.0, player1, player2);
 
   player1->setPosition(Vector2f(200.f, 100.f));
   player2->setPosition(Vector2f(100.f, 100.f));

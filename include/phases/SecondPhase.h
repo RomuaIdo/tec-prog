@@ -8,7 +8,7 @@ private:
     const int maxSpikes = 10;
     const int maxCucas = 2;
 public:
-    SecondPhase(Vector2f size, float limiarX, Player* p1, Player* p2, const string &backgroundPath);
+    SecondPhase(Vector2f size, float limiarX, Player* p1, Player* p2);
     ~SecondPhase();
 
     void execute() override;

@@ -3,12 +3,12 @@
 #include "../../include/entities/obstacles/Plataform.h"
 #include "../../include/graphicalelements/BackgroundElement.h"
 
-Phase::Phase(Vector2f size, float limiarX, Player *p1, Player *p2,
-             const string &backgroundPath)
+Phase::Phase(Vector2f size, float limiarX, Player *p1, Player *p2)
     : pCM(CollisionManager::getInstance()), phaseSize(size), player1(p1),
       player2(p2), passingX(limiarX), passedPhase(false) {
   entities_list.clear();
   tiles.clear();
+  BackgroundLayers.clear();
 }
 
 Phase::~Phase() {
@@ -18,6 +18,10 @@ Phase::~Phase() {
     delete *it; // Free memory allocated for each BackgroundElement
   }
   tiles.clear();
+  for (it = BackgroundLayers.begin(); it != BackgroundLayers.end(); it++) {
+    delete *it; // Free memory allocated for each BackgroundLayer
+  }
+  BackgroundLayers.clear();
   pCM->clearEntities();
 }
 
@@ -36,12 +40,23 @@ void Phase::createScenery() {
     for (int x = 0; x < numBackgroundElementsX; x++) {
       float posX = x * tileWidth + tileWidth / 2;
       float posY = phaseSize.y - (tileHeight / 2) - (y * tileHeight);
-
       tiles.push_back(new BackgroundElement(posX, posY, 0.0f, texturePath));
     }
   }
+
   Vector2f newphaseSize = getPhaseSize();
   newphaseSize.y = newphaseSize.y - (numBackgroundElementsY * tileHeight);
+
+  BackgroundLayers.push_back(new BackgroundElement(
+      newphaseSize.x/2.f, newphaseSize.y/2.f, 1.0f, "assets/textures/1_TreesBackground.png"));
+  BackgroundLayers.push_back(new BackgroundElement(
+      newphaseSize.x/2.f, newphaseSize.y/2.f, 0.98f, "assets/textures/2_Trees.png"));
+   BackgroundLayers.push_back(new BackgroundElement(
+      newphaseSize.x/2.f, newphaseSize.y/2.f, 0.9f, "assets/textures/3_Trees.png"));
+   BackgroundLayers.push_back(new BackgroundElement(
+      newphaseSize.x/2.f, newphaseSize.y/2.f, 0.85f, "assets/textures/4_Trees.png"));
+ 
+
   pCM->setPhaseSize(newphaseSize);
 }
 
@@ -81,17 +96,15 @@ void Phase::createSaci() {
     entities_list.add(saci);
     pCM->addEnemy(saci);
   }
-
 }
 
 bool Phase::passed() const { return passedPhase; }
 
 void Phase::checkPhaseCompletion() {
-    if (player1 && player2) {
-        if (player1->getPosition().x > passingX && 
-            player2->getPosition().x > passingX) 
-        {
-            passedPhase = true;
-        }
+  if (player1 && player2) {
+    if (player1->getPosition().x > passingX &&
+        player2->getPosition().x > passingX) {
+      passedPhase = true;
     }
+  }
 }
