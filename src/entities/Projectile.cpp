@@ -2,7 +2,7 @@
 #include <SFML/Window.hpp>
 
 Texture Projectile::potion;
-Texture Projectile::bullet;
+Texture Projectile::Rock;
 
 Projectile::Projectile():
     Entity(), owner(nullptr), active(true){
@@ -15,8 +15,8 @@ Projectile::Projectile(float x, float y, Vector2f vel, Entity* creator):
     if (!potion.loadFromFile("assets/textures/Potion.png")) {
         std::cerr << "Failed to load Potion.png!" << std::endl;
     }
-    if (!bullet.loadFromFile("assets/textures/Bullet.png")) {
-        std::cerr << "Failed to load Bullet.png!" << std::endl;
+    if (!Rock.loadFromFile("assets/textures/Rock.png")) {
+        std::cerr << "Failed to load Rock.png!" << std::endl;
     }
 
     setVelocity(vel);
@@ -46,7 +46,7 @@ void Projectile::collide(Entity* other) {
         }else if(dynamic_cast<Player*>(other)){
 
             active = false; // Enemy projectile hits player
-            static_cast<Player*>(other)->takeDamage(1); // Example damage value
+            static_cast<Player*>(other)->takeDamage(POTIONDAMAGE); // Example damage value
 
         }else{
             active = false;
@@ -60,8 +60,12 @@ void Projectile::collide(Entity* other) {
         }else if(dynamic_cast<Enemy*>(other)){
 
             active = false; // Player projectile hits enemy
-            static_cast<Enemy*>(other)->takeDamage(1); // Example damage value
+            static_cast<Enemy*>(other)->takeDamage(ROCKDAMAGE);
 
+            // If enemy dies, increases the player score based on the difficulty of the enemy
+            if(static_cast<Enemy*>(other)->getHealth() <= 0){
+                static_cast<Player*>(owner)->increaseScore(SCOREMULTIPLIER * static_cast<Enemy*>(other)->getEvilness()); 
+            }
         }else{
             active = false;
         }

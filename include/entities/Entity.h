@@ -12,38 +12,44 @@ using namespace sf;
 /* ------- CHARACTERS -------- */
 #define FRICTION 25.f
 
-/* MULA SEM CABECA */
+/* MULA SEM CABECA (Hard Enemy) */
 #define ACELMULA 4.f
 #define CHARGECOOLDOWN 7.f
 #define MULACHANGEDIRECTION 3.f
 #define MULAFAR 800.f
 #define CHARGEPREPARATIONCOOLDOWN 2.f
+#define MULAEVILNESS 10
 
-/* SACI */
-#define SACIACEL 7.f
-#define SACIHEALTH 5
-#define SACISTRENGTH 2
-#define TELEPORTCOOLDOWN 8.f
-#define JUMPCOOLDOWN 2.f
-#define LASTPOSCOOLDOWN 1.f
-#define SACIJUMPFORCE 15.f
-#define SACIFAR 700.f
-
-/* CUCA */
+/* CUCA (Medium Enemy) */
 #define CUCAACEL 6.f
 #define CUCAHEALTH 5
 #define CUCASTRENGTH 2
 #define CUCAFAR 400.f
-#define POTIONSTRENGTH 1
+#define POTIONDAMAGE 1
 #define POTIONCOOLDOWN 1.5f
 #define POTIONACEL 10.f
+#define CUCAEVILNESS 7
+
+/* SACI (Easy Enemy) */
+#define SACIACEL 5.f
+#define SACIHEALTH 5
+#define SACISTRENGTH 2
+#define TELEPORTCOOLDOWN 8.f
+#define JUMPCOOLDOWN 2.5f
+#define LASTPOSCOOLDOWN 1.f
+#define SACIJUMPFORCE 15.f
+#define SACIFAR 700.f
+#define SACIEVILNESS 3
 
 /* PLAYER */
-#define ACELPLAYER 20.f
+#define ACEL 20.f
 #define TAKEDAMAGECOOLDOWN 2.5f
 #define SHOOTCOOLDOWN 0.5f
 #define PLAYERJUMPFORCE 15.f
 #define PLAYERMAXVEL 20.f
+#define ROCKDAMAGE 1
+#define ROCKACEL 15.f
+#define SCOREMULTIPLIER 10
 
 /* -------- OBSTACLES -------- */
 

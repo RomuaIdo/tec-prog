@@ -28,6 +28,10 @@ void Ente::configSprite(){
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */
 
+Sprite& Ente::getSprite() { 
+    return sprite; 
+}
+
 void Ente::setTexture(Texture t){
     texture = t;
     sprite.setTexture(t);

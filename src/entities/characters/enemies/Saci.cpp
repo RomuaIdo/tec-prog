@@ -9,6 +9,7 @@ Saci::Saci(float x, float y, const float acel, int life, int s) :
             std::cerr << "Failed to load Saci.png!" << std::endl;
     }
 
+    evilness = SACIEVILNESS;
     sprite.setTexture(texture);
     configSprite();
 }
@@ -56,7 +57,7 @@ void Saci::move() {
     }
 
     // if it is 600 pixels far, the enemy dont move
-    if(abs(right) < 600.f){
+    if(abs(right) < SACIFAR){
         far = false;
     }else{
         far = true;
@@ -65,17 +66,17 @@ void Saci::move() {
     faced_right = (int) (right/abs(right));
 
     if(!far){
-        if(!getInAir() && jumpClock >= 1.f) {
+        if(!getInAir() && jumpClock >= JUMPCOOLDOWN) {
             setInAir(true);
-            velocity = (Vector2f( faced_right*aceleration, -SACIJUMPFORCE ));
+            velocity = (Vector2f( faced_right * aceleration, -SACIJUMPFORCE ));
             jumpClock = 0.f;
         }
     }
     
+    // Stop after jumping
     if(!getInAir()){
         velocity = Vector2f(0.f, 0.f);
     }
-
 
     applyGravity();
     moveCharacter();

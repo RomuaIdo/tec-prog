@@ -34,6 +34,7 @@ class Ente {
 
         void setTexture(Texture t);
         Vector2f getSize() const;
+        Sprite& getSprite();
         virtual Vector2f getPosition() const;
         virtual void setPosition(Vector2f pos);
         static void setGraphicsManager(GraphicsManager* pGM); 

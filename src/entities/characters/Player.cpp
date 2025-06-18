@@ -196,8 +196,9 @@ void Player::shoot(){
         if (Keyboard::isKeyPressed(sf::Keyboard::C)) {
             // Shoot after SHOOTCOOLDOWN seconds
             if (shootClock >= SHOOTCOOLDOWN) {
-                Projectile *p = new Projectile(position.x + (size.x * faced_right), position.y, Vector2f(faced_right * 10.f, -10.f), this);
-
+                Projectile *p = new Projectile(position.x + (size.x * faced_right), position.y, Vector2f(faced_right * ROCKACEL, -8.f), this);
+                p->getSprite().setTexture(Projectile::Rock);
+                p->configSprite();
                 if (p) {
                     addProjectile(p);
                     // Register the projectile in the CollisionManager

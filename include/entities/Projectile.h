@@ -25,7 +25,7 @@ class Projectile : public Entity{
 
         /* ------ STATUS ------- */
         static Texture potion;
-        static Texture bullet;
+        static Texture Rock;
 
         /* --- OWN FUNCTIONS --- */
         void collide(Entity* other);

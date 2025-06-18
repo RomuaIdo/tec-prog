@@ -12,6 +12,8 @@ class Enemy : public Character {
         bool far;
         list<Player*> players_list;
 
+        int evilness;
+
     public:
         Enemy();
         Enemy(float x, float y, const float acel, int life = 5, int s = 1);
@@ -28,6 +30,7 @@ class Enemy : public Character {
         virtual void removePlayer(Player *p);
         virtual void attack(Player *p) = 0;
 
+        int getEvilness();
 };
 
 #endif

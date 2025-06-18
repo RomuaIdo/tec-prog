@@ -37,6 +37,7 @@ class Character : public Entity {
         virtual void updateClocks() = 0;
         
         /* ----- GETS & SETS ----- */
+        int getHealth() const;
         int getStrength() const;
         bool getInAir() const;
         void setInAir(bool inair);

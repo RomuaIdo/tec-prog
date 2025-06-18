@@ -61,6 +61,9 @@ void Character::applyFriction(float dt) {
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */
 
+int Character::getHealth() const{
+    return health;
+}
 
 int Character::getStrength() const{
     return strength;
