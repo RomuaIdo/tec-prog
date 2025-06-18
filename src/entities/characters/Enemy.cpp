@@ -19,11 +19,19 @@ void Enemy::removePlayer(Player *p){
             players_list.erase(it);
             return;
         }
-  }
+    }
 }
 
 void Enemy::addPlayer(Player *p){
     players_list.push_back(p);
+}
+
+void Enemy::verifyDeadPlayers(){
+    for(auto it = players_list.begin(); it != players_list.end(); it++){
+        if((*it)->getHealth() <= 0){
+            removePlayer((*it));
+        }
+    }
 }
 
 /* ------------------------------------------- */

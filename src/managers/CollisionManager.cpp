@@ -326,16 +326,13 @@ void CollisionManager::clearEntities() {
 
 void CollisionManager::addObstacle(Obstacle *o) { obstacles_list.push_back(o); }
 
-void CollisionManager::addProjectile(Projectile *p) {
-  projectiles_set.insert(p);
-}
+void CollisionManager::addProjectile(Projectile *p) { projectiles_set.insert(p); }
 
 void CollisionManager::addEnemy(Enemy *e) { enemies_vector.push_back(e); }
 
 void CollisionManager::addPlayer(Player *p) { players_vector.push_back(p); }
 
 void CollisionManager::removeProjectile(Projectile *p) {
-
   set<Projectile *>::iterator it = projectiles_set.find(p);
 
   if (it != projectiles_set.end()) {
@@ -351,7 +348,9 @@ void CollisionManager::removeEnemy(Enemy *e) {
   }
 }
 
-void CollisionManager::removeObstacle(Obstacle *o) { obstacles_list.remove(o); }
+void CollisionManager::removeObstacle(Obstacle *o) { 
+    obstacles_list.remove(o); 
+}
 
 void CollisionManager::removePlayer(Player *p) {
   auto it = std::find(players_vector.begin(), players_vector.end(), p);

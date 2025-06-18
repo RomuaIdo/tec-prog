@@ -28,6 +28,7 @@ class Enemy : public Character {
         /* ------- PLAYER -------- */
         virtual void addPlayer(Player *p);
         virtual void removePlayer(Player *p);
+        virtual void verifyDeadPlayers();
         virtual void attack(Player *p) = 0;
 
         int getEvilness();
