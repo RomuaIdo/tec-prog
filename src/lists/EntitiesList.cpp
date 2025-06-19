@@ -16,9 +16,9 @@ void EntitiesList::add(Entity* entity) {
 
 void EntitiesList::remove(Entity* entity) {
     for (it = entities.begin(); it != entities.end(); ++it) {
-        if (*it == entity) {
-        entities.erase(it);
-        return;
+        if ( (*it) == entity) {
+            entities.erase(it);
+            return;
         }
     }
 }

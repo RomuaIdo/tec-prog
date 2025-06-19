@@ -28,10 +28,10 @@ void Character::moveCharacter(){
 }
 
 void Character::takeDamage(int damage){
-    if(health - damage < 0){
+    if(health - damage < 0 ){
         health = 0;
         cout << "Character is dead!" << endl;
-    }else{
+    }else if(takeDamageClock >= TAKEDAMAGECOOLDOWN){
         health -= damage;
         cout << "Lost Health:" << health << endl;
     }

@@ -44,11 +44,13 @@ using namespace sf;
 #define SACIEVILNESS 3
 
 /* PLAYER */
-#define ACEL 20.f
+#define PLAYERACEL 50.f
+#define PLAYERHEALTH 20
+#define PLAYERSTRENGTH 4
 #define TAKEDAMAGECOOLDOWN 2.5f
 #define SHOOTCOOLDOWN 0.5f
 #define PLAYERJUMPFORCE 15.f
-#define PLAYERMAXVEL 20.f
+#define PLAYERMAXVEL 15.f
 #define ROCKDAMAGE 1
 #define ROCKACEL 15.f
 #define SCOREMULTIPLIER 10

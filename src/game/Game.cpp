@@ -15,9 +15,9 @@ Game::Game()
   pGM = GraphicsManager::getInstance();
   Ente::setGraphicsManager(pGM);
 
-  //                    x    y   acel  life  strength  pnum
-  player1 = new Player(200, 100, 50.f, 10, 4, 1);
-  player2 = new Player(100, 100, 50.f, 10, 4, 2);
+  //                    x    y     acel        life    strength  pnum
+  player1 = new Player(200, 100, PLAYERACEL, PLAYERHEALTH, PLAYERSTRENGTH, 1);
+  player2 = new Player(100, 100, PLAYERACEL, PLAYERHEALTH, PLAYERSTRENGTH, 2);
 
   RenderWindow window(VideoMode(1920, 1080), "Good Game", Style::Fullscreen);
   window.setFramerateLimit(60);
