@@ -25,6 +25,7 @@ void Saci::execute() {
     move();
     draw();
     teleport(getPlayerLastPosition());
+    verifyDeadPlayers();
     updateClocks();
 }
 

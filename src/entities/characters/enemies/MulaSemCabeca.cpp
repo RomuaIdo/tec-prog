@@ -21,6 +21,7 @@ MulaSemCabeca::~MulaSemCabeca() {
 void MulaSemCabeca::execute() {
     move();
     draw();
+    verifyDeadPlayers();
     updateClocks();
 }
 

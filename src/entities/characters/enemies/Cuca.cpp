@@ -24,6 +24,7 @@ void Cuca::execute() {
     draw();
     makePotion();
     throwPotion();
+    verifyDeadPlayers();
     updateClocks();
 }
 
@@ -111,9 +112,8 @@ void Cuca::makePotion(){
 
         if(p){
             
-            // p->setTexture(Projectile::potion);
-            // p->configSprite();
-
+            p->getSprite().setTexture(Projectile::potion);
+            p->configSprite();
             addPotion(p);
             CollisionManager::getInstance()->addProjectile(p);
 
