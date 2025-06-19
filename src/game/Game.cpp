@@ -78,7 +78,6 @@ void Game::execute() {
       main_menu();
       break;
     case GameState::PLAYING:
-      createPlayers();
       running();
       break;
     case GameState::LEADERBOARD:

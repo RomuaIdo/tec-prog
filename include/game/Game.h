@@ -42,7 +42,7 @@ class Game {
         void updateCamera();
         void createFirstPhase();
         void createSecondPhase();
-        void createPlayers();
+
 
     public:
         Game();
@@ -54,4 +54,5 @@ class Game {
         /* ---- CREATE ----- */
         void createPhase(short int phaseNumber);
         void create_menus();
+        void createPlayers();
 };

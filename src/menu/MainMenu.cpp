@@ -106,7 +106,7 @@ void MainMenu::execute() {
             if (it->first == "new_game") {
                 pGame->setNumberPlayers(players);
                 pGame->setGameState(GameState::PLAYING);
-
+                pGame->createPlayers();
                 pGame->createPhase(currentPhase);
             }
             else if (it->first == "left_phase") {
