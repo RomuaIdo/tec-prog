@@ -3,11 +3,12 @@
 #include "../../include/managers/CollisionManager.h"
 #include "../../include/menu/Leaderboard.h"
 #include "../../include/menu/MainMenu.h"
+#include "../../include/menu/NewGameMenu.h"
 #include <algorithm>
 
 Game::Game()
-    : pGM(nullptr), pCM(nullptr), number_of_players(1), player1(nullptr), player2(nullptr),
-      menu(nullptr), leaderboard(nullptr), mouseSubject(),
+    : pGM(nullptr), pCM(nullptr), number_of_players(1), player1(nullptr),
+      player2(nullptr), mainMenu(nullptr), newGameMenu(nullptr), leaderboard(nullptr), mouseSubject(),
       phase_size(1600.f, 600.f), firstPhase(nullptr), secondPhase(nullptr),
       currentPhase(nullptr) {
 
@@ -22,6 +23,7 @@ Game::Game()
       Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f));
   create_menus();
   game_state = GameState::MAIN_MENU;
+  currentMenu = mainMenu;
   srand(time(nullptr));
   execute();
 }
@@ -29,12 +31,10 @@ Game::Game()
 Game::~Game() {
   delete player1;
   player1 = nullptr;
-  if(player2){
-      delete player2;
-      player2 = nullptr;
+  if (player2) {
+    delete player2;
+    player2 = nullptr;
   }
-  delete menu;
-  menu = nullptr;
 
   if (firstPhase) {
     delete firstPhase;
@@ -45,11 +45,20 @@ Game::~Game() {
     secondPhase = nullptr;
   }
   currentPhase = nullptr;
+  if (mainMenu) {
+    delete mainMenu;
+    mainMenu = nullptr;
+  }
+  if (newGameMenu) {
+    delete newGameMenu;
+    newGameMenu = nullptr;
+  }
+  if (leaderboard) {
+    delete leaderboard;
+    leaderboard = nullptr;
+  }
+  currentMenu = nullptr;
 }
-
-/* ------------------------------------------- */
-/*                OWN FUNCTIONS                */
-/* ------------------------------------------- */
 
 void Game::execute() {
 
@@ -75,13 +84,22 @@ void Game::execute() {
     pGM->clean();
     switch (game_state) {
     case GameState::MAIN_MENU:
-      main_menu();
+      currentMenu = mainMenu;
+      currentMenu->execute();
+      break;
+    case GameState::NEW_GAME_MENU:
+      currentMenu = newGameMenu;
+      currentMenu->execute();
       break;
     case GameState::PLAYING:
       running();
       break;
     case GameState::LEADERBOARD:
-      leaderboard->execute();
+      currentMenu = leaderboard;
+      currentMenu->execute();
+      break;
+    case GameState::PAUSED:
+    case GameState::GAME_OVER:
       break;
     }
 
@@ -90,41 +108,35 @@ void Game::execute() {
 }
 
 void Game::running() {
-    if (currentPhase) {
-        currentPhase->execute();
+  if (currentPhase) {
+    currentPhase->execute();
 
-        // Verifica se ambos os jogadores saíram pela direita
-        if (currentPhase->passed()) {
-        if (dynamic_cast<FirstPhase *>(currentPhase)) {
-            createSecondPhase();
-        } else if (dynamic_cast<SecondPhase *>(currentPhase)) {
-            // Lógica para final do jogo ou próxima fase
-            setGameState(GameState::MAIN_MENU);
-        }
-        }
+    if (currentPhase->passed()) {
+      if (dynamic_cast<FirstPhase *>(currentPhase)) {
+        createSecondPhase();
+      } else if (dynamic_cast<SecondPhase *>(currentPhase)) {
+        setGameState(GameState::MAIN_MENU);
+      }
     }
-    updateCamera();
-    player1->execute();
-    if(player2){
-        player2->execute();
-    }
+  }
+  updateCamera();
+  player1->execute();
+  if (player2) {
+    player2->execute();
+  }
 }
 
 void Game::main_menu() {
-    menu->execute();
-    map<string, Button *>::iterator it;
-    for (it = menu->getButtons().begin(); it != menu->getButtons().end(); ++it) {
-        if (it->second->wasClicked()) {
-        game_state = GameState::PLAYING;
-        createFirstPhase(); // Cria a primeira fase
-        break;
-        }
+  mainMenu->execute();
+  map<string, Button *>::iterator it;
+  for (it = mainMenu->getButtons().begin(); it != mainMenu->getButtons().end(); ++it) {
+    if (it->second->wasClicked()) {
+      game_state = GameState::PLAYING;
+      createFirstPhase();
+      break;
     }
+  }
 }
-
-/* ------------------------------------------- */
-/*               CREATE FUNCTIONS              */
-/* ------------------------------------------- */
 
 MouseSubject &Game::getMouseSubject() { return mouseSubject; }
 
@@ -133,9 +145,9 @@ void Game::setGameState(GameState state) { game_state = state; }
 void Game::setNumberPlayers(int n) { number_of_players = n; }
 
 void Game::create_menus() {
-  menu = new MainMenu(this);
-  menu->activateButtons();
-  leaderboard = new Leaderboard(this);
+    mainMenu = new MainMenu(this);
+    newGameMenu = new NewGameMenu(this);
+    leaderboard = new Leaderboard(this);
 }
 
 void Game::updateCamera() {
@@ -145,84 +157,70 @@ void Game::updateCamera() {
   }
 
   Vector2f phaseSize = currentPhase->getPhaseSize();
-    float avgX = player1->getPosition().x;
-    
-     // Find the average X position of both players
-    if(player2){
-        avgX = (player1->getPosition().x + player2->getPosition().x) / 2.0f;
-    }
+  float avgX = player1->getPosition().x;
 
+  if (player2) {
+    avgX = (player1->getPosition().x + player2->getPosition().x) / 2.0f;
+  }
 
-    // Y positional fix
-    float fixedY = 300.f;
+  float fixedY = 300.f;
 
-    // Limita a câmera aos limites do mundo
-    float cameraHalfWidth = pGM->getWindow()->getSize().x / 2.0f;
-    avgX = max(cameraHalfWidth, min(avgX, phaseSize.x - cameraHalfWidth));
-    cameraCenter = sf::Vector2f(avgX, fixedY);
-    pGM->setCameraCenter(cameraCenter);
+  float cameraHalfWidth = pGM->getWindow()->getSize().x / 2.0f;
+  avgX = max(cameraHalfWidth, min(avgX, phaseSize.x - cameraHalfWidth));
+  cameraCenter = sf::Vector2f(avgX, fixedY);
+  pGM->setCameraCenter(cameraCenter);
 }
 
 void Game::createPhase(short int phaseNumber) {
-    if (phaseNumber == 1) {
-        
-
-        createFirstPhase();
-        
-    } else if (phaseNumber == 2) {
-        createSecondPhase();
-    } else {
-        cerr << "Invalid phase number: " << phaseNumber << endl;
-    }
+  if (phaseNumber == 1) {
+    createFirstPhase();
+  } else if (phaseNumber == 2) {
+    createSecondPhase();
+  } else {
+    cerr << "Invalid phase number: " << phaseNumber << endl;
+  }
 }
 
 void Game::createFirstPhase() {
-    if (currentPhase) {
-        delete currentPhase;
-    }
-    currentPhase =
-        new FirstPhase(Vector2f(12000.f, 850.f), 11900.0, player1, player2);
+  if (currentPhase) {
+    delete currentPhase;
+  }
+  currentPhase =
+      new FirstPhase(Vector2f(12000.f, 850.f), 11900.0, player1, player2);
 
-    cout <<" ta tendando criar " << number_of_players << player1->getHealth()<<endl;
-    player1->setPosition(Vector2f(200.f, 100.f));
-    player1->setVelocity(Vector2f(0.f, 0.f));
-    // Add players to collision manager
-    pCM->addPlayer(player1);
-    if(player2){
-        player2->setPosition(Vector2f(100.f, 100.f));
-        player2->setVelocity(Vector2f(0.f, 0.f));
-        pCM->addPlayer(player2);
-    }
-
+  player1->setPosition(Vector2f(200.f, 100.f));
+  player1->setVelocity(Vector2f(0.f, 0.f));
+  pCM->addPlayer(player1);
+  if (player2) {
+    player2->setPosition(Vector2f(100.f, 100.f));
+    player2->setVelocity(Vector2f(0.f, 0.f));
+    pCM->addPlayer(player2);
+  }
 }
 
 void Game::createSecondPhase() {
-    if (currentPhase) {
-        delete currentPhase;
-    }
-    currentPhase =
-        new SecondPhase(Vector2f(12000.f, 850), 11900.0, player1, player2);
+  if (currentPhase) {
+    delete currentPhase;
+  }
+  currentPhase =
+      new SecondPhase(Vector2f(12000.f, 850), 11900.0, player1, player2);
 
-    player1->setPosition(Vector2f(200.f, 100.f));
-    player1->setVelocity(Vector2f(0.f, 0.f));
-    // Add players to collision manager
-    pCM->addPlayer(player1);
-    if(player2){
-        player2->setPosition(Vector2f(100.f, 100.f));
-        player2->setVelocity(Vector2f(0.f, 0.f));
-        pCM->addPlayer(player2);
-    }
+  player1->setPosition(Vector2f(200.f, 100.f));
+  player1->setVelocity(Vector2f(0.f, 0.f));
+  pCM->addPlayer(player1);
+  if (player2) {
+    player2->setPosition(Vector2f(100.f, 100.f));
+    player2->setVelocity(Vector2f(0.f, 0.f));
+    pCM->addPlayer(player2);
+  }
 }
 
-void Game::createPlayers(){
-    if(!player1 && !player2){
-
-        player1 = new Player(200, 100, PLAYERACEL, PLAYERHEALTH, PLAYERSTRENGTH, 1);
-        std::cout << "Created player1: " << player1 << std::endl;
-        
-        if(number_of_players == 2){
-            player2 = new Player(100, 100, PLAYERACEL, PLAYERHEALTH, PLAYERSTRENGTH, 2);
-            std::cout << "Created player2: " << player2 << std::endl;
-        }
+void Game::createPlayers() {
+  if (!player1 && !player2) {
+    player1 = new Player(200, 100, PLAYERACEL, PLAYERHEALTH, PLAYERSTRENGTH, 1);
+    if (number_of_players == 2) {
+      player2 =
+          new Player(100, 100, PLAYERACEL, PLAYERHEALTH, PLAYERSTRENGTH, 2);
     }
+  }
 }

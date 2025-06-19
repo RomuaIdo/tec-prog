@@ -8,17 +8,12 @@ class MainMenu : public Menu {
 public:
     MainMenu(Game* game);
     virtual ~MainMenu();
-
     void createButtons();
-    void updatePhaseDisplay();
-    void updatePlayersDisplay();
+    void setGameTitle(const string& title);
     void execute() override;
 private:
+    Text GameTitle;
     Font font;
-    Text phaseText;
-    Text playersText;
-    int currentPhase;
-    int players;
 };
 
 #endif

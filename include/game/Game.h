@@ -9,12 +9,15 @@
 #include <list>
 #include <vector>
 
+enum class GameState { MAIN_MENU, NEW_GAME_MENU, PLAYING, PAUSED, GAME_OVER, LEADERBOARD };
+
 /* Forward declarations */
 class CollisionManager;
-enum class GameState { MAIN_MENU, PLAYING, PAUSED, GAME_OVER, LEADERBOARD };
 class Menu;
 class Button;
 class Leaderboard;
+class MainMenu;
+class NewGameMenu;
 
 class Game {
 
@@ -26,7 +29,9 @@ class Game {
         //   vector<Player *> players_vector;
         Player* player1;
         Player* player2;
-        Menu *menu;
+        Menu *currentMenu;
+        MainMenu *mainMenu;
+        NewGameMenu *newGameMenu;
         Leaderboard *leaderboard;
         MouseSubject mouseSubject;
         GameState game_state;
