@@ -114,7 +114,6 @@ void Leaderboard::drawScores() {
     multiHeader.setPosition(multiX - multiHeader.getLocalBounds().width / 2, startY);
     pGM->draw(&multiHeader);
 
-    // Separar scores por tipo
     vector<ScoreEntry> singleEntries;
     vector<ScoreEntry> multiEntries;
     
@@ -126,7 +125,6 @@ void Leaderboard::drawScores() {
         }
     }
 
-    // Desenhar coluna singleplayer
     float currentYSingle = startY + 50.f;
     for (vector<ScoreEntry>::iterator it = singleEntries.begin(); it != singleEntries.end(); ++it) {
         Text entryText;
@@ -142,7 +140,6 @@ void Leaderboard::drawScores() {
         currentYSingle += 40.f;
     }
 
-    // Desenhar coluna multiplayer
     float currentYMulti = startY + 50.f;
     for (vector<ScoreEntry>::iterator it = multiEntries.begin(); it != multiEntries.end(); ++it) {
         Text entryText;
