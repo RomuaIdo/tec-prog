@@ -10,9 +10,11 @@
 
 /* Forward declarations */
 class CollisionManager;
-enum class GameState { MAIN_MENU, PLAYING, PAUSED, GAME_OVER };
+enum class GameState { MAIN_MENU, PLAYING, PAUSED, GAME_OVER, LEADERBOARD };
 class Menu;
 class Button;
+class Leaderboard;
+
 class Game {
 
 private:
@@ -22,13 +24,14 @@ private:
   Player *player1;
   Player *player2;
   Menu *menu;
+  Leaderboard *leaderboard;
   MouseSubject mouseSubject;
   GameState game_state;
   Vector2f phase_size;
   Vector2f cameraCenter;
-  FirstPhase* firstPhase;
-  SecondPhase* secondPhase;   
-  Phase* currentPhase;
+  FirstPhase *firstPhase;
+  SecondPhase *secondPhase;
+  Phase *currentPhase;
   /* ---- OWN FUNCTIONS ----- */
   void execute();
   void running();
@@ -37,14 +40,13 @@ private:
   void createFirstPhase();
   void createSecondPhase();
 
-
 public:
   Game();
   ~Game();
   /* ---- GETS & SETS ----- */
-  MouseSubject& getMouseSubject();
+  MouseSubject &getMouseSubject();
   void setGameState(GameState state);
   /* ---- CREATE ----- */
   void createPhase(short int phaseNumber);
-  void create_menu();
+  void create_menus();
 };

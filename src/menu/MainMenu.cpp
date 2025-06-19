@@ -93,11 +93,10 @@ void MainMenu::execute() {
                 updatePhaseDisplay();
             }
             else if (it->first == "leaderboard") {
-                cout << "Leaderboard button clicked" << endl;
+                pGame->setGameState(GameState::LEADERBOARD);
             }
         }
     }
     
     pGM->draw(&phaseText);
 }
-

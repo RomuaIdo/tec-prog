@@ -1,4 +1,5 @@
 #ifndef MENU_H
+#define MENU_H
 #include "../entities/Ente.h"
 #include "../graphicalelements/Button.h"
 #include <map>

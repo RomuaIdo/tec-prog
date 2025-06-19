@@ -1,28 +1,30 @@
 #include "../../include/game/Game.h"
 #include "../../include/graphicalelements/Button.h"
 #include "../../include/managers/CollisionManager.h"
+#include "../../include/menu/Leaderboard.h"
 #include "../../include/menu/MainMenu.h"
 #include <algorithm>
 
 Game::Game()
     : pGM(nullptr), pCM(nullptr), player1(nullptr), player2(nullptr),
-      mouseSubject(), phase_size(1600.f, 600.f), firstPhase(nullptr),
-      secondPhase(nullptr), currentPhase(nullptr) {
+      menu(nullptr), leaderboard(nullptr), mouseSubject(),
+      phase_size(1600.f, 600.f), firstPhase(nullptr), secondPhase(nullptr),
+      currentPhase(nullptr) {
 
   pCM = CollisionManager::getInstance();
   pGM = GraphicsManager::getInstance();
   Ente::setGraphicsManager(pGM);
 
   //                    x    y   acel  life  strength  pnum
-  player1 = new Player(200, 100, 50.f,  10,     4,      1);
-  player2 = new Player(100, 100, 50.f,  10,     4,      2);
+  player1 = new Player(200, 100, 50.f, 10, 4, 1);
+  player2 = new Player(100, 100, 50.f, 10, 4, 2);
 
   RenderWindow window(VideoMode(1920, 1080), "Good Game", Style::Fullscreen);
   window.setFramerateLimit(60);
   pGM->setWindow(&window);
-  pGM->setCameraCenter(Vector2f(window.getSize().x / 2.0f,
-                                window.getSize().y / 2.0f));
-  create_menu();
+  pGM->setCameraCenter(
+      Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f));
+  create_menus();
   game_state = GameState::MAIN_MENU;
   srand(time(nullptr));
   execute();
@@ -80,7 +82,11 @@ void Game::execute() {
     case GameState::PLAYING:
       running();
       break;
+    case GameState::LEADERBOARD:
+      leaderboard->execute();
+      break;
     }
+
     pGM->show();
   }
 }
@@ -124,9 +130,10 @@ MouseSubject &Game::getMouseSubject() { return mouseSubject; }
 
 void Game::setGameState(GameState state) { game_state = state; }
 
-void Game::create_menu() {
+void Game::create_menus() {
   menu = new MainMenu(this);
   menu->activateButtons();
+  leaderboard = new Leaderboard(this);
 }
 
 void Game::updateCamera() {
