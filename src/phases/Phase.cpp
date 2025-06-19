@@ -68,13 +68,22 @@ void Phase::createPlatforms() {
       phaseSize.y - 150.0f; // Maximum Y position (50px above ground)
 
   for (int i = 0; i < maxPlatforms; i++) {
+    int numPlataform = rand() % 2;
     // Generate random position
     float x =
         static_cast<float>(50 + rand() % static_cast<int>(phaseSize.x - 500));
     float y = minY + static_cast<float>(rand() % static_cast<int>(maxY - minY));
-
+    
     Plataform *p = new Plataform(x, y, false);
     Plataform *p2 = new Plataform(x + 50.f, y, false);
+
+    if(numPlataform){
+        p->getSprite().setTexture(Plataform::cloud1);
+        p2->getSprite().setTexture(Plataform::cloud1);
+    }else{
+        p->getSprite().setTexture(Plataform::cloud2);
+        p2->getSprite().setTexture(Plataform::cloud2);
+    }
 
     entities_list.add(p);
     entities_list.add(p2);
@@ -98,7 +107,9 @@ void Phase::createSaci() {
 
     Saci *saci = new Saci(x, saciY, SACIACEL, SACIHEALTH, SACISTRENGTH);
     saci->addPlayer(player1);
-    saci->addPlayer(player2);
+    if(player2)
+        saci->addPlayer(player2);
+    
     entities_list.add(saci);
     pCM->addEnemy(saci);
   }
@@ -107,10 +118,16 @@ void Phase::createSaci() {
 bool Phase::passed() const { return passedPhase; }
 
 void Phase::checkPhaseCompletion() {
-  if (player1 && player2) {
-    if (player1->getPosition().x > passingX &&
-        player2->getPosition().x > passingX) {
-      passedPhase = true;
+    if (player1) {
+        if(player2){
+            if (player1->getPosition().x > passingX &&
+            player2->getPosition().x > passingX) {
+                passedPhase = true;
+            }
+        }else{
+            if (player1->getPosition().x > passingX) {
+                passedPhase = true;
+            }
+        }
     }
-  }
 }

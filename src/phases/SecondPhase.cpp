@@ -43,7 +43,9 @@ void SecondPhase::createMulas() {
         if(mula){
             mula->setPosition(Vector2f(mula->getPosition().x, mula->getPosition().y - mula->getSize().y));
             mula->addPlayer(player1);
-            mula->addPlayer(player2);
+            if(player2)
+                mula->addPlayer(player2);
+            
             entities_list.add(mula);
             pCM->addEnemy(mula);
         }

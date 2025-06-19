@@ -11,11 +11,14 @@ public:
 
     void createButtons();
     void updatePhaseDisplay();
+    void updatePlayersDisplay();
     void execute() override;
 private:
     Font font;
     Text phaseText;
+    Text playersText;
     int currentPhase;
+    int players;
 };
 
 #endif

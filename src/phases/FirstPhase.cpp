@@ -99,7 +99,9 @@ void FirstPhase::createCucas() {
         if(cuca){
             cuca->setPosition(Vector2f(cuca->getPosition().x, cuca->getPosition().y - cuca->getSize().y));
             cuca->addPlayer(player1);
-            cuca->addPlayer(player2);
+            if(player2)
+                cuca->addPlayer(player2);
+                
             entities_list.add(cuca);
             pCM->addEnemy(cuca);
         }

@@ -6,7 +6,7 @@
 #include <algorithm>
 
 Game::Game()
-    : pGM(nullptr), pCM(nullptr), player1(nullptr), player2(nullptr),
+    : pGM(nullptr), pCM(nullptr), number_of_players(1), player1(nullptr), player2(nullptr),
       menu(nullptr), leaderboard(nullptr), mouseSubject(),
       phase_size(1600.f, 600.f), firstPhase(nullptr), secondPhase(nullptr),
       currentPhase(nullptr) {
@@ -14,10 +14,6 @@ Game::Game()
   pCM = CollisionManager::getInstance();
   pGM = GraphicsManager::getInstance();
   Ente::setGraphicsManager(pGM);
-
-  //                    x    y     acel        life    strength  pnum
-  player1 = new Player(200, 100, PLAYERACEL, PLAYERHEALTH, PLAYERSTRENGTH, 1);
-  player2 = new Player(100, 100, PLAYERACEL, PLAYERHEALTH, PLAYERSTRENGTH, 2);
 
   RenderWindow window(VideoMode(1920, 1080), "Good Game", Style::Fullscreen);
   window.setFramerateLimit(60);
@@ -33,8 +29,10 @@ Game::Game()
 Game::~Game() {
   delete player1;
   player1 = nullptr;
-  delete player2;
-  player2 = nullptr;
+  if(player2){
+      delete player2;
+      player2 = nullptr;
+  }
   delete menu;
   menu = nullptr;
 
@@ -80,6 +78,7 @@ void Game::execute() {
       main_menu();
       break;
     case GameState::PLAYING:
+      createPlayers();
       running();
       break;
     case GameState::LEADERBOARD:
@@ -92,22 +91,24 @@ void Game::execute() {
 }
 
 void Game::running() {
-  if (currentPhase) {
-    currentPhase->execute();
+    if (currentPhase) {
+        currentPhase->execute();
 
-    // Verifica se ambos os jogadores saíram pela direita
-    if (currentPhase->passed()) {
-      if (dynamic_cast<FirstPhase *>(currentPhase)) {
-        createSecondPhase();
-      } else if (dynamic_cast<SecondPhase *>(currentPhase)) {
-        // Lógica para final do jogo ou próxima fase
-        setGameState(GameState::MAIN_MENU);
-      }
+        // Verifica se ambos os jogadores saíram pela direita
+        if (currentPhase->passed()) {
+        if (dynamic_cast<FirstPhase *>(currentPhase)) {
+            createSecondPhase();
+        } else if (dynamic_cast<SecondPhase *>(currentPhase)) {
+            // Lógica para final do jogo ou próxima fase
+            setGameState(GameState::MAIN_MENU);
+        }
+        }
     }
-  }
-  updateCamera();
-  player1->execute();
-  player2->execute();
+    updateCamera();
+    player1->execute();
+    if(player2){
+        player2->execute();
+    }
 }
 
 void Game::main_menu() {
@@ -129,6 +130,8 @@ void Game::main_menu() {
 MouseSubject &Game::getMouseSubject() { return mouseSubject; }
 
 void Game::setGameState(GameState state) { game_state = state; }
+
+void Game::setNumberPlayers(int n) { number_of_players = n; }
 
 void Game::create_menus() {
   menu = new MainMenu(this);
@@ -167,20 +170,22 @@ void Game::createPhase(short int phaseNumber) {
 }
 
 void Game::createFirstPhase() {
-  if (currentPhase) {
-    delete currentPhase;
-  }
-  currentPhase =
-      new FirstPhase(Vector2f(12000.f, 850.f), 11900.0, player1, player2);
+    if (currentPhase) {
+        delete currentPhase;
+    }
+    currentPhase =
+        new FirstPhase(Vector2f(12000.f, 850.f), 11900.0, player1, player2);
 
-  player1->setPosition(Vector2f(200.f, 100.f));
-  player2->setPosition(Vector2f(100.f, 100.f));
-  player1->setVelocity(Vector2f(0.f, 0.f));
-  player2->setVelocity(Vector2f(0.f, 0.f));
+    player1->setPosition(Vector2f(200.f, 100.f));
+    player1->setVelocity(Vector2f(0.f, 0.f));
+    // Add players to collision manager
+    pCM->addPlayer(player1);
+    if(player2){
+        player2->setPosition(Vector2f(100.f, 100.f));
+        player2->setVelocity(Vector2f(0.f, 0.f));
+        pCM->addPlayer(player2);
+    }
 
-  // Add players to collision manager
-  pCM->addPlayer(player1);
-  pCM->addPlayer(player2);
 }
 
 void Game::createSecondPhase() {
@@ -191,10 +196,20 @@ void Game::createSecondPhase() {
       new SecondPhase(Vector2f(12000.f, 850), 11900.0, player1, player2);
 
   player1->setPosition(Vector2f(200.f, 100.f));
-  player2->setPosition(Vector2f(100.f, 100.f));
   player1->setVelocity(Vector2f(0.f, 0.f));
-  player2->setVelocity(Vector2f(0.f, 0.f));
   // Add players to collision manager
   pCM->addPlayer(player1);
-  pCM->addPlayer(player2);
+  if(player2){
+      player2->setPosition(Vector2f(100.f, 100.f));
+      player2->setVelocity(Vector2f(0.f, 0.f));
+      pCM->addPlayer(player2);
+    }
+}
+
+void Game::createPlayers(){
+    player1 = new Player(200, 100, PLAYERACEL, PLAYERHEALTH, PLAYERSTRENGTH, 1);
+
+    if(number_of_players == 2){
+        player2 = new Player(100, 100, PLAYERACEL, PLAYERHEALTH, PLAYERSTRENGTH, 2);
+    }
 }

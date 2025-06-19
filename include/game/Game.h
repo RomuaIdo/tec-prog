@@ -18,37 +18,40 @@ class Leaderboard;
 
 class Game {
 
-private:
-  /* ------ VARIABLES ------- */
-  GraphicsManager *pGM;
-  CollisionManager *pCM;
-//   vector<Player *> players_vector;
-  Player* player1;
-  Player* player2;
-  Menu *menu;
-  Leaderboard *leaderboard;
-  MouseSubject mouseSubject;
-  GameState game_state;
-  Vector2f phase_size;
-  Vector2f cameraCenter;
-  FirstPhase *firstPhase;
-  SecondPhase *secondPhase;
-  Phase *currentPhase;
-  /* ---- OWN FUNCTIONS ----- */
-  void execute();
-  void running();
-  void main_menu();
-  void updateCamera();
-  void createFirstPhase();
-  void createSecondPhase();
+    private:
+        /* ------ VARIABLES ------- */
+        GraphicsManager *pGM;
+        CollisionManager *pCM;
+        int number_of_players;
+        //   vector<Player *> players_vector;
+        Player* player1;
+        Player* player2;
+        Menu *menu;
+        Leaderboard *leaderboard;
+        MouseSubject mouseSubject;
+        GameState game_state;
+        Vector2f phase_size;
+        Vector2f cameraCenter;
+        FirstPhase *firstPhase;
+        SecondPhase *secondPhase;
+        Phase *currentPhase;
+        /* ---- OWN FUNCTIONS ----- */
+        void execute();
+        void running();
+        void main_menu();
+        void updateCamera();
+        void createFirstPhase();
+        void createSecondPhase();
+        void createPlayers();
 
-public:
-  Game();
-  ~Game();
-  /* ---- GETS & SETS ----- */
-  MouseSubject &getMouseSubject();
-  void setGameState(GameState state);
-  /* ---- CREATE ----- */
-  void createPhase(short int phaseNumber);
-  void create_menus();
+    public:
+        Game();
+        ~Game();
+        /* ---- GETS & SETS ----- */
+        MouseSubject &getMouseSubject();
+        void setGameState(GameState state);
+        void setNumberPlayers(int n);
+        /* ---- CREATE ----- */
+        void createPhase(short int phaseNumber);
+        void create_menus();
 };

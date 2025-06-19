@@ -3,6 +3,11 @@
 #include "../../../include/entities/characters/Player.h"
 #include <SFML/Window.hpp>
 
+Texture Plataform::cloud1;
+Texture Plataform::cloud1active;
+Texture Plataform::cloud2;
+Texture Plataform::cloud2active;
+
 Plataform::Plataform() 
     : Obstacle(), isActive(false) {
 }
@@ -15,6 +20,14 @@ Plataform::Plataform(float x, float y, bool harm)
     if(!cloud1active.loadFromFile("assets/textures/Cloud1active.png")) {
         cerr << "Failed to load Cloud1active.png!" << std::endl;
     }
+
+    if (!cloud2.loadFromFile("assets/textures/Cloud2.png")) {
+        cerr << "Failed to load Cloud2.png!" << std::endl;
+    }
+    if(!cloud2active.loadFromFile("assets/textures/Cloud2active.png")) {
+        cerr << "Failed to load Cloud2active.png!" << std::endl;
+    }
+
     texture = cloud1;
     sprite.setTexture(texture);
     configSprite();
