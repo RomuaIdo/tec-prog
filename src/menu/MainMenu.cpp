@@ -32,6 +32,13 @@ void MainMenu::createButtons() {
     loadGameButton->activate();
     addButton("load_game", loadGameButton);
 
+    // Button* playersButton = new Button("assets/fonts/Minecraft.ttf", "<",
+    //                                "assets/textures/button.png",
+    //                                "assets/textures/button_hovered.png",
+    //                                &mouseSubject, 24, Vector2f(center.x, center.y + 50.f));
+    // playersButton->activate();
+    // addButton("players (1,2)", playersButton);
+
     Button* leftButton = new Button("assets/fonts/Minecraft.ttf", "<",
                                    "assets/textures/button.png",
                                    "assets/textures/button_hovered.png",

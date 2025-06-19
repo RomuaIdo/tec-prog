@@ -3,8 +3,13 @@
 MulaSemCabeca::MulaSemCabeca(float x, float y, const float acel, int life, int s) :
     Enemy(x, y, acel, life, s), chargeClock(0.f) {
 
-    if (!texture.loadFromFile("assets/textures/MulaSemCabeca.png")) {
-        std::cerr << "Failed to load MulaSemCabeca.png!" << std::endl;
+    if (!texture.loadFromFile("assets/textures/Mula.png")) {
+        std::cerr << "Failed to load Mula.png!" << std::endl;
+    }
+    runTexture = texture;
+
+    if (!chargeTexture.loadFromFile("assets/textures/MulaCharging.png")) {
+        std::cerr << "Failed to load MulaCharging.png!" << std::endl;
     }
 
     sprite.setTexture(texture);
@@ -47,24 +52,31 @@ void MulaSemCabeca::move() {
     }
 
     // if it is 700 pixels far, the enemy dont move
-    if(abs(right) < 700.f){
+    if(abs(right) < MULAFAR){
         far = false;
     }else{
         far = true;
     }
     
+    faced_right = right/abs(right);
+
     // after 3 seconds, the enemy change its direction
-    if(clock >= MULACHANGEDIRECTION){
-        faced_right *= -1;
-        clock = 0.f;
-    }
+    // if(clock >= MULACHANGEDIRECTION){
+    //     faced_right = -faced_right;
+    //     clock = 0.f;
+    // }
+
 
     if(!far){
         charge();
     }else{
-        velocity = Vector2f(faced_right * aceleration, 0.f);
+        velocity = Vector2f(0.f, 0.f);
     }
-    
+
+    if(abs(right) > 300)
+        velocity.x = faced_right * aceleration;
+
+
     applyGravity();
     moveCharacter();
 }
@@ -151,16 +163,19 @@ void MulaSemCabeca::charge() {
     if(chargeClock >= CHARGECOOLDOWN) {
         // stay active for 2 seconds (showing that will charge)
 
-        // texture = chargeTexture;
-        // sprite.setTexture(texture);
-        // configSprite();
-        if(chargeClock >= CHARGEPREPARATIONCOOLDOWN){
-            setVelocity(Vector2f(faced_right * 100.f, 0.f));
+        texture = chargeTexture;
+        sprite.setTexture(texture);
+        configSprite();
+        setVelocity(Vector2f(0.f, 0.f));
+
+        // after 2 seconds, the enemy will charge
+        if(chargeClock >= CHARGECOOLDOWN + CHARGEPREPARATIONCOOLDOWN ){
+            setVelocity(Vector2f(faced_right * 50.f, 0.f));
             chargeClock = 0.f;
 
-            // texture = runTexture;
-            // sprite.setTexture(texture);
-            // configSprite();
+            texture = runTexture;
+            sprite.setTexture(texture);
+            configSprite();
         }
     }
 }

@@ -3,19 +3,19 @@
 #include "Phase.h"
 
 class FirstPhase : public Phase {
-private:
-    const int maxMediumEnemies = 5;
-    const int maxHoneys = 3;
-public:
-    FirstPhase(Vector2f size, float limiarX, Player* p1, Player* p2);
-    ~FirstPhase();
+    private:
+        const int maxHoneys = 10;
+        const int maxCucas = 5;
+    public:
+        FirstPhase(Vector2f size, float limiarX, Player* p1, Player* p2);
+        ~FirstPhase();
 
-    void execute() override;
-    void createEnemies() override;
-    void createObstacles() override;
+        void execute() override;
+        void createEnemies() override;
+        void createObstacles() override;
 
-    void createMediumEnemies();
-    void createHoney();
+        void createCucas();
+        void createHoney();
 };
 
 #endif

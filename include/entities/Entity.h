@@ -13,7 +13,9 @@ using namespace sf;
 #define FRICTION 25.f
 
 /* MULA SEM CABECA (Hard Enemy) */
-#define ACELMULA 4.f
+#define MULAACEL 5.f
+#define MULAHEALTH 20
+#define MULASTRENGTH 4
 #define CHARGECOOLDOWN 7.f
 #define MULACHANGEDIRECTION 3.f
 #define MULAFAR 800.f

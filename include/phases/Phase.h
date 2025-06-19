@@ -19,8 +19,8 @@ protected:
   Player *player2;
   float passingX;
   bool passedPhase;
-  const int maxPlatforms = 10;
-  const int maxSaci = 3;
+  const int maxPlatforms = 20;
+  const int maxSaci = 4;
   Phase(Vector2f size, float limiarX, Player *p1, Player *p2);
   virtual void createEnemies() = 0;
   virtual void createObstacles() = 0;

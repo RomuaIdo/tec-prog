@@ -1,5 +1,5 @@
 #include "../../include/phases/FirstPhase.h"
-#include "../../include/entities/characters/Enemy.h"
+#include "../../include/entities/characters/enemies/Cuca.h"
 #include "../../include/entities/obstacles/Honey.h"
 #include "../../include/graphicalelements/BackgroundElement.h"
 #include <cmath>
@@ -29,14 +29,11 @@ void FirstPhase::execute() {
 
 void FirstPhase::createEnemies() { 
     createSaci();
-    createMediumEnemies(); 
+    createCucas();
 }
 
 void FirstPhase::createObstacles() { 
     createHoney(); 
-}
-
-void FirstPhase::createMediumEnemies() {
 }
 
 void FirstPhase::createHoney() {
@@ -88,4 +85,23 @@ void FirstPhase::createHoney() {
       honeyCount++;
     }
   }
+}
+
+void FirstPhase::createCucas() {
+    const float groundY = phaseSize.y ; 
+
+    for (int i = 0; i < maxCucas; i++) {
+        float x = 100.f + static_cast<float>(rand() %
+                                            static_cast<int>(phaseSize.x - 200.f));
+
+        // Calcular posição Y correta para ficar no chão
+        Cuca *cuca = new Cuca(x, groundY, CUCAACEL, CUCAHEALTH, CUCASTRENGTH);
+        if(cuca){
+            cuca->setPosition(Vector2f(cuca->getPosition().x, cuca->getPosition().y - cuca->getSize().y));
+            cuca->addPlayer(player1);
+            cuca->addPlayer(player2);
+            entities_list.add(cuca);
+            pCM->addEnemy(cuca);
+        }
+    }
 }

@@ -1,6 +1,6 @@
 #include "../../include/phases/SecondPhase.h"
-#include "../../include/entities/characters/enemies/Cuca.h"
 #include "../../include/entities/obstacles/ThornyBush.h"
+#include "../../include/entities/characters/enemies/MulaSemCabeca.h"
 #include "../../include/graphicalelements/BackgroundElement.h"
 
 SecondPhase::SecondPhase(Vector2f size, float limiarX, Player *p1, Player *p2)
@@ -27,8 +27,27 @@ void SecondPhase::execute() {
 }
 
 void SecondPhase::createEnemies() {
-    createCucas();
     createSaci();
+    createMulas();
+}
+
+void SecondPhase::createMulas() {
+    const float groundY = phaseSize.y ; 
+
+    for (int i = 0; i < maxMulas; i++) {
+        float x = 100.f + static_cast<float>(rand() %
+                                            static_cast<int>(phaseSize.x - 200.f));
+
+        // Calcular posição Y correta para ficar no chão
+        MulaSemCabeca *mula = new MulaSemCabeca(x, groundY, MULAACEL, MULAHEALTH, MULASTRENGTH);
+        if(mula){
+            mula->setPosition(Vector2f(mula->getPosition().x, mula->getPosition().y - mula->getSize().y));
+            mula->addPlayer(player1);
+            mula->addPlayer(player2);
+            entities_list.add(mula);
+            pCM->addEnemy(mula);
+        }
+    }
 }
 
 void SecondPhase::createObstacles() { createSpikes(); }
@@ -77,21 +96,3 @@ void SecondPhase::createSpikes() {
     }
 }
 
-void SecondPhase::createCucas() {
-    const float groundY = phaseSize.y ; 
-
-    for (int i = 0; i < maxCucas; i++) {
-        float x = 100.f + static_cast<float>(rand() %
-                                            static_cast<int>(phaseSize.x - 200.f));
-
-        // Calcular posição Y correta para ficar no chão
-        Cuca *cuca = new Cuca(x, groundY, CUCAACEL, CUCAHEALTH, CUCASTRENGTH);
-        if(cuca){
-            cuca->setPosition(Vector2f(cuca->getPosition().x, cuca->getPosition().y - cuca->getSize().y));
-            cuca->addPlayer(player1);
-            cuca->addPlayer(player2);
-            entities_list.add(cuca);
-            pCM->addEnemy(cuca);
-        }
-    }
-}
