@@ -112,15 +112,15 @@ void Game::running() {
 }
 
 void Game::main_menu() {
-  menu->execute();
-  map<string, Button *>::iterator it;
-  for (it = menu->getButtons().begin(); it != menu->getButtons().end(); ++it) {
-    if (it->second->wasClicked()) {
-      game_state = GameState::PLAYING;
-      createFirstPhase(); // Cria a primeira fase
-      break;
+    menu->execute();
+    map<string, Button *>::iterator it;
+    for (it = menu->getButtons().begin(); it != menu->getButtons().end(); ++it) {
+        if (it->second->wasClicked()) {
+        game_state = GameState::PLAYING;
+        createFirstPhase(); // Cria a primeira fase
+        break;
+        }
     }
-  }
 }
 
 /* ------------------------------------------- */
@@ -146,27 +146,32 @@ void Game::updateCamera() {
   }
 
   Vector2f phaseSize = currentPhase->getPhaseSize();
-  // Find the average X position of both players
-  float avgX = (player1->getPosition().x + player2->getPosition().x) / 2.0f;
+    float avgX = player1->getPosition().x;
+    
+     // Find the average X position of both players
+    if(player2){
+        avgX = (player1->getPosition().x + player2->getPosition().x) / 2.0f;
+    }
 
-  // Y positional fix
-  float fixedY = 300.f;
 
-  // Limita a câmera aos limites do mundo
-  float cameraHalfWidth = pGM->getWindow()->getSize().x / 2.0f;
-  avgX = max(cameraHalfWidth, min(avgX, phaseSize.x - cameraHalfWidth));
-  cameraCenter = sf::Vector2f(avgX, fixedY);
-  pGM->setCameraCenter(cameraCenter);
+    // Y positional fix
+    float fixedY = 300.f;
+
+    // Limita a câmera aos limites do mundo
+    float cameraHalfWidth = pGM->getWindow()->getSize().x / 2.0f;
+    avgX = max(cameraHalfWidth, min(avgX, phaseSize.x - cameraHalfWidth));
+    cameraCenter = sf::Vector2f(avgX, fixedY);
+    pGM->setCameraCenter(cameraCenter);
 }
 
 void Game::createPhase(short int phaseNumber) {
-  if (phaseNumber == 1) {
-    createFirstPhase();
-  } else if (phaseNumber == 2) {
-    createSecondPhase();
-  } else {
-    cerr << "Invalid phase number: " << phaseNumber << endl;
-  }
+    if (phaseNumber == 1) {
+        createFirstPhase();
+    } else if (phaseNumber == 2) {
+        createSecondPhase();
+    } else {
+        cerr << "Invalid phase number: " << phaseNumber << endl;
+    }
 }
 
 void Game::createFirstPhase() {
@@ -189,27 +194,30 @@ void Game::createFirstPhase() {
 }
 
 void Game::createSecondPhase() {
-  if (currentPhase) {
-    delete currentPhase;
-  }
-  currentPhase =
-      new SecondPhase(Vector2f(12000.f, 850), 11900.0, player1, player2);
+    if (currentPhase) {
+        delete currentPhase;
+    }
+    currentPhase =
+        new SecondPhase(Vector2f(12000.f, 850), 11900.0, player1, player2);
 
-  player1->setPosition(Vector2f(200.f, 100.f));
-  player1->setVelocity(Vector2f(0.f, 0.f));
-  // Add players to collision manager
-  pCM->addPlayer(player1);
-  if(player2){
-      player2->setPosition(Vector2f(100.f, 100.f));
-      player2->setVelocity(Vector2f(0.f, 0.f));
-      pCM->addPlayer(player2);
+    player1->setPosition(Vector2f(200.f, 100.f));
+    player1->setVelocity(Vector2f(0.f, 0.f));
+    // Add players to collision manager
+    pCM->addPlayer(player1);
+    if(player2){
+        player2->setPosition(Vector2f(100.f, 100.f));
+        player2->setVelocity(Vector2f(0.f, 0.f));
+        pCM->addPlayer(player2);
     }
 }
 
 void Game::createPlayers(){
-    player1 = new Player(200, 100, PLAYERACEL, PLAYERHEALTH, PLAYERSTRENGTH, 1);
+    if(!player1 && !player2){
 
-    if(number_of_players == 2){
-        player2 = new Player(100, 100, PLAYERACEL, PLAYERHEALTH, PLAYERSTRENGTH, 2);
+        player1 = new Player(200, 100, PLAYERACEL, PLAYERHEALTH, PLAYERSTRENGTH, 1);
+        
+        if(number_of_players == 2){
+            player2 = new Player(100, 100, PLAYERACEL, PLAYERHEALTH, PLAYERSTRENGTH, 2);
+        }
     }
 }
