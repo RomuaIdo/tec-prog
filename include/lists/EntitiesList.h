@@ -19,4 +19,5 @@ class EntitiesList {
         void remove(Entity* entity);
         void clear();
         void traverse();
+        void removePlayerInEnemiesList(Player* p);
 };

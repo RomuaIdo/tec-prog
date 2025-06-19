@@ -7,6 +7,7 @@
 #include "../phases/FirstPhase.h"
 #include "../phases/SecondPhase.h"
 #include <list>
+#include <vector>
 
 /* Forward declarations */
 class CollisionManager;
@@ -21,8 +22,9 @@ private:
   /* ------ VARIABLES ------- */
   GraphicsManager *pGM;
   CollisionManager *pCM;
-  Player *player1;
-  Player *player2;
+//   vector<Player *> players_vector;
+  Player* player1;
+  Player* player2;
   Menu *menu;
   Leaderboard *leaderboard;
   MouseSubject mouseSubject;
