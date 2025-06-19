@@ -166,7 +166,10 @@ void Game::updateCamera() {
 
 void Game::createPhase(short int phaseNumber) {
     if (phaseNumber == 1) {
+        
+
         createFirstPhase();
+        
     } else if (phaseNumber == 2) {
         createSecondPhase();
     } else {
@@ -181,6 +184,7 @@ void Game::createFirstPhase() {
     currentPhase =
         new FirstPhase(Vector2f(12000.f, 850.f), 11900.0, player1, player2);
 
+    cout <<" ta tendando criar " << number_of_players << player1->getHealth()<<endl;
     player1->setPosition(Vector2f(200.f, 100.f));
     player1->setVelocity(Vector2f(0.f, 0.f));
     // Add players to collision manager
@@ -215,9 +219,11 @@ void Game::createPlayers(){
     if(!player1 && !player2){
 
         player1 = new Player(200, 100, PLAYERACEL, PLAYERHEALTH, PLAYERSTRENGTH, 1);
+        std::cout << "Created player1: " << player1 << std::endl;
         
         if(number_of_players == 2){
             player2 = new Player(100, 100, PLAYERACEL, PLAYERHEALTH, PLAYERSTRENGTH, 2);
+            std::cout << "Created player2: " << player2 << std::endl;
         }
     }
 }
