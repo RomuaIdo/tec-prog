@@ -154,22 +154,29 @@ void Game::create_menus() {
 }
 
 void Game::updateCamera() {
-  if (currentPhase && player1) {
+  if (!currentPhase || !player1) return;
 
-    Vector2f phaseSize = currentPhase->getPhaseSize();
-    float avgX = player1->getPosition().x;
+  float avgX = 0.f;
+  int count = 0;
 
-    if (player2) {
-      avgX = (player1->getPosition().x + player2->getPosition().x) / 2.0f;
-    }
-
-    float fixedY = 300.f;
-
-    float cameraHalfWidth = pGM->getWindow()->getSize().x / 2.0f;
-    avgX = max(cameraHalfWidth, min(avgX, phaseSize.x - cameraHalfWidth));
-    cameraCenter = sf::Vector2f(avgX, fixedY);
-    pGM->setCameraCenter(cameraCenter);
+  if (player1->getAlive()) {
+    avgX += player1->getPosition().x;
+    count++;
   }
+  if (player2 && player2->getAlive()) {
+    avgX += player2->getPosition().x;
+    count++;
+  }
+  
+  if (count == 0) return; // Nenhum jogador vivo
+
+  avgX /= count;
+  const Vector2f& phaseSize = currentPhase->getPhaseSize();
+  const float cameraHalfWidth = pGM->getWindow()->getSize().x / 2.0f;
+  // Limita a posição da câmera dentro dos limites da fase
+  avgX = max(cameraHalfWidth, std::min(avgX, phaseSize.x - cameraHalfWidth));
+  
+  pGM->setCameraCenter(Vector2f(avgX, 540.f));
 }
 
 void Game::createPhase(short int phaseNumber) {
