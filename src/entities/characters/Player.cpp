@@ -1,12 +1,13 @@
 #include "../../../include/entities/characters/Player.h"
 #include "../../../include/entities/Projectile.h"
+#include "../../../include/entities/obstacles/Honey.h"
 #include "../../../include/managers/CollisionManager.h"
 #include <SFML/Window.hpp>
 
 Player::Player(float x, float y, const float acel, const string Name, int life,
                int s, int p_num)
     : Character(x, y, acel, life, s), shootClock(0.f), player_num(p_num),
-      score(0), name(Name), projectiles_list() {
+      score(0), name(Name), jumpForce(PLAYERJUMPFORCE), projectiles_list() {
   projectiles_list.clear();
 
   if (p_num == 1) {
@@ -59,6 +60,7 @@ void Player::move() {
   if (velocity.x < -PLAYERMAXVEL)
     velocity.x = -PLAYERMAXVEL;
 
+
   applyFriction(dt);
   applyGravity();
   moveCharacter();
@@ -108,15 +110,20 @@ void Player::collide(Entity *e) {
       /* To push the character the amount he is inside */
       float push = abs(intersection.y / 2.f);
 
-      /* c is below o */
+      /* player is below  */
       if (dy > 0) {
 
         position.y += push;
 
-        /* c is on top of o */
+        /* player is on top */
       } else {
 
-        /* c can jump */
+        if(dynamic_cast<Honey*>(e)){
+            jumpForce = static_cast<Honey*>(e)->getViscosity() * PLAYERJUMPFORCE; 
+        }else{
+            jumpForce = PLAYERJUMPFORCE;
+        }
+        /* player can jump */
         setInAir(false);
         position.y -= push;
         setVelocity(Vector2f(getVelocity().x, 0.f));
@@ -134,18 +141,20 @@ void Player::updateClocks() {
   shootClock += dt;
 }
 
-void Player::takeDamage(int damage) {
-  if (takeDamageClock >= TAKEDAMAGECOOLDOWN) {
-    if (health - damage <= 0 && alive) {
-      health = 0;
-      alive = false;
-      cout << "Player is dead!" << endl;
-    } else {
-      takeDamageClock = 0.f;
-      health -= damage;
-      cout << "Lost Health:" << health << endl;
+void Player::takeDamage(int damage, int direction) {
+    if (takeDamageClock >= TAKEDAMAGECOOLDOWN) {
+        if (health - damage <= 0 && alive) {
+            health = 0;
+            alive = false;
+            cout << "Player is dead!" << endl;
+        } else {
+            takeDamageClock = 0.f;
+            health -= damage;
+            velocity.x = direction * 10.f;
+            velocity.y = -6.f;
+            cout << "Lost Health:" << health << endl;
+        }
     }
-  }
 }
 
 /* ------------------------------------------- */
@@ -155,7 +164,7 @@ void Player::takeDamage(int damage) {
 void Player::handlePlayer1Controls(float dt) {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up)) {
     if (!in_air) {
-      velocity.y = -PLAYERJUMPFORCE;
+      velocity.y = -jumpForce;
       in_air = true;
     }
   }
@@ -172,7 +181,7 @@ void Player::handlePlayer1Controls(float dt) {
 void Player::handlePlayer2Controls(float dt) {
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::W)) {
     if (!in_air) {
-      velocity.y = -PLAYERJUMPFORCE;
+      velocity.y = -jumpForce;
       in_air = true;
     }
   }
@@ -236,4 +245,8 @@ void Player::addProjectile(Projectile *p) { projectiles_list.push_back(p); }
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */
 
-int Player::getHealth() { return health; }
+int Player::getHealth() const{ return health; }
+
+int Player::getScore() const { return score; }
+
+void Player::setJumpForce(float jpForce) { jumpForce = jpForce; }

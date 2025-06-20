@@ -20,7 +20,6 @@ class MulaSemCabeca : public Enemy {
         /* ---- OWN FUNCTIONS ---- */
         void execute();
         void move();
-        void collide(Entity *e);
         void charge();
         void updateClocks();
 

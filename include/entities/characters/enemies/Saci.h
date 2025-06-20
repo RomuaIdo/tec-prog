@@ -22,7 +22,6 @@ class Saci : public Enemy {
         /* ---- OWN FUNCTIONS ---- */
         void execute();
         void move();
-        void collide(Entity *e);
         void updateClocks();
 
         /* ------- TELEPORT -------- */

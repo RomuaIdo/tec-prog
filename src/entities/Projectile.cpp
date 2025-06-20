@@ -34,60 +34,68 @@ Projectile::~Projectile() {}
 /* ------------------------------------------- */
 
 void Projectile::collide(Entity *other) {
-  // Não processar colisões se o projétil já está inativo
-  if (!active)
-    return;
+    // Não processar colisões se o projétil já está inativo
+    if (!active)
+        return;
 
-  // Projétil lançado por inimigo (ex: Cuca)
-  if (dynamic_cast<Enemy *>(owner)) {
-    // Colisão com jogador
-    if (Player *player = dynamic_cast<Player *>(other)) {
-      player->takeDamage(POTIONDAMAGE);
-      active = false;
+
+    // Enemy's Projectile (ex: Cuca)
+    if (dynamic_cast<Enemy *>(owner)) {
+        
+        // Player Collision
+        if (Player *player = dynamic_cast<Player *>(other)) {
+            int direction = static_cast<int>(player->getPosition().x - position.x);
+            direction /= abs(direction);
+            player->takeDamage(POTIONDAMAGE, direction);
+            active = false;
+        }
+        // Colisão com outro inimigo - ignorar
+        else if (dynamic_cast<Enemy *>(other)) {
+        return;
+        }
+        // Colisão com qualquer outra entidade
+        else {
+        active = false;
+        }
     }
-    // Colisão com outro inimigo - ignorar
-    else if (dynamic_cast<Enemy *>(other)) {
-      return;
+
+    // Player Projectile
+    else if (Player *playerOwner = dynamic_cast<Player *>(owner)) {
+
+        // Enemy Collision
+        if (Enemy *enemy = dynamic_cast<Enemy *>(other)) {
+
+            int direction = static_cast<int>(enemy->getPosition().x - position.x);
+            direction /= abs(direction);
+            cout << "Projectile hit enemy " << endl;
+            enemy->takeDamage(10, direction);
+            active = false;
+
+            // Atualizar pontuação se inimigo morreu
+            if (enemy->getHealth() <= 0) {
+                playerOwner->increaseScore(SCOREMULTIPLIER * enemy->getEvilness());
+                cout << "Player score increased to " << playerOwner->getScore() << endl;
+            }
+        }
+        // Colisão com outro jogador - ignorar
+        else if (dynamic_cast<Player *>(other)) {
+            return;
+        }
+        // Colisão com qualquer outra entidade
+        else {
+            active = false;
+        }
     }
-    // Colisão com qualquer outra entidade
+    // Projétil sem dono válido (fallback)
     else {
-      active = false;
+        active = false;
+        cerr << "Projectile owner is not a Player or Enemy!" << endl;
     }
-  }
-  // Projétil lançado por jogador
-  else if (Player *playerOwner = dynamic_cast<Player *>(owner)) {
-
-    // Colisão com inimigo
-    if (Enemy *enemy = dynamic_cast<Enemy *>(other)) {
-      cout << "Projectile hit enemy " << endl;
-      enemy->takeDamage(10);
-      active = false;
-
-      // Atualizar pontuação se inimigo morreu
-      if (enemy->getHealth() <= 0) {
-        playerOwner->increaseScore(SCOREMULTIPLIER * enemy->getEvilness());
-        cout << "Player score increased to " << endl;
-      }
-    }
-    // Colisão com outro jogador - ignorar
-    else if (dynamic_cast<Player *>(other)) {
-      return;
-    }
-    // Colisão com qualquer outra entidade
-    else {
-      active = false;
-    }
-  }
-  // Projétil sem dono válido (fallback)
-  else {
-    active = false;
-    cerr << "Projectile owner is not a Player or Enemy!" << endl;
-  }
 }
 
 void Projectile::move() {
-  applyGravity();
-  position += velocity;
+    applyGravity();
+    position += velocity;
 }
 
 void Projectile::execute() {

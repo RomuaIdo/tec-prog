@@ -23,15 +23,15 @@ void Character::moveCharacter() {
   setPosition(position);
 }
 
-void Character::takeDamage(int damage) {
-  if (health - damage <= 0) {
-    health = 0;
-    alive = false;
-    cout << "Character is dead!" << endl;
-  } else {
-    health -= damage;
-    cout << "Lost Health:" << health << endl;
-  }
+void Character::takeDamage(int damage, int direction) {
+    if (health - damage <= 0) {
+        health = 0;
+        alive = false;
+    } else {
+        health -= damage;
+        velocity.x = direction * 10.f; 
+        velocity.y = -6.f; 
+    }
 }
 
 void Character::applyFriction(float dt) {

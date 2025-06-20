@@ -17,6 +17,8 @@ class Player : public Character {
         int player_num;
         int score;
         string name;        
+        float jumpForce;
+
         /* -------- GUN -------- */
         list<Projectile*> projectiles_list;
 
@@ -33,7 +35,7 @@ class Player : public Character {
         void increaseScore(int points = 10) {
             score += points;
         }
-        void takeDamage(int damage = 1);
+        void takeDamage(int damage = 1, int direction = 1);
 
         /* --- INPUT HANDLING --- */
         void handlePlayer1Controls(float dt);
@@ -45,8 +47,9 @@ class Player : public Character {
         void shootProjectiles();
         
         /* ---- GETS & SETS ---- */
-        int getHealth();
-        
+        int getHealth() const;
+        int getScore() const;
+        void setJumpForce(float jpForce = PLAYERJUMPFORCE);
 
 };
 

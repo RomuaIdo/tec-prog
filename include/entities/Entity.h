@@ -67,7 +67,7 @@ using namespace sf;
 
 /* PLATFORM */
 #define PLATAFORMMAXPOSITION 50.f
-#define PLATAFORMOVE 0.4f
+#define PLATAFORMOVE 0.3f
 
 /*---------------------------------------------------------------*/
 

@@ -30,59 +30,60 @@ Vector2f Phase::getPhaseSize() const {
 }
 
 void Phase::createScenery() {
-  const string texturePath = "assets/textures/Grass.png";
-  const float tileWidth = 50.0f;
-  const float tileHeight = 50.0f;
+    const string texturePath = "assets/textures/Grass.png";
+    const float tileWidth = 50.0f;
+    const float tileHeight = 50.0f;
 
-  const int numBackgroundElementsX =
-      static_cast<int>(phaseSize.x / tileWidth) + 1;
-  const int numBackgroundElementsY = 1;
+    const int numBackgroundElementsX =
+        static_cast<int>(phaseSize.x / tileWidth) + 1;
+    const int numBackgroundElementsY = 1;
 
-  for (int y = 0; y < numBackgroundElementsY; y++) {
-    for (int x = 0; x < numBackgroundElementsX; x++) {
-      float posX = x * tileWidth + tileWidth / 2;
-      float posY = phaseSize.y - (tileHeight / 2) - (y * tileHeight);
-      tiles.push_back(new BackgroundElement(posX, posY, 0.0f, texturePath));
+    for (int y = 0; y < numBackgroundElementsY; y++) {
+        for (int x = 0; x < numBackgroundElementsX; x++) {
+        float posX = x * tileWidth + tileWidth / 2;
+        float posY = phaseSize.y - (tileHeight / 2) - (y * tileHeight);
+        tiles.push_back(new BackgroundElement(posX, posY, 0.0f, texturePath));
+        }
     }
-  }
 
-  Vector2f newphaseSize = getPhaseSize();
-  newphaseSize.y = newphaseSize.y - (numBackgroundElementsY * tileHeight);
+    Vector2f newphaseSize = getPhaseSize();
+    newphaseSize.y = newphaseSize.y - (numBackgroundElementsY * tileHeight);
 
-  BackgroundLayers.push_back(new BackgroundElement(
-      newphaseSize.x/2.f, newphaseSize.y/2.f, 1.0f, "assets/textures/1_TreesBackground.png"));
-  BackgroundLayers.push_back(new BackgroundElement(
-      newphaseSize.x/2.f, newphaseSize.y/2.f, 0.98f, "assets/textures/2_Trees.png"));
-   BackgroundLayers.push_back(new BackgroundElement(
-      newphaseSize.x/2.f, newphaseSize.y/2.f, 0.9f, "assets/textures/3_Trees.png"));
-   BackgroundLayers.push_back(new BackgroundElement(
-      newphaseSize.x/2.f, newphaseSize.y/2.f, 0.85f, "assets/textures/4_Trees.png"));
- 
+    BackgroundLayers.push_back(new BackgroundElement(
+        newphaseSize.x/2.f, newphaseSize.y/2.f, 1.0f, "assets/textures/1_TreesBackground.png"));
+    BackgroundLayers.push_back(new BackgroundElement(
+        newphaseSize.x/2.f, newphaseSize.y/2.f, 0.98f, "assets/textures/2_Trees.png"));
+    BackgroundLayers.push_back(new BackgroundElement(
+        newphaseSize.x/2.f, newphaseSize.y/2.f, 0.9f, "assets/textures/3_Trees.png"));
+    BackgroundLayers.push_back(new BackgroundElement(
+        newphaseSize.x/2.f, newphaseSize.y/2.f, 0.85f, "assets/textures/4_Trees.png"));
+    
 
-  pCM->setPhaseSize(newphaseSize);
+    pCM->setPhaseSize(newphaseSize);
 }
 
 void Phase::createPlatforms() {
-  const float minY = 100.0f; // Minimum Y position
-  const float maxY =
-      phaseSize.y - 150.0f; // Maximum Y position (50px above ground)
+    const float minY = 100.0f; // Minimum Y position
+    const float maxY =
+        phaseSize.y - 150.0f; // Maximum Y position (50px above ground)
 
-  for (int i = 0; i < maxPlatforms; i++) {
-    int numPlataform = rand() % 2;
-    // Generate random position
-    float x =
-        static_cast<float>(50 + rand() % static_cast<int>(phaseSize.x - 500));
-    float y = minY + static_cast<float>(rand() % static_cast<int>(maxY - minY));
-    
-    Plataform *p = new Plataform(x, y, false, numPlataform);
-    Plataform *p2 = new Plataform(x + 50.f, y, false, numPlataform);
-
-
-    entities_list.add(p);
-    entities_list.add(p2);
-    pCM->addObstacle(p);
-    pCM->addObstacle(p2);
-  }
+    for (int i = 0; i < maxPlatforms; i++) {
+        int numPlataform = rand() % 2;
+        // Generate random position
+        float x =
+            static_cast<float>(50 + rand() % static_cast<int>(phaseSize.x - 500));
+        float y = minY + static_cast<float>(rand() % static_cast<int>(maxY - minY));
+        
+        Plataform *p = new Plataform(x, y, false, numPlataform);
+        Plataform *p2 = new Plataform(x + p->getSize().x * 1.7f, y, false, numPlataform);
+        
+        p->configSprite();
+        p2->configSprite();
+        entities_list.add(p);
+        entities_list.add(p2);
+        pCM->addObstacle(p);
+        pCM->addObstacle(p2);
+    }
 }
 
 void Phase::createSaci() {
