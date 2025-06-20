@@ -21,7 +21,7 @@ Drawable& Ente::getDrawable() {
 
 void Ente::configSprite(){
     sprite.setOrigin(sprite.getGlobalBounds().width / 2.f, sprite.getGlobalBounds().height / 2.f);
-    size = Vector2f(sprite.getGlobalBounds().width / 2.f, sprite.getGlobalBounds().height / 2.f);
+    size  = Vector2f(sprite.getGlobalBounds().width / 2.f, sprite.getGlobalBounds().height / 2.f);
 }
 
 /* ------------------------------------------- */
@@ -44,6 +44,10 @@ Vector2f Ente::getPosition() const {
 
 Vector2f Ente::getSize() const{
     return size;
+}
+
+void Ente::setSize(Vector2f Size) {
+    size = Size;
 }
 
 void Ente::setPosition(Vector2f pos){

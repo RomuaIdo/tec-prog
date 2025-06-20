@@ -64,6 +64,6 @@ void ThornyBush::collide(Entity* e){
 
 void ThornyBush::dealDamage(Player* p){
     if (p) {
-        p->takeDamage(THORNYBUSHSPIKES);
+        p->takeDamage(THORNYBUSHSPIKES, 0);
     }
 }

@@ -34,6 +34,7 @@ class Ente {
         FloatRect getGlobalBounds() const;
         void setTexture(Texture t);
         Vector2f getSize() const;
+        void setSize(Vector2f Size);
         Sprite& getSprite();
         virtual Vector2f getPosition() const;
         virtual void setPosition(Vector2f pos);

@@ -3,7 +3,8 @@
 
 Character::Character(float x, float y, const float acel, int life, int s)
     : Entity(x, y), aceleration(acel), health(life), alive(true), strength(s),
-      takeDamageClock(0.f), friction(0.f, 0.f), faced_right(1) {}
+      takeDamageClock(0.f), damageBlinkClock(0.f), isBlinking(false),
+      friction(0.f, 0.f), faced_right(1) {}
 
 Character::~Character() {}
 
@@ -23,15 +24,39 @@ void Character::moveCharacter() {
   setPosition(position);
 }
 
-void Character::takeDamage(int damage) {
-  if (health - damage <= 0) {
-    health = 0;
-    alive = false;
-    cout << "Character is dead!" << endl;
-  } else {
-    health -= damage;
-    cout << "Lost Health:" << health << endl;
-  }
+void Character::takeDamage(int damage, int direction) {
+    if (health - damage <= 0) {
+        health = 0;
+        alive = false;
+    } else {
+        health -= damage;
+        velocity.x = direction * XPUSH;
+        velocity.y = -YPUSH;
+        moveCharacter();
+
+        isBlinking = true;
+        damageBlinkClock = 0.f;
+    }
+}
+
+void Character::updateDamageBlink() {
+    if (isBlinking) {
+        damageBlinkClock += pGM->getdt();
+
+        // Alterna opacidade
+        if (static_cast<int>(damageBlinkClock * 10) % 2 == 0) {
+            sprite.setColor(sf::Color(255, 255, 255, 100)); // transparente
+        } else {
+            sprite.setColor(sf::Color(255, 255, 255, 255)); // normal
+        }
+
+        // Para de piscar após 1 segundo
+        if (damageBlinkClock >= 1.0f) {
+            isBlinking = false;
+            damageBlinkClock = 0.f;
+            sprite.setColor(sf::Color(255, 255, 255, 255)); // reset
+        }
+    }
 }
 
 void Character::applyFriction(float dt) {
