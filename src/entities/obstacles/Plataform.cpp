@@ -27,14 +27,22 @@ Plataform::Plataform(float x, float y, bool harm, int n)
 Plataform::~Plataform() {}
 
 void Plataform::collide(Entity *other) {
-    if (other) {
-        obstacleAction(other);
+    if (dynamic_cast<Plataform *>(other)) {
+        return; // Avoid self-collision
     }
+    obstacleAction(other);
 }
 
 void Plataform::execute() { 
     draw(); 
     regenClock += pGM->getdt();
+    if(regenClock >= 1.0f && isActive) {
+        isActive = false;
+    }
+    move();
+    setState();
+    sprite.setTexture(texture);
+    configSprite();
 }
 
 
@@ -60,15 +68,7 @@ void Plataform::obstacleAction(Entity *e) {
         }
     }
 
-    if(regenClock >= 1.0f && isActive) {
-        isActive = false;
-    }
-
-    move();
-    setState();
-
-    sprite.setTexture(texture);
-    configSprite();
+    
     
 }
 

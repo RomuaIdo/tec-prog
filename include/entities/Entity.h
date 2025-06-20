@@ -17,8 +17,9 @@ using namespace sf;
 #define MULAHEALTH 20
 #define MULASTRENGTH 4
 #define CHARGECOOLDOWN 7.f
+#define CHARGEFORCE 50.f
 #define MULACHANGEDIRECTION 3.f
-#define MULAFAR 800.f
+#define MULAFAR 1500.f
 #define CHARGEPREPARATIONCOOLDOWN 2.f
 #define MULAEVILNESS 10
 
@@ -40,7 +41,7 @@ using namespace sf;
 #define JUMPCOOLDOWN 2.5f
 #define LASTPOSCOOLDOWN 1.f
 #define SACIJUMPFORCE 15.f
-#define SACIFAR 700.f
+#define SACIFAR 1300.f
 #define SACIEVILNESS 3
 
 /* PLAYER */
@@ -65,8 +66,8 @@ using namespace sf;
 #define THORNYBUSHSPIKES 2
 
 /* PLATFORM */
-#define PLATAFORMMAXPOSITION 100.f
-#define PLATAFORMOVE 2.f
+#define PLATAFORMMAXPOSITION 50.f
+#define PLATAFORMOVE 1.f
 
 /*---------------------------------------------------------------*/
 
