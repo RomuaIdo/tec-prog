@@ -35,14 +35,14 @@ void Plataform::collide(Entity *other) {
 
 void Plataform::execute() { 
     draw(); 
-    regenClock += pGM->getdt();
-    if(regenClock >= 1.0f && isActive) {
-        isActive = false;
-    }
     move();
     setState();
     sprite.setTexture(texture);
     configSprite();
+    regenClock += pGM->getdt();
+    if(regenClock >= PLATAFORMOVE && isActive) {
+        isActive = false;
+    }
 }
 
 
