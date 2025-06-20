@@ -151,8 +151,9 @@ void Player::takeDamage(int damage, int direction) {
         } else {
             takeDamageClock = 0.f;
             health -= damage;
+        
             velocity.x = direction * XPUSH;
-            velocity.y = -YPUSH;
+            velocity.y = abs(direction) * -YPUSH;
             moveCharacter();
             cout << "Lost Health:" << health << endl;
 
