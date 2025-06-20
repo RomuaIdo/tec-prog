@@ -79,7 +79,7 @@ void Saci::move() {
     }
 
     // Stop after jumping
-    if (!getInAir()) {
+    if (!getInAir() && !isBlinking) {
         velocity = Vector2f(0.f, 0.f);
     }
 
