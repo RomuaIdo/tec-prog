@@ -31,42 +31,43 @@ void NewGameMenu::createButtons() {
   Button *playersLeftButton = new Button(
       "assets/fonts/Minecraft.ttf", "<", "assets/textures/button.png",
       "assets/textures/button_hovered.png", &mouseSubject, 24,
-      Vector2f(center.x - 100.f, center.y - 100.f));
+      Vector2f(center.x - 100.f, center.y - 300.f));
   playersLeftButton->activate();
   addButton("players_left", playersLeftButton);
 
   Button *playersRightButton = new Button(
       "assets/fonts/Minecraft.ttf", ">", "assets/textures/button.png",
       "assets/textures/button_hovered.png", &mouseSubject, 24,
-      Vector2f(center.x + 100.f, center.y - 100.f));
+      Vector2f(center.x + 100.f, center.y - 300.f));
   playersRightButton->activate();
   addButton("players_right", playersRightButton);
 
   Button *phaseLeftButton = new Button(
       "assets/fonts/Minecraft.ttf", "<", "assets/textures/button.png",
       "assets/textures/button_hovered.png", &mouseSubject, 24,
-      Vector2f(center.x - 100.f, center.y));
+      Vector2f(center.x - 100.f, center.y - 50.f));
   phaseLeftButton->activate();
   addButton("phase_left", phaseLeftButton);
 
   Button *phaseRightButton = new Button(
       "assets/fonts/Minecraft.ttf", ">", "assets/textures/button.png",
       "assets/textures/button_hovered.png", &mouseSubject, 24,
-      Vector2f(center.x + 100.f, center.y));
+      Vector2f(center.x + 100.f, center.y - 50.f));
   phaseRightButton->activate();
   addButton("phase_right", phaseRightButton);
 
   Button *startButton = new Button(
       "assets/fonts/Minecraft.ttf", "Start", "assets/textures/button.png",
       "assets/textures/button_hovered.png", &mouseSubject, 24,
-      Vector2f(center.x, center.y + 200.f));
+      Vector2f(center.x, center.y + 100.f));
+  startButton->getSprite().setScale(1.5f,1.5f);
   startButton->activate();
   addButton("start", startButton);
 
   Button *backButton = new Button(
       "assets/fonts/Minecraft.ttf", "Back", "assets/textures/button.png",
       "assets/textures/button_hovered.png", &mouseSubject, 24,
-      Vector2f(center.x, center.y + 300.f));
+      Vector2f(center.x, center.y + 200.f));
   backButton->activate();
   addButton("back", backButton);
 
@@ -76,12 +77,12 @@ void NewGameMenu::createButtons() {
   playersText.setFont(font);
   playersText.setCharacterSize(24);
   playersText.setFillColor(Color::White);
-  playersText.setPosition(center.x, center.y - 100.f);
+  playersText.setPosition(center.x, center.y - 300.f);
 
   phaseText.setFont(font);
   phaseText.setCharacterSize(24);
   phaseText.setFillColor(Color::White);
-  phaseText.setPosition(center.x, center.y);
+  phaseText.setPosition(center.x, center.y - 50.f);
 
   createNameInputs();
 }
@@ -99,15 +100,15 @@ void NewGameMenu::createNameInputs() {
 
   if (players == 1) {
     TextInputField *input = new TextInputField(
-        font, "Player 1:", Vector2f(center.x - 50.f, center.y + 50.f));
+        font, "Player 1:", Vector2f(center.x - 50.f, center.y - 200.f));
     nameInputs.push_back(input);
     pGame->getMouseSubject().addObserver(input);     // Registrar mouse observer
     pGame->getTextInputSubject().addObserver(input); // Registrar text observer
   } else {
     TextInputField *input1 = new TextInputField(
-        font, "Player 1:", Vector2f(center.x - 150.f, center.y + 50.f));
+        font, "Player 1:", Vector2f(center.x - 150.f, center.y - 200.f));
     TextInputField *input2 = new TextInputField(
-        font, "Player 2:", Vector2f(center.x + 50.f, center.y + 50.f));
+        font, "Player 2:", Vector2f(center.x + 50.f, center.y - 200.f));
     nameInputs.push_back(input1);
     nameInputs.push_back(input2);
     pGame->getMouseSubject().addObserver(input1); // Registrar mouse observer
@@ -131,7 +132,7 @@ void NewGameMenu::updatePhaseDisplay() {
 
   FloatRect textBounds = phaseText.getLocalBounds();
   phaseText.setOrigin(textBounds.width / 2, textBounds.height / 2);
-  phaseText.setPosition(center.x, center.y);
+  phaseText.setPosition(center.x, center.y - 50.f);
 }
 
 void NewGameMenu::updatePlayersDisplay() {
@@ -144,7 +145,7 @@ void NewGameMenu::updatePlayersDisplay() {
 
   FloatRect textBounds = playersText.getLocalBounds();
   playersText.setOrigin(textBounds.width / 2, textBounds.height / 2);
-  playersText.setPosition(center.x, center.y - 100.f);
+  playersText.setPosition(center.x, center.y - 300.f);
 
   createNameInputs();
 }

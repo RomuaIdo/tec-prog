@@ -9,7 +9,7 @@ class Plataform : public Obstacle{
 
     private:
         /* ------ STATUS ------- */
-
+        int plataformType; // 0 for cloud1, 1 for cloud2
         bool isActive;
 
     public:
