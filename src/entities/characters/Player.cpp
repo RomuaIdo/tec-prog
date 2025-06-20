@@ -42,6 +42,7 @@ void Player::execute() {
     shoot();
     shootProjectiles();
     updateClocks();
+    updateDamageBlink();
   }
 }
 
@@ -150,9 +151,14 @@ void Player::takeDamage(int damage, int direction) {
         } else {
             takeDamageClock = 0.f;
             health -= damage;
-            velocity.x = direction * 10.f;
-            velocity.y = -6.f;
+            velocity.x = direction * XPUSH;
+            velocity.y = -YPUSH;
+            moveCharacter();
             cout << "Lost Health:" << health << endl;
+
+
+            isBlinking = true;
+            damageBlinkClock = 0.f;
         }
     }
 }

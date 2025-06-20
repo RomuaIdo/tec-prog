@@ -11,10 +11,12 @@ using namespace sf;
 
 /* ------- CHARACTERS -------- */
 #define FRICTION 25.f
+#define XPUSH 10.f
+#define YPUSH 6.f
 
 /* MULA SEM CABECA (Hard Enemy) */
 #define MULAACEL 5.f
-#define MULAHEALTH 20
+#define MULAHEALTH 10
 #define MULASTRENGTH 4
 #define CHARGECOOLDOWN 7.f
 #define CHARGEFORCE 50.f
@@ -24,7 +26,7 @@ using namespace sf;
 #define MULAEVILNESS 10
 
 /* CUCA (Medium Enemy) */
-#define CUCAACEL 6.f
+#define CUCAACEL 4.f
 #define CUCAHEALTH 5
 #define CUCASTRENGTH 2
 #define CUCAFAR 400.f
@@ -34,7 +36,7 @@ using namespace sf;
 #define CUCAEVILNESS 7
 
 /* SACI (Easy Enemy) */
-#define SACIACEL 5.f
+#define SACIACEL 3.f
 #define SACIHEALTH 5
 #define SACISTRENGTH 2
 #define TELEPORTCOOLDOWN 8.f

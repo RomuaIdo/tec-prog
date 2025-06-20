@@ -25,6 +25,7 @@ void MulaSemCabeca::execute() {
     draw();
     verifyDeadPlayers();
     updateClocks();
+    updateDamageBlink();
   }
 }
 

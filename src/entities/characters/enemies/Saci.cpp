@@ -24,6 +24,7 @@ void Saci::execute() {
         teleport(getPlayerLastPosition());
         verifyDeadPlayers();
         updateClocks();
+        updateDamageBlink();
     }
 }
 

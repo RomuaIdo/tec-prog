@@ -24,8 +24,9 @@ void Cuca::execute() {
     makePotion();
     verifyDeadPlayers();
     updateClocks();
-  }
-  throwPotion();
+    throwPotion();
+    updateDamageBlink();
+  } 
 }
 
 void Cuca::move() {
@@ -36,7 +37,7 @@ void Cuca::move() {
         clock = 0;
         velocity.x = faced_right * (aceleration);
     }
-
+    applyGravity();
     moveCharacter();
 }
 

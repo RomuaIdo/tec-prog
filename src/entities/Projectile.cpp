@@ -67,8 +67,7 @@ void Projectile::collide(Entity *other) {
 
             int direction = static_cast<int>(enemy->getPosition().x - position.x);
             direction /= abs(direction);
-            cout << "Projectile hit enemy " << endl;
-            enemy->takeDamage(10, direction);
+            enemy->takeDamage(ROCKDAMAGE, direction);
             active = false;
 
             // Atualizar pontuação se inimigo morreu
