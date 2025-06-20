@@ -36,13 +36,13 @@ using namespace sf;
 #define CUCAEVILNESS 7
 
 /* SACI (Easy Enemy) */
-#define SACIACEL 3.f
+#define SACIACEL 7.f
 #define SACIHEALTH 5
 #define SACISTRENGTH 2
 #define TELEPORTCOOLDOWN 8.f
 #define JUMPCOOLDOWN 2.5f
 #define LASTPOSCOOLDOWN 1.f
-#define SACIJUMPFORCE 15.f
+#define SACIJUMPFORCE 12.f
 #define SACIFAR 1300.f
 #define SACIEVILNESS 3
 
@@ -54,7 +54,7 @@ using namespace sf;
 #define SHOOTCOOLDOWN 0.5f
 #define PLAYERJUMPFORCE 15.f
 #define PLAYERMAXVEL 15.f
-#define ROCKDAMAGE 1
+#define ROCKDAMAGE 2
 #define ROCKACEL 15.f
 #define SCOREMULTIPLIER 10
 

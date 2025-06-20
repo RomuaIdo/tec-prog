@@ -7,6 +7,8 @@ class MulaSemCabeca : public Enemy {
     private:
         /* ------ STATUS ------- */
         float chargeClock;
+        bool isCharging;
+        float chargingClock;
 
         /* ------ TEXTURES ------ */
         Texture chargeTexture;
@@ -22,6 +24,7 @@ class MulaSemCabeca : public Enemy {
         void move();
         void charge();
         void updateClocks();
+        void updateChargingClock();
 
         /* ------- PLAYER -------- */
         void attack(Player *p);

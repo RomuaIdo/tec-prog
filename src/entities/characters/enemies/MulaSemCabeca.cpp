@@ -1,8 +1,7 @@
 #include "../../../../include/entities/characters/enemies/MulaSemCabeca.h"
 
-MulaSemCabeca::MulaSemCabeca(float x, float y, const float acel, int life,
-                             int s)
-    : Enemy(x, y, acel, life, s), chargeClock(0.f) {
+MulaSemCabeca::MulaSemCabeca(float x, float y, const float acel, int life, int s)
+    : Enemy(x, y, acel, life, s), chargeClock(0.f), isCharging(false), chargingClock(0.f) {
 
   texture = pGM->loadTexture("assets/textures/Mula.png");
   runTexture = texture;
@@ -26,6 +25,7 @@ void MulaSemCabeca::execute() {
     verifyDeadPlayers();
     updateClocks();
     updateDamageBlink();
+    updateChargingClock();
   }
 }
 
@@ -77,6 +77,19 @@ void MulaSemCabeca::updateClocks() {
 
     clock += dt;
     chargeClock += dt;
+}
+
+void MulaSemCabeca::updateChargingClock() {
+    if (isCharging) {
+        chargingClock += pGM->getdt();
+
+        // Para de carregar após 1 segundo
+        if (chargingClock >= 1.0f) {
+            isCharging = false;
+            chargingClock = 0.f;
+            velocity = Vector2f(MULAACEL * faced_right, 0.f);
+        }
+    }
 }
 
 void MulaSemCabeca::charge() {
