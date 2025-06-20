@@ -79,6 +79,9 @@ void Game::execute() {
       if (event.type == Event::MouseButtonPressed) {
         mouseSubject.notifyObservers(event.mouseButton);
       }
+      if (event.type == Event::TextEntered) {
+        textInputSubject.notifyObservers(event.text);
+      }
     }
 
     pGM->clean();
@@ -215,12 +218,21 @@ void Game::createSecondPhase() {
   }
 }
 
-void Game::createPlayers() {
-  if (!player1 && !player2) {
-    player1 = new Player(200, 100, PLAYERACEL, PLAYERHEALTH, PLAYERSTRENGTH, 1);
-    if (number_of_players == 2) {
-      player2 =
-          new Player(100, 100, PLAYERACEL, PLAYERHEALTH, PLAYERSTRENGTH, 2);
+void Game::createPlayers(const vector<string>& playerNames) {
+    if (!player1 && !player2) {
+        player1 = new Player(200, 100, PLAYERACEL, playerNames[0],PLAYERHEALTH, PLAYERSTRENGTH, 1);
+        
+        if (number_of_players == 2 && playerNames.size() > 1) {
+            player2 = new Player(100, 100, PLAYERACEL, playerNames[1], PLAYERHEALTH, PLAYERSTRENGTH, 2);
+        }
     }
-  }
+}
+
+
+void Game::setPlayerNames(const vector<string> &names) {
+  player_names = names;
+}
+
+TextInputSubject &Game::getTextInputSubject() {
+  return textInputSubject;
 }

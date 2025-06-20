@@ -8,39 +8,41 @@ using namespace std;
 
 class Character : public Entity {
 
-    protected:
-        /* ------ STATUS ------- */
-        const float aceleration;
-        int health;
-        const int strength;
-        float takeDamageClock;
+protected:
+  /* ------ STATUS ------- */
+  const float aceleration;
+  int health;
+  bool alive;
+  const int strength;
+  float takeDamageClock;
 
-        /* --- COEFFICIENTS ---- */
-        Vector2f friction;
-        
-        /* ------- FLAGS ------- */
-        int faced_right;
-        bool in_air;
+  /* --- COEFFICIENTS ---- */
+  Vector2f friction;
 
-    public:
-        Character();
-        Character(float x, float y, const float acel, int life = 5, int s = 1);
-        virtual ~Character();
+  /* ------- FLAGS ------- */
+  int faced_right;
+  bool in_air;
 
-        virtual void execute() = 0;
-        virtual void move() = 0;
-        
-        /* ---- OWN FUNCTIONS ---- */
-        void moveCharacter();
-        void applyFriction(float dt = 1.f/60.f);
-        virtual void takeDamage(int damage);
-        virtual void updateClocks() = 0;
-        
-        /* ----- GETS & SETS ----- */
-        int getHealth() const;
-        int getStrength() const;
-        bool getInAir() const;
-        void setInAir(bool inair);
+public:
+  Character();
+  Character(float x, float y, const float acel, int life = 5, int s = 1);
+  virtual ~Character();
+
+  virtual void execute() = 0;
+  virtual void move() = 0;
+
+  /* ---- OWN FUNCTIONS ---- */
+  void moveCharacter();
+  void applyFriction(float dt = 1.f / 60.f);
+  virtual void takeDamage(int damage);
+  virtual void updateClocks() = 0;
+
+  /* ----- GETS & SETS ----- */
+  int getHealth() const;
+  int getStrength() const;
+  bool getInAir() const;
+  void setInAir(bool inair);
+  bool getAlive() const;
 };
 
 #endif

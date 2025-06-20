@@ -3,13 +3,9 @@
 
 ThornyBush::ThornyBush(float x, float y, bool harm):
     Obstacle(x, y, harm), regenClock(0.0f), active(false) {
-
-    if (!texture_hide.loadFromFile("assets/textures/ThornyBushHide.png")) {
-        std::cerr << "Failed to load ThornyBushHide.png!" << std::endl;
-    }
-    if (!texture_spikes.loadFromFile("assets/textures/ThornyBushSpikes.png")) {
-        std::cerr << "Failed to load ThornyBushSpikes.png!" << std::endl;
-    }
+    
+    texture_hide = pGM->loadTexture("assets/textures/ThornyBushHide.png");
+    texture_spikes = pGM->loadTexture("assets/textures/ThornyBushSpikes.png");  
 
     texture = texture_hide;
     sprite.setTexture(texture_hide); // Start hidden

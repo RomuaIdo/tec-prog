@@ -5,12 +5,9 @@ Button::Button(const string fontPath, const string info,
                MouseSubject *subject, unsigned int fontSize, Vector2f position)
     : Ente(), mouseSubject(subject), fontSize(fontSize), position(position),
       state(ButtonState::NORMAL), clicked(false) {
-
-  if (!texture.loadFromFile(normalTexturePath))
-    cerr << "Failed to load normal texture!" << endl;
-
-  if (!hoverTexture.loadFromFile(hoveredTexturePath))
-    cerr << "Failed to load hovered texture!" << endl;
+  
+  texture = pGM->loadTexture(normalTexturePath);
+  hoverTexture = pGM->loadTexture(hoveredTexturePath);
 
   if (!font.loadFromFile(fontPath))
     cerr << "Failed to load font!" << endl;

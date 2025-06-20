@@ -16,12 +16,12 @@ class Player : public Character {
         /* ------ STATUS ------- */
         int player_num;
         int score;
-        
+        string name;        
         /* -------- GUN -------- */
         list<Projectile*> projectiles_list;
 
     public:
-        Player(float x, float y, const float acel, int life = 5, int s = 1, int p_num = 1);
+        Player(float x, float y, const float acel, const string Name, int life = 5, int s = 1, int p_num = 1);
         ~Player();
 
         /* --- OWN FUNCTIONS --- */

@@ -31,7 +31,7 @@ class Ente {
         virtual Drawable& getDrawable();
 
         /* ----- GETS & SETS ----- */
-
+        FloatRect getGlobalBounds() const;
         void setTexture(Texture t);
         Vector2f getSize() const;
         Sprite& getSprite();

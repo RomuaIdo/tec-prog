@@ -48,11 +48,20 @@ float vectorModule(Vector2f vector) {
 /* ------------------------------------------- */
 
 bool CollisionManager::verifyCollision(Entity *ent1, Entity *ent2) const {
-  if (abs(vectorModule(ent1->getPosition() - ent2->getPosition())) <
-      abs(vectorModule(ent1->getSize() + ent2->getSize()))) {
-    return true;
+  if (!ent1 || !ent2) {
+    return false; // Verifica se as entidades são válidas
   }
-  return false;
+
+  Vector2f pos1 = ent1->getPosition();
+  Vector2f pos2 = ent2->getPosition();
+  Vector2f size1 = ent1->getSize();
+  Vector2f size2 = ent2->getSize();
+
+  // Verifica se há sobreposição entre os retângulos delimitadores
+  return (pos1.x - size1.x < pos2.x + size2.x &&
+          pos1.x + size1.x > pos2.x - size2.x &&
+          pos1.y - size1.y < pos2.y + size2.y &&
+          pos1.y + size1.y > pos2.y - size2.y);
 }
 
 void CollisionManager::treatWallCollision() {
@@ -174,40 +183,40 @@ void CollisionManager::treatPlayersCollision() {
 }
 
 void CollisionManager::treatEnemiesCollision() {
-
-  for (vector<Player *>::iterator it = players_vector.begin();
-       it != players_vector.end(); it++) {
-    if ((*it)) {
-      for (vector<Enemy *>::iterator itEnemy = enemies_vector.begin();
-           itEnemy != enemies_vector.end(); itEnemy++) {
-        if (*itEnemy) {
-          if (verifyCollision((*it), (*itEnemy))) {
-            (*itEnemy)->collide(*it);
-            (*it)->collide(*itEnemy);
-          }
-        }
-      }
-    }
-  }
-
-  for (vector<Enemy *>::iterator it = enemies_vector.begin();
-       it != enemies_vector.end(); it++) {
-    if ((*it)) {
-      for (vector<Enemy *>::iterator itEnemy = enemies_vector.begin();
-           itEnemy != enemies_vector.end(); itEnemy++) {
-        if (*itEnemy) {
-          if ((*it) != (*itEnemy)) {
-            if (verifyCollision((*it), (*itEnemy))) {
-              (*itEnemy)->collide(*it);
-              (*it)->collide(*itEnemy);
+    // Colisões entre jogadores e inimigos
+    for (vector<Player *>::iterator it = players_vector.begin();
+        it != players_vector.end(); it++) {
+        if ((*it) && (*it)->getAlive()) { // Só verifica se vivo
+            for (vector<Enemy *>::iterator itEnemy = enemies_vector.begin();
+                itEnemy != enemies_vector.end(); itEnemy++) {
+                if (*itEnemy && (*itEnemy)->getAlive()) { // Só verifica se vivo
+                    if (verifyCollision((*it), (*itEnemy))) {
+                        (*itEnemy)->collide(*it);
+                        (*it)->collide(*itEnemy);
+                    }
+                }
             }
-          }
         }
-      }
     }
-  }
-}
 
+    // Colisões entre inimigos
+    for (vector<Enemy *>::iterator it = enemies_vector.begin();
+        it != enemies_vector.end(); it++) {
+        if ((*it) && (*it)->getAlive()) { // Só verifica se vivo
+            for (vector<Enemy *>::iterator itEnemy = enemies_vector.begin();
+                itEnemy != enemies_vector.end(); itEnemy++) {
+                if (*itEnemy && (*itEnemy)->getAlive()) { // Só verifica se vivo
+                    if ((*it) != (*itEnemy)) {
+                        if (verifyCollision((*it), (*itEnemy))) {
+                            (*itEnemy)->collide(*it);
+                            (*it)->collide(*itEnemy);
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
 void CollisionManager::treatObstaclesCollision() {
 
   // Tratamento de colisão para inimigos
@@ -262,7 +271,7 @@ void CollisionManager::treatProjectilesCollision() {
     for (vector<Enemy *>::iterator itEnemy = enemies_vector.begin();
          itEnemy != enemies_vector.end(); ++itEnemy) {
 
-      if (*itEnemy)
+      if (*itEnemy && (*itEnemy)->getAlive())
         if (verifyCollision(proj, *itEnemy)) {
           collided = true;
           collidedEntity = *itEnemy;
@@ -288,7 +297,7 @@ void CollisionManager::treatProjectilesCollision() {
       for (vector<Player *>::iterator itPlayer = players_vector.begin();
            itPlayer != players_vector.end(); ++itPlayer) {
 
-        if (*itPlayer && verifyCollision(proj, *itPlayer)) {
+        if (*itPlayer && (*itPlayer)->getAlive() && verifyCollision(proj, *itPlayer)) {
           collided = true;
           collidedEntity = *itPlayer;
           break;

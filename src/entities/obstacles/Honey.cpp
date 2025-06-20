@@ -4,10 +4,7 @@
 
 Honey::Honey(float x, float y, bool harm):
     Obstacle(x,y,harm), viscosity(HONEYVISCOSITY){
-
-    if (!texture.loadFromFile("assets/textures/Honey.png")) {
-        std::cerr << "Failed to load Honey.png!" << std::endl;
-    }
+    texture = pGM->loadTexture("assets/textures/Honey.png");
 
     sprite.setTexture(texture);
     configSprite();

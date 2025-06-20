@@ -54,4 +54,8 @@ void Ente::setGraphicsManager(GraphicsManager* pGM) {
     Ente::pGM = pGM;
 }
 
+FloatRect Ente::getGlobalBounds() const {
+    return sprite.getGlobalBounds();
+}
+
 GraphicsManager* Ente::pGM = nullptr;

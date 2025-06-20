@@ -115,3 +115,19 @@ Vector2f GraphicsManager::getCameraCenter() const {
     return Vector2f(0.f, 0.f);
   }
 }
+
+Texture GraphicsManager::loadTexture(const string &path) {
+  if (textures.find(path) != textures.end()) {
+    return *textures[path];
+  } else {
+    Texture *texture = new Texture();
+    if (texture->loadFromFile(path)) {
+      textures[path] = texture;
+      return *texture;
+    } else {
+      cerr << "Failed to load texture from: " << path << endl;
+      delete texture; // Clean up if loading fails
+      return Texture(); // Return an empty texture
+    }
+  }
+}

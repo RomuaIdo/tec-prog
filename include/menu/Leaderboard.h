@@ -17,6 +17,8 @@ class Leaderboard : public Menu {
         void drawScores();
         
     private:
+        void loadFile(const std::string& filename, bool isSingle); // Add this declaration
+        
         class ScoreEntry {
             public:
                 int position;

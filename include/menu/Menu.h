@@ -21,9 +21,9 @@ public:
   virtual ~Menu();
 
   /* ---- OWN FUNCTIONS ---- */
-  void execute() override;
-  Drawable &getDrawable() override;
-  void draw() override;
+  virtual void execute();   
+  virtual Drawable &getDrawable();
+  virtual void draw();
 
   /* ------ BUTTON ------- */
   void addButton(string name, Button *button);

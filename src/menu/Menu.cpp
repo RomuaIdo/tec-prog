@@ -64,7 +64,7 @@ void Menu::addButton(string name, Button *button){
 /* ------------------------------------------- */
 
 void Menu::setBackground(const string filePath){
-    background.loadFromFile(filePath);
+    background = pGM->loadTexture(filePath);
     sprite.setTexture(background);
 }
 

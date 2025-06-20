@@ -9,7 +9,6 @@ class EntitiesList {
     private:
         List<Entity*> entities;
         List<Entity*>::Iterator it;
-        CollisionManager* pCM = CollisionManager::getInstance();
 
     public:
         EntitiesList();

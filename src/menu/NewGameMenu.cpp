@@ -2,128 +2,236 @@
 #include "../../include/game/Game.h"
 #include "../../include/graphicalelements/Button.h"
 #include <iostream>
+#include <sstream>
 
-NewGameMenu::NewGameMenu(Game* game) : Menu(game), currentPhase(1), players(1) {
-    setBackground("assets/textures/menu_background.png");
-    createButtons();
-    updatePhaseDisplay();
-    updatePlayersDisplay();
+NewGameMenu::NewGameMenu(Game *game)
+    : Menu(game), activeInputField(nullptr), currentPhase(1), players(1),
+      currentInputIndex(0) {
+  setBackground("assets/textures/menu_background.png");
+  createButtons();
+  updatePhaseDisplay();
+  updatePlayersDisplay();
 }
 
 NewGameMenu::~NewGameMenu() {
+  for (auto input : nameInputs) {
+    pGame->getMouseSubject().removeObserver(input);
+    pGame->getTextInputSubject().removeObserver(input);
+    delete input;
+  }
+  nameInputs.clear();
 }
 
 void NewGameMenu::createButtons() {
-    Vector2f viewSize = pGM->getWindow()->getView().getSize();
-    Vector2f center(viewSize.x / 2, viewSize.y / 2);
+  Vector2f viewSize = pGM->getWindow()->getView().getSize();
+  Vector2f center(viewSize.x / 2, viewSize.y / 2);
 
-    MouseSubject& mouseSubject = pGame->getMouseSubject();
-    
-    // Botões para jogadores
-    Button* playersLeftButton = new Button("assets/fonts/Minecraft.ttf", "<",
-                                       "assets/textures/button.png",
-                                       "assets/textures/button_hovered.png",
-                                       &mouseSubject, 24, Vector2f(center.x - 100.f, center.y - 100.f));
-    playersLeftButton->activate();
-    addButton("players_left", playersLeftButton);
+  MouseSubject &mouseSubject = pGame->getMouseSubject();
 
-    Button* playersRightButton = new Button("assets/fonts/Minecraft.ttf", ">",
-                                        "assets/textures/button.png",
-                                        "assets/textures/button_hovered.png",
-                                        &mouseSubject, 24, Vector2f(center.x + 100.f, center.y - 100.f));
-    playersRightButton->activate();
-    addButton("players_right", playersRightButton);
+  Button *playersLeftButton = new Button(
+      "assets/fonts/Minecraft.ttf", "<", "assets/textures/button.png",
+      "assets/textures/button_hovered.png", &mouseSubject, 24,
+      Vector2f(center.x - 100.f, center.y - 100.f));
+  playersLeftButton->activate();
+  addButton("players_left", playersLeftButton);
 
-    Button* phaseLeftButton = new Button("assets/fonts/Minecraft.ttf", "<",
-                                     "assets/textures/button.png",
-                                     "assets/textures/button_hovered.png",
-                                     &mouseSubject, 24, Vector2f(center.x - 100.f, center.y));
-    phaseLeftButton->activate();
-    addButton("phase_left", phaseLeftButton);
+  Button *playersRightButton = new Button(
+      "assets/fonts/Minecraft.ttf", ">", "assets/textures/button.png",
+      "assets/textures/button_hovered.png", &mouseSubject, 24,
+      Vector2f(center.x + 100.f, center.y - 100.f));
+  playersRightButton->activate();
+  addButton("players_right", playersRightButton);
 
-    Button* phaseRightButton = new Button("assets/fonts/Minecraft.ttf", ">",
-                                      "assets/textures/button.png",
-                                      "assets/textures/button_hovered.png",
-                                      &mouseSubject, 24, Vector2f(center.x + 100.f, center.y));
-    phaseRightButton->activate();
-    addButton("phase_right", phaseRightButton);
+  Button *phaseLeftButton = new Button(
+      "assets/fonts/Minecraft.ttf", "<", "assets/textures/button.png",
+      "assets/textures/button_hovered.png", &mouseSubject, 24,
+      Vector2f(center.x - 100.f, center.y));
+  phaseLeftButton->activate();
+  addButton("phase_left", phaseLeftButton);
 
-    Button* startButton = new Button("assets/fonts/Minecraft.ttf", "Start",
-                                  "assets/textures/button.png",
-                                  "assets/textures/button_hovered.png",
-                                  &mouseSubject, 24, Vector2f(center.x, center.y + 100.f));
-    startButton->activate();
-    addButton("start", startButton);
+  Button *phaseRightButton = new Button(
+      "assets/fonts/Minecraft.ttf", ">", "assets/textures/button.png",
+      "assets/textures/button_hovered.png", &mouseSubject, 24,
+      Vector2f(center.x + 100.f, center.y));
+  phaseRightButton->activate();
+  addButton("phase_right", phaseRightButton);
 
-    Button* backButton = new Button("assets/fonts/Minecraft.ttf", "Back",
-                                 "assets/textures/button.png",
-                                 "assets/textures/button_hovered.png",
-                                 &mouseSubject, 24, Vector2f(center.x, center.y + 200.f));
-    backButton->activate();
-    addButton("back", backButton);
+  Button *startButton = new Button(
+      "assets/fonts/Minecraft.ttf", "Start", "assets/textures/button.png",
+      "assets/textures/button_hovered.png", &mouseSubject, 24,
+      Vector2f(center.x, center.y + 200.f));
+  startButton->activate();
+  addButton("start", startButton);
 
-    if (!font.loadFromFile("assets/fonts/Minecraft.ttf")) {
-        cerr << "Failed to load font for phase text!" << endl;
-    }
-    playersText.setFont(font);
-    playersText.setCharacterSize(24);
-    playersText.setFillColor(Color::White);
-    playersText.setPosition(center.x, center.y - 100.f);
+  Button *backButton = new Button(
+      "assets/fonts/Minecraft.ttf", "Back", "assets/textures/button.png",
+      "assets/textures/button_hovered.png", &mouseSubject, 24,
+      Vector2f(center.x, center.y + 300.f));
+  backButton->activate();
+  addButton("back", backButton);
 
-    phaseText.setFont(font);
-    phaseText.setCharacterSize(24);
-    phaseText.setFillColor(Color::White);
-    phaseText.setPosition(center.x, center.y);
+  if (!font.loadFromFile("assets/fonts/Minecraft.ttf")) {
+    std::cerr << "Failed to load font for phase text!" << std::endl;
+  }
+  playersText.setFont(font);
+  playersText.setCharacterSize(24);
+  playersText.setFillColor(Color::White);
+  playersText.setPosition(center.x, center.y - 100.f);
+
+  phaseText.setFont(font);
+  phaseText.setCharacterSize(24);
+  phaseText.setFillColor(Color::White);
+  phaseText.setPosition(center.x, center.y);
+
+  createNameInputs();
+}
+
+void NewGameMenu::createNameInputs() {
+  Vector2f viewSize = pGM->getWindow()->getView().getSize();
+  Vector2f center(viewSize.x / 2, viewSize.y / 2);
+
+  for (auto input : nameInputs) {
+    pGame->getMouseSubject().removeObserver(input);
+    pGame->getTextInputSubject().removeObserver(input);
+    delete input;
+  }
+  nameInputs.clear();
+
+  if (players == 1) {
+    TextInputField *input = new TextInputField(
+        font, "Player 1:", Vector2f(center.x - 50.f, center.y + 50.f));
+    nameInputs.push_back(input);
+    pGame->getMouseSubject().addObserver(input);     // Registrar mouse observer
+    pGame->getTextInputSubject().addObserver(input); // Registrar text observer
+  } else {
+    TextInputField *input1 = new TextInputField(
+        font, "Player 1:", Vector2f(center.x - 150.f, center.y + 50.f));
+    TextInputField *input2 = new TextInputField(
+        font, "Player 2:", Vector2f(center.x + 50.f, center.y + 50.f));
+    nameInputs.push_back(input1);
+    nameInputs.push_back(input2);
+    pGame->getMouseSubject().addObserver(input1); // Registrar mouse observer
+    pGame->getMouseSubject().addObserver(input2); // Registrar mouse observer
+    pGame->getTextInputSubject().addObserver(input1); // Registrar text observer
+    pGame->getTextInputSubject().addObserver(input2); // Registrar text observer
+  }
+
+  if (!nameInputs.empty()) {
+    setActiveInputField(0);
+  }
 }
 
 void NewGameMenu::updatePhaseDisplay() {
-    Vector2f viewSize = pGM->getWindow()->getView().getSize();
-    Vector2f center(viewSize.x / 2, viewSize.y / 2);
-    phaseText.setString("Phase " + to_string(currentPhase));
-    
-    FloatRect textBounds = phaseText.getLocalBounds();
-    phaseText.setOrigin(textBounds.width/2, textBounds.height/2);
-    phaseText.setPosition(center.x, center.y);
+  Vector2f viewSize = pGM->getWindow()->getView().getSize();
+  Vector2f center(viewSize.x / 2, viewSize.y / 2);
+
+  std::ostringstream oss;
+  oss << "Phase " << currentPhase;
+  phaseText.setString(oss.str());
+
+  FloatRect textBounds = phaseText.getLocalBounds();
+  phaseText.setOrigin(textBounds.width / 2, textBounds.height / 2);
+  phaseText.setPosition(center.x, center.y);
 }
 
-void NewGameMenu::updatePlayersDisplay(){
-    Vector2f viewSize = pGM->getWindow()->getView().getSize();
-    Vector2f center(viewSize.x / 2, viewSize.y / 2);
-    playersText.setString("Players " + to_string(players));
+void NewGameMenu::updatePlayersDisplay() {
+  Vector2f viewSize = pGM->getWindow()->getView().getSize();
+  Vector2f center(viewSize.x / 2, viewSize.y / 2);
 
-    FloatRect textBounds = playersText.getLocalBounds();
-    playersText.setOrigin(textBounds.width/2, textBounds.height/2);
-    playersText.setPosition(center.x, center.y - 100.f);
+  std::ostringstream oss;
+  oss << "Players " << players;
+  playersText.setString(oss.str());
+
+  FloatRect textBounds = playersText.getLocalBounds();
+  playersText.setOrigin(textBounds.width / 2, textBounds.height / 2);
+  playersText.setPosition(center.x, center.y - 100.f);
+
+  createNameInputs();
+}
+
+void NewGameMenu::setActiveInputField(int index) {
+  if (index >= 0 && static_cast<size_t>(index) < nameInputs.size()) {
+    if (activeInputField) {
+      activeInputField->setActive(false);
+    }
+    activeInputField = nameInputs[index];
+    activeInputField->setActive(true);
+    currentInputIndex = index;
+  }
 }
 
 void NewGameMenu::execute() {
-    draw();
+  draw();
 
-    map<string, Button*>::iterator it;
-    for (it = buttons.begin(); it != buttons.end(); ++it) {
-        it->second->execute();
-        
-        if (it->second->wasClicked()) {
-            if (it->first == "players_left" || it->first == "players_right") {
-                players = (players == 1) ? 2 : 1;
-                updatePlayersDisplay();
-            }
-            else if (it->first == "phase_left" || it->first == "phase_right") {
-                currentPhase = (currentPhase == 1) ? 2 : 1;
-                updatePhaseDisplay();
-            }
-            else if (it->first == "start") {
-                pGame->setNumberPlayers(players);
-                pGame->setGameState(GameState::PLAYING);
-                pGame->createPlayers();
-                pGame->createPhase(currentPhase);
-            }
-            else if (it->first == "back") {
-                pGame->setGameState(GameState::MAIN_MENU);
-            }
-        }
+  Event event;
+  RenderWindow *window = pGM->getWindow();
+  while (window->pollEvent(event)) {
+    if (event.type == Event::Closed || (event.type == Event::KeyPressed &&
+                                        event.key.code == Keyboard::Escape)) {
+      window->close();
     }
-    
-    pGM->draw(&phaseText);
-    pGM->draw(&playersText);
+
+    if (event.type == Event::MouseMoved) {
+      pGame->getMouseSubject().notifyObservers(event.mouseMove);
+    }
+    if (event.type == Event::MouseButtonPressed) {
+      pGame->getMouseSubject().notifyObservers(event.mouseButton);
+    }
+
+    if (event.type == Event::KeyPressed) {
+      if (event.key.code == Keyboard::Tab || event.key.code == Keyboard::Down ||
+          event.key.code == Keyboard::Right) {
+        int newIndex = (currentInputIndex + 1) % nameInputs.size();
+        setActiveInputField(newIndex);
+      } else if (event.key.code == Keyboard::Up ||
+                 event.key.code == Keyboard::Left) {
+        int newIndex =
+            (currentInputIndex - 1 + nameInputs.size()) % nameInputs.size();
+        setActiveInputField(newIndex);
+      }
+    }
+
+    if (event.type == Event::TextEntered) {
+      pGame->getTextInputSubject().notifyObservers(event.text);
+    }
+  }
+
+  map<std::string, Button *>::iterator it;
+  for (it = buttons.begin(); it != buttons.end(); ++it) {
+    Button *button = it->second;
+    button->execute();
+
+    if (button->wasClicked()) {
+      if (it->first == "players_left" || it->first == "players_right") {
+        players = (players == 1) ? 2 : 1;
+        updatePlayersDisplay();
+      } else if (it->first == "phase_left" || it->first == "phase_right") {
+        currentPhase = (currentPhase == 1) ? 2 : 1;
+        updatePhaseDisplay();
+      } else if (it->first == "start") {
+        vector<std::string> playerNames;
+        vector<TextInputField *>::iterator inputIt;
+        for (inputIt = nameInputs.begin(); inputIt != nameInputs.end();
+             ++inputIt) {
+          playerNames.push_back((*inputIt)->getInput());
+        }
+
+        pGame->setNumberPlayers(players);
+        pGame->setPlayerNames(playerNames);
+        pGame->setGameState(GameState::PLAYING);
+        pGame->createPlayers(playerNames);
+        pGame->createPhase(currentPhase);
+      } else if (it->first == "back") {
+        pGame->setGameState(GameState::MAIN_MENU);
+      }
+    }
+  }
+
+  pGM->draw(&phaseText);
+  pGM->draw(&playersText);
+
+  vector<TextInputField *>::iterator inputIt;
+  for (inputIt = nameInputs.begin(); inputIt != nameInputs.end(); ++inputIt) {
+    (*inputIt)->draw();
+  }
 }

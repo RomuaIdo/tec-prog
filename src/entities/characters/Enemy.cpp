@@ -12,9 +12,9 @@ Enemy::~Enemy(){
 /* ------------------------------------------- */
 /*              PLAYER FUNCTIONS               */
 /* ------------------------------------------- */
-
 void Enemy::removePlayer(Player *p){
-    for(auto it = players_list.begin(); it != players_list.end(); it++){
+    list<Player*>::iterator it;
+    for(it = players_list.begin(); it != players_list.end(); it++){
         if((*it) == p){
             players_list.erase(it);
             return;
@@ -27,9 +27,15 @@ void Enemy::addPlayer(Player *p){
 }
 
 void Enemy::verifyDeadPlayers(){
-    for(auto it = players_list.begin(); it != players_list.end(); it++){
-        if((*it)->getHealth() <= 0){
-            removePlayer((*it));
+  list<Player*>::iterator it;
+
+    // Remove players that are dead or not alive
+  for(it = players_list.begin(); it != players_list.end(); ) {
+        // Verifica se o jogador existe e se está morto
+        if(*it && ((*it)->getHealth() <= 0 || !(*it)->getAlive())) {
+            it = players_list.erase(it);
+        } else {
+            ++it;
         }
     }
 }

@@ -16,12 +16,12 @@ class Plataform : public Obstacle{
         Plataform();
         Plataform(float x, float y, bool harm = false);
         ~Plataform();
-        
-        static Texture cloud1;
-        static Texture cloud1active;
+        /* ------ TEXTURES ------ */
+        Texture cloud1;
+        Texture cloud1active;
 
-        static Texture cloud2;
-        static Texture cloud2active;
+        Texture cloud2;
+        Texture cloud2active;
 
         /* ---- OWN FUNCTIONS ---- */
         void collide(Entity* other) override;

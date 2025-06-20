@@ -77,13 +77,6 @@ void Phase::createPlatforms() {
     Plataform *p = new Plataform(x, y, false);
     Plataform *p2 = new Plataform(x + 50.f, y, false);
 
-    if(numPlataform){
-        p->getSprite().setTexture(Plataform::cloud1);
-        p2->getSprite().setTexture(Plataform::cloud1);
-    }else{
-        p->getSprite().setTexture(Plataform::cloud2);
-        p2->getSprite().setTexture(Plataform::cloud2);
-    }
 
     entities_list.add(p);
     entities_list.add(p2);
