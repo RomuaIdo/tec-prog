@@ -27,7 +27,7 @@ public:
   void onMouseEvent(const Event::MouseMoveEvent &event) override;
   void draw() override;
   Drawable &getDrawable() override;
-  const std::string &getInput() const;
+  const std::string getInput() const;
   void setPosition(sf::Vector2f pos) override;
   void execute() override;
   FloatRect getInputBounds() const;

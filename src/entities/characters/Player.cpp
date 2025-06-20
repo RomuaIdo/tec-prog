@@ -14,7 +14,10 @@ Player::Player(float x, float y, const float acel, const string Name, int life,
   } else {
     texture = pGM->loadTexture("assets/textures/Player2Sprite.png");
   }
-
+  if(name == ""){
+    name = "___";
+  }
+  cout << "Player Name: " << name << endl;
   sprite.setTexture(texture);
   configSprite();
 }
@@ -148,6 +151,10 @@ void Player::takeDamage(int damage) {
   }
 }
 
+void Player::increaseScore(int points) {
+  score += points;
+}
+
 /* ------------------------------------------- */
 /*                INPUT HANDLING               */
 /* ------------------------------------------- */
@@ -237,3 +244,5 @@ void Player::addProjectile(Projectile *p) { projectiles_list.push_back(p); }
 /* ------------------------------------------- */
 
 int Player::getHealth() { return health; }
+
+int Player::getScore() const { return score; }

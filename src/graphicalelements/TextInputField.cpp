@@ -67,11 +67,14 @@ void TextInputField::draw() {
   pGM->draw(&inputText);
 }
 
-Drawable &TextInputField::getDrawable() {
-  return label;
-}
+Drawable &TextInputField::getDrawable() { return label; }
 
-const string &TextInputField::getInput() const { return currentInput; }
+const string TextInputField::getInput() const {
+  if (currentInput.empty()) {
+    return "___";
+  }
+  return currentInput;
+}
 
 void TextInputField::setPosition(Vector2f pos) {
   label.setPosition(pos);

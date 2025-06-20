@@ -30,9 +30,7 @@ class Player : public Character {
         void collide(Entity* e);
         void updateClocks();
 
-        void increaseScore(int points = 10) {
-            score += points;
-        }
+        void increaseScore(int points = 10);
         void takeDamage(int damage = 1);
 
         /* --- INPUT HANDLING --- */
@@ -46,7 +44,7 @@ class Player : public Character {
         
         /* ---- GETS & SETS ---- */
         int getHealth();
-        
+        int getScore() const;
 
 };
 
