@@ -64,6 +64,10 @@ using namespace sf;
 #define THORNYBUSHCOOLDOWN 2.f
 #define THORNYBUSHSPIKES 2
 
+/* PLATFORM */
+#define PLATAFORMMAXPOSITION 100.f
+#define PLATAFORMOVE 2.f
+
 /*---------------------------------------------------------------*/
 
 class Entity : public Ente {

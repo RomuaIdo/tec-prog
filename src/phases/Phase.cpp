@@ -74,8 +74,8 @@ void Phase::createPlatforms() {
         static_cast<float>(50 + rand() % static_cast<int>(phaseSize.x - 500));
     float y = minY + static_cast<float>(rand() % static_cast<int>(maxY - minY));
     
-    Plataform *p = new Plataform(x, y, false);
-    Plataform *p2 = new Plataform(x + 50.f, y, false);
+    Plataform *p = new Plataform(x, y, false, numPlataform);
+    Plataform *p2 = new Plataform(x + 50.f, y, false, numPlataform);
 
 
     entities_list.add(p);
