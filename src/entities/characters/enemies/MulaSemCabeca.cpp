@@ -61,12 +61,13 @@ void MulaSemCabeca::move() {
     Vector2f positionBeforeCharge(position);
     if (!far) {
         charge();
+        if(!isCharging) {
+            velocity = Vector2f(MULAACEL * faced_right, 0.f);
+        }
     } else {
         velocity = Vector2f(0.f, 0.f);
     }
 
-    if ( abs(position.x - positionBeforeCharge.x) > 800.f)
-        velocity.x = faced_right * aceleration;
 
     applyGravity();
     moveCharacter();
@@ -83,8 +84,7 @@ void MulaSemCabeca::updateChargingClock() {
     if (isCharging) {
         chargingClock += pGM->getdt();
 
-        // Para de carregar após 1 segundo
-        if (chargingClock >= 1.0f) {
+        if (chargingClock >= 0.4f) {
             isCharging = false;
             chargingClock = 0.f;
             velocity = Vector2f(MULAACEL * faced_right, 0.f);
@@ -105,7 +105,8 @@ void MulaSemCabeca::charge() {
         if (chargeClock >= CHARGECOOLDOWN + CHARGEPREPARATIONCOOLDOWN) {
             setVelocity(Vector2f(faced_right * CHARGEFORCE, 0.f));
             chargeClock = 0.f;
-
+            isCharging = true;
+            chargingClock = 0.f;
             texture = runTexture;
             sprite.setTexture(texture);
             configSprite();
