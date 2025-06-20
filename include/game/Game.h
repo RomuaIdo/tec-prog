@@ -65,4 +65,7 @@ class Game {
         void create_menus();
         void createPlayers(const vector<string> &playerNames);
         void setPlayerNames(const vector<string> &names);
+        void saveScoretoLeaderboard();
+        void cleanupAfterGame();
+        void resetCamera();
 };

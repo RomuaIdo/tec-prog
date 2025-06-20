@@ -6,8 +6,9 @@
 #include <vector>
 #include <string>
 #include <stdexcept>
+#include <algorithm>
 
-Leaderboard::Leaderboard(Game *game) : Menu(game) {
+Leaderboard::Leaderboard(Game *game) : Menu(game), scoresLoaded(false) {
     setBackground("assets/textures/menu_background.png");
 
     try {
@@ -32,18 +33,26 @@ Leaderboard::Leaderboard(Game *game) : Menu(game) {
                            24, Vector2f(center.x, center.y + 100.f));
     backButton->activate();
     addButton("back", backButton);
-
-    try {
-        loadScores();
-    }
-    catch (const exception& e) {
-        cerr << "EXCEÇÃO ao carregar scores: " << e.what() << endl;
-    }
 }
 
 Leaderboard::~Leaderboard() {}
 
+void Leaderboard::reloadScores() {
+    scoresLoaded = false;
+}
+
 void Leaderboard::execute() {
+    // Carrega os scores apenas se ainda não foram carregados
+    if (!scoresLoaded) {
+        try {
+            loadScores();
+            scoresLoaded = true;
+        }
+        catch (const exception& e) {
+            cerr << "EXCEÇÃO ao carregar scores: " << e.what() << endl;
+        }
+    }
+
     draw();
     backButton->execute();
 
@@ -85,6 +94,10 @@ void Leaderboard::loadFile(const string& filename, bool isSingle) {
                 string name;
                 int score;
                 if (iss >> name >> score) {
+                    // Substitui nome vazio por "___"
+                    if (name.empty()) {
+                        name = "___";
+                    }
                     scores.push_back(ScoreEntry(pos, name, "", score, true));
                     pos++;
                 } else {
@@ -94,6 +107,13 @@ void Leaderboard::loadFile(const string& filename, bool isSingle) {
                 string name1, name2;
                 int score;
                 if (iss >> name1 >> name2 >> score) {
+                    // Substitui nomes vazios por "___"
+                    if (name1.empty()) {
+                        name1 = "___";
+                    }
+                    if (name2.empty()) {
+                        name2 = "___";
+                    }
                     scores.push_back(ScoreEntry(pos, name1, name2, score, false));
                     pos++;
                 } else {
@@ -139,10 +159,6 @@ void Leaderboard::loadScores() {
 }
 
 void Leaderboard::drawScores() {
-    if (scores.empty()) {
-        throw runtime_error("Nenhum score disponível");
-    }
-
     Vector2f viewSize = pGM->getWindow()->getView().getSize();
     float startY = 100.f;
     float singleX = viewSize.x * 0.3f;
@@ -174,10 +190,24 @@ void Leaderboard::drawScores() {
         }
     }
 
+    // Ordenar as entradas por posição
+    sort(singleEntries.begin(), singleEntries.end(), [](const ScoreEntry& a, const ScoreEntry& b) {
+        return a.position < b.position;
+    });
+    
+    sort(multiEntries.begin(), multiEntries.end(), [](const ScoreEntry& a, const ScoreEntry& b) {
+        return a.position < b.position;
+    });
+
     float currentYSingle = startY + 50.f;
     for (vector<ScoreEntry>::iterator it = singleEntries.begin(); it != singleEntries.end(); ++it) {
+        // Garante que o nome não seja vazio
+        string displayName = it->player1;
+        if (displayName.empty()) {
+            displayName = "___";
+        }
         ostringstream oss;
-        oss << it->position << ". " << it->player1 << " - " << it->score;
+        oss << it->position << ". " << displayName << " - " << it->score;
         
         Text entryText(oss.str(), font, 24);
         entryText.setFillColor(Color::White);
@@ -188,13 +218,37 @@ void Leaderboard::drawScores() {
 
     float currentYMulti = startY + 50.f;
     for (vector<ScoreEntry>::iterator it = multiEntries.begin(); it != multiEntries.end(); ++it) {
+        // Garante que os nomes não sejam vazios
+        string name1 = it->player1;
+        string name2 = it->player2;
+        if (name1.empty()) {
+            name1 = "___";
+        }
+        if (name2.empty()) {
+            name2 = "___";
+        }
         ostringstream oss;
-        oss << it->position << ". " << it->player1 << " & " << it->player2 << " - " << it->score;
+        oss << it->position << ". " << name1 << " & " << name2 << " - " << it->score;
         
         Text entryText(oss.str(), font, 24);
         entryText.setFillColor(Color::White);
         entryText.setPosition(multiX - entryText.getLocalBounds().width / 2, currentYMulti);
         pGM->draw(&entryText);
         currentYMulti += 40.f;
+    }
+
+    // Mostra mensagem se não houver scores
+    if (singleEntries.empty()) {
+        Text noScoresText("No scores available", font, 24);
+        noScoresText.setFillColor(Color::White);
+        noScoresText.setPosition(singleX - noScoresText.getLocalBounds().width / 2, startY + 100.f);
+        pGM->draw(&noScoresText);
+    }
+    
+    if (multiEntries.empty()) {
+        Text noScoresText("No scores available", font, 24);
+        noScoresText.setFillColor(Color::White);
+        noScoresText.setPosition(multiX - noScoresText.getLocalBounds().width / 2, startY + 100.f);
+        pGM->draw(&noScoresText);
     }
 }

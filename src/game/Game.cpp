@@ -8,9 +8,9 @@
 
 Game::Game()
     : pGM(nullptr), pCM(nullptr), number_of_players(1), player1(nullptr),
-      player2(nullptr), mainMenu(nullptr), newGameMenu(nullptr), leaderboard(nullptr), mouseSubject(),
-      phase_size(1600.f, 600.f), firstPhase(nullptr), secondPhase(nullptr),
-      currentPhase(nullptr) {
+      player2(nullptr), mainMenu(nullptr), newGameMenu(nullptr),
+      leaderboard(nullptr), mouseSubject(), phase_size(1600.f, 600.f),
+      firstPhase(nullptr), secondPhase(nullptr), currentPhase(nullptr) {
 
   pCM = CollisionManager::getInstance();
   pGM = GraphicsManager::getInstance();
@@ -118,21 +118,21 @@ void Game::running() {
       if (dynamic_cast<FirstPhase *>(currentPhase)) {
         createSecondPhase();
       } else if (dynamic_cast<SecondPhase *>(currentPhase)) {
-        setGameState(GameState::MAIN_MENU);
+        saveScoretoLeaderboard();
+        cleanupAfterGame();
+        resetCamera();
+        setGameState(GameState::LEADERBOARD);
       }
     }
   }
   updateCamera();
-  player1->execute();
-  if (player2) {
-    player2->execute();
-  }
 }
 
 void Game::main_menu() {
   mainMenu->execute();
   map<string, Button *>::iterator it;
-  for (it = mainMenu->getButtons().begin(); it != mainMenu->getButtons().end(); ++it) {
+  for (it = mainMenu->getButtons().begin(); it != mainMenu->getButtons().end();
+       ++it) {
     if (it->second->wasClicked()) {
       game_state = GameState::PLAYING;
       createFirstPhase();
@@ -148,30 +148,28 @@ void Game::setGameState(GameState state) { game_state = state; }
 void Game::setNumberPlayers(int n) { number_of_players = n; }
 
 void Game::create_menus() {
-    mainMenu = new MainMenu(this);
-    newGameMenu = new NewGameMenu(this);
-    leaderboard = new Leaderboard(this);
+  mainMenu = new MainMenu(this);
+  newGameMenu = new NewGameMenu(this);
+  leaderboard = new Leaderboard(this);
 }
 
 void Game::updateCamera() {
-  if (!currentPhase) {
-    cerr << "Current phase is not set. Cannot update camera." << endl;
-    return;
+  if (currentPhase && player1) {
+
+    Vector2f phaseSize = currentPhase->getPhaseSize();
+    float avgX = player1->getPosition().x;
+
+    if (player2) {
+      avgX = (player1->getPosition().x + player2->getPosition().x) / 2.0f;
+    }
+
+    float fixedY = 300.f;
+
+    float cameraHalfWidth = pGM->getWindow()->getSize().x / 2.0f;
+    avgX = max(cameraHalfWidth, min(avgX, phaseSize.x - cameraHalfWidth));
+    cameraCenter = sf::Vector2f(avgX, fixedY);
+    pGM->setCameraCenter(cameraCenter);
   }
-
-  Vector2f phaseSize = currentPhase->getPhaseSize();
-  float avgX = player1->getPosition().x;
-
-  if (player2) {
-    avgX = (player1->getPosition().x + player2->getPosition().x) / 2.0f;
-  }
-
-  float fixedY = 300.f;
-
-  float cameraHalfWidth = pGM->getWindow()->getSize().x / 2.0f;
-  avgX = max(cameraHalfWidth, min(avgX, phaseSize.x - cameraHalfWidth));
-  cameraCenter = sf::Vector2f(avgX, fixedY);
-  pGM->setCameraCenter(cameraCenter);
 }
 
 void Game::createPhase(short int phaseNumber) {
@@ -218,21 +216,130 @@ void Game::createSecondPhase() {
   }
 }
 
-void Game::createPlayers(const vector<string>& playerNames) {
-    if (!player1 && !player2) {
-        player1 = new Player(200, 100, PLAYERACEL, playerNames[0],PLAYERHEALTH, PLAYERSTRENGTH, 1);
-        
-        if (number_of_players == 2 && playerNames.size() > 1) {
-            player2 = new Player(100, 100, PLAYERACEL, playerNames[1], PLAYERHEALTH, PLAYERSTRENGTH, 2);
-        }
+void Game::createPlayers(const vector<string> &playerNames) {
+  if (!player1 && !player2) {
+    player1 = new Player(200, 100, PLAYERACEL, playerNames[0], PLAYERHEALTH,
+                         PLAYERSTRENGTH, 1);
+
+    if (number_of_players == 2 && playerNames.size() > 1) {
+      player2 = new Player(100, 100, PLAYERACEL, playerNames[1], PLAYERHEALTH,
+                           PLAYERSTRENGTH, 2);
     }
+  }
 }
 
+void Game::setPlayerNames(const vector<string> &names) { player_names = names; }
 
-void Game::setPlayerNames(const vector<string> &names) {
-  player_names = names;
+TextInputSubject &Game::getTextInputSubject() { return textInputSubject; }
+
+void Game::saveScoretoLeaderboard() {
+  if (!player1)
+    return;
+
+  int totalScore = player1->getScore();
+  string player1Name = player_names.size() > 0 ? player_names[0] : "___";
+  string player2Name = "___";
+
+  if (player2) {
+    totalScore += player2->getScore();
+    if (player_names.size() > 1) {
+      player2Name = player_names[1];
+    }
+  }
+
+  string filename = (number_of_players == 1)
+                        ? "leaderboards/leaderboard_single.txt"
+                        : "leaderboards/leaderboard_multi.txt";
+
+  // Usar a classe aninhada do Leaderboard
+  vector<Leaderboard::ScoreEntry> entries;
+  ifstream inFile(filename.c_str());
+  string line;
+  while (getline(inFile, line)) {
+    if (line.empty())
+      continue;
+
+    if (number_of_players == 1) {
+      istringstream iss(line);
+      string name;
+      int score;
+      if (iss >> name >> score) {
+        entries.push_back(Leaderboard::ScoreEntry(0, name, "", score, true));
+      }
+    } else {
+      istringstream iss(line);
+      string name1, name2;
+      int score;
+      if (iss >> name1 >> name2 >> score) {
+        entries.push_back(
+            Leaderboard::ScoreEntry(0, name1, name2, score, false));
+      }
+    }
+  }
+  inFile.close();
+
+  // Adiciona novo score
+  if (number_of_players == 1) {
+    entries.push_back(
+        Leaderboard::ScoreEntry(0, player1Name, "", totalScore, true));
+  } else {
+    entries.push_back(Leaderboard::ScoreEntry(0, player1Name, player2Name,
+                                              totalScore, false));
+  }
+
+  // Ordena decrescente
+  sort(entries.begin(), entries.end(),
+       [](const Leaderboard::ScoreEntry &a, const Leaderboard::ScoreEntry &b) {
+         return a.score > b.score;
+       });
+
+  // Mantém apenas top 10
+  if (entries.size() > 10) {
+    // Cria um novo vetor com os primeiros 10 elementos
+    vector<Leaderboard::ScoreEntry> topEntries;
+    for (size_t i = 0; i < 10; ++i) {
+      topEntries.push_back(entries[i]);
+    }
+    entries = topEntries;
+  }
+
+  // Reescreve arquivo
+  ofstream outFile(filename.c_str());
+  for (size_t i = 0; i < entries.size(); ++i) {
+    if (entries[i].isSinglePlayer) {
+      outFile << entries[i].player1 << " " << entries[i].score << "\n";
+    } else {
+      outFile << entries[i].player1 << " " << entries[i].player2 << " "
+              << entries[i].score << "\n";
+    }
+  }
+  outFile.close();
+
+  // Forçar recarregamento no próximo acesso
+  leaderboard->reloadScores();
 }
 
-TextInputSubject &Game::getTextInputSubject() {
-  return textInputSubject;
+void Game::cleanupAfterGame() {
+  delete player1;
+  player1 = nullptr;
+
+  if (player2) {
+    delete player2;
+    player2 = nullptr;
+  }
+
+  if (currentPhase) {
+    delete currentPhase;
+    currentPhase = nullptr;
+  }
+
+  player_names.clear();
+}
+
+void Game::resetCamera() {
+    RenderWindow* window = pGM->getWindow();
+    if (window) {
+        Vector2u windowSize = window->getSize();
+        pGM->setCameraCenter(Vector2f(windowSize.x / 2.0f, windowSize.y / 2.0f));
+    }
 }
