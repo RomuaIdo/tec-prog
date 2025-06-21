@@ -32,28 +32,24 @@ void NewGameMenu::createButtons() {
       "assets/fonts/Minecraft.ttf", "<", "assets/textures/button.png",
       "assets/textures/button_hovered.png", &mouseSubject, 24,
       Vector2f(center.x - 100.f, center.y - 300.f));
-  playersLeftButton->activate();
   addButton("players_left", playersLeftButton);
 
   Button *playersRightButton = new Button(
       "assets/fonts/Minecraft.ttf", ">", "assets/textures/button.png",
       "assets/textures/button_hovered.png", &mouseSubject, 24,
       Vector2f(center.x + 100.f, center.y - 300.f));
-  playersRightButton->activate();
   addButton("players_right", playersRightButton);
 
   Button *phaseLeftButton = new Button(
       "assets/fonts/Minecraft.ttf", "<", "assets/textures/button.png",
       "assets/textures/button_hovered.png", &mouseSubject, 24,
       Vector2f(center.x - 100.f, center.y - 50.f));
-  phaseLeftButton->activate();
   addButton("phase_left", phaseLeftButton);
 
   Button *phaseRightButton = new Button(
       "assets/fonts/Minecraft.ttf", ">", "assets/textures/button.png",
       "assets/textures/button_hovered.png", &mouseSubject, 24,
       Vector2f(center.x + 100.f, center.y - 50.f));
-  phaseRightButton->activate();
   addButton("phase_right", phaseRightButton);
 
   Button *startButton = new Button(
@@ -61,14 +57,12 @@ void NewGameMenu::createButtons() {
       "assets/textures/button_hovered.png", &mouseSubject, 24,
       Vector2f(center.x, center.y + 100.f));
   startButton->getSprite().setScale(1.5f, 1.5f);
-  startButton->activate();
   addButton("start", startButton);
 
   Button *backButton = new Button(
       "assets/fonts/Minecraft.ttf", "Back", "assets/textures/button.png",
       "assets/textures/button_hovered.png", &mouseSubject, 24,
       Vector2f(center.x, center.y + 200.f));
-  backButton->activate();
   addButton("back", backButton);
 
   if (!font.loadFromFile("assets/fonts/Minecraft.ttf")) {

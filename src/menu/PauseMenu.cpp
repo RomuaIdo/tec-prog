@@ -36,7 +36,6 @@ PauseMenu::PauseMenu(Game *game) : Menu(game) {
       Vector2f(center.x, center.y));
   addButton("main_menu", mainMenuButton);
 
-  activateButtons();
 }
 
 void PauseMenu::execute() {

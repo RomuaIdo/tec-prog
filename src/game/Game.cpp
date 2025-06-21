@@ -25,6 +25,7 @@ Game::Game()
   create_menus();
   game_state = GameState::MAIN_MENU;
   currentMenu = mainMenu;
+  currentMenu->activate();
   srand(time(nullptr));
   execute();
 }
@@ -72,6 +73,8 @@ void Game::execute() {
     Event event;
     pGM->setClock();
     pGM->operator++();
+    
+    
     while (pWindow->pollEvent(event)) {
       if (event.type == Event::Closed ||
           (event.type == Event::KeyPressed &&
@@ -99,8 +102,8 @@ void Game::execute() {
         }
       }
     }
-
     Menu *previousMenu = currentMenu;
+
     pGM->clean();
     switch (game_state) {
     case GameState::MAIN_MENU:

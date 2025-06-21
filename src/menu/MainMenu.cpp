@@ -23,21 +23,18 @@ void MainMenu::createButtons() {
                                       "assets/textures/button.png",
                                       "assets/textures/button_hovered.png",
                                       &mouseSubject, 24, Vector2f(center.x, center.y - 200.f));
-    newGameButton->activate();
     addButton("new_game", newGameButton);
 
     Button* loadGameButton = new Button("assets/fonts/Minecraft.ttf", "Load Game",
                                        "assets/textures/button.png",
                                        "assets/textures/button_hovered.png",
                                        &mouseSubject, 24, Vector2f(center.x, center.y - 100.f));
-    loadGameButton->activate();
     addButton("load_game", loadGameButton);
 
     Button* leaderboardButton = new Button("assets/fonts/Minecraft.ttf", "LeaderBoard",
                                           "assets/textures/button.png",
                                           "assets/textures/button_hovered.png",
                                           &mouseSubject, 24, Vector2f(center.x, center.y));
-    leaderboardButton->activate();
     addButton("leaderboard", leaderboardButton);
 }
 
