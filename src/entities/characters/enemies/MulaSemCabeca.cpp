@@ -7,7 +7,7 @@ MulaSemCabeca::MulaSemCabeca()
     runTexture = texture;
 
     chargeTexture = pGM->loadTexture("assets/textures/MulaCharging.png");
-
+    evilness = MULAEVILNESS;
     sprite.setTexture(texture);
     configSprite();
 }
@@ -15,13 +15,14 @@ MulaSemCabeca::MulaSemCabeca()
 MulaSemCabeca::MulaSemCabeca(float x, float y, const float acel, int life, int s)
     : Enemy(x, y, acel, life, s), chargeClock(0.f), isCharging(false), chargingClock(0.f) {
 
-  texture = pGM->loadTexture("assets/textures/Mula.png");
-  runTexture = texture;
+    texture = pGM->loadTexture("assets/textures/Mula.png");
+    runTexture = texture;
 
-  chargeTexture = pGM->loadTexture("assets/textures/MulaCharging.png");
+    chargeTexture = pGM->loadTexture("assets/textures/MulaCharging.png");
+    evilness = MULAEVILNESS;
 
-  sprite.setTexture(texture);
-  configSprite();
+    sprite.setTexture(texture);
+    configSprite();
 }
 
 MulaSemCabeca::~MulaSemCabeca() {}

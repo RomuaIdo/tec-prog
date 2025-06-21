@@ -136,8 +136,9 @@ void Player::collide(Entity *e) {
       if (dy > 0) {
 
         position.y += push;
+        velocity.y = 0.f;
 
-        /* player is on top */
+      /* player is on top */
       } else {
 
         if (dynamic_cast<Honey *>(e)) {

@@ -41,7 +41,7 @@ void Plataform::execute() {
   sprite.setTexture(texture);
   configSprite();
   regenClock += pGM->getdt();
-  if (regenClock >= PLATAFORMOVE && isActive) {
+  if (regenClock >= PLATAFORMMOVECLOCK && isActive) {
     isActive = false;
   }
 }
@@ -87,13 +87,13 @@ void Plataform::setState() {
 void Plataform::move() {
   if (isActive) {
     if (position.y < originalPosition.y + PLATAFORMMAXPOSITION) {
-      position.y += PLATAFORMOVE;
+      position.y += PLATAFORMMOVE;
     }
     if (position.y > originalPosition.y + PLATAFORMMAXPOSITION)
       position.y = originalPosition.y + PLATAFORMMAXPOSITION;
   } else {
     if (position.y > originalPosition.y) {
-      position.y -= PLATAFORMOVE;
+      position.y -= PLATAFORMMOVE;
     }
     if (position.y < originalPosition.y)
       position.y = originalPosition.y;
@@ -117,7 +117,11 @@ json Plataform::toJson() const {
           {"plataformSize_y", originalPosition.y},
           {"regenClock", regenClock},
           {"isActive", isActive},
-          {"plataformType", plataformType}};
+          {"plataformType", plataformType},
+          {"regenClock", regenClock},
+          {"originalPosition_x", originalPosition.x},
+          {"originalPosition_y", originalPosition.y}
+        };
 }
 
 void Plataform::fromJson(const json &j) {
@@ -144,10 +148,6 @@ void Plataform::fromJson(const json &j) {
   } else {
     texture = cloud1;
   }
-
-  sprite.setTexture(texture);
-  configSprite();
-
 }
 
 std::string Plataform::getType() const { return "Plataform"; }

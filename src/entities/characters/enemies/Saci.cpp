@@ -114,8 +114,11 @@ json Saci::toJson() const {
         {"type", getType()},
         {"position_x", position.x},
         {"position_y", position.y},
+        {"aceleration", aceleration},
         {"health", health},
         {"jumpClock", jumpClock},
+        {"lastPosition_x", lastPosition.x},
+        {"lastPosition_y", lastPosition.y},
         {"lastPositionClock", lastPositionClock},
         {"teleportClock", teleportClock},
     };
@@ -128,7 +131,9 @@ void Saci::fromJson(const json& j) {
     jumpClock = j.at("jumpClock");
     lastPositionClock = j.at("lastPositionClock");
     teleportClock = j.at("teleportClock");
-    lastPosition = position;
+    lastPosition.x = j.at("lastPosition_x");
+    lastPosition.y = j.at("lastPosition_y");
+    aceleration = j.at("aceleration");
 }
 
 std::string Saci::getType() const {
