@@ -11,7 +11,8 @@ using namespace sf;
 
 /* ------- CHARACTERS -------- */
 #define FRICTION 25.f
-#define XPUSH 10.f
+// When take damage
+#define XPUSH 7.f
 #define YPUSH 6.f
 
 /* MULA SEM CABECA (Hard Enemy) */
@@ -61,15 +62,16 @@ using namespace sf;
 /* -------- OBSTACLES -------- */
 
 /* HONEY */
-#define HONEYVISCOSITY 0.5f
+#define HONEYVISCOSITY 0.55f
 
 /* THORNY BUSH */
 #define THORNYBUSHCOOLDOWN 2.f
 #define THORNYBUSHSPIKES 2
 
 /* PLATFORM */
-#define PLATAFORMMAXPOSITION 50.f
-#define PLATAFORMOVE 0.3f
+#define PLATAFORMMOVE 3.5f
+#define PLATAFORMMAXPOSITION 180.f
+#define PLATAFORMMOVECLOCK 0.3f
 
 /*---------------------------------------------------------------*/
 

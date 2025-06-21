@@ -30,9 +30,9 @@ void Honey::execute(){
 
 void Honey::obstacleAction(Entity* e){
     if (e) {
-        Character* character = dynamic_cast<Character*>(e);
-        if (character) {
-            character->setVelocity(character->getVelocity() * viscosity);
+        Player* player = dynamic_cast<Player*>(e);
+        if (player) {
+            player->setVelocity(player->getVelocity() * viscosity);
             // if(dynamic_cast<Player*>(character)){
             //     // static_cast<Player*>(character)->setJumpForce(PLAYERJUMPFORCE * viscosity);
             // }

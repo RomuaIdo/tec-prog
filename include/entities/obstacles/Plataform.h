@@ -13,7 +13,7 @@ class Plataform : public Obstacle{
         int plataformType; // 0 for cloud1, 1 for cloud2
         float regenClock;
 
-        const Vector2f originalPosition;
+        Vector2f originalPosition;
 
         
         void setState();
