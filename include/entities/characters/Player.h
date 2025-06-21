@@ -23,6 +23,7 @@ class Player : public Character {
         list<Projectile*> projectiles_list;
 
     public:
+        Player();
         Player(float x, float y, const float acel, const string Name, int life = 5, int s = 1, int p_num = 1);
         ~Player();
 

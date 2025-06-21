@@ -1,15 +1,14 @@
 #ifndef FASE_H
 #define FASE_H
 
-#include "../entities/Ente.h"
-#include "../entities/Entity.h"
 #include "../lists/EntitiesList.h"
 #include "../managers/CollisionManager.h"
 #include "../../include/entities/characters/enemies/Saci.h"
-#include "../../include/entities/obstacles/Plataform.h"
-#include "../../include/graphicalelements/BackgroundElement.h"
 #include "../../include/entities/characters/enemies/MulaSemCabeca.h"
+#include "../../include/entities/characters/enemies/Cuca.h"
+#include "../../include/entities/obstacles/Plataform.h"
 #include "../../include/entities/obstacles/Honey.h"
+#include "../../include/entities/obstacles/ThornyBush.h"
 #include "../../include/graphicalelements/BackgroundElement.h"
 
 class BackgroundElement;

@@ -1,6 +1,8 @@
 #include "../../../include/entities/obstacles/Honey.h"
 #include <SFML/Window.hpp>
 
+Honey::Honey()
+    : Obstacle(), viscosity(0.f){}
 
 Honey::Honey(float x, float y, bool harm):
     Obstacle(x,y,harm), viscosity(HONEYVISCOSITY){

@@ -170,8 +170,8 @@ json Phase::toJson() const {
     j["passedPhase"] = passedPhase;
 
     std::vector<json> entitiesJson;
-    for (auto e : entities_list.getEntities()) {
-        entitiesJson.push_back(e->toJson());
+    for (auto it = entities_list.getEntities().begin(); it != entities_list.getEntities().end(); ++it) {
+        entitiesJson.push_back((*it)->toJson());
     }
     j["entities"] = entitiesJson;
 
@@ -181,7 +181,7 @@ json Phase::toJson() const {
 void Phase::fromJson(const json& j) {
     phaseSize.x = j["phaseSize_x"];
     phaseSize.y = j["phaseSize_y"];
-    passingX = j["passingX"];
+    passingX    = j["passingX"];
     passedPhase = j["passedPhase"];
 
     entities_list.clear();

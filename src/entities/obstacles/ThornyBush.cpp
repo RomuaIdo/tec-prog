@@ -1,8 +1,13 @@
 #include "../../../include/entities/obstacles/ThornyBush.h"
 #include <SFML/Window.hpp>
 
+ThornyBush::ThornyBush()
+    : Obstacle(), regenClock(0.f), active(false){
+
+}
+
 ThornyBush::ThornyBush(float x, float y, bool harm):
-    Obstacle(x, y, harm), regenClock(0.0f), active(false) {
+    Obstacle(x, y, harm), regenClock(0.f), active(false) {
     
     texture_hide = pGM->loadTexture("assets/textures/ThornyBushHide.png");
     texture_spikes = pGM->loadTexture("assets/textures/ThornyBushSpikes.png");  

@@ -1,5 +1,9 @@
 #include "../../../../include/entities/characters/enemies/MulaSemCabeca.h"
 
+MulaSemCabeca::MulaSemCabeca()
+    :Enemy(), chargeClock(0.f), isCharging(false), chargingClock(0.f){
+}
+
 MulaSemCabeca::MulaSemCabeca(float x, float y, const float acel, int life, int s)
     : Enemy(x, y, acel, life, s), chargeClock(0.f), isCharging(false), chargingClock(0.f) {
 

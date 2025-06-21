@@ -16,6 +16,7 @@ class ThornyBush : public Obstacle {
         Texture texture_spikes;
 
     public:
+        ThornyBush();
         ThornyBush(float x, float y, bool harm = true);
         ~ThornyBush();
 

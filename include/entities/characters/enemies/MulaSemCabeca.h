@@ -16,6 +16,7 @@ class MulaSemCabeca : public Enemy {
 
     public:
         /* ---- CONSTRUCTORS ---- */
+        MulaSemCabeca();
         MulaSemCabeca(float x, float y, const float acel = 5.f, int life = 5, int s = 1);
         ~MulaSemCabeca();
 

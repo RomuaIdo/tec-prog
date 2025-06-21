@@ -1,6 +1,11 @@
 #include "../../../../include/entities/characters/enemies/Cuca.h"
 #include "../../../../include/managers/CollisionManager.h"
 
+
+Cuca::Cuca()
+    : Enemy(), potionClock(0.f){}
+
+
 Cuca::Cuca(float x, float y, const float acel, int life, int s)
     : Enemy(x, y, acel, life, s), potionClock(0.f) {
 

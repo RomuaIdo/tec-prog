@@ -4,6 +4,10 @@
 #include "../../../include/managers/CollisionManager.h"
 #include <SFML/Window.hpp>
 
+Player::Player()
+    : Character(), shootClock(0.f), player_num(1), score(0), name(""),
+    jumpForce(0.f), projectiles_list(){ projectiles_list.clear(); }
+
 Player::Player(float x, float y, const float acel, const string Name, int life,
                int s, int p_num)
     : Character(x, y, acel, life, s), shootClock(0.f), player_num(p_num),

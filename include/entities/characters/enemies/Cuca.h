@@ -13,6 +13,7 @@ class Cuca : public Enemy {
         float potionClock;
 
     public:
+        Cuca();
         Cuca(float x, float y, const float acel = 10.f, int life = 5, int s = 1);
         ~Cuca();
 
