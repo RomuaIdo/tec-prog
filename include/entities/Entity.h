@@ -11,19 +11,22 @@ using namespace sf;
 
 /* ------- CHARACTERS -------- */
 #define FRICTION 25.f
+#define XPUSH 10.f
+#define YPUSH 6.f
 
 /* MULA SEM CABECA (Hard Enemy) */
 #define MULAACEL 5.f
-#define MULAHEALTH 20
+#define MULAHEALTH 10
 #define MULASTRENGTH 4
 #define CHARGECOOLDOWN 7.f
+#define CHARGEFORCE 50.f
 #define MULACHANGEDIRECTION 3.f
-#define MULAFAR 800.f
+#define MULAFAR 1500.f
 #define CHARGEPREPARATIONCOOLDOWN 2.f
 #define MULAEVILNESS 10
 
 /* CUCA (Medium Enemy) */
-#define CUCAACEL 6.f
+#define CUCAACEL 4.f
 #define CUCAHEALTH 5
 #define CUCASTRENGTH 2
 #define CUCAFAR 400.f
@@ -33,14 +36,14 @@ using namespace sf;
 #define CUCAEVILNESS 7
 
 /* SACI (Easy Enemy) */
-#define SACIACEL 5.f
+#define SACIACEL 7.f
 #define SACIHEALTH 5
 #define SACISTRENGTH 2
 #define TELEPORTCOOLDOWN 8.f
 #define JUMPCOOLDOWN 2.5f
 #define LASTPOSCOOLDOWN 1.f
-#define SACIJUMPFORCE 15.f
-#define SACIFAR 700.f
+#define SACIJUMPFORCE 12.f
+#define SACIFAR 1300.f
 #define SACIEVILNESS 3
 
 /* PLAYER */
@@ -51,7 +54,7 @@ using namespace sf;
 #define SHOOTCOOLDOWN 0.5f
 #define PLAYERJUMPFORCE 15.f
 #define PLAYERMAXVEL 15.f
-#define ROCKDAMAGE 1
+#define ROCKDAMAGE 2
 #define ROCKACEL 15.f
 #define SCOREMULTIPLIER 10
 
@@ -63,6 +66,10 @@ using namespace sf;
 /* THORNY BUSH */
 #define THORNYBUSHCOOLDOWN 2.f
 #define THORNYBUSHSPIKES 2
+
+/* PLATFORM */
+#define PLATAFORMMAXPOSITION 50.f
+#define PLATAFORMOVE 0.3f
 
 /*---------------------------------------------------------------*/
 

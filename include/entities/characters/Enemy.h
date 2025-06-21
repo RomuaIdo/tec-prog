@@ -22,7 +22,7 @@ class Enemy : public Character {
         /* ---- OWN FUNCTIONS ---- */
         virtual void execute() = 0;
         virtual void move() = 0;
-        virtual void collide(Entity *e) = 0;
+        virtual void collide(Entity *e);
         virtual void updateClocks() = 0;
 
         /* ------- PLAYER -------- */

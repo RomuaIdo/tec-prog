@@ -17,6 +17,8 @@ class Player : public Character {
         int player_num;
         int score;
         string name;        
+        float jumpForce;
+
         /* -------- GUN -------- */
         list<Projectile*> projectiles_list;
 
@@ -43,8 +45,9 @@ class Player : public Character {
         void shootProjectiles();
         
         /* ---- GETS & SETS ---- */
-        int getHealth();
+        int getHealth() const;
         int getScore() const;
+        void setJumpForce(float jpForce = PLAYERJUMPFORCE);
 
 };
 

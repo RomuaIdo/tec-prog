@@ -122,6 +122,7 @@ void CollisionManager::treatWallCollision() {
 
       if (pos.y + p->getSize().y > phase_height) {
         pos.y = phase_height - p->getSize().y;
+        p->setJumpForce();
         vel.y = 0;
         p->setInAir(false);
       }

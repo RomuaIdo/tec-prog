@@ -15,6 +15,8 @@ protected:
   bool alive;
   const int strength;
   float takeDamageClock;
+  float damageBlinkClock ;
+  bool isBlinking;
 
   /* --- COEFFICIENTS ---- */
   Vector2f friction;
@@ -34,8 +36,9 @@ public:
   /* ---- OWN FUNCTIONS ---- */
   void moveCharacter();
   void applyFriction(float dt = 1.f / 60.f);
-  virtual void takeDamage(int damage);
+  virtual void takeDamage(int damage, int direction);
   virtual void updateClocks() = 0;
+  void updateDamageBlink();
 
   /* ----- GETS & SETS ----- */
   int getHealth() const;
