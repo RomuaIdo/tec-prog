@@ -265,4 +265,3 @@ int Player::getScore() const { return score; }
 
 void Player::setJumpForce(float jpForce) { jumpForce = jpForce; }
 
-void Player::setJumpForce(float jpForce) { jumpForce = jpForce; }
