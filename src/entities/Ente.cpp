@@ -1,6 +1,9 @@
 #include "../../include/entities/Ente.h"
 
-Ente::Ente() : sprite(), texture() {}
+
+int Ente::nextID = 0;
+
+Ente::Ente() : sprite(), texture(), id(nextID++) {}
 
 /* ------------------------------------------- */
 /*                OWN FUNCTIONS                */

@@ -14,6 +14,8 @@ class Ente {
         static GraphicsManager* pGM;
 
         /* ------ STATUS ------- */
+        static int nextID;
+        int id;
         Sprite sprite;
         Texture texture;
         Vector2f size;
