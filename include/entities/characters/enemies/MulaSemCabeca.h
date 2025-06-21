@@ -16,6 +16,7 @@ class MulaSemCabeca : public Enemy {
 
     public:
         /* ---- CONSTRUCTORS ---- */
+        MulaSemCabeca();
         MulaSemCabeca(float x, float y, const float acel = 5.f, int life = 5, int s = 1);
         ~MulaSemCabeca();
 
@@ -25,6 +26,11 @@ class MulaSemCabeca : public Enemy {
         void charge();
         void updateClocks();
         void updateChargingClock();
+
+        /* -------- SAVE -------- */
+        json toJson() const;
+        void fromJson(const json& j);
+        std::string getType() const;
 
         /* ------- PLAYER -------- */
         void attack(Player *p);

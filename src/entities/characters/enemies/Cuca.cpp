@@ -1,6 +1,17 @@
 #include "../../../../include/entities/characters/enemies/Cuca.h"
 #include "../../../../include/managers/CollisionManager.h"
 
+
+Cuca::Cuca()
+    : Enemy(), potionClock(0.f){
+    texture = pGM->loadTexture("assets/textures/Cuca.png");
+    sprite.setTexture(texture);
+    configSprite();
+
+    evilness = CUCAEVILNESS;
+}
+
+
 Cuca::Cuca(float x, float y, const float acel, int life, int s)
     : Enemy(x, y, acel, life, s), potionClock(0.f) {
 
@@ -9,6 +20,8 @@ Cuca::Cuca(float x, float y, const float acel, int life, int s)
     texture = pGM->loadTexture("assets/textures/Cuca.png");
     sprite.setTexture(texture);
     configSprite();
+    evilness = CUCAEVILNESS;
+
 }
 
 Cuca::~Cuca() {}
@@ -89,6 +102,31 @@ void Cuca::updateClocks() {
 
   clock += dt;
   potionClock += dt;
+}
+
+/* ------------------------------------------- */
+/*                 SAVE BUFFER                 */
+/* ------------------------------------------- */
+
+json Cuca::toJson() const {
+    return {
+        {"type", getType()},
+        {"position_x", position.x},
+        {"position_y", position.y},
+        {"health", health},
+        {"potionClock", potionClock}
+    };
+}
+
+void Cuca::fromJson(const json& j) {
+    position.x = j.at("position_x");
+    position.y = j.at("position_y");
+    health = j.at("health");
+    potionClock = j.at("potionClock");
+}
+
+std::string Cuca::getType() const {
+    return "Cuca";
 }
 
 /* ------------------------------------------- */

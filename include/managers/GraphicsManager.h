@@ -4,6 +4,8 @@
 #include <map>
 #include <string>
 #include <iostream>
+#include "../nlohmann/json.hpp"
+using json = nlohmann::json;
 using namespace std;
 using namespace sf;
 

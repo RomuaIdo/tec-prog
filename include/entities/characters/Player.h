@@ -23,6 +23,7 @@ class Player : public Character {
         list<Projectile*> projectiles_list;
 
     public:
+        Player();
         Player(float x, float y, const float acel, const string Name, int life = 5, int s = 1, int p_num = 1);
         ~Player();
 
@@ -35,6 +36,11 @@ class Player : public Character {
         void increaseScore(int points = 10);
         void takeDamage(int damage = 1, int direction = 1);
 
+        /* -------- SAVE -------- */
+        json toJson() const;
+        void fromJson(const json& j);
+        std::string getType() const;
+
         /* --- INPUT HANDLING --- */
         void handlePlayer1Controls(float dt);
         void handlePlayer2Controls(float dt);
@@ -45,10 +51,10 @@ class Player : public Character {
         void shootProjectiles();
         
         /* ---- GETS & SETS ---- */
-
         int getHealth() const;
         int getScore() const;
         void setJumpForce(float jpForce = PLAYERJUMPFORCE);
+        void setPlayerNum(int n = 2);
 
 };
 

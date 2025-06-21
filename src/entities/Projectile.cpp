@@ -103,6 +103,32 @@ void Projectile::execute() {
 }
 
 /* ------------------------------------------- */
+/*                 SAVE BUFFER                 */
+/* ------------------------------------------- */
+
+json Projectile::toJson() const {
+    return {
+        {"position_x", position.x},
+        {"position_y", position.y},
+        {"velocity_x", velocity.x},
+        {"velocity_y", velocity.y},
+        {"active", active}
+    };
+}
+
+void Projectile::fromJson(const json& j) {
+    position.x = j.at("position_x").get<float>();
+    position.y = j.at("position_y").get<float>();
+    velocity.x = j.at("velocity_x").get<float>();
+    velocity.y = j.at("velocity_y").get<float>();
+    active = j.at("active").get<bool>();
+}
+
+std::string Projectile::getType() const{
+    return "Projectile";
+}
+
+/* ------------------------------------------- */
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */
 

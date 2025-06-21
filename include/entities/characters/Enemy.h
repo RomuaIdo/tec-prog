@@ -25,6 +25,11 @@ class Enemy : public Character {
         virtual void collide(Entity *e);
         virtual void updateClocks() = 0;
 
+        /* -------- SAVE -------- */
+        virtual json toJson() const = 0;
+        virtual void fromJson(const json& j) = 0;
+        virtual std::string getType() const = 0;
+
         /* ------- PLAYER -------- */
         virtual void addPlayer(Player *p);
         virtual void removePlayer(Player *p);

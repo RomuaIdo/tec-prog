@@ -1,5 +1,17 @@
 #include "../../../../include/entities/characters/enemies/MulaSemCabeca.h"
 
+MulaSemCabeca::MulaSemCabeca()
+    :Enemy(), chargeClock(0.f), isCharging(false), chargingClock(0.f){
+
+    texture = pGM->loadTexture("assets/textures/Mula.png");
+    runTexture = texture;
+
+    chargeTexture = pGM->loadTexture("assets/textures/MulaCharging.png");
+
+    sprite.setTexture(texture);
+    configSprite();
+}
+
 MulaSemCabeca::MulaSemCabeca(float x, float y, const float acel, int life, int s)
     : Enemy(x, y, acel, life, s), chargeClock(0.f), isCharging(false), chargingClock(0.f) {
 
@@ -112,6 +124,37 @@ void MulaSemCabeca::charge() {
             configSprite();
         }
     }
+}
+
+/* ------------------------------------------- */
+/*                 SAVE BUFFER                 */
+/* ------------------------------------------- */
+
+json MulaSemCabeca::toJson() const {
+    return {
+        {"type", getType()},
+        {"position_x", position.x},
+        {"position_y", position.y},
+        {"health", health},
+        {"chargeClock", chargeClock},
+        {"isCharging", isCharging},
+        {"chargingClock", chargingClock},
+
+    };
+}
+
+void MulaSemCabeca::fromJson(const json& j) {
+    position.x = j.at("position_x");
+    position.y = j.at("position_y");
+    health = j.at("health");
+    chargeClock = j.at("chargeClock");
+    isCharging = j.at("isCharging");
+    chargingClock = j.at("chargingClock");
+
+}
+
+std::string MulaSemCabeca::getType() const {
+    return "Mula";
 }
 
 /* ------------------------------------------- */

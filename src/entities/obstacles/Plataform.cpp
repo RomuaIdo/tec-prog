@@ -4,6 +4,20 @@
 
 Plataform::Plataform() 
     : Obstacle(), isActive(false), plataformType(0), regenClock(0.0f), originalPosition(0,0) {
+        
+    cloud1 = pGM->loadTexture("assets/textures/Cloud1.png");
+    cloud1active = pGM->loadTexture("assets/textures/Cloud1active.png");  
+    cloud2 = pGM->loadTexture("assets/textures/Cloud2.png");
+    cloud2active = pGM->loadTexture("assets/textures/Cloud2active.png");  
+    
+    if(plataformType) {
+        texture = cloud2;
+    } else {
+        texture = cloud1;
+    }
+
+    sprite.setTexture(texture);
+    configSprite();
 }
 
 Plataform::Plataform(float x, float y, bool harm, int n)
@@ -67,9 +81,6 @@ void Plataform::obstacleAction(Entity *e) {
             isActive = false;
         }
     }
-
-    
-    
 }
 
 void Plataform::setState(){
@@ -103,6 +114,32 @@ void Plataform::move(){
             position.y = originalPosition.y;
     }
 }
+
+/* ------------------------------------------- */
+/*                 SAVE BUFFER                 */
+/* ------------------------------------------- */
+
+json Plataform::toJson() const {
+    return {
+        {"type", getType()},
+        {"position_x", position.x},
+        {"position_y", position.y},
+        {"isActive", isActive},
+        {"plataformType", plataformType}
+    };
+}
+
+void Plataform::fromJson(const json& j) {
+    position.x = j.at("position_x");
+    position.y = j.at("position_y");
+    isActive = j.at("isActive");
+    plataformType = j.at("plataformType");
+}
+
+std::string Plataform::getType() const {
+    return "Plataform";
+}
+
 
 /* ------------------------------------------- */
 /*                 GETS & SETS                 */

@@ -1,5 +1,15 @@
 #include "../../../../include/entities/characters/enemies/Saci.h"
 
+Saci::Saci()
+    :Enemy(), jumpClock(0.f), lastPositionClock(0.f), 
+    teleportClock(0.f), lastPosition(Vector2f(0.f,0.f)){
+    texture = pGM->loadTexture("assets/textures/Saci.png");
+
+    evilness = SACIEVILNESS;
+    sprite.setTexture(texture);
+    configSprite();
+}
+
 Saci::Saci(float x, float y, const float acel, int life, int s)
     : Enemy(x, y, acel, life, s), jumpClock(0.f), lastPositionClock(0.f),
       teleportClock(0.f), lastPosition(Vector2f(x, y)) {
@@ -93,6 +103,36 @@ void Saci::updateClocks() {
     jumpClock += dt;
     lastPositionClock += dt;
     teleportClock += dt;
+}
+
+/* ------------------------------------------- */
+/*                 SAVE BUFFER                 */
+/* ------------------------------------------- */
+
+json Saci::toJson() const {
+    return {
+        {"type", getType()},
+        {"position_x", position.x},
+        {"position_y", position.y},
+        {"health", health},
+        {"jumpClock", jumpClock},
+        {"lastPositionClock", lastPositionClock},
+        {"teleportClock", teleportClock},
+    };
+}
+
+void Saci::fromJson(const json& j) {
+    position.x = j.at("position_x");
+    position.y = j.at("position_y");
+    health = j.at("health");
+    jumpClock = j.at("jumpClock");
+    lastPositionClock = j.at("lastPositionClock");
+    teleportClock = j.at("teleportClock");
+    lastPosition = position;
+}
+
+std::string Saci::getType() const {
+    return "Saci";
 }
 
 /* ------------------------------------------- */

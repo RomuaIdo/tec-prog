@@ -11,6 +11,7 @@ class Honey : public Obstacle {
         float viscosity; // Honey viscosity, how much it slows down the player
 
     public:
+        Honey();
         Honey(float x, float y, bool harm = false);
         ~Honey();
 
@@ -18,6 +19,11 @@ class Honey : public Obstacle {
         void obstacleAction(Entity* e);
         void execute();
         void collide(Entity *e);
+
+        /* -------- SAVE -------- */
+        json toJson() const;
+        void fromJson(const json& j);
+        std::string getType() const;
 
         /* ----- GETS & SETS ----- */
         void setViscosity(float v);

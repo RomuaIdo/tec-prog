@@ -1,6 +1,9 @@
 #include "../../../include/entities/characters/Enemy.h"
 #include <SFML/Window.hpp>
 
+Enemy::Enemy()
+    :Character(), far(false), players_list(), evilness(){}
+
 Enemy::Enemy(float x, float y, const float acel, int life, int s):
     Character(x, y, acel, life, s), far(false), players_list(), evilness(0){
 }

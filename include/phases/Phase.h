@@ -1,15 +1,21 @@
 #ifndef FASE_H
 #define FASE_H
 
-#include "../entities/Ente.h"
-#include "../entities/Entity.h"
 #include "../lists/EntitiesList.h"
 #include "../managers/CollisionManager.h"
+#include "../../include/entities/characters/enemies/Saci.h"
+#include "../../include/entities/characters/enemies/MulaSemCabeca.h"
+#include "../../include/entities/characters/enemies/Cuca.h"
+#include "../../include/entities/obstacles/Plataform.h"
+#include "../../include/entities/obstacles/Honey.h"
+#include "../../include/entities/obstacles/ThornyBush.h"
+#include "../../include/graphicalelements/BackgroundElement.h"
 
 class BackgroundElement;
 
 class Phase : public Ente {
     protected:
+
         EntitiesList entities_list;
         vector<BackgroundElement *> tiles;
         vector<BackgroundElement *> BackgroundLayers;
@@ -34,6 +40,12 @@ class Phase : public Ente {
         Vector2f getPhaseSize() const;
         bool passed() const;
         virtual void execute() = 0;
+        
+        /* -------- SAVE -------- */
+        virtual json toJson() ;
+        virtual void fromJson(const json& j);
+        virtual std::string getType() const = 0;
+
 };
 
 #endif

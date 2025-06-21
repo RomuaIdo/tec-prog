@@ -16,6 +16,7 @@ class Saci : public Enemy {
     public:
 
         /* ---- CONSTRUCTORS ---- */
+        Saci();
         Saci(float x, float y, const float acel = 5.f, int life = 5, int s = 1);
         ~Saci();
 
@@ -23,6 +24,11 @@ class Saci : public Enemy {
         void execute();
         void move();
         void updateClocks();
+
+        /* -------- SAVE -------- */
+        json toJson() const;
+        void fromJson(const json& j);
+        std::string getType() const;
 
         /* ------- TELEPORT -------- */
         void teleport(Vector2f pos);

@@ -16,6 +16,7 @@ class ThornyBush : public Obstacle {
         Texture texture_spikes;
 
     public:
+        ThornyBush();
         ThornyBush(float x, float y, bool harm = true);
         ~ThornyBush();
 
@@ -26,6 +27,11 @@ class ThornyBush : public Obstacle {
         void dealDamage(Player *p);
         void setState();
         void update();
+
+        /* -------- SAVE -------- */
+        json toJson() const;
+        void fromJson(const json& j);
+        std::string getType() const;
 
 };
 

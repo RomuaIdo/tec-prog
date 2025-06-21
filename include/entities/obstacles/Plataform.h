@@ -35,6 +35,10 @@ class Plataform : public Obstacle{
         void obstacleAction(Entity* e);
         void execute() override;
 
+        /* -------- SAVE -------- */
+        json toJson() const;
+        void fromJson(const json& j);
+        std::string getType() const;
 
         /* ----- GETS & SETS ----- */
         bool getIsActive() const;

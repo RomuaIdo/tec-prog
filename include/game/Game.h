@@ -9,6 +9,7 @@
 #include "../phases/SecondPhase.h"
 #include <list>
 #include <vector>
+#include <fstream>
 
 enum class GameState { MAIN_MENU, NEW_GAME_MENU, PLAYING, PAUSED, GAME_OVER, LEADERBOARD };
 
@@ -61,6 +62,13 @@ class Game {
         TextInputSubject &getTextInputSubject();
         void setGameState(GameState state);
         void setNumberPlayers(int n);
+
+        /* ------ SAVE GAME ----- */
+        json toJson() const;
+        void fromJson(const json& j);
+        void saveGame(const std::string& filename) const;
+        void loadGame(const std::string& filename);
+
         /* ---- CREATE ----- */
         void createPhase(short int phaseNumber);
         void create_menus();

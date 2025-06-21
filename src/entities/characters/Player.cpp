@@ -4,6 +4,25 @@
 #include "../../../include/managers/CollisionManager.h"
 #include <SFML/Window.hpp>
 
+Player::Player()
+    : Character(), shootClock(0.f), player_num(1), score(0), name(""),
+    jumpForce(0.f), projectiles_list(){ 
+    
+    projectiles_list.clear(); 
+
+    if (player_num == 1) {
+        texture = pGM->loadTexture("assets/textures/Emilia.png");
+    } else {
+        texture = pGM->loadTexture("assets/textures/Rabico.png");
+    }
+    if(name == ""){
+        name = "___";
+    }
+    cout << "Player Name: " << name << endl;
+    sprite.setTexture(texture);
+    configSprite();
+}
+
 Player::Player(float x, float y, const float acel, const string Name, int life,
                int s, int p_num)
     : Character(x, y, acel, life, s), shootClock(0.f), player_num(p_num),
@@ -13,7 +32,7 @@ Player::Player(float x, float y, const float acel, const string Name, int life,
   if (p_num == 1) {
     texture = pGM->loadTexture("assets/textures/Emilia.png");
   } else {
-    texture = pGM->loadTexture("assets/textures/Player2Sprite.png");
+    texture = pGM->loadTexture("assets/textures/Rabico.png");
   }
   if(name == ""){
     name = "___";
@@ -202,11 +221,11 @@ void Player::handlePlayer2Controls(float dt) {
 
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
     velocity.x -= aceleration * dt;
-    faced_right = 1;
+    faced_right = -1;
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
     velocity.x += aceleration * dt;
-    faced_right = -1;
+    faced_right = 1;
   }
 }
 
@@ -256,6 +275,36 @@ void Player::shootProjectiles() {
 void Player::addProjectile(Projectile *p) { projectiles_list.push_back(p); }
 
 /* ------------------------------------------- */
+/*                 SAVE BUFFER                 */
+/* ------------------------------------------- */
+
+json Player::toJson() const {
+    return {
+        {"type", getType()},
+        {"position_x", position.x},
+        {"position_y", position.y},
+        {"health", health},
+        {"score", score},
+        {"player_num", player_num},
+        {"name", name}
+    };
+}
+
+void Player::fromJson(const json& j) {
+    position.x = j.at("position_x");
+    position.y = j.at("position_y");
+    health = j.at("health");
+    score = j.at("score");
+    player_num = j.at("player_num");
+    name = j.at("name");
+}
+
+std::string Player::getType() const {
+    return "Player" + to_string(player_num);
+}
+
+
+/* ------------------------------------------- */
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */
 
@@ -265,3 +314,17 @@ int Player::getScore() const { return score; }
 
 void Player::setJumpForce(float jpForce) { jumpForce = jpForce; }
 
+void Player::setPlayerNum(int n){
+    player_num = n;
+    if (n == 1) {
+        texture = pGM->loadTexture("assets/textures/Emilia.png");
+    } else {
+        texture = pGM->loadTexture("assets/textures/Rabico.png");
+    }
+    if(name == ""){
+        name = "___";
+    }
+    cout << "Player Name: " << name << endl;
+    sprite.setTexture(texture);
+    configSprite();
+}

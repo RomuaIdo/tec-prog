@@ -14,8 +14,13 @@ class FirstPhase : public Phase {
         void createEnemies() override;
         void createObstacles() override;
 
+
         void createCucas();
         void createHoney();
+
+        std::string getType() const override {
+            return "FirstPhase";
+        }
 };
 
 #endif

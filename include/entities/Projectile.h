@@ -27,6 +27,11 @@ class Projectile : public Entity{
         Texture potion;
         Texture Rock;
 
+        /* -------- SAVE -------- */
+        virtual json toJson() const;
+        virtual void fromJson(const json& j);
+        std::string getType() const;
+
         /* --- OWN FUNCTIONS --- */
         void collide(Entity* other);
         void execute();

@@ -1,8 +1,19 @@
 #include "../../../include/entities/obstacles/ThornyBush.h"
 #include <SFML/Window.hpp>
 
+ThornyBush::ThornyBush()
+    : Obstacle(), regenClock(0.f), active(false){
+        
+    texture_hide = pGM->loadTexture("assets/textures/ThornyBushHide.png");
+    texture_spikes = pGM->loadTexture("assets/textures/ThornyBushSpikes.png");  
+
+    texture = texture_hide;
+    sprite.setTexture(texture_hide); // Start hidden
+    configSprite();
+}
+
 ThornyBush::ThornyBush(float x, float y, bool harm):
-    Obstacle(x, y, harm), regenClock(0.0f), active(false) {
+    Obstacle(x, y, harm), regenClock(0.f), active(false) {
     
     texture_hide = pGM->loadTexture("assets/textures/ThornyBushHide.png");
     texture_spikes = pGM->loadTexture("assets/textures/ThornyBushSpikes.png");  
@@ -66,4 +77,29 @@ void ThornyBush::dealDamage(Player* p){
     if (p) {
         p->takeDamage(THORNYBUSHSPIKES, 0);
     }
+}
+
+/* ------------------------------------------- */
+/*                 SAVE BUFFER                 */
+/* ------------------------------------------- */
+
+json ThornyBush::toJson() const {
+    return {
+        {"type", getType()},
+        {"position_x", position.x},
+        {"position_y", position.y},
+        {"regenClock", regenClock},
+        {"active", active}
+    };
+}
+
+void ThornyBush::fromJson(const json& j) {
+    position.x = j.at("position_x");
+    position.y = j.at("position_y");
+    regenClock = j.at("regenClock");
+    active = j.at("active");
+}
+
+std::string ThornyBush::getType() const {
+    return "ThornyBush";
 }
