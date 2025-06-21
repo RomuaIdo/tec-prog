@@ -60,7 +60,7 @@ void NewGameMenu::createButtons() {
       "assets/fonts/Minecraft.ttf", "Start", "assets/textures/button.png",
       "assets/textures/button_hovered.png", &mouseSubject, 24,
       Vector2f(center.x, center.y + 100.f));
-  startButton->getSprite().setScale(1.5f,1.5f);
+  startButton->getSprite().setScale(1.5f, 1.5f);
   startButton->activate();
   addButton("start", startButton);
 
@@ -164,39 +164,6 @@ void NewGameMenu::setActiveInputField(int index) {
 void NewGameMenu::execute() {
   draw();
 
-  Event event;
-  RenderWindow *window = pGM->getWindow();
-  while (window->pollEvent(event)) {
-    if (event.type == Event::Closed || (event.type == Event::KeyPressed &&
-                                        event.key.code == Keyboard::Escape)) {
-      window->close();
-    }
-
-    if (event.type == Event::MouseMoved) {
-      pGame->getMouseSubject().notifyObservers(event.mouseMove);
-    }
-    if (event.type == Event::MouseButtonPressed) {
-      pGame->getMouseSubject().notifyObservers(event.mouseButton);
-    }
-
-    if (event.type == Event::KeyPressed) {
-      if (event.key.code == Keyboard::Tab || event.key.code == Keyboard::Down ||
-          event.key.code == Keyboard::Right) {
-        int newIndex = (currentInputIndex + 1) % nameInputs.size();
-        setActiveInputField(newIndex);
-      } else if (event.key.code == Keyboard::Up ||
-                 event.key.code == Keyboard::Left) {
-        int newIndex =
-            (currentInputIndex - 1 + nameInputs.size()) % nameInputs.size();
-        setActiveInputField(newIndex);
-      }
-    }
-
-    if (event.type == Event::TextEntered) {
-      pGame->getTextInputSubject().notifyObservers(event.text);
-    }
-  }
-
   map<std::string, Button *>::iterator it;
   for (it = buttons.begin(); it != buttons.end(); ++it) {
     Button *button = it->second;
@@ -235,4 +202,29 @@ void NewGameMenu::execute() {
   for (inputIt = nameInputs.begin(); inputIt != nameInputs.end(); ++inputIt) {
     (*inputIt)->draw();
   }
+}
+
+
+void NewGameMenu::activateTextInputFields() {
+  vector<TextInputField *>::iterator it; 
+  for (it = nameInputs.begin(); it != nameInputs.end(); ++it) {
+    pGame->getTextInputSubject().addObserver(*it);
+  }
+}
+
+void NewGameMenu::deactivateTextInputFields() {
+  vector<TextInputField *>::iterator it; 
+  for (it = nameInputs.begin(); it != nameInputs.end(); ++it) {
+    pGame->getTextInputSubject().removeObserver(*it);
+  }
+}
+
+void NewGameMenu::activate(){
+  activateButtons();
+  activateTextInputFields();
+}
+
+void NewGameMenu::deactivate() {
+  deactivateButtons();
+  deactivateTextInputFields();
 }

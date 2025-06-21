@@ -1,16 +1,17 @@
 #include "../../include/game/Game.h"
-#include "../../include/graphicalelements/Button.h"
 #include "../../include/managers/CollisionManager.h"
 #include "../../include/menu/Leaderboard.h"
 #include "../../include/menu/MainMenu.h"
 #include "../../include/menu/NewGameMenu.h"
+#include "../../include/menu/PauseMenu.h"
 #include <algorithm>
 
 Game::Game()
     : pGM(nullptr), pCM(nullptr), number_of_players(1), player1(nullptr),
-      player2(nullptr), mainMenu(nullptr), newGameMenu(nullptr),
-      leaderboard(nullptr), mouseSubject(), phase_size(1600.f, 600.f),
-      firstPhase(nullptr), secondPhase(nullptr), currentPhase(nullptr) {
+      player2(nullptr), mainMenu(nullptr), pauseMenu(nullptr),
+      newGameMenu(nullptr), leaderboard(nullptr), mouseSubject(),
+      phase_size(1600.f, 600.f), firstPhase(nullptr), secondPhase(nullptr),
+      currentPhase(nullptr) {
 
   pCM = CollisionManager::getInstance();
   pGM = GraphicsManager::getInstance();
@@ -49,6 +50,10 @@ Game::~Game() {
     delete mainMenu;
     mainMenu = nullptr;
   }
+  if (pauseMenu) {
+    delete pauseMenu;
+    pauseMenu = nullptr;
+  }
   if (newGameMenu) {
     delete newGameMenu;
     newGameMenu = nullptr;
@@ -82,8 +87,20 @@ void Game::execute() {
       if (event.type == Event::TextEntered) {
         textInputSubject.notifyObservers(event.text);
       }
+
+      if (event.type == Event::KeyPressed &&
+          event.key.code == sf::Keyboard::P) {
+        if (game_state == GameState::PLAYING) {
+          resetCamera();
+          game_state = GameState::PAUSED;
+        } else if (game_state == GameState::PAUSED) {
+          updateCamera();
+          game_state = GameState::PLAYING;
+        }
+      }
     }
 
+    Menu *previousMenu = currentMenu;
     pGM->clean();
     switch (game_state) {
     case GameState::MAIN_MENU:
@@ -102,10 +119,18 @@ void Game::execute() {
       currentMenu->execute();
       break;
     case GameState::PAUSED:
+      currentMenu = pauseMenu;
+      currentMenu->execute();
+      break;
     case GameState::GAME_OVER:
       break;
     }
-
+    if (previousMenu != currentMenu) {
+      if (previousMenu)
+        previousMenu->deactivate();
+      if (currentMenu)
+        currentMenu->activate();
+    }
     pGM->show();
   }
 }
@@ -128,8 +153,6 @@ void Game::running() {
   updateCamera();
 }
 
-
-
 MouseSubject &Game::getMouseSubject() { return mouseSubject; }
 
 void Game::setGameState(GameState state) { game_state = state; }
@@ -138,12 +161,14 @@ void Game::setNumberPlayers(int n) { number_of_players = n; }
 
 void Game::create_menus() {
   mainMenu = new MainMenu(this);
+  pauseMenu = new PauseMenu(this);
   newGameMenu = new NewGameMenu(this);
   leaderboard = new Leaderboard(this);
 }
 
 void Game::updateCamera() {
-  if (!currentPhase || !player1) return;
+  if (!currentPhase || !player1)
+    return;
 
   float avgX = 0.f;
   int count = 0;
@@ -156,15 +181,16 @@ void Game::updateCamera() {
     avgX += player2->getPosition().x;
     count++;
   }
-  
-  if (count == 0) return; // Nenhum jogador vivo
+
+  if (count == 0)
+    return; // Nenhum jogador vivo
 
   avgX /= count;
-  const Vector2f& phaseSize = currentPhase->getPhaseSize();
+  const Vector2f &phaseSize = currentPhase->getPhaseSize();
   const float cameraHalfWidth = pGM->getWindow()->getSize().x / 2.0f;
   // Limita a posição da câmera dentro dos limites da fase
   avgX = max(cameraHalfWidth, std::min(avgX, phaseSize.x - cameraHalfWidth));
-  
+
   pGM->setCameraCenter(Vector2f(avgX, 540.f));
 }
 
@@ -333,9 +359,9 @@ void Game::cleanupAfterGame() {
 }
 
 void Game::resetCamera() {
-    RenderWindow* window = pGM->getWindow();
-    if (window) {
-        Vector2u windowSize = window->getSize();
-        pGM->setCameraCenter(Vector2f(windowSize.x / 2.0f, windowSize.y / 2.0f));
-    }
+  RenderWindow *window = pGM->getWindow();
+  if (window) {
+    Vector2u windowSize = window->getSize();
+    pGM->setCameraCenter(Vector2f(windowSize.x / 2.0f, windowSize.y / 2.0f));
+  }
 }

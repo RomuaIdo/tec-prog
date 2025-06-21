@@ -19,6 +19,7 @@ class Button;
 class Leaderboard;
 class MainMenu;
 class NewGameMenu;
+class PauseMenu;
 
 class Game {
 
@@ -33,6 +34,7 @@ class Game {
         vector<string> player_names;
         Menu *currentMenu;
         MainMenu *mainMenu;
+        PauseMenu *pauseMenu;
         NewGameMenu *newGameMenu;
         Leaderboard *leaderboard;
         MouseSubject mouseSubject;
