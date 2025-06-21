@@ -33,8 +33,7 @@ class Player : public Character {
         void updateClocks();
 
         void increaseScore(int points = 10);
-        void takeDamage(int damage = 1);
-       void takeDamage(int damage = 1, int direction = 1);
+        void takeDamage(int damage = 1, int direction = 1);
 
         /* --- INPUT HANDLING --- */
         void handlePlayer1Controls(float dt);
@@ -50,6 +49,7 @@ class Player : public Character {
         int getHealth() const;
         int getScore() const;
         void setJumpForce(float jpForce = PLAYERJUMPFORCE);
+
 };
 
 #endif

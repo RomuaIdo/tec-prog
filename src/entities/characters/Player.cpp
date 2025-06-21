@@ -259,9 +259,9 @@ void Player::addProjectile(Projectile *p) { projectiles_list.push_back(p); }
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */
 
-
 int Player::getHealth() const{ return health; }
 
 int Player::getScore() const { return score; }
 
 void Player::setJumpForce(float jpForce) { jumpForce = jpForce; }
+
