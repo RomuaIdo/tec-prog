@@ -46,7 +46,6 @@ class Phase : public Ente {
         virtual json toJson() const;
         virtual void fromJson(const json& j);
         virtual std::string getType() const = 0;
-        
 
 };
 
