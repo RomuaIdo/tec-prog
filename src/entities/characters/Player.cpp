@@ -13,7 +13,7 @@ Player::Player(float x, float y, const float acel, const string Name, int life,
   if (p_num == 1) {
     texture = pGM->loadTexture("assets/textures/Emilia.png");
   } else {
-    texture = pGM->loadTexture("assets/textures/Player2Sprite.png");
+    texture = pGM->loadTexture("assets/textures/Rabico.png");
   }
   if(name == ""){
     name = "___";
@@ -202,11 +202,11 @@ void Player::handlePlayer2Controls(float dt) {
 
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::A)) {
     velocity.x -= aceleration * dt;
-    faced_right = 1;
+    faced_right = -1;
   }
   if (sf::Keyboard::isKeyPressed(sf::Keyboard::D)) {
     velocity.x += aceleration * dt;
-    faced_right = -1;
+    faced_right = 1;
   }
 }
 
