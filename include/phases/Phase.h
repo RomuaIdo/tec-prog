@@ -40,12 +40,12 @@ class Phase : public Ente {
         Vector2f getPhaseSize() const;
         bool passed() const;
         virtual void execute() = 0;
-        
+        void setPlayers(Player *p1, Player *p2);
         /* -------- SAVE -------- */
         virtual json toJson() ;
         virtual void fromJson(const json& j);
-        virtual std::string getType() const = 0;
-
+        virtual string getType() const = 0;
+        List<Entity *> &getEntities();
 };
 
 #endif

@@ -3,6 +3,8 @@
 #include "../../include/entities/obstacles/ThornyBush.h"
 #include "../../include/graphicalelements/BackgroundElement.h"
 
+SecondPhase::SecondPhase() : Phase(Vector2f(0, 0), 0, nullptr, nullptr) {}
+
 SecondPhase::SecondPhase(Vector2f size, float limiarX, Player *p1, Player *p2)
     : Phase(size, limiarX, p1, p2) {
   createScenery();

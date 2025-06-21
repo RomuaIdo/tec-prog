@@ -4,7 +4,7 @@
 
 PauseMenu::PauseMenu(Game *game) : Menu(game) {
   setBackground("assets/textures/menu_background.png");
-
+  saveMessageVisible = false;
   Vector2f viewSize = pGM->getWindow()->getView().getSize();
   Vector2f center(viewSize.x / 2, viewSize.y / 2);
 
@@ -36,6 +36,19 @@ PauseMenu::PauseMenu(Game *game) : Menu(game) {
       Vector2f(center.x, center.y));
   addButton("main_menu", mainMenuButton);
 
+  Button *saveButton = new Button(
+      "assets/fonts/Minecraft.ttf", "Save Game", "assets/textures/button.png",
+      "assets/textures/button_hovered.png", &mouseSubject, 24,
+      Vector2f(center.x, center.y + 100.f));
+  addButton("save_game", saveButton);
+
+  saveMessage.setFont(font);
+  saveMessage.setString("Game Saved!");
+  saveMessage.setCharacterSize(24);
+  saveMessage.setFillColor(Color::Green);
+  FloatRect msgBounds = saveMessage.getLocalBounds();
+  saveMessage.setOrigin(msgBounds.width / 2, msgBounds.height / 2);
+  saveMessage.setPosition(center.x, center.y + 200.f);
 }
 
 void PauseMenu::execute() {
@@ -51,7 +64,18 @@ void PauseMenu::execute() {
       } else if (name == "main_menu") {
         pGame->cleanupAfterGame();
         pGame->setGameState(GameState::MAIN_MENU);
+      } else if (name == "save_game") {
+        pGame->saveGame("savegame.json");
+        saveMessageVisible = true;
+        messageClock.restart();
       }
+    }
+  }
+    if (saveMessageVisible) {
+    if (messageClock.getElapsedTime().asSeconds() < 2.0f) {
+      pGM->draw(&saveMessage);
+    } else {
+      saveMessageVisible = false;
     }
   }
 }

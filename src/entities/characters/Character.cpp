@@ -8,7 +8,7 @@ Character::Character()
 
 }
 
-Character::Character(float x, float y, const float acel, int life, int s)
+Character::Character(float x, float y, float acel, int life, int s)
     : Entity(x, y), aceleration(acel), health(life), alive(true), strength(s),
       takeDamageClock(0.f), damageBlinkClock(0.f), isBlinking(false),
       friction(0.f, 0.f), faced_right(1) {}

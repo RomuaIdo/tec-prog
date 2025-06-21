@@ -8,6 +8,7 @@ class SecondPhase : public Phase {
         const int maxSpikes = 15;
         const int maxMulas = 4;
     public:
+        SecondPhase();
         SecondPhase(Vector2f size, float limiarX, Player* p1, Player* p2);
         ~SecondPhase();
 

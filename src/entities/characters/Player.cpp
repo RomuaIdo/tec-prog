@@ -6,21 +6,21 @@
 
 Player::Player()
     : Character(), shootClock(0.f), player_num(1), score(0), name(""),
-    jumpForce(0.f), projectiles_list(){ 
-    
-    projectiles_list.clear(); 
+      jumpForce(0.f), projectiles_list() {
 
-    if (player_num == 1) {
-        texture = pGM->loadTexture("assets/textures/Emilia.png");
-    } else {
-        texture = pGM->loadTexture("assets/textures/Rabico.png");
-    }
-    if(name == ""){
-        name = "___";
-    }
-    cout << "Player Name: " << name << endl;
-    sprite.setTexture(texture);
-    configSprite();
+  projectiles_list.clear();
+
+  if (player_num == 1) {
+    texture = pGM->loadTexture("assets/textures/Emilia.png");
+  } else {
+    texture = pGM->loadTexture("assets/textures/Rabico.png");
+  }
+  if (name == "") {
+    name = "___";
+  }
+  cout << "Player Name: " << name << endl;
+  sprite.setTexture(texture);
+  configSprite();
 }
 
 Player::Player(float x, float y, const float acel, const string Name, int life,
@@ -34,7 +34,7 @@ Player::Player(float x, float y, const float acel, const string Name, int life,
   } else {
     texture = pGM->loadTexture("assets/textures/Rabico.png");
   }
-  if(name == ""){
+  if (name == "") {
     name = "___";
   }
   cout << "Player Name: " << name << endl;
@@ -82,7 +82,6 @@ void Player::move() {
     velocity.x = PLAYERMAXVEL;
   if (velocity.x < -PLAYERMAXVEL)
     velocity.x = -PLAYERMAXVEL;
-
 
   applyFriction(dt);
   applyGravity();
@@ -141,10 +140,10 @@ void Player::collide(Entity *e) {
         /* player is on top */
       } else {
 
-        if(dynamic_cast<Honey*>(e)){
-            jumpForce = static_cast<Honey*>(e)->getViscosity() * PLAYERJUMPFORCE; 
-        }else{
-            jumpForce = PLAYERJUMPFORCE;
+        if (dynamic_cast<Honey *>(e)) {
+          jumpForce = static_cast<Honey *>(e)->getViscosity() * PLAYERJUMPFORCE;
+        } else {
+          jumpForce = PLAYERJUMPFORCE;
         }
         /* player can jump */
         setInAir(false);
@@ -165,30 +164,27 @@ void Player::updateClocks() {
 }
 
 void Player::takeDamage(int damage, int direction) {
-    if (takeDamageClock >= TAKEDAMAGECOOLDOWN) {
-        if (health - damage <= 0 && alive) {
-            health = 0;
-            alive = false;
-            cout << "Player is dead!" << endl;
-        } else {
-            takeDamageClock = 0.f;
-            health -= damage;
-        
-            velocity.x = direction * XPUSH;
-            velocity.y = abs(direction) * -YPUSH;
-            moveCharacter();
-            cout << "Lost Health:" << health << endl;
+  if (takeDamageClock >= TAKEDAMAGECOOLDOWN) {
+    if (health - damage <= 0 && alive) {
+      health = 0;
+      alive = false;
+      cout << "Player is dead!" << endl;
+    } else {
+      takeDamageClock = 0.f;
+      health -= damage;
 
+      velocity.x = direction * XPUSH;
+      velocity.y = abs(direction) * -YPUSH;
+      moveCharacter();
+      cout << "Lost Health:" << health << endl;
 
-            isBlinking = true;
-            damageBlinkClock = 0.f;
-        }
+      isBlinking = true;
+      damageBlinkClock = 0.f;
     }
+  }
 }
 
-void Player::increaseScore(int points) {
-  score += points;
-}
+void Player::increaseScore(int points) { score += points; }
 
 /* ------------------------------------------- */
 /*                INPUT HANDLING               */
@@ -279,52 +275,55 @@ void Player::addProjectile(Projectile *p) { projectiles_list.push_back(p); }
 /* ------------------------------------------- */
 
 json Player::toJson() const {
-    return {
-        {"type", getType()},
-        {"position_x", position.x},
-        {"position_y", position.y},
-        {"health", health},
-        {"score", score},
-        {"player_num", player_num},
-        {"name", name}
-    };
+  return {{"type", getType()},
+          {"position_x", position.x},
+          {"position_y", position.y},
+          {"velocity_x", velocity.x},
+          {"velocity_y", velocity.y},
+          {"health", health},
+          {"score", score},
+          {"player_num", player_num},
+          {"name", name},
+          {"aceleration", aceleration},
+          {"jumpForce", jumpForce}};
 }
 
-void Player::fromJson(const json& j) {
-    position.x = j.at("position_x");
-    position.y = j.at("position_y");
-    health = j.at("health");
-    score = j.at("score");
-    player_num = j.at("player_num");
-    name = j.at("name");
+void Player::fromJson(const json &j) {
+  position.x = j.at("position_x");
+  position.y = j.at("position_y");
+  velocity.x = j.at("velocity_x");
+  velocity.y = j.at("velocity_y");
+  health = j.at("health");
+  score = j.at("score");
+  player_num = j.at("player_num");
+  name = j.at("name");
+  aceleration = j.at("aceleration");
+  jumpForce = j.at("jumpForce");
 }
 
-std::string Player::getType() const {
-    return "Player" + to_string(player_num);
-}
-
+std::string Player::getType() const { return "Player" + to_string(player_num); }
 
 /* ------------------------------------------- */
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */
 
-int Player::getHealth() const{ return health; }
+int Player::getHealth() const { return health; }
 
 int Player::getScore() const { return score; }
 
 void Player::setJumpForce(float jpForce) { jumpForce = jpForce; }
 
-void Player::setPlayerNum(int n){
-    player_num = n;
-    if (n == 1) {
-        texture = pGM->loadTexture("assets/textures/Emilia.png");
-    } else {
-        texture = pGM->loadTexture("assets/textures/Rabico.png");
-    }
-    if(name == ""){
-        name = "___";
-    }
-    cout << "Player Name: " << name << endl;
-    sprite.setTexture(texture);
-    configSprite();
+void Player::setPlayerNum(int n) {
+  player_num = n;
+  if (n == 1) {
+    texture = pGM->loadTexture("assets/textures/Emilia.png");
+  } else {
+    texture = pGM->loadTexture("assets/textures/Rabico.png");
+  }
+  if (name == "") {
+    name = "___";
+  }
+  cout << "Player Name: " << name << endl;
+  sprite.setTexture(texture);
+  configSprite();
 }

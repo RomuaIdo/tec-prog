@@ -114,7 +114,12 @@ json Cuca::toJson() const {
         {"position_x", position.x},
         {"position_y", position.y},
         {"health", health},
-        {"potionClock", potionClock}
+        {"potionClock", potionClock},
+        {"faced_right", faced_right},
+        {"aceleration", aceleration},
+        {"strength", strength},
+        {"evilness", evilness},
+        {"alive", alive}
     };
 }
 
@@ -123,6 +128,11 @@ void Cuca::fromJson(const json& j) {
     position.y = j.at("position_y");
     health = j.at("health");
     potionClock = j.at("potionClock");
+    faced_right = j.at("faced_right");
+    evilness = j.at("evilness");
+    aceleration = j.at("aceleration");
+    strength = j.at("strength");
+    alive = j.at("alive");
 }
 
 std::string Cuca::getType() const {

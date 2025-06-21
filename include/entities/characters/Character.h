@@ -10,10 +10,10 @@ class Character : public Entity {
 
     protected:
         /* ------ STATUS ------- */
-        const float aceleration;
+        float aceleration;
         int health;
         bool alive;
-        const int strength;
+        int strength;
         float takeDamageClock;
         float damageBlinkClock ;
         bool isBlinking;
@@ -27,7 +27,7 @@ class Character : public Entity {
 
     public:
         Character();
-        Character(float x, float y, const float acel, int life = 5, int s = 1);
+        Character(float x, float y, float acel, int life = 5, int s = 1);
         virtual ~Character();
 
         virtual void execute() = 0;

@@ -371,41 +371,113 @@ void Game::resetCamera() {
 /*=====================================================*/
 
 json Game::toJson() const {
+  json j;
+
+  j["game_state"] = static_cast<int>(game_state);
+  j["number_of_players"] = number_of_players;
+
+  if (player1)
+    j["player1"] = player1->toJson();
+  if (player2)
+    j["player2"] = player2->toJson();
+  if (currentPhase)
+    j["phase"] = currentPhase->toJson();
+
+  return j;
+}
+
+void Game::fromJson(const json &j) {
+  game_state = static_cast<GameState>(j["game_state"]);
+  number_of_players = j["number_of_players"];
+
+  if (player1)
+    player1->fromJson(j["player1"]);
+  if (player2)
+    player2->fromJson(j["player2"]);
+  if (currentPhase)
+    currentPhase->fromJson(j["phase"]);
+}
+
+void Game::saveGame(const std::string &filename) const {
+  std::ofstream file(filename);
+  if (file.is_open()) {
+    json gameState = {
+        {"players",
+         {player1 ? player1->toJson() : json(nullptr),
+          player2 ? player2->toJson() : json(nullptr)}},
+        {"state", static_cast<int>(game_state)},
+        {"phase", currentPhase ? currentPhase->toJson() : json(nullptr)}};
+    file << gameState.dump(4);
+    file.close();
+  }
+}
+
+void Game::loadGame(const std::string &filename) {
+  std::ifstream file(filename);
+  if (file.is_open()) {
     json j;
+    file >> j;
 
-    j["game_state"] = static_cast<int>(game_state);
-    j["number_of_players"] = number_of_players;
+    // Limpar estado atual
+    cleanupAfterGame();
 
-    if (player1) j["player1"] = player1->toJson();
-    if (player2) j["player2"] = player2->toJson();
-    if (currentPhase) j["phase"] = currentPhase->toJson();
-
-    return j;
-}
-
-void Game::fromJson(const json& j) {
-    game_state = static_cast<GameState>(j["game_state"]);
-    number_of_players = j["number_of_players"];
-
-    if (player1) player1->fromJson(j["player1"]);
-    if (player2) player2->fromJson(j["player2"]);
-    if (currentPhase) currentPhase->fromJson(j["phase"]);
-}
-
-void Game::saveGame(const std::string& filename) const {
-    std::ofstream file(filename);
-    if (file.is_open()) {
-        file << toJson().dump(4);
-        file.close();
+    // Carrega o estado do jogo
+    if (j.contains("state") && !j["state"].is_null()) {
+      game_state = static_cast<GameState>(j["state"].get<int>());
     }
-}
 
-void Game::loadGame(const std::string& filename) {
-    std::ifstream file(filename);
-    if (file.is_open()) {
-        json j;
-        file >> j;
-        fromJson(j);
-        file.close();
+    // Carrega jogadores
+    if (j.contains("players") && j["players"].is_array()) {
+      const json &players = j["players"];
+      if (players.size() > 0 && !players[0].is_null()) {
+        player1 = new Player();
+        player1->fromJson(players[0]);
+      }
+      if (players.size() > 1 && !players[1].is_null()) {
+        player2 = new Player();
+        player2->fromJson(players[1]);
+      }
     }
+
+    // Carrega a fase
+    if (j.contains("phase") && !j["phase"].is_null()) {
+      if (j["phase"].contains("type") && j["phase"]["type"].is_string()) {
+        std::string phaseType = j["phase"]["type"];
+
+        if (phaseType == "FirstPhase") {
+          currentPhase = new FirstPhase();
+        } else if (phaseType == "SecondPhase") {
+          currentPhase = new SecondPhase();
+        }
+
+        if (currentPhase) {
+          currentPhase->fromJson(j["phase"]);
+
+          currentPhase->setPlayers(player1, player2);
+          
+          List<Entity *>::Iterator it;
+          for (it = currentPhase->getEntities().begin();
+               it != currentPhase->getEntities().end(); ++it) {
+            if (Enemy *enemy = dynamic_cast<Enemy *>((*it))) {
+              if (player1)
+                enemy->addPlayer(player1);
+              if (player2)
+                enemy->addPlayer(player2);
+            }
+          }
+        }
+      }
+    }
+
+    // Reconfigurar managers
+    if (player1) {
+      pCM->addPlayer(player1);
+    }
+    if (player2) {
+      pCM->addPlayer(player2);
+    }
+
+    file.close();
+    game_state = GameState::PLAYING;
+  }
 }

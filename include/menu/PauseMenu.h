@@ -5,6 +5,9 @@
 class PauseMenu : public Menu {
 private:
   Text pauseText;
+  Text saveMessage;
+  Clock messageClock;
+  bool saveMessageVisible;
   Font font;
 public:
     PauseMenu(Game* game);

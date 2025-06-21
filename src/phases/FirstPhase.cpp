@@ -4,6 +4,9 @@
 #include "../../include/graphicalelements/BackgroundElement.h"
 #include <cmath>
 
+FirstPhase::FirstPhase() : Phase(Vector2f(0, 0), 0, nullptr, nullptr) {
+}
+
 FirstPhase::FirstPhase(Vector2f size, float limiarX, Player *p1, Player *p2)
     : Phase(size, limiarX, p1, p2) {
   createScenery();
