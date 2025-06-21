@@ -31,7 +31,7 @@ Leaderboard::Leaderboard(Game *game) : Menu(game), scoresLoaded(false) {
                            "assets/textures/button.png",
                            "assets/textures/button_hovered.png", &mouseSubject,
                            24, Vector2f(center.x, center.y + 100.f));
-    backButton->activate();
+
     addButton("back", backButton);
 }
 

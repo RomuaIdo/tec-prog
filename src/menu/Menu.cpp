@@ -36,6 +36,14 @@ Drawable &Menu::getDrawable(){
     return sprite;
 }
 
+void Menu::activate(){
+    activateButtons();
+}
+
+void Menu::deactivate(){
+    deactivateButtons();
+}
+
 /* ------------------------------------------- */
 /*               BUTTON FUNCTIONS              */
 /* ------------------------------------------- */
