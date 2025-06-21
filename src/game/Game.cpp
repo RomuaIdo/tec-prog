@@ -1,4 +1,6 @@
 #include "../../include/game/Game.h"
+#include "../../include/graphicalelements/eventshandler/MouseEventHandler.h"
+#include "../../include/graphicalelements/eventshandler/TextInputEventHandler.h"
 #include "../../include/managers/CollisionManager.h"
 #include "../../include/menu/Leaderboard.h"
 #include "../../include/menu/MainMenu.h"
@@ -10,8 +12,8 @@ Game::Game()
     : pGM(nullptr), pCM(nullptr), number_of_players(1), player1(nullptr),
       player2(nullptr), mainMenu(nullptr), pauseMenu(nullptr),
       newGameMenu(nullptr), leaderboard(nullptr), mouseSubject(),
-      phase_size(1600.f, 600.f), firstPhase(nullptr), secondPhase(nullptr),
-      currentPhase(nullptr) {
+      textInputSubject(), phase_size(1600.f, 600.f), firstPhase(nullptr),
+      secondPhase(nullptr), currentPhase(nullptr) {
 
   pCM = CollisionManager::getInstance();
   pGM = GraphicsManager::getInstance();
@@ -68,29 +70,24 @@ Game::~Game() {
 
 void Game::execute() {
 
+  MouseEventHandler mouseHandler(mouseSubject);
+  TextInputEventHandler textInputHandler(textInputSubject);
+  mouseHandler.setNextHandler(&textInputHandler);
+  EventHandler *eventChain = &mouseHandler;
   RenderWindow *pWindow = pGM->getWindow();
   while (pGM->openWindow()) {
     Event event;
     pGM->setClock();
     pGM->operator++();
-    
-    
+
     while (pWindow->pollEvent(event)) {
       if (event.type == Event::Closed ||
           (event.type == Event::KeyPressed &&
            event.key.code == sf::Keyboard::Escape)) {
         pWindow->close();
+      } else {
+        eventChain->handleEvent(event);
       }
-      if (event.type == Event::MouseMoved) {
-        mouseSubject.notifyObservers(event.mouseMove);
-      }
-      if (event.type == Event::MouseButtonPressed) {
-        mouseSubject.notifyObservers(event.mouseButton);
-      }
-      if (event.type == Event::TextEntered) {
-        textInputSubject.notifyObservers(event.text);
-      }
-
       if (event.type == Event::KeyPressed &&
           event.key.code == sf::Keyboard::P) {
         if (game_state == GameState::PLAYING) {

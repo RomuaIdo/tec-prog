@@ -70,3 +70,4 @@ class Game {
         void cleanupAfterGame();
         void resetCamera();
 };
+
