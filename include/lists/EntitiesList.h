@@ -19,6 +19,7 @@ class EntitiesList {
         void clear();
         void traverse();
         void removePlayerInEnemiesList(Player* p);
+        
         List<Entity*>& getEntities() ;
 
 };

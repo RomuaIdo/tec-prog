@@ -160,7 +160,7 @@ void Phase::fromJson(const json& j) {
 }
 
 
-json Phase::toJson() const {
+json Phase::toJson()  {
     json j;
     j["phaseType"] = getType();
 
