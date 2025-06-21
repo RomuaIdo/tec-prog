@@ -124,6 +124,10 @@ void Projectile::fromJson(const json& j) {
     active = j.at("active").get<bool>();
 }
 
+std::string Projectile::getType() const{
+    return "Projectile";
+}
+
 /* ------------------------------------------- */
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */

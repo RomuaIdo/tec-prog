@@ -300,7 +300,7 @@ void Player::fromJson(const json& j) {
 }
 
 std::string Player::getType() const {
-    return "Player";
+    return "Player" + to_string(player_num);
 }
 
 

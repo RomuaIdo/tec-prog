@@ -30,7 +30,7 @@ class Projectile : public Entity{
         /* -------- SAVE -------- */
         virtual json toJson() const;
         virtual void fromJson(const json& j);
-        virtual std::string getType() const;
+        std::string getType() const;
 
         /* --- OWN FUNCTIONS --- */
         void collide(Entity* other);
