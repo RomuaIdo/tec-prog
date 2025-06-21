@@ -37,6 +37,30 @@ void Honey::collide(Entity* e){
 }
 
 /* ------------------------------------------- */
+/*                 SAVE BUFFER                 */
+/* ------------------------------------------- */
+
+json Honey::toJson() const {
+    return {
+        {"type", getType()},
+        {"position_x", position.x},
+        {"position_y", position.y},
+        {"viscosity", viscosity}
+    };
+}
+
+void Honey::fromJson(const json& j) {
+    position.x = j.at("position_x");
+    position.y = j.at("position_y");
+    viscosity = j.at("viscosity");
+}
+
+std::string Honey::getType() const {
+    return "Honey";
+}
+
+
+/* ------------------------------------------- */
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */
 

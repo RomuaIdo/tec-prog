@@ -27,6 +27,11 @@ class ThornyBush : public Obstacle {
         void setState();
         void update();
 
+        /* -------- SAVE -------- */
+        json toJson() const;
+        void fromJson(const json& j);
+        std::string getType() const;
+
 };
 
 

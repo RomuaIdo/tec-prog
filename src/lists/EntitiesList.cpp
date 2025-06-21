@@ -45,3 +45,7 @@ void EntitiesList::traverse() {
     }
   }
 }
+
+List<Entity*>& EntitiesList::getEntities() {
+    return entities;
+}

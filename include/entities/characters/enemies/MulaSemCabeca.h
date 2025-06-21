@@ -26,6 +26,11 @@ class MulaSemCabeca : public Enemy {
         void updateClocks();
         void updateChargingClock();
 
+        /* -------- SAVE -------- */
+        json toJson() const;
+        void fromJson(const json& j);
+        std::string getType() const;
+
         /* ------- PLAYER -------- */
         void attack(Player *p);
 };

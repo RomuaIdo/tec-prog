@@ -67,9 +67,6 @@ void Plataform::obstacleAction(Entity *e) {
             isActive = false;
         }
     }
-
-    
-    
 }
 
 void Plataform::setState(){
@@ -103,6 +100,32 @@ void Plataform::move(){
             position.y = originalPosition.y;
     }
 }
+
+/* ------------------------------------------- */
+/*                 SAVE BUFFER                 */
+/* ------------------------------------------- */
+
+json Plataform::toJson() const {
+    return {
+        {"type", getType()},
+        {"position_x", position.x},
+        {"position_y", position.y},
+        {"isActive", isActive},
+        {"plataformType", plataformType}
+    };
+}
+
+void Plataform::fromJson(const json& j) {
+    position.x = j.at("position_x");
+    position.y = j.at("position_y");
+    isActive = j.at("isActive");
+    plataformType = j.at("plataformType");
+}
+
+std::string Plataform::getType() const {
+    return "Plataform";
+}
+
 
 /* ------------------------------------------- */
 /*                 GETS & SETS                 */

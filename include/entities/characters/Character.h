@@ -8,44 +8,49 @@ using namespace std;
 
 class Character : public Entity {
 
-protected:
-  /* ------ STATUS ------- */
-  const float aceleration;
-  int health;
-  bool alive;
-  const int strength;
-  float takeDamageClock;
-  float damageBlinkClock ;
-  bool isBlinking;
+    protected:
+        /* ------ STATUS ------- */
+        const float aceleration;
+        int health;
+        bool alive;
+        const int strength;
+        float takeDamageClock;
+        float damageBlinkClock ;
+        bool isBlinking;
 
-  /* --- COEFFICIENTS ---- */
-  Vector2f friction;
+        /* --- COEFFICIENTS ---- */
+        Vector2f friction;
 
-  /* ------- FLAGS ------- */
-  int faced_right;
-  bool in_air;
+        /* ------- FLAGS ------- */
+        int faced_right;
+        bool in_air;
 
-public:
-  Character();
-  Character(float x, float y, const float acel, int life = 5, int s = 1);
-  virtual ~Character();
+    public:
+        Character();
+        Character(float x, float y, const float acel, int life = 5, int s = 1);
+        virtual ~Character();
 
-  virtual void execute() = 0;
-  virtual void move() = 0;
+        virtual void execute() = 0;
+        virtual void move() = 0;
 
-  /* ---- OWN FUNCTIONS ---- */
-  void moveCharacter();
-  void applyFriction(float dt = 1.f / 60.f);
-  virtual void takeDamage(int damage, int direction);
-  virtual void updateClocks() = 0;
-  void updateDamageBlink();
+        /* -------- SAVE -------- */
+        virtual json toJson() const = 0;
+        virtual void fromJson(const json& j) = 0;
+        virtual std::string getType() const = 0;
 
-  /* ----- GETS & SETS ----- */
-  int getHealth() const;
-  int getStrength() const;
-  bool getInAir() const;
-  void setInAir(bool inair);
-  bool getAlive() const;
+        /* ---- OWN FUNCTIONS ---- */
+        void moveCharacter();
+        void applyFriction(float dt = 1.f / 60.f);
+        virtual void takeDamage(int damage, int direction);
+        virtual void updateClocks() = 0;
+        void updateDamageBlink();
+
+        /* ----- GETS & SETS ----- */
+        int getHealth() const;
+        int getStrength() const;
+        bool getInAir() const;
+        void setInAir(bool inair);
+        bool getAlive() const;
 };
 
 #endif

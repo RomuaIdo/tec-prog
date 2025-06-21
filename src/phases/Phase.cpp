@@ -1,7 +1,5 @@
 #include "../../include/phases/Phase.h"
-#include "../../include/entities/characters/enemies/Saci.h"
-#include "../../include/entities/obstacles/Plataform.h"
-#include "../../include/graphicalelements/BackgroundElement.h"
+
 
 Phase::Phase(Vector2f size, float limiarX, Player *p1, Player *p2)
     : pCM(CollisionManager::getInstance()), phaseSize(size), player1(p1),
@@ -122,6 +120,84 @@ void Phase::checkPhaseCompletion() {
             if (player1->getPosition().x > passingX) {
                 passedPhase = true;
             }
+        }
+    }
+}
+
+/* ------------------------------------------- */
+/*                 SAVE BUFFER                 */
+/* ------------------------------------------- */
+
+void Phase::fromJson(const json& j) {
+    phaseSize.x = j.at("phaseSize_x").get<float>();
+    phaseSize.y = j.at("phaseSize_y").get<float>();
+    passingX = j.at("passingX").get<float>();
+    passedPhase = j.at("passedPhase").get<bool>();
+
+    entities_list.clear();
+
+    // Carrega entidades novas
+    for (const auto& entityJson : j["entities"]) {
+        std::string type = entityJson.at("type").get<std::string>();
+
+        Entity* e = nullptr;
+
+        if (type == "Cuca") {
+            e = new Cuca();
+        }
+        else if (type == "Honey") {
+            e = new Honey();
+        }
+        else if (type == "Plataform") {
+            e = new Plataform();
+        }
+
+        if (e) {
+            e->fromJson(entityJson);
+            entities_list.add(e);
+        }
+    }
+}
+
+
+json Phase::toJson() const {
+    json j;
+    j["phaseType"] = getType();
+
+    j["phaseSize_x"] = phaseSize.x;
+    j["phaseSize_y"] = phaseSize.y;
+    j["passingX"] = passingX;
+    j["passedPhase"] = passedPhase;
+
+    std::vector<json> entitiesJson;
+    for (auto e : entities_list.getEntities()) {
+        entitiesJson.push_back(e->toJson());
+    }
+    j["entities"] = entitiesJson;
+
+    return j;
+}
+
+void Phase::fromJson(const json& j) {
+    phaseSize.x = j["phaseSize_x"];
+    phaseSize.y = j["phaseSize_y"];
+    passingX = j["passingX"];
+    passedPhase = j["passedPhase"];
+
+    entities_list.clear();
+    for (const auto& entityJson : j["entities"]) {
+        std::string type = entityJson.at("type");
+
+        Entity* e = nullptr;
+
+        if (type == "Cuca") e = new Cuca();
+        else if (type == "Honey") e = new Honey();
+        else if (type == "Plataform") e = new Plataform();
+        else if (type == "Player") e = new Player();
+
+        if (e) {
+            e->fromJson(entityJson);
+            entities_list.add(e);
         }
     }
 }

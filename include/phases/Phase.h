@@ -5,11 +5,18 @@
 #include "../entities/Entity.h"
 #include "../lists/EntitiesList.h"
 #include "../managers/CollisionManager.h"
+#include "../../include/entities/characters/enemies/Saci.h"
+#include "../../include/entities/obstacles/Plataform.h"
+#include "../../include/graphicalelements/BackgroundElement.h"
+#include "../../include/entities/characters/enemies/MulaSemCabeca.h"
+#include "../../include/entities/obstacles/Honey.h"
+#include "../../include/graphicalelements/BackgroundElement.h"
 
 class BackgroundElement;
 
 class Phase : public Ente {
     protected:
+
         EntitiesList entities_list;
         vector<BackgroundElement *> tiles;
         vector<BackgroundElement *> BackgroundLayers;
@@ -34,6 +41,13 @@ class Phase : public Ente {
         Vector2f getPhaseSize() const;
         bool passed() const;
         virtual void execute() = 0;
+        
+        /* -------- SAVE -------- */
+        virtual json toJson() const;
+        virtual void fromJson(const json& j);
+        virtual std::string getType() const = 0;
+        
+
 };
 
 #endif

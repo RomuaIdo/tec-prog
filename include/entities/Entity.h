@@ -92,6 +92,11 @@ class Entity : public Ente {
         virtual void collide(Entity* other) = 0;
         virtual void execute() = 0;
 
+        /* -------- SAVE -------- */
+        virtual json toJson() const = 0;
+        virtual void fromJson(const json& j) = 0;
+        virtual std::string getType() const = 0;
+
         /* ---- OWN FUNCTIONS ---- */
         void draw();
         Drawable& getDrawable();

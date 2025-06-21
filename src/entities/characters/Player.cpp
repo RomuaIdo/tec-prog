@@ -256,6 +256,36 @@ void Player::shootProjectiles() {
 void Player::addProjectile(Projectile *p) { projectiles_list.push_back(p); }
 
 /* ------------------------------------------- */
+/*                 SAVE BUFFER                 */
+/* ------------------------------------------- */
+
+json Player::toJson() const {
+    return {
+        {"type", getType()},
+        {"position_x", position.x},
+        {"position_y", position.y},
+        {"health", health},
+        {"score", score},
+        {"player_num", player_num},
+        {"name", name}
+    };
+}
+
+void Player::fromJson(const json& j) {
+    position.x = j.at("position_x");
+    position.y = j.at("position_y");
+    health = j.at("health");
+    score = j.at("score");
+    player_num = j.at("player_num");
+    name = j.at("name");
+}
+
+std::string Player::getType() const {
+    return "Player";
+}
+
+
+/* ------------------------------------------- */
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */
 

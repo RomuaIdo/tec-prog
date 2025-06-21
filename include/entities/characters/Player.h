@@ -35,6 +35,11 @@ class Player : public Character {
         void increaseScore(int points = 10);
         void takeDamage(int damage = 1, int direction = 1);
 
+        /* -------- SAVE -------- */
+        json toJson() const;
+        void fromJson(const json& j);
+        std::string getType() const;
+
         /* --- INPUT HANDLING --- */
         void handlePlayer1Controls(float dt);
         void handlePlayer2Controls(float dt);

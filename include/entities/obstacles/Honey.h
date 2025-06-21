@@ -19,6 +19,11 @@ class Honey : public Obstacle {
         void execute();
         void collide(Entity *e);
 
+        /* -------- SAVE -------- */
+        json toJson() const;
+        void fromJson(const json& j);
+        std::string getType() const;
+
         /* ----- GETS & SETS ----- */
         void setViscosity(float v);
         float getViscosity() const;

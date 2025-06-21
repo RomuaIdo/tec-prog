@@ -365,3 +365,47 @@ void Game::resetCamera() {
     pGM->setCameraCenter(Vector2f(windowSize.x / 2.0f, windowSize.y / 2.0f));
   }
 }
+
+/*=====================================================*/
+/*                     SAVE GAME                       */
+/*=====================================================*/
+
+json Game::toJson() const {
+    json j;
+
+    j["game_state"] = static_cast<int>(game_state);
+    j["number_of_players"] = number_of_players;
+
+    if (player1) j["player1"] = player1->toJson();
+    if (player2) j["player2"] = player2->toJson();
+    if (currentPhase) j["phase"] = currentPhase->toJson();
+
+    return j;
+}
+
+void Game::fromJson(const json& j) {
+    game_state = static_cast<GameState>(j["game_state"]);
+    number_of_players = j["number_of_players"];
+
+    if (player1) player1->fromJson(j["player1"]);
+    if (player2) player2->fromJson(j["player2"]);
+    if (currentPhase) currentPhase->fromJson(j["phase"]);
+}
+
+void Game::saveGame(const std::string& filename) const {
+    std::ofstream file(filename);
+    if (file.is_open()) {
+        file << toJson().dump(4);
+        file.close();
+    }
+}
+
+void Game::loadGame(const std::string& filename) {
+    std::ifstream file(filename);
+    if (file.is_open()) {
+        json j;
+        file >> j;
+        fromJson(j);
+        file.close();
+    }
+}

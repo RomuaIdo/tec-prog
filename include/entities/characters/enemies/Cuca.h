@@ -21,6 +21,11 @@ class Cuca : public Enemy {
         void move();
         void updateClocks();
 
+        /* -------- SAVE -------- */
+        json toJson() const;
+        void fromJson(const json& j);
+        std::string getType() const;
+
         /* ---- POTIONS ---- */
         void makePotion();
         void throwPotion();

@@ -24,6 +24,11 @@ class Saci : public Enemy {
         void move();
         void updateClocks();
 
+        /* -------- SAVE -------- */
+        json toJson() const;
+        void fromJson(const json& j);
+        std::string getType() const;
+
         /* ------- TELEPORT -------- */
         void teleport(Vector2f pos);
         Vector2f getPlayerLastPosition();

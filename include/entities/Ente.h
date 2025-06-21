@@ -5,8 +5,8 @@
 #include <cstdlib>
 #include <ctime>
 #include <random>
-using namespace sf;
 
+using namespace sf;
 
 class Ente {
     protected:

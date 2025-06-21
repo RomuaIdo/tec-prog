@@ -17,6 +17,10 @@ class SecondPhase : public Phase {
 
         void createSpikes();
         void createMulas();
+
+        std::string getType() const override {
+            return "SecondPhase";
+        }
 };
 
 #endif

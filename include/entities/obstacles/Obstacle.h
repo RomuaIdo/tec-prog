@@ -19,6 +19,11 @@ class Obstacle : public Entity {
         Obstacle(float x, float y, bool harm);
         virtual ~Obstacle();
 
+        /* -------- SAVE -------- */
+        virtual json toJson() const = 0;
+        virtual void fromJson(const json& j) = 0;
+        virtual std::string getType() const = 0;
+
         /* ---- OWN FUNCTIONS ---- */
         virtual void collide(Entity *e) = 0;
         virtual void execute() = 0;
