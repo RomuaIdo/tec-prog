@@ -67,4 +67,4 @@ clean:
 	rm -rf $(OBJ_DIR) $(BIN_DIR)
 	@echo "Build limpo!"
 
-.PHONY: all prepare run clean
+.PHONY: all prepare run clean debug

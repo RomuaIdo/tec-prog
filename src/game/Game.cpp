@@ -128,18 +128,7 @@ void Game::running() {
   updateCamera();
 }
 
-void Game::main_menu() {
-  mainMenu->execute();
-  map<string, Button *>::iterator it;
-  for (it = mainMenu->getButtons().begin(); it != mainMenu->getButtons().end();
-       ++it) {
-    if (it->second->wasClicked()) {
-      game_state = GameState::PLAYING;
-      createFirstPhase();
-      break;
-    }
-  }
-}
+
 
 MouseSubject &Game::getMouseSubject() { return mouseSubject; }
 

@@ -46,7 +46,6 @@ class Game {
         /* ---- OWN FUNCTIONS ----- */
         void execute();
         void running();
-        void main_menu();
         void updateCamera();
         void createFirstPhase();
         void createSecondPhase();
