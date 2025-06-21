@@ -13,7 +13,7 @@ class Plataform : public Obstacle{
         int plataformType; // 0 for cloud1, 1 for cloud2
         float regenClock;
 
-        const Vector2f originalPosition;
+        Vector2f originalPosition;
 
         
         void setState();
@@ -32,13 +32,13 @@ class Plataform : public Obstacle{
 
         /* ---- OWN FUNCTIONS ---- */
         void collide(Entity* other) override;
-        void obstacleAction(Entity* e);
+        void obstacleAction(Entity* e) override;
         void execute() override;
 
         /* -------- SAVE -------- */
-        json toJson() const;
-        void fromJson(const json& j);
-        std::string getType() const;
+        json toJson() const override;
+        void fromJson(const json& j) override;
+        std::string getType() const override;
 
         /* ----- GETS & SETS ----- */
         bool getIsActive() const;

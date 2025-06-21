@@ -2,22 +2,8 @@
 #include <SFML/Window.hpp>
 
 Plataform::Plataform()
-    : Obstacle(), isActive(false), plataformType(0), regenClock(0.0f),
+    : Obstacle(), isActive(false), plataformType(1), regenClock(0.0f),
       originalPosition(0, 0) {
-
-  cloud1 = pGM->loadTexture("assets/textures/Cloud1.png");
-  cloud1active = pGM->loadTexture("assets/textures/Cloud1active.png");
-  cloud2 = pGM->loadTexture("assets/textures/Cloud2.png");
-  cloud2active = pGM->loadTexture("assets/textures/Cloud2active.png");
-
-  if (plataformType) {
-    texture = cloud2;
-  } else {
-    texture = cloud1;
-  }
-
-  sprite.setTexture(texture);
-  configSprite();
 }
 
 Plataform::Plataform(float x, float y, bool harm, int n)
@@ -122,6 +108,14 @@ json Plataform::toJson() const {
   return {{"type", getType()},
           {"position_x", position.x},
           {"position_y", position.y},
+          {"velocity_x", velocity.x},
+          {"velocity_y", velocity.y},
+          {"clock", clock},
+          {"size_x", size.x},
+          {"size_y", size.y},
+          {"plataformSize_x", originalPosition.x},
+          {"plataformSize_y", originalPosition.y},
+          {"regenClock", regenClock},
           {"isActive", isActive},
           {"plataformType", plataformType}};
 }
@@ -129,15 +123,31 @@ json Plataform::toJson() const {
 void Plataform::fromJson(const json &j) {
   position.x = j.at("position_x");
   position.y = j.at("position_y");
-  isActive = j.at("isActive");
-  plataformType = j.at("plataformType");
+  isActive = j.at("isActive").get<bool>();
+  plataformType = j.at("plataformType").get<int>();
+  regenClock = j.at("regenClock").get<float>();
+  originalPosition.x = j.at("plataformSize_x").get<float>();
+  originalPosition.y = j.at("plataformSize_y").get<float>();
+  size.x = j.at("size_x").get<float>();
+  size.y = j.at("size_y").get<float>();
+  velocity.x = j.at("velocity_x").get<float>();
+  velocity.y = j.at("velocity_y").get<float>();
+  clock = j.at("clock").get<float>();
+
+  cloud1 = pGM->loadTexture("assets/textures/Cloud1.png");
+  cloud1active = pGM->loadTexture("assets/textures/Cloud1active.png");
+  cloud2 = pGM->loadTexture("assets/textures/Cloud2.png");
+  cloud2active = pGM->loadTexture("assets/textures/Cloud2active.png");
+
   if (plataformType) {
     texture = cloud2;
   } else {
     texture = cloud1;
   }
+
   sprite.setTexture(texture);
   configSprite();
+
 }
 
 std::string Plataform::getType() const { return "Plataform"; }

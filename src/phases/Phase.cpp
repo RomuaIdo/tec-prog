@@ -111,8 +111,8 @@ void Phase::createSaci() {
 bool Phase::passed() const { return passedPhase; }
 
 void Phase::checkPhaseCompletion() {
-  if (player1) {
-    if (player2) {
+  if (player1 && player1->getAlive()) {
+    if (player2 && player2->getAlive()) {
       if (player1->getPosition().x > passingX &&
           player2->getPosition().x > passingX) {
         passedPhase = true;
