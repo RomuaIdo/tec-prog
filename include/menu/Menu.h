@@ -24,12 +24,14 @@ public:
   virtual void execute();   
   virtual Drawable &getDrawable();
   virtual void draw();
+  virtual void activate();
+  virtual void deactivate();
 
   /* ------ BUTTON ------- */
   void addButton(string name, Button *button);
   void deactivateButtons();
   void activateButtons();
-
+  
   /* ----- GETS & SETS ----- */
   void setBackground(const string filePath);
   map<string, Button *> &getButtons();

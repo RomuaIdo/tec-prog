@@ -12,9 +12,10 @@ FirstPhase::FirstPhase(Vector2f size, float limiarX, Player *p1, Player *p2)
   createPlatforms();
 }
 
-FirstPhase::~FirstPhase() { pCM->clearEntities(); }
+FirstPhase::~FirstPhase() {}
 
 void FirstPhase::execute() {
+
   vector<BackgroundElement *>::iterator it;
   for (it = BackgroundLayers.begin(); it != BackgroundLayers.end(); ++it) {
     (*it)->execute();

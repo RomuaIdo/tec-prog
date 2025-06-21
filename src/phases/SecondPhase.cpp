@@ -11,7 +11,7 @@ SecondPhase::SecondPhase(Vector2f size, float limiarX, Player *p1, Player *p2)
   createPlatforms();
 }
 
-SecondPhase::~SecondPhase() { pCM->clearEntities(); }
+SecondPhase::~SecondPhase() {}
 
 void SecondPhase::execute() {
   vector<BackgroundElement *>::iterator it;

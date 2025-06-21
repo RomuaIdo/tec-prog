@@ -19,6 +19,7 @@ class Button;
 class Leaderboard;
 class MainMenu;
 class NewGameMenu;
+class PauseMenu;
 
 class Game {
 
@@ -33,6 +34,7 @@ class Game {
         vector<string> player_names;
         Menu *currentMenu;
         MainMenu *mainMenu;
+        PauseMenu *pauseMenu;
         NewGameMenu *newGameMenu;
         Leaderboard *leaderboard;
         MouseSubject mouseSubject;
@@ -46,7 +48,6 @@ class Game {
         /* ---- OWN FUNCTIONS ----- */
         void execute();
         void running();
-        void main_menu();
         void updateCamera();
         void createFirstPhase();
         void createSecondPhase();
