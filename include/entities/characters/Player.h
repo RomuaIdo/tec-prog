@@ -54,6 +54,7 @@ class Player : public Character {
         int getHealth() const;
         int getScore() const;
         void setJumpForce(float jpForce = PLAYERJUMPFORCE);
+        void setPlayerNum(int n = 2);
 
 };
 

@@ -4,6 +4,20 @@
 
 Plataform::Plataform() 
     : Obstacle(), isActive(false), plataformType(0), regenClock(0.0f), originalPosition(0,0) {
+        
+    cloud1 = pGM->loadTexture("assets/textures/Cloud1.png");
+    cloud1active = pGM->loadTexture("assets/textures/Cloud1active.png");  
+    cloud2 = pGM->loadTexture("assets/textures/Cloud2.png");
+    cloud2active = pGM->loadTexture("assets/textures/Cloud2active.png");  
+    
+    if(plataformType) {
+        texture = cloud2;
+    } else {
+        texture = cloud1;
+    }
+
+    sprite.setTexture(texture);
+    configSprite();
 }
 
 Plataform::Plataform(float x, float y, bool harm, int n)

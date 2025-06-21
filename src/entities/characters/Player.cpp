@@ -6,7 +6,22 @@
 
 Player::Player()
     : Character(), shootClock(0.f), player_num(1), score(0), name(""),
-    jumpForce(0.f), projectiles_list(){ projectiles_list.clear(); }
+    jumpForce(0.f), projectiles_list(){ 
+    
+    projectiles_list.clear(); 
+
+    if (player_num == 1) {
+        texture = pGM->loadTexture("assets/textures/Emilia.png");
+    } else {
+        texture = pGM->loadTexture("assets/textures/Rabico.png");
+    }
+    if(name == ""){
+        name = "___";
+    }
+    cout << "Player Name: " << name << endl;
+    sprite.setTexture(texture);
+    configSprite();
+}
 
 Player::Player(float x, float y, const float acel, const string Name, int life,
                int s, int p_num)
@@ -299,3 +314,17 @@ int Player::getScore() const { return score; }
 
 void Player::setJumpForce(float jpForce) { jumpForce = jpForce; }
 
+void Player::setPlayerNum(int n){
+    player_num = n;
+    if (n == 1) {
+        texture = pGM->loadTexture("assets/textures/Emilia.png");
+    } else {
+        texture = pGM->loadTexture("assets/textures/Rabico.png");
+    }
+    if(name == ""){
+        name = "___";
+    }
+    cout << "Player Name: " << name << endl;
+    sprite.setTexture(texture);
+    configSprite();
+}

@@ -2,7 +2,13 @@
 #include <SFML/Window.hpp>
 
 Honey::Honey()
-    : Obstacle(), viscosity(0.f){}
+    : Obstacle(), viscosity(0.f){
+
+    texture = pGM->loadTexture("assets/textures/Honey.png");
+
+    sprite.setTexture(texture);
+    configSprite();
+}
 
 Honey::Honey(float x, float y, bool harm):
     Obstacle(x,y,harm), viscosity(HONEYVISCOSITY){
