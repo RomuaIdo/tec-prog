@@ -232,9 +232,18 @@ void Player::handlePlayer2Controls(float dt) {
 
 void Player::shoot() {
   if (player_num == 1) {
+    if (Keyboard::isKeyPressed(sf::Keyboard::L)) {
+      reload();
+    }
+  }else {
     if (Keyboard::isKeyPressed(sf::Keyboard::C)) {
-      // Shoot after SHOOTCOOLDOWN seconds
-      if (shootClock >= SHOOTCOOLDOWN) {
+      reload();
+    }
+  }
+}
+
+void Player::reload(){
+    if (shootClock >= SHOOTCOOLDOWN) {
         Projectile *p =
             new Projectile(position.x + (size.x * faced_right), position.y,
                            Vector2f(faced_right * ROCKACEL, -8.f), this);
@@ -245,9 +254,7 @@ void Player::shoot() {
           CollisionManager::getInstance()->addProjectile(p);
         }
         shootClock = 0.f;
-      }
     }
-  }
 }
 
 void Player::shootProjectiles() {

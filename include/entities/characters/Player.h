@@ -47,6 +47,7 @@ class Player : public Character {
 
         /* --- GUN FUNCTIONS --- */
         void shoot();
+        void reload();
         void addProjectile(Projectile* p);
         void shootProjectiles();
         
