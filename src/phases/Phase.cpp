@@ -128,38 +128,6 @@ void Phase::checkPhaseCompletion() {
 /*                 SAVE BUFFER                 */
 /* ------------------------------------------- */
 
-void Phase::fromJson(const json& j) {
-    phaseSize.x = j.at("phaseSize_x").get<float>();
-    phaseSize.y = j.at("phaseSize_y").get<float>();
-    passingX = j.at("passingX").get<float>();
-    passedPhase = j.at("passedPhase").get<bool>();
-
-    entities_list.clear();
-
-    // Carrega entidades novas
-    for (const auto& entityJson : j["entities"]) {
-        std::string type = entityJson.at("type").get<std::string>();
-
-        Entity* e = nullptr;
-
-        if (type == "Cuca") {
-            e = new Cuca();
-        }
-        else if (type == "Honey") {
-            e = new Honey();
-        }
-        else if (type == "Plataform") {
-            e = new Plataform();
-        }
-
-        if (e) {
-            e->fromJson(entityJson);
-            entities_list.add(e);
-        }
-    }
-}
-
-
 json Phase::toJson()  {
     json j;
     j["phaseType"] = getType();
