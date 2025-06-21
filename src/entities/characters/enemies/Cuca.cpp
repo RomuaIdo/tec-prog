@@ -37,9 +37,9 @@ void Cuca::execute() {
     makePotion();
     verifyDeadPlayers();
     updateClocks();
-    throwPotion();
     updateDamageBlink();
   } 
+  throwPotion();
 }
 
 void Cuca::move() {

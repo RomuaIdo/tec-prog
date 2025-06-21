@@ -3,7 +3,7 @@
 MulaSemCabeca::MulaSemCabeca()
     :Enemy(), chargeClock(0.f), isCharging(false), chargingClock(0.f){
 
-    texture = pGM->loadTexture("assets/textures/Mula.png");
+    texture = pGM->loadTexture("assets/textures/mula.png");
     runTexture = texture;
 
     chargeTexture = pGM->loadTexture("assets/textures/MulaCharging.png");
@@ -15,7 +15,7 @@ MulaSemCabeca::MulaSemCabeca()
 MulaSemCabeca::MulaSemCabeca(float x, float y, const float acel, int life, int s)
     : Enemy(x, y, acel, life, s), chargeClock(0.f), isCharging(false), chargingClock(0.f) {
 
-    texture = pGM->loadTexture("assets/textures/Mula.png");
+    texture = pGM->loadTexture("assets/textures/mula.png");
     runTexture = texture;
 
     chargeTexture = pGM->loadTexture("assets/textures/MulaCharging.png");
