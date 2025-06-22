@@ -121,6 +121,8 @@ json Saci::toJson() const {
         {"lastPosition_y", lastPosition.y},
         {"lastPositionClock", lastPositionClock},
         {"teleportClock", teleportClock},
+        {"faced_right", faced_right},
+        {"alive", alive},
     };
 }
 
@@ -134,6 +136,8 @@ void Saci::fromJson(const json& j) {
     lastPosition.x = j.at("lastPosition_x");
     lastPosition.y = j.at("lastPosition_y");
     aceleration = j.at("aceleration");
+    faced_right = j.at("faced_right");
+    alive = j.at("alive");
 }
 
 std::string Saci::getType() const {

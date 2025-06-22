@@ -241,8 +241,6 @@ void Player::shoot() {
         p->configSprite();
         if (p) {
           addProjectile(p);
-          // Register the projectile in the CollisionManager
-          CollisionManager::getInstance()->addProjectile(p);
         }
         shootClock = 0.f;
       }
@@ -269,24 +267,40 @@ void Player::shootProjectiles() {
   }
 }
 
-void Player::addProjectile(Projectile *p) { projectiles_list.push_back(p); }
+void Player::addProjectile(Projectile *p) { 
+  projectiles_list.push_back(p); 
+  CollisionManager::getInstance()->addProjectile(p);
+}
 
 /* ------------------------------------------- */
 /*                 SAVE BUFFER                 */
 /* ------------------------------------------- */
 
 json Player::toJson() const {
-  return {{"type", getType()},
-          {"position_x", position.x},
-          {"position_y", position.y},
-          {"velocity_x", velocity.x},
-          {"velocity_y", velocity.y},
-          {"health", health},
-          {"score", score},
-          {"player_num", player_num},
-          {"name", name},
-          {"aceleration", aceleration},
-          {"jumpForce", jumpForce}};
+  json j;
+  
+  j["type"] = getType();
+  j["position_x"] = position.x;
+  j["position_y"] = position.y;
+  j["velocity_x"] = velocity.x;
+  j["velocity_y"] = velocity.y;
+  j["health"] = health;
+  j["score"] = score;
+  j["player_num"] = player_num;
+  j["name"] = name;
+  j["aceleration"] = aceleration;
+  j["jumpForce"] = jumpForce;
+
+  vector<json> projectiles_json;
+  list<Projectile *>::const_iterator it;
+  for (it = projectiles_list.begin(); it != projectiles_list.end(); ++it) {
+    if (*it) {
+      projectiles_json.push_back((*it)->toJson());
+    }
+  }
+  j["projectiles"] = projectiles_json;
+
+  return j;
 }
 
 void Player::fromJson(const json &j) {
@@ -300,6 +314,25 @@ void Player::fromJson(const json &j) {
   name = j.at("name");
   aceleration = j.at("aceleration");
   jumpForce = j.at("jumpForce");
+
+  // Clear the existing projectiles list
+  for (list<Projectile *>::iterator it = projectiles_list.begin();
+       it != projectiles_list.end(); it++) {
+    if (*it) {
+      delete (*it);
+      (*it) = nullptr;
+    }
+  }
+  projectiles_list.clear();
+  // Load projectiles from JSON
+  if (j.contains("projectiles")) {
+    for (const auto &proj_json : j.at("projectiles")) {
+      Projectile *p = new Projectile();
+      p->fromJson(proj_json);
+      p->setOwner(this);
+      addProjectile(p);
+    }
+  }
 }
 
 std::string Player::getType() const { return "Player" + to_string(player_num); }

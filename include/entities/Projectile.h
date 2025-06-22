@@ -38,6 +38,7 @@ class Projectile : public Entity{
         void move();
         bool getActive();
         void setActive(bool Active = false);
+        void setOwner(Entity* owner);
 };  
 
 #endif

@@ -1,27 +1,22 @@
 #include "../../../../include/entities/characters/enemies/Cuca.h"
 #include "../../../../include/managers/CollisionManager.h"
 
+Cuca::Cuca() : Enemy(), potionClock(0.f) {
+  texture = pGM->loadTexture("assets/textures/Cuca.png");
+  sprite.setTexture(texture);
+  configSprite();
 
-Cuca::Cuca()
-    : Enemy(), potionClock(0.f){
-    texture = pGM->loadTexture("assets/textures/Cuca.png");
-    sprite.setTexture(texture);
-    configSprite();
-
-    evilness = CUCAEVILNESS;
+  evilness = CUCAEVILNESS;
 }
-
 
 Cuca::Cuca(float x, float y, const float acel, int life, int s)
     : Enemy(x, y, acel, life, s), potionClock(0.f) {
 
-
-    velocity = Vector2f(faced_right * aceleration, 0.f);
-    texture = pGM->loadTexture("assets/textures/Cuca.png");
-    sprite.setTexture(texture);
-    configSprite();
-    evilness = CUCAEVILNESS;
-
+  velocity = Vector2f(faced_right * aceleration, 0.f);
+  texture = pGM->loadTexture("assets/textures/Cuca.png");
+  sprite.setTexture(texture);
+  configSprite();
+  evilness = CUCAEVILNESS;
 }
 
 Cuca::~Cuca() {}
@@ -38,20 +33,20 @@ void Cuca::execute() {
     verifyDeadPlayers();
     updateClocks();
     updateDamageBlink();
-  } 
+  }
   throwPotion();
 }
 
 void Cuca::move() {
 
-    // Change direction after 2 seconds
-    if (clock > 2.f) {
-        faced_right *= -1;
-        clock = 0;
-        velocity.x = faced_right * (aceleration);
-    }
-    applyGravity();
-    moveCharacter();
+  // Change direction after 2 seconds
+  if (clock > 2.f) {
+    faced_right *= -1;
+    clock = 0;
+    velocity.x = faced_right * (aceleration);
+  }
+  applyGravity();
+  moveCharacter();
 }
 
 /* ------------------------------------------- */
@@ -95,7 +90,6 @@ void Cuca::throwPotion() {
   }
 }
 
-void Cuca::addPotion(Projectile *pot) { potions.push_back(pot); }
 
 void Cuca::updateClocks() {
   float dt = pGM->getdt();
@@ -109,35 +103,62 @@ void Cuca::updateClocks() {
 /* ------------------------------------------- */
 
 json Cuca::toJson() const {
-    return {
-        {"type", getType()},
-        {"position_x", position.x},
-        {"position_y", position.y},
-        {"health", health},
-        {"potionClock", potionClock},
-        {"faced_right", faced_right},
-        {"aceleration", aceleration},
-        {"strength", strength},
-        {"evilness", evilness},
-        {"alive", alive}
-    };
+  json j;
+  j["type"] = getType();
+  j["position_x"] = position.x;
+  j["position_y"] = position.y;
+  j["health"] = health;
+  j["potionClock"] = potionClock;
+  j["faced_right"] = faced_right;
+  j["aceleration"] = aceleration;
+  j["strength"] = strength;
+  j["evilness"] = evilness;
+  j["alive"] = alive;
+
+  vector<json> potions_json;
+
+  list<Projectile *>::const_iterator it;
+  for (it = potions.begin(); it != potions.end(); ++it) {
+    if (*it) {
+      potions_json.push_back((*it)->toJson());
+    }
+  }
+  j["potions"] = potions_json;
+  return j;
 }
 
-void Cuca::fromJson(const json& j) {
-    position.x = j.at("position_x");
-    position.y = j.at("position_y");
-    health = j.at("health");
-    potionClock = j.at("potionClock");
-    faced_right = j.at("faced_right");
-    evilness = j.at("evilness");
-    aceleration = j.at("aceleration");
-    strength = j.at("strength");
-    alive = j.at("alive");
+void Cuca::fromJson(const json &j) {
+  position.x = j.at("position_x");
+  position.y = j.at("position_y");
+  health = j.at("health");
+  potionClock = j.at("potionClock");
+  faced_right = j.at("faced_right");
+  evilness = j.at("evilness");
+  aceleration = j.at("aceleration");
+  strength = j.at("strength");
+  alive = j.at("alive");
+
+  // Clear the existing projectiles list
+  for (list<Projectile *>::iterator it = potions.begin();
+       it != potions.end(); it++) {
+    if (*it) {
+      delete (*it);
+      (*it) = nullptr;
+    }
+  }
+  potions.clear();
+  // Load projectiles from JSON
+  if (j.contains("potions")) {
+    for (const auto &proj_json : j.at("potions")) {
+      Projectile *p = new Projectile();
+      p->fromJson(proj_json);
+      p->setOwner(this);
+      addPotion(p);
+    }
+  }
 }
 
-std::string Cuca::getType() const {
-    return "Cuca";
-}
+std::string Cuca::getType() const { return "Cuca"; }
 
 /* ------------------------------------------- */
 /*              PLAYER FUNCTIONS               */
@@ -150,5 +171,14 @@ void Cuca::attack(Player *p) {
     direction /= abs(direction);
     p->takeDamage(strength, direction);
     pGM->resetClock();
+  }
+}
+
+void Cuca::addPotion(Projectile *pot) {
+  if (pot) {
+    potions.push_back(pot);
+    CollisionManager::getInstance()->addProjectile(pot);
+  } else {
+    cerr << "Failed to add potion: null pointer" << endl;
   }
 }
