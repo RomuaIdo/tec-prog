@@ -19,7 +19,7 @@ class EntitiesList {
         void clear();
         void traverse();
         void removePlayerInEnemiesList(Player* p);
-        
+        vector<json> toJson();
         List<Entity*>& getEntities() ;
 
 };

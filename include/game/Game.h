@@ -21,6 +21,7 @@ class Leaderboard;
 class MainMenu;
 class NewGameMenu;
 class PauseMenu;
+class GameOverMenu;
 
 class Game {
 
@@ -38,6 +39,7 @@ class Game {
         PauseMenu *pauseMenu;
         NewGameMenu *newGameMenu;
         Leaderboard *leaderboard;
+        GameOverMenu *gameOverMenu;
         MouseSubject mouseSubject;
         TextInputSubject textInputSubject;
         GameState game_state;

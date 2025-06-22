@@ -49,3 +49,13 @@ void EntitiesList::traverse() {
 List<Entity*>& EntitiesList::getEntities() {
     return entities;
 }
+
+vector<json> EntitiesList::toJson() {
+  vector<json> jsonEntities;
+  for (it = entities.begin(); it != entities.end(); ++it) {
+    if (*it) {
+      jsonEntities.push_back((*it)->toJson());
+    }
+  }
+  return jsonEntities;
+}

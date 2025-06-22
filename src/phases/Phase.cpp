@@ -138,12 +138,8 @@ json Phase::toJson() {
   j["passingX"] = passingX;
   j["passedPhase"] = passedPhase;
 
-  std::vector<json> entitiesJson;
-  for (auto it = entities_list.getEntities().begin();
-       it != entities_list.getEntities().end(); ++it) {
-    entitiesJson.push_back((*it)->toJson());
-  }
-  j["entities"] = entitiesJson;
+  
+  j["entities"] = entities_list.toJson();
 
   return j;
 }

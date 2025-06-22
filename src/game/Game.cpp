@@ -2,6 +2,7 @@
 #include "../../include/graphicalelements/eventshandler/MouseEventHandler.h"
 #include "../../include/graphicalelements/eventshandler/TextInputEventHandler.h"
 #include "../../include/managers/CollisionManager.h"
+#include "../../include/menu/GameOverMenu.h"
 #include "../../include/menu/Leaderboard.h"
 #include "../../include/menu/MainMenu.h"
 #include "../../include/menu/NewGameMenu.h"
@@ -11,9 +12,9 @@
 Game::Game()
     : pGM(nullptr), pCM(nullptr), number_of_players(1), player1(nullptr),
       player2(nullptr), mainMenu(nullptr), pauseMenu(nullptr),
-      newGameMenu(nullptr), leaderboard(nullptr), mouseSubject(),
-      textInputSubject(), phase_size(1600.f, 600.f), firstPhase(nullptr),
-      secondPhase(nullptr), currentPhase(nullptr) {
+      newGameMenu(nullptr), leaderboard(nullptr), gameOverMenu(nullptr),
+      mouseSubject(), textInputSubject(), phase_size(1600.f, 600.f),
+      firstPhase(nullptr), secondPhase(nullptr), currentPhase(nullptr) {
 
   pCM = CollisionManager::getInstance();
   pGM = GraphicsManager::getInstance();
@@ -64,6 +65,10 @@ Game::~Game() {
   if (leaderboard) {
     delete leaderboard;
     leaderboard = nullptr;
+  }
+  if (gameOverMenu) {
+    delete gameOverMenu;
+    gameOverMenu = nullptr;
   }
   currentMenu = nullptr;
 }
@@ -123,6 +128,8 @@ void Game::execute() {
       currentMenu->execute();
       break;
     case GameState::GAME_OVER:
+      currentMenu = gameOverMenu;
+      currentMenu->execute();
       break;
     }
     if (previousMenu != currentMenu) {
@@ -138,7 +145,16 @@ void Game::execute() {
 void Game::running() {
   if (currentPhase) {
     currentPhase->execute();
-
+    bool player1Dead = (player1 == nullptr || !player1->getAlive());
+    bool player2Dead = (player2 == nullptr ||
+                        (number_of_players == 2 && !player2->getAlive()));
+    if ((number_of_players == 1 && player1Dead) ||
+        (number_of_players == 2 && player1Dead && player2Dead)) {
+      cleanupAfterGame();
+      resetCamera();
+      setGameState(GameState::GAME_OVER);
+      return;
+    }
     if (currentPhase->passed()) {
       if (dynamic_cast<FirstPhase *>(currentPhase)) {
         createSecondPhase();
@@ -164,6 +180,7 @@ void Game::create_menus() {
   pauseMenu = new PauseMenu(this);
   newGameMenu = new NewGameMenu(this);
   leaderboard = new Leaderboard(this);
+  gameOverMenu = new GameOverMenu(this);
 }
 
 void Game::updateCamera() {
@@ -454,7 +471,7 @@ void Game::loadGame(const std::string &filename) {
           currentPhase->fromJson(j["phase"]);
 
           currentPhase->setPlayers(player1, player2);
-          
+
           List<Entity *>::Iterator it;
           for (it = currentPhase->getEntities().begin();
                it != currentPhase->getEntities().end(); ++it) {
