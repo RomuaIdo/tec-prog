@@ -234,6 +234,7 @@ void Phase::fromJson(const json &j) {
       }
     }
   }
+  entities_list.addPlayerToEnemiesList(player1, player2);
 }
 
 
@@ -246,6 +247,3 @@ void Phase::setPlayers(Player *p1, Player *p2) {
   }
 }
 
-List<Entity*>& Phase::getEntities() {
-  return entities_list.getEntities();
-}

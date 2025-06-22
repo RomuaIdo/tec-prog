@@ -46,9 +46,6 @@ void EntitiesList::traverse() {
   }
 }
 
-List<Entity*>& EntitiesList::getEntities() {
-    return entities;
-}
 
 vector<json> EntitiesList::toJson() {
   vector<json> jsonEntities;
@@ -58,4 +55,17 @@ vector<json> EntitiesList::toJson() {
     }
   }
   return jsonEntities;
+}
+
+void EntitiesList::addPlayerToEnemiesList(Player *p1, Player *p2) {
+  for (it = entities.begin(); it != entities.end(); ++it) {
+    if (*it) {
+      if (Enemy *enemy = dynamic_cast<Enemy *>(*it)) {
+        enemy->addPlayer(p1);
+        if (p2) {
+          enemy->addPlayer(p2);
+        }
+      }
+    }
+  }
 }

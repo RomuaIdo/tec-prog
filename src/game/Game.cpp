@@ -10,10 +10,7 @@
 #include <algorithm>
 
 Game::Game()
-    : pGM(nullptr), player1(nullptr), player2(nullptr), mainMenu(nullptr),
-      pauseMenu(nullptr), newGameMenu(nullptr), leaderboard(nullptr),
-      gameOverMenu(nullptr), mouseSubject(), textInputSubject(),
-      phase_size(1600.f, 600.f), firstPhase(nullptr), secondPhase(nullptr),
+    : pGM(nullptr), player1(nullptr), player2(nullptr), mouseSubject(), textInputSubject(),
       currentPhase(nullptr) {
 
   pGM = GraphicsManager::getInstance();
@@ -27,7 +24,7 @@ Game::Game()
       Vector2f(window.getSize().x / 2.0f, window.getSize().y / 2.0f));
   create_menus();
   game_state = GameState::MAIN_MENU;
-  currentMenu = mainMenu;
+  currentMenu = menus[GameState::MAIN_MENU];
   currentMenu->activate();
   srand(time(nullptr));
   execute();
@@ -40,37 +37,15 @@ Game::~Game() {
     delete player2;
     player2 = nullptr;
   }
-
-  if (firstPhase) {
-    delete firstPhase;
-    firstPhase = nullptr;
-  }
-  if (secondPhase) {
-    delete secondPhase;
-    secondPhase = nullptr;
+  if (currentPhase) {
+    delete currentPhase;
   }
   currentPhase = nullptr;
-  if (mainMenu) {
-    delete mainMenu;
-    mainMenu = nullptr;
+  for (map<GameState, Menu *>::iterator it = menus.begin(); it != menus.end();
+       ++it) {
+    delete it->second;
   }
-  if (pauseMenu) {
-    delete pauseMenu;
-    pauseMenu = nullptr;
-  }
-  if (newGameMenu) {
-    delete newGameMenu;
-    newGameMenu = nullptr;
-  }
-  if (leaderboard) {
-    delete leaderboard;
-    leaderboard = nullptr;
-  }
-  if (gameOverMenu) {
-    delete gameOverMenu;
-    gameOverMenu = nullptr;
-  }
-  currentMenu = nullptr;
+  menus.clear();
 }
 
 void Game::execute() {
@@ -107,31 +82,14 @@ void Game::execute() {
     Menu *previousMenu = currentMenu;
 
     pGM->clean();
-    switch (game_state) {
-    case GameState::MAIN_MENU:
-      currentMenu = mainMenu;
-      currentMenu->execute();
-      break;
-    case GameState::NEW_GAME_MENU:
-      currentMenu = newGameMenu;
-      currentMenu->execute();
-      break;
-    case GameState::PLAYING:
+
+    if (game_state == GameState::PLAYING) {
       running();
-      break;
-    case GameState::LEADERBOARD:
-      currentMenu = leaderboard;
+    } else {
+      currentMenu = menus[game_state];
       currentMenu->execute();
-      break;
-    case GameState::PAUSED:
-      currentMenu = pauseMenu;
-      currentMenu->execute();
-      break;
-    case GameState::GAME_OVER:
-      currentMenu = gameOverMenu;
-      currentMenu->execute();
-      break;
     }
+
     if (previousMenu != currentMenu) {
       if (previousMenu)
         previousMenu->deactivate();
@@ -172,11 +130,11 @@ MouseSubject &Game::getMouseSubject() { return mouseSubject; }
 void Game::setGameState(GameState state) { game_state = state; }
 
 void Game::create_menus() {
-  mainMenu = new MainMenu(this);
-  pauseMenu = new PauseMenu(this);
-  newGameMenu = new NewGameMenu(this);
-  leaderboard = new Leaderboard(this);
-  gameOverMenu = new GameOverMenu(this);
+  menus[GameState::MAIN_MENU] = new MainMenu(this);
+  menus[GameState::NEW_GAME_MENU] = new NewGameMenu(this);
+  menus[GameState::PAUSED] = new PauseMenu(this);
+  menus[GameState::LEADERBOARD] = new Leaderboard(this);
+  menus[GameState::GAME_OVER] = new GameOverMenu(this);
 }
 
 void Game::updateCamera() {
@@ -347,7 +305,8 @@ void Game::saveScoretoLeaderboard() {
   outFile.close();
 
   // Forçar recarregamento no próximo acesso
-  leaderboard->reloadScores();
+  Leaderboard *lb = dynamic_cast<Leaderboard *>(menus[GameState::LEADERBOARD]);
+  lb->reloadScores();
 }
 
 void Game::cleanupAfterGame() {
@@ -411,6 +370,7 @@ void Game::saveGame(const std::string &filename) const {
         {"players",
          {player1 ? player1->toJson() : json(nullptr),
           player2 ? player2->toJson() : json(nullptr)}},
+        {"player_names", player_names},
         {"state", static_cast<int>(game_state)},
         {"phase", currentPhase ? currentPhase->toJson() : json(nullptr)}};
     file << gameState.dump(4);
@@ -445,7 +405,13 @@ void Game::loadGame(const std::string &filename) {
       }
     }
 
-    // Carrega a fase
+    if (j.contains("player_names") && j["player_names"].is_array()) {
+      player_names.clear();
+      for (const auto &name : j["player_names"]) {
+        player_names.push_back(name.get<string>());
+      }
+    }
+    //  Carrega a fase
     if (j.contains("phase") && !j["phase"].is_null()) {
       if (j["phase"].contains("type") && j["phase"]["type"].is_string()) {
         string phaseType = j["phase"]["type"];
@@ -457,20 +423,8 @@ void Game::loadGame(const std::string &filename) {
         }
 
         if (currentPhase) {
-          currentPhase->fromJson(j["phase"]);
-
           currentPhase->setPlayers(player1, player2);
-
-          List<Entity *>::Iterator it;
-          for (it = currentPhase->getEntities().begin();
-               it != currentPhase->getEntities().end(); ++it) {
-            if (Enemy *enemy = dynamic_cast<Enemy *>((*it))) {
-              if (player1)
-                enemy->addPlayer(player1);
-              if (player2)
-                enemy->addPlayer(player2);
-            }
-          }
+          currentPhase->fromJson(j["phase"]);
         }
       }
     }

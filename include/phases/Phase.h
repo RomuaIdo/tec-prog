@@ -45,7 +45,6 @@ class Phase : public Ente {
         virtual json toJson() ;
         virtual void fromJson(const json& j);
         virtual string getType() const = 0;
-        List<Entity *> &getEntities();
 };
 
 #endif
