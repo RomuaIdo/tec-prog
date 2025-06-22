@@ -1,12 +1,13 @@
 #include "../../include/phases/Phase.h"
 
+
+
 Phase::Phase(Vector2f size, float limiarX, Player *p1, Player *p2)
     : pCM(CollisionManager::getInstance()), phaseSize(size), player1(p1),
       player2(p2), passingX(limiarX), passedPhase(false) {
   entities_list.clear();
   tiles.clear();
   BackgroundLayers.clear();
-  pCM->clearEntities();
   pCM->addPlayer(player1);
   if (player2) {
     pCM->addPlayer(player2);
@@ -157,7 +158,8 @@ json Phase::toJson() {
   return j;
 }
 
-void Phase::fromJson(const json &j) {
+void Phase::fromJson(const json &j) { 
+
   // Carrega dados básicos da fase
   if (j.contains("phaseSize_x") && !j["phaseSize_x"].is_null()) {
     phaseSize.x = j["phaseSize_x"];
@@ -172,6 +174,7 @@ void Phase::fromJson(const json &j) {
     passedPhase = j["passedPhase"];
   }
 
+  createScenery();
   // Limpa entidades existentes
   entities_list.clear();
 
@@ -231,9 +234,6 @@ void Phase::fromJson(const json &j) {
       }
     }
   }
-
-  // Reconfigura o tamanho da fase no CollisionManager
-  createScenery();
 }
 
 

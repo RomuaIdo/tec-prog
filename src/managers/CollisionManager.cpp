@@ -173,6 +173,7 @@ void CollisionManager::treatWallCollision() {
       e->setVelocity(vel);
     }
   }
+
 }
 
 void CollisionManager::treatPlayersCollision() {
@@ -313,12 +314,14 @@ void CollisionManager::treatProjectilesCollision() {
       if (pos.x - size.x / 2 < 0 || pos.x + size.x / 2 > phaseSize.x ||
           pos.y - size.y / 2 < 0 || pos.y + size.y / 2 > phaseSize.y) {
         collided = true;
+        collidedEntity = nullptr;
+        cout << "Projectile collided with wall at position: "
+             << pos.x << ", " << pos.y << endl;
       }
     }
     if (collided) {
       proj->collide(collidedEntity);
     }
-
     ++itProjectile;
   }
 }
@@ -382,4 +385,12 @@ void CollisionManager::execute() {
   if (players_vector.size() > 1)
     treatPlayersCollision();
   treatWallCollision();
+}
+
+
+void CollisionManager::printProjectiles() const {
+  for (const auto &proj : projectiles_set) {
+    cout << "Projectile at position: " << proj->getPosition().x << ", "
+         << proj->getPosition().y << endl;
+  }
 }

@@ -123,6 +123,12 @@ json Saci::toJson() const {
         {"teleportClock", teleportClock},
         {"faced_right", faced_right},
         {"alive", alive},
+        {"evilness", evilness},
+        {"strength", strength},
+        {"far", far},
+        {"isBlinking", isBlinking},
+        {"damageBlinkClock", damageBlinkClock},
+        {"takeDamageClock", takeDamageClock}
     };
 }
 
@@ -138,6 +144,12 @@ void Saci::fromJson(const json& j) {
     aceleration = j.at("aceleration");
     faced_right = j.at("faced_right");
     alive = j.at("alive");
+    evilness = j.at("evilness");
+    strength = j.at("strength");
+    far = j.at("far");
+    isBlinking = j.at("isBlinking");
+    damageBlinkClock = j.at("damageBlinkClock");
+    takeDamageClock = j.at("takeDamageClock");
 }
 
 std::string Saci::getType() const {

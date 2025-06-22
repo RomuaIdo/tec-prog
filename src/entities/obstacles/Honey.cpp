@@ -53,7 +53,8 @@ json Honey::toJson() const {
         {"type", getType()},
         {"position_x", position.x},
         {"position_y", position.y},
-        {"viscosity", viscosity}
+        {"viscosity", viscosity},
+        {"harmful", harmful}
     };
 }
 
@@ -61,6 +62,7 @@ void Honey::fromJson(const json& j) {
     position.x = j.at("position_x");
     position.y = j.at("position_y");
     viscosity = j.at("viscosity");
+    harmful = j.at("harmful").get<bool>();
 }
 
 std::string Honey::getType() const {

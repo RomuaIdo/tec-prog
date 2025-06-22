@@ -114,6 +114,10 @@ json Cuca::toJson() const {
   j["strength"] = strength;
   j["evilness"] = evilness;
   j["alive"] = alive;
+  j["takeDamageClock"] = takeDamageClock;
+  j["clock"] = clock;
+  j["damageBlinkClock"] = damageBlinkClock;
+  j["isBlinking"] = isBlinking;
 
   vector<json> potions_json;
 
@@ -137,7 +141,10 @@ void Cuca::fromJson(const json &j) {
   aceleration = j.at("aceleration");
   strength = j.at("strength");
   alive = j.at("alive");
-
+  takeDamageClock = j.at("takeDamageClock");
+  clock = j.at("clock");
+  damageBlinkClock = j.at("damageBlinkClock");
+  isBlinking = j.at("isBlinking");
   // Clear the existing projectiles list
   for (list<Projectile *>::iterator it = potions.begin();
        it != potions.end(); it++) {
@@ -151,8 +158,8 @@ void Cuca::fromJson(const json &j) {
   if (j.contains("potions")) {
     for (const auto &proj_json : j.at("potions")) {
       Projectile *p = new Projectile();
-      p->fromJson(proj_json);
       p->setOwner(this);
+      p->fromJson(proj_json);
       addPotion(p);
     }
   }

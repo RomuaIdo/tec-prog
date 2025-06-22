@@ -14,7 +14,6 @@
 enum class GameState { MAIN_MENU, NEW_GAME_MENU, PLAYING, PAUSED, GAME_OVER, LEADERBOARD };
 
 /* Forward declarations */
-class CollisionManager;
 class Menu;
 class Button;
 class Leaderboard;

@@ -258,11 +258,11 @@ void Player::shootProjectiles() {
       ++it;
     } else {
       // Remove from CollisionManager before deleting
-      CollisionManager::getInstance()->removeProjectile(p);
 
+      CollisionManager::getInstance()->removeProjectile(p);
+      it = projectiles_list.erase(it);
       // Delete the projectile
       delete p;
-      it = projectiles_list.erase(it);
     }
   }
 }
@@ -290,6 +290,14 @@ json Player::toJson() const {
   j["name"] = name;
   j["aceleration"] = aceleration;
   j["jumpForce"] = jumpForce;
+  j["faced_right"] = faced_right;
+  j["in_air"] = in_air;
+  j["alive"] = alive;
+  j["clock"] = clock;
+  j["takeDamageClock"] = takeDamageClock;
+  j["isBlinking"] = isBlinking;
+  j["damageBlinkClock"] = damageBlinkClock;
+
 
   vector<json> projectiles_json;
   list<Projectile *>::const_iterator it;
@@ -314,6 +322,13 @@ void Player::fromJson(const json &j) {
   name = j.at("name");
   aceleration = j.at("aceleration");
   jumpForce = j.at("jumpForce");
+  faced_right = j.at("faced_right");
+  in_air = j.at("in_air");
+  alive = j.at("alive");
+  clock = j.at("clock");
+  takeDamageClock = j.at("takeDamageClock");
+  isBlinking = j.at("isBlinking");
+  damageBlinkClock = j.at("damageBlinkClock");
 
   // Clear the existing projectiles list
   for (list<Projectile *>::iterator it = projectiles_list.begin();
@@ -328,8 +343,8 @@ void Player::fromJson(const json &j) {
   if (j.contains("projectiles")) {
     for (const auto &proj_json : j.at("projectiles")) {
       Projectile *p = new Projectile();
-      p->fromJson(proj_json);
       p->setOwner(this);
+      p->fromJson(proj_json);
       addProjectile(p);
     }
   }

@@ -140,7 +140,16 @@ json MulaSemCabeca::toJson() const {
         {"chargeClock", chargeClock},
         {"isCharging", isCharging},
         {"chargingClock", chargingClock},
-
+        {"faced_right", faced_right},
+        {"evilness", evilness},
+        {"alive", alive},
+        {"velocity_x", velocity.x},
+        {"velocity_y", velocity.y},
+        {"faced_right", faced_right},
+        {"takeDamageClock", takeDamageClock},
+        {"clock", clock},
+        {"isBlinking", isBlinking},
+        {"damageBlinkClock", damageBlinkClock}
     };
 }
 
@@ -151,7 +160,15 @@ void MulaSemCabeca::fromJson(const json& j) {
     chargeClock = j.at("chargeClock");
     isCharging = j.at("isCharging");
     chargingClock = j.at("chargingClock");
-
+    faced_right = j.at("faced_right");
+    evilness = j.at("evilness");
+    alive = j.at("alive");
+    velocity.x = j.at("velocity_x");
+    velocity.y = j.at("velocity_y");
+    takeDamageClock = j.at("takeDamageClock");
+    clock = j.at("clock");
+    isBlinking = j.at("isBlinking");
+    damageBlinkClock = j.at("damageBlinkClock");
 }
 
 std::string MulaSemCabeca::getType() const {

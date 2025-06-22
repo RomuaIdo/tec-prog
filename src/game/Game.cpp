@@ -19,7 +19,8 @@ Game::Game()
   pGM = GraphicsManager::getInstance();
   Ente::setGraphicsManager(pGM);
 
-  RenderWindow window(VideoMode(1920, 1080), "Brasilore v1.0", Style::Fullscreen);
+  RenderWindow window(VideoMode(1920, 1080), "Brasilore v1.0",
+                      Style::Fullscreen);
   window.setFramerateLimit(60);
   pGM->setWindow(&window);
   pGM->setCameraCenter(
@@ -142,6 +143,7 @@ void Game::execute() {
 }
 
 void Game::running() {
+  updateCamera();
   if (currentPhase) {
     currentPhase->execute();
     bool player1Dead = (player1 == nullptr || !player1->getAlive());
@@ -163,7 +165,6 @@ void Game::running() {
       }
     }
   }
-  updateCamera();
 }
 
 MouseSubject &Game::getMouseSubject() { return mouseSubject; }
@@ -395,13 +396,12 @@ json Game::toJson() const {
 
 void Game::fromJson(const json &j) {
   game_state = static_cast<GameState>(j["game_state"]);
-
+  if (currentPhase)
+    currentPhase->fromJson(j["phase"]);
   if (player1)
     player1->fromJson(j["player1"]);
   if (player2)
     player2->fromJson(j["player2"]);
-  if (currentPhase)
-    currentPhase->fromJson(j["phase"]);
 }
 
 void Game::saveGame(const std::string &filename) const {
@@ -448,7 +448,7 @@ void Game::loadGame(const std::string &filename) {
     // Carrega a fase
     if (j.contains("phase") && !j["phase"].is_null()) {
       if (j["phase"].contains("type") && j["phase"]["type"].is_string()) {
-        std::string phaseType = j["phase"]["type"];
+        string phaseType = j["phase"]["type"];
 
         if (phaseType == "FirstPhase") {
           currentPhase = new FirstPhase();
@@ -478,6 +478,9 @@ void Game::loadGame(const std::string &filename) {
     // Reconfigurar managers
 
     file.close();
+    updateCamera();
+    cout << "Projeteis carregados com sucesso:" << endl;
+    CollisionManager::getInstance()->printProjectiles();
     game_state = GameState::PLAYING;
   }
 }
