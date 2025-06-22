@@ -178,7 +178,6 @@ void NewGameMenu::execute() {
           playerNames.push_back((*inputIt)->getInput());
         }
 
-        pGame->setNumberPlayers(players);
         pGame->setPlayerNames(playerNames);
         pGame->setGameState(GameState::PLAYING);
         pGame->createPlayers(playerNames);

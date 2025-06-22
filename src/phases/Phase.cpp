@@ -6,6 +6,11 @@ Phase::Phase(Vector2f size, float limiarX, Player *p1, Player *p2)
   entities_list.clear();
   tiles.clear();
   BackgroundLayers.clear();
+  pCM->clearEntities();
+  pCM->addPlayer(player1);
+  if (player2) {
+    pCM->addPlayer(player2);
+  }
 }
 
 Phase::~Phase() {
@@ -29,12 +34,12 @@ void Phase::createScenery() {
   const float tileWidth = 50.0f;
   const float tileHeight = 50.0f;
 
-  const int numBackgroundElementsX =
+  const int numTilesX =
       static_cast<int>(phaseSize.x / tileWidth) + 1;
-  const int numBackgroundElementsY = 1;
+  const int numTilesY = 1;
 
-  for (int y = 0; y < numBackgroundElementsY; y++) {
-    for (int x = 0; x < numBackgroundElementsX; x++) {
+  for (int y = 0; y < numTilesY; y++) {
+    for (int x = 0; x < numTilesX; x++) {
       float posX = x * tileWidth + tileWidth / 2;
       float posY = phaseSize.y - (tileHeight / 2) - (y * tileHeight);
       tiles.push_back(new BackgroundElement(posX, posY, 0.0f, texturePath));
@@ -42,7 +47,7 @@ void Phase::createScenery() {
   }
 
   Vector2f newphaseSize = getPhaseSize();
-  newphaseSize.y = newphaseSize.y - (numBackgroundElementsY * tileHeight);
+  newphaseSize.y = newphaseSize.y - (numTilesY * tileHeight);
 
   BackgroundLayers.push_back(
       new BackgroundElement(newphaseSize.x / 2.f, newphaseSize.y / 2.f, 1.0f,
@@ -111,18 +116,26 @@ void Phase::createSaci() {
 bool Phase::passed() const { return passedPhase; }
 
 void Phase::checkPhaseCompletion() {
-  if (player1 && player1->getAlive()) {
-    if (player2 && player2->getAlive()) {
-      if (player1->getPosition().x > passingX &&
-          player2->getPosition().x > passingX) {
-        passedPhase = true;
-      }
-    } else {
-      if (player1->getPosition().x > passingX) {
-        passedPhase = true;
-      }
+    bool player1Alive = player1 && player1->getAlive();
+    bool player2Alive = player2 && player2->getAlive();
+
+    if (player1Alive && player2Alive) {
+        // Ambos vivos: precisam passar juntos
+        if (player1->getPosition().x > passingX && 
+            player2->getPosition().x > passingX) {
+            passedPhase = true;
+        }
+    } else if (player1Alive) {
+        // Apenas player1 vivo
+        if (player1->getPosition().x > passingX) {
+            passedPhase = true;
+        }
+    } else if (player2Alive) {
+        // Apenas player2 vivo
+        if (player2->getPosition().x > passingX) {
+            passedPhase = true;
+        }
     }
-  }
 }
 
 /* ------------------------------------------- */
@@ -227,6 +240,10 @@ void Phase::fromJson(const json &j) {
 void Phase::setPlayers(Player *p1, Player *p2) {
   player1 = p1;
   player2 = p2;
+  pCM->addPlayer(player1);
+  if (player2) {
+    pCM->addPlayer(player2);
+  }
 }
 
 List<Entity*>& Phase::getEntities() {

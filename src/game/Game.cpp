@@ -10,17 +10,16 @@
 #include <algorithm>
 
 Game::Game()
-    : pGM(nullptr), pCM(nullptr), number_of_players(1), player1(nullptr),
-      player2(nullptr), mainMenu(nullptr), pauseMenu(nullptr),
-      newGameMenu(nullptr), leaderboard(nullptr), gameOverMenu(nullptr),
-      mouseSubject(), textInputSubject(), phase_size(1600.f, 600.f),
-      firstPhase(nullptr), secondPhase(nullptr), currentPhase(nullptr) {
+    : pGM(nullptr), player1(nullptr), player2(nullptr), mainMenu(nullptr),
+      pauseMenu(nullptr), newGameMenu(nullptr), leaderboard(nullptr),
+      gameOverMenu(nullptr), mouseSubject(), textInputSubject(),
+      phase_size(1600.f, 600.f), firstPhase(nullptr), secondPhase(nullptr),
+      currentPhase(nullptr) {
 
-  pCM = CollisionManager::getInstance();
   pGM = GraphicsManager::getInstance();
   Ente::setGraphicsManager(pGM);
 
-  RenderWindow window(VideoMode(1920, 1080), "Good Game", Style::Fullscreen);
+  RenderWindow window(VideoMode(1920, 1080), "Brasilore v1.0", Style::Fullscreen);
   window.setFramerateLimit(60);
   pGM->setWindow(&window);
   pGM->setCameraCenter(
@@ -146,10 +145,8 @@ void Game::running() {
   if (currentPhase) {
     currentPhase->execute();
     bool player1Dead = (player1 == nullptr || !player1->getAlive());
-    bool player2Dead = (player2 == nullptr ||
-                        (number_of_players == 2 && !player2->getAlive()));
-    if ((number_of_players == 1 && player1Dead) ||
-        (number_of_players == 2 && player1Dead && player2Dead)) {
+    bool player2Dead = (player2 == nullptr || (!player2->getAlive()));
+    if (player1Dead && player2Dead) {
       cleanupAfterGame();
       resetCamera();
       setGameState(GameState::GAME_OVER);
@@ -172,8 +169,6 @@ void Game::running() {
 MouseSubject &Game::getMouseSubject() { return mouseSubject; }
 
 void Game::setGameState(GameState state) { game_state = state; }
-
-void Game::setNumberPlayers(int n) { number_of_players = n; }
 
 void Game::create_menus() {
   mainMenu = new MainMenu(this);
@@ -228,13 +223,11 @@ void Game::createFirstPhase() {
   currentPhase =
       new FirstPhase(Vector2f(12000.f, 850.f), 11900.0, player1, player2);
 
-  player1->setPosition(Vector2f(200.f, 100.f));
+  player1->setPosition(Vector2f(200.f, 800.f));
   player1->setVelocity(Vector2f(0.f, 0.f));
-  pCM->addPlayer(player1);
   if (player2) {
-    player2->setPosition(Vector2f(100.f, 100.f));
+    player2->setPosition(Vector2f(100.f, 800.f));
     player2->setVelocity(Vector2f(0.f, 0.f));
-    pCM->addPlayer(player2);
   }
 }
 
@@ -243,15 +236,13 @@ void Game::createSecondPhase() {
     delete currentPhase;
   }
   currentPhase =
-      new SecondPhase(Vector2f(12000.f, 850), 11900.0, player1, player2);
+      new SecondPhase(Vector2f(12000.f, 850.f), 11900.0, player1, player2);
 
-  player1->setPosition(Vector2f(200.f, 100.f));
+  player1->setPosition(Vector2f(200.f, 800.f));
   player1->setVelocity(Vector2f(0.f, 0.f));
-  pCM->addPlayer(player1);
   if (player2) {
-    player2->setPosition(Vector2f(100.f, 100.f));
+    player2->setPosition(Vector2f(100.f, 800.f));
     player2->setVelocity(Vector2f(0.f, 0.f));
-    pCM->addPlayer(player2);
   }
 }
 
@@ -260,7 +251,7 @@ void Game::createPlayers(const vector<string> &playerNames) {
     player1 = new Player(200, 100, PLAYERACEL, playerNames[0], PLAYERHEALTH,
                          PLAYERSTRENGTH, 1);
 
-    if (number_of_players == 2 && playerNames.size() > 1) {
+    if (playerNames.size() > 1) {
       player2 = new Player(100, 100, PLAYERACEL, playerNames[1], PLAYERHEALTH,
                            PLAYERSTRENGTH, 2);
     }
@@ -286,7 +277,7 @@ void Game::saveScoretoLeaderboard() {
     }
   }
 
-  string filename = (number_of_players == 1)
+  string filename = (player2 == nullptr || player2Name.empty())
                         ? "leaderboards/leaderboard_single.txt"
                         : "leaderboards/leaderboard_multi.txt";
 
@@ -298,7 +289,7 @@ void Game::saveScoretoLeaderboard() {
     if (line.empty())
       continue;
 
-    if (number_of_players == 1) {
+    if (player2 == nullptr || player2Name.empty()) {
       istringstream iss(line);
       string name;
       int score;
@@ -318,7 +309,7 @@ void Game::saveScoretoLeaderboard() {
   inFile.close();
 
   // Adiciona novo score
-  if (number_of_players == 1) {
+  if (player2 == nullptr || player2Name.empty()) {
     entries.push_back(
         Leaderboard::ScoreEntry(0, player1Name, "", totalScore, true));
   } else {
@@ -391,7 +382,6 @@ json Game::toJson() const {
   json j;
 
   j["game_state"] = static_cast<int>(game_state);
-  j["number_of_players"] = number_of_players;
 
   if (player1)
     j["player1"] = player1->toJson();
@@ -405,7 +395,6 @@ json Game::toJson() const {
 
 void Game::fromJson(const json &j) {
   game_state = static_cast<GameState>(j["game_state"]);
-  number_of_players = j["number_of_players"];
 
   if (player1)
     player1->fromJson(j["player1"]);
@@ -487,12 +476,6 @@ void Game::loadGame(const std::string &filename) {
     }
 
     // Reconfigurar managers
-    if (player1) {
-      pCM->addPlayer(player1);
-    }
-    if (player2) {
-      pCM->addPlayer(player2);
-    }
 
     file.close();
     game_state = GameState::PLAYING;

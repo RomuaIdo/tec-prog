@@ -28,8 +28,6 @@ class Game {
     private:
         /* ------ VARIABLES ------- */
         GraphicsManager *pGM;
-        CollisionManager *pCM;
-        int number_of_players;
         //   vector<Player *> players_vector;
         Player* player1;
         Player* player2;
@@ -63,7 +61,6 @@ class Game {
         MouseSubject &getMouseSubject();
         TextInputSubject &getTextInputSubject();
         void setGameState(GameState state);
-        void setNumberPlayers(int n);
 
         /* ------ SAVE GAME ----- */
         json toJson() const;

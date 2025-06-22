@@ -109,7 +109,7 @@ void CollisionManager::treatWallCollision() {
 
       // Top wall
 
-      if (pos.y - p->getSize().y < 0) {
+      if (pos.y - p->getSize().y < -205) {
         pos.y = p->getSize().y;
 
         if (vel.y < 0) {
@@ -155,7 +155,7 @@ void CollisionManager::treatWallCollision() {
 
       // Top wall
 
-      if (pos.y - e->getSize().y < 0) {
+      if (pos.y - e->getSize().y < -205) {
         pos.y = e->getSize().y;
         if (vel.y < 0) {
           vel.y = 0; // Prevents jumping through the top wall
@@ -224,7 +224,7 @@ void CollisionManager::treatObstaclesCollision() {
 
   for (vector<Enemy *>::iterator it = enemies_vector.begin();
        it != enemies_vector.end(); it++) {
-    if ((*it)) {
+    if ((*it) && (*it)->getAlive()) {
       for (list<Obstacle *>::iterator itObstacle = obstacles_list.begin();
            itObstacle != obstacles_list.end(); itObstacle++) {
         if (*itObstacle) {
@@ -241,7 +241,7 @@ void CollisionManager::treatObstaclesCollision() {
   for (vector<Player *>::iterator it = players_vector.begin();
        it != players_vector.end(); it++) {
 
-    if ((*it)) {
+    if ((*it) && (*it)->getAlive()) {
       for (list<Obstacle *>::iterator itObstacle = obstacles_list.begin();
            itObstacle != obstacles_list.end(); itObstacle++) {
         if (*itObstacle) {
