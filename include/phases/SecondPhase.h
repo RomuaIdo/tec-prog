@@ -6,7 +6,9 @@
 class SecondPhase : public Phase {
     private:
         const int maxSpikes = 15;
-        const int maxMulas = 4;
+        const int minSpikes = 5;
+        const int maxMulas = 6;
+        const int minMulas = 3;
     public:
         SecondPhase();
         SecondPhase(Vector2f size, float limiarX, Player* p1, Player* p2);

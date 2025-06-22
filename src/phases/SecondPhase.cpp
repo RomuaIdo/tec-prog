@@ -16,7 +16,7 @@ SecondPhase::SecondPhase(Vector2f size, float limiarX, Player *p1, Player *p2)
 SecondPhase::~SecondPhase() {}
 
 void SecondPhase::execute() {
-  vector<BackgroundElement *>::iterator it;
+  vector<ge::BackgroundElement *>::iterator it;
   for (it = BackgroundLayers.begin(); it != BackgroundLayers.end(); ++it) {
     (*it)->execute();
   }
@@ -39,8 +39,8 @@ void SecondPhase::createEnemies() {
 
 void SecondPhase::createMulas() {
   const float groundY = phaseSize.y;
-
-  for (int i = 0; i < maxMulas; i++) {
+  int numMulas = minMulas + rand() % (maxMulas - minMulas + 1);
+  for (int i = 0; i < numMulas; i++) {
     float x = 100.f + static_cast<float>(rand() %
                                          static_cast<int>(phaseSize.x - 200.f));
 
@@ -63,15 +63,14 @@ void SecondPhase::createMulas() {
 void SecondPhase::createObstacles() { createSpikes(); }
 
 void SecondPhase::createSpikes() {
-  const float groundY = phaseSize.y - 50.0f; // Altura do chão
-  std::vector<float> availablePositions;
-
+  const float groundY = phaseSize.y - 50.0f;   
+  vector<float> availablePositions;
+  int numSpikes = minSpikes + rand() % (maxSpikes - minSpikes + 1);
   // Gerar posições X disponíveis (evitando bordas)
   for (float x = 100.f; x < phaseSize.x - 100.f; x += 50.f) {
     availablePositions.push_back(x);
   }
 
-  // Embaralhar posições (Fisher-Yates shuffle)
   for (int i = availablePositions.size() - 1; i > 0; --i) {
     int j = std::rand() % (i + 1);
     float temp = availablePositions[i];
@@ -79,16 +78,14 @@ void SecondPhase::createSpikes() {
     availablePositions[j] = temp;
   }
 
-  // Criar spikes sem sobreposição
   vector<float> usedPositions;
   int createdSpikes = 0;
 
-  for (size_t i = 0; i < availablePositions.size() && createdSpikes < maxSpikes;
+  for (size_t i = 0; i < availablePositions.size() && createdSpikes < numSpikes;
        i++) {
     float x = availablePositions[i];
     bool positionValid = true;
 
-    // Verificar distância mínima (100 pixels)
     for (vector<float>::iterator it = usedPositions.begin();
          it != usedPositions.end(); ++it) {
       if (fabs(x - *it) < 100.f) {

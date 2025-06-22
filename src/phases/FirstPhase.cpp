@@ -19,7 +19,7 @@ FirstPhase::~FirstPhase() {}
 
 void FirstPhase::execute() {
 
-  vector<BackgroundElement *>::iterator it;
+  vector<ge::BackgroundElement *>::iterator it;
   for (it = BackgroundLayers.begin(); it != BackgroundLayers.end(); ++it) {
     (*it)->execute();
   }
@@ -46,7 +46,7 @@ void FirstPhase::createHoney() {
   const float tileWidth = 50.0f;
   const float groundY = phaseSize.y - 25.0f; // Ground level (tile center)
   vector<float> availablePositions;
-
+  int numHoneys = minHoneys + rand() % (maxHoneys - minHoneys + 1);
   // Generate all possible x positions (multiples of 50)
   for (float x = tileWidth; x < phaseSize.x - tileWidth; x += tileWidth) {
     availablePositions.push_back(x);
@@ -65,7 +65,7 @@ void FirstPhase::createHoney() {
   vector<float> usedPositions;
 
   for (int i = 0;
-       i < maxHoneys && i < static_cast<int>(availablePositions.size()); i++) {
+       i < numHoneys && i < static_cast<int>(availablePositions.size()); i++) {
     float x = availablePositions[i];
     bool positionValid = true;
 
@@ -95,12 +95,11 @@ void FirstPhase::createHoney() {
 
 void FirstPhase::createCucas() {
   const float groundY = phaseSize.y;
-
-  for (int i = 0; i < maxCucas; i++) {
+  int numCucas = minCucas + rand() % (maxCucas - minCucas + 1);
+  for (int i = 0; i < numCucas; i++) {
     float x = 100.f + static_cast<float>(rand() %
                                          static_cast<int>(phaseSize.x - 200.f));
 
-    // Calcular posição Y correta para ficar no chão
     Cuca *cuca = new Cuca(x, groundY, CUCAACEL, CUCAHEALTH, CUCASTRENGTH);
     if (cuca) {
       cuca->setPosition(Vector2f(cuca->getPosition().x,

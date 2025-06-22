@@ -16,7 +16,7 @@ Phase::Phase(Vector2f size, float limiarX, Player *p1, Player *p2)
 
 Phase::~Phase() {
   entities_list.clear();
-  vector<BackgroundElement *>::iterator it;
+  vector<ge::BackgroundElement *>::iterator it;
   for (it = tiles.begin(); it != tiles.end(); it++) {
     delete *it; // Free memory allocated for each BackgroundElement
   }
@@ -43,7 +43,7 @@ void Phase::createScenery() {
     for (int x = 0; x < numTilesX; x++) {
       float posX = x * tileWidth + tileWidth / 2;
       float posY = phaseSize.y - (tileHeight / 2) - (y * tileHeight);
-      tiles.push_back(new BackgroundElement(posX, posY, 0.0f, texturePath));
+      tiles.push_back(new ge::BackgroundElement(posX, posY, 0.0f, texturePath));
     }
   }
 
@@ -51,16 +51,16 @@ void Phase::createScenery() {
   newphaseSize.y = newphaseSize.y - (numTilesY * tileHeight);
 
   BackgroundLayers.push_back(
-      new BackgroundElement(newphaseSize.x / 2.f, newphaseSize.y / 2.f, 1.0f,
+      new ge::BackgroundElement(newphaseSize.x / 2.f, newphaseSize.y / 2.f, 1.0f,
                             "assets/textures/1_TreesBackground.png"));
   BackgroundLayers.push_back(
-      new BackgroundElement(newphaseSize.x / 2.f, newphaseSize.y / 2.f, 0.98f,
+      new ge::BackgroundElement(newphaseSize.x / 2.f, newphaseSize.y / 2.f, 0.98f,
                             "assets/textures/2_Trees.png"));
   BackgroundLayers.push_back(
-      new BackgroundElement(newphaseSize.x / 2.f, newphaseSize.y / 2.f, 0.9f,
+      new ge::BackgroundElement(newphaseSize.x / 2.f, newphaseSize.y / 2.f, 0.9f,
                             "assets/textures/3_Trees.png"));
   BackgroundLayers.push_back(
-      new BackgroundElement(newphaseSize.x / 2.f, newphaseSize.y / 2.f, 0.85f,
+      new ge::BackgroundElement(newphaseSize.x / 2.f, newphaseSize.y / 2.f, 0.85f,
                             "assets/textures/4_Trees.png"));
 
   pCM->setPhaseSize(newphaseSize);
@@ -70,8 +70,9 @@ void Phase::createPlatforms() {
   const float minY = 100.0f; // Minimum Y position
   const float maxY =
       phaseSize.y - 150.0f; // Maximum Y position (50px above ground)
-
-  for (int i = 0; i < maxPlatforms; i++) {
+  int numPlatforms =
+      minPlatforms + rand() % (maxPlatforms - minPlatforms + 1);
+  for (int i = 0; i < numPlatforms; i++) {
     int numPlataform = rand() % 2;
     // Generate random position
     float x =
@@ -99,7 +100,8 @@ void Phase::createSaci() {
   const float saciY = groundY - (tileHeight / 2) -
                       (saciHeight / 2); // Ajuste para ficar no chão
 
-  for (int i = 0; i < maxSaci; i++) {
+  int numSaci = minSaci + rand() % (maxSaci - minSaci + 1);
+  for (int i = 0; i < numSaci; i++) {
     // Gera posição X aleatória (evitando bordas)
     float x = 100.f + static_cast<float>(rand() %
                                          static_cast<int>(phaseSize.x - 200.f));
@@ -205,8 +207,8 @@ void Phase::fromJson(const json &j) {
         e = new ThornyBush();
       } else if (type == "Saci") {
         e = new Saci();
-      } else if (type == "Projectile") {
-        e = new Projectile();
+     }else if(type == "Mula"){
+        e = new MulaSemCabeca();
       }
       // Adicione outros tipos conforme necessário
 

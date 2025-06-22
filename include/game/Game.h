@@ -1,3 +1,5 @@
+#ifndef GAME_H
+#define GAME_H
 #include "../entities/characters/Enemy.h"
 #include "../entities/characters/Player.h"
 #include "../entities/obstacles/Obstacle.h"
@@ -38,10 +40,10 @@ private:
   TextInputSubject textInputSubject;
   GameState game_state;
   Phase *currentPhase;
+  int seed;
   /* ---- OWN FUNCTIONS ----- */
   void execute();
   void running();
-  void updateCamera();
   void createFirstPhase();
   void createSecondPhase();
 
@@ -52,7 +54,7 @@ public:
   MouseSubject &getMouseSubject();
   TextInputSubject &getTextInputSubject();
   void setGameState(GameState state);
-
+  GameState getGameState() const;
   /* ------ SAVE GAME ----- */
   json toJson() const;
   void fromJson(const json &j);
@@ -67,4 +69,7 @@ public:
   void saveScoretoLeaderboard();
   void cleanupAfterGame();
   void resetCamera();
+  void updateCamera();
 };
+
+#endif

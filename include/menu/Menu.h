@@ -3,6 +3,7 @@
 #include "../entities/Ente.h"
 #include "../graphicalelements/Button.h"
 #include <map>
+using namespace ge;
 
 class Game;
 class Menu : public Ente {

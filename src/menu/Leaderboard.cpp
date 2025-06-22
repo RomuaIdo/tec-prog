@@ -190,7 +190,6 @@ void Leaderboard::drawScores() {
         }
     }
 
-    // Ordenar as entradas por posição
     sort(singleEntries.begin(), singleEntries.end(), [](const ScoreEntry& a, const ScoreEntry& b) {
         return a.position < b.position;
     });
@@ -218,7 +217,6 @@ void Leaderboard::drawScores() {
 
     float currentYMulti = startY + 50.f;
     for (vector<ScoreEntry>::iterator it = multiEntries.begin(); it != multiEntries.end(); ++it) {
-        // Garante que os nomes não sejam vazios
         string name1 = it->player1;
         string name2 = it->player2;
         if (name1.empty()) {
@@ -237,7 +235,6 @@ void Leaderboard::drawScores() {
         currentYMulti += 40.f;
     }
 
-    // Mostra mensagem se não houver scores
     if (singleEntries.empty()) {
         Text noScoresText("No scores available", font, 24);
         noScoresText.setFillColor(Color::White);

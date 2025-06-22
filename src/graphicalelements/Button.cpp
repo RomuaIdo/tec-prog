@@ -1,6 +1,6 @@
 #include "../../include/graphicalelements/Button.h"
 
-Button::Button(const string fontPath, const string info,
+ge::Button::Button(const string fontPath, const string info,
                const string normalTexturePath, const string hoveredTexturePath,
                MouseSubject *subject, unsigned int fontSize, Vector2f position)
     : Ente(), mouseSubject(subject), fontSize(fontSize), position(position),
@@ -22,7 +22,7 @@ Button::Button(const string fontPath, const string info,
   adjustSize();
 }
 
-Button::~Button() {
+ge::Button::~Button() {
   deactivate();
   mouseSubject = nullptr;
 }
@@ -31,24 +31,24 @@ Button::~Button() {
 /*                OWN FUNCTIONS                */
 /* ------------------------------------------- */
 
-void Button::activate() { mouseSubject->addObserver(this); }
+void ge::Button::activate() { mouseSubject->addObserver(this); }
 
-void Button::deactivate() { mouseSubject->removeObserver(this); }
+void ge::Button::deactivate() { mouseSubject->removeObserver(this); }
 
-Drawable &Button::getDrawable() { return sprite; }
+Drawable& ge::Button::getDrawable() { return sprite; }
 
-void Button::draw() {
+void ge::Button::draw() {
   pGM->draw(this);
   pGM->draw(&label);
 }
 
-void Button::execute() { draw(); }
+void ge::Button::execute() { draw(); }
 
 /* ------------------------------------------- */
 /*              BUTTON FUNCTIONS               */
 /* ------------------------------------------- */
 
-bool Button::wasClicked() {
+bool ge::Button::wasClicked() {
   if (clicked) {
     clicked = false;
     return true;
@@ -56,7 +56,7 @@ bool Button::wasClicked() {
   return false;
 }
 
-void Button::adjustSize() {
+void ge::Button::adjustSize() {
   FloatRect textBounds = label.getLocalBounds();
   Vector2f padding(40.f, 20.f);
 
@@ -78,7 +78,7 @@ void Button::adjustSize() {
   label.setPosition(position);
 }
 
-void Button::onMouseEvent(const Event::MouseMoveEvent &event) {
+void ge::Button::onMouseEvent(const Event::MouseMoveEvent &event) {
     RenderWindow* window = pGM->getWindow();
     Vector2f mousepos = window->mapPixelToCoords(Vector2i(event.x, event.y));
     
@@ -90,7 +90,7 @@ void Button::onMouseEvent(const Event::MouseMoveEvent &event) {
     setState(ButtonState::NORMAL);
 }
 
-void Button::onMouseEvent(const Event::MouseButtonEvent &event) {
+void ge::Button::onMouseEvent(const Event::MouseButtonEvent &event) {
     RenderWindow* window = pGM->getWindow();
     Vector2f mousePos = window->mapPixelToCoords(Vector2i(event.x, event.y));
     
@@ -105,15 +105,15 @@ void Button::onMouseEvent(const Event::MouseButtonEvent &event) {
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */
 
-void Button::setPosition(Vector2f pos) {
+void ge::Button::setPosition(Vector2f pos) {
   position = pos;
   sprite.setPosition(pos);
   label.setPosition(pos);
 }
 
-Vector2f Button::getPosition() const { return position; }
+Vector2f ge::Button::getPosition() const { return position; }
 
-void Button::setState(ButtonState newState) {
+void ge::Button::setState(ButtonState newState) {
   state = newState;
   switch (state) {
   case ButtonState::NORMAL:
@@ -125,4 +125,4 @@ void Button::setState(ButtonState newState) {
   }
 }
 
-ButtonState Button::getState() const { return state; }
+ge::ButtonState ge::Button::getState() const { return state; }

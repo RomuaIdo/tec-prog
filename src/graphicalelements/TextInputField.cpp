@@ -44,8 +44,7 @@ void TextInputField::onTextEntered(const sf::Event::TextEvent &event) {
     }
   }
 
-  // Update display text
-  std::string displayStr = currentInput;
+  string displayStr = currentInput;
   while (displayStr.length() < maxLength) {
     displayStr += '_';
   }
@@ -55,7 +54,6 @@ void TextInputField::onTextEntered(const sf::Event::TextEvent &event) {
 bool TextInputField::contains(const Vector2f &point) const {
   FloatRect inputBounds = inputText.getGlobalBounds();
 
-  // Expand hitbox vertically (add 10px top/bottom)
   inputBounds.top -= 50.f;
   inputBounds.height += 100.f;
 

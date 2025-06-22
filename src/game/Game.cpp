@@ -1,4 +1,5 @@
 #include "../../include/game/Game.h"
+#include "../../include/graphicalelements/eventshandler/KeyboardEventHandler.h"
 #include "../../include/graphicalelements/eventshandler/MouseEventHandler.h"
 #include "../../include/graphicalelements/eventshandler/TextInputEventHandler.h"
 #include "../../include/managers/CollisionManager.h"
@@ -10,8 +11,8 @@
 #include <algorithm>
 
 Game::Game()
-    : pGM(nullptr), player1(nullptr), player2(nullptr), mouseSubject(), textInputSubject(),
-      currentPhase(nullptr) {
+    : pGM(nullptr), player1(nullptr), player2(nullptr), mouseSubject(),
+      textInputSubject(), currentPhase(nullptr) {
 
   pGM = GraphicsManager::getInstance();
   Ente::setGraphicsManager(pGM);
@@ -27,6 +28,8 @@ Game::Game()
   currentMenu = menus[GameState::MAIN_MENU];
   currentMenu->activate();
   srand(time(nullptr));
+  seed = rand();
+  srand(seed);
   execute();
 }
 
@@ -53,7 +56,9 @@ void Game::execute() {
   MouseEventHandler mouseHandler(mouseSubject);
   TextInputEventHandler textInputHandler(textInputSubject);
   mouseHandler.setNextHandler(&textInputHandler);
-  EventHandler *eventChain = &mouseHandler;
+  KeyboardEventHandler keyboardHandler(this);
+  keyboardHandler.setNextHandler(&mouseHandler);
+  EventHandler *eventChain = &keyboardHandler;
   RenderWindow *pWindow = pGM->getWindow();
   while (pGM->openWindow()) {
     Event event;
@@ -66,17 +71,7 @@ void Game::execute() {
            event.key.code == sf::Keyboard::Escape)) {
         pWindow->close();
       } else {
-        eventChain->handleEvent(event);
-      }
-      if (event.type == Event::KeyPressed &&
-          event.key.code == sf::Keyboard::P) {
-        if (game_state == GameState::PLAYING) {
-          resetCamera();
-          game_state = GameState::PAUSED;
-        } else if (game_state == GameState::PAUSED) {
-          updateCamera();
-          game_state = GameState::PLAYING;
-        }
+        eventChain->handleEvent(event); // Usa a nova cadeia
       }
     }
     Menu *previousMenu = currentMenu;
@@ -154,12 +149,11 @@ void Game::updateCamera() {
   }
 
   if (count == 0)
-    return; // Nenhum jogador vivo
+    return; // No players alive, do not update camera
 
   avgX /= count;
   const Vector2f &phaseSize = currentPhase->getPhaseSize();
   const float cameraHalfWidth = pGM->getWindow()->getSize().x / 2.0f;
-  // Limita a posição da câmera dentro dos limites da fase
   avgX = max(cameraHalfWidth, std::min(avgX, phaseSize.x - cameraHalfWidth));
 
   pGM->setCameraCenter(Vector2f(avgX, 540.f));
@@ -240,7 +234,6 @@ void Game::saveScoretoLeaderboard() {
                         ? "leaderboards/leaderboard_single.txt"
                         : "leaderboards/leaderboard_multi.txt";
 
-  // Usar a classe aninhada do Leaderboard
   vector<Leaderboard::ScoreEntry> entries;
   ifstream inFile(filename.c_str());
   string line;
@@ -372,7 +365,9 @@ void Game::saveGame(const std::string &filename) const {
           player2 ? player2->toJson() : json(nullptr)}},
         {"player_names", player_names},
         {"state", static_cast<int>(game_state)},
-        {"phase", currentPhase ? currentPhase->toJson() : json(nullptr)}};
+        {"phase", currentPhase ? currentPhase->toJson() : json(nullptr)},
+        {"seed", seed}
+    };
     file << gameState.dump(4);
     file.close();
   }
@@ -384,16 +379,18 @@ void Game::loadGame(const std::string &filename) {
     json j;
     file >> j;
 
-    // Limpar estado atual
     cleanupAfterGame();
 
-    // Carrega o estado do jogo
-    if (j.contains("state") && !j["state"].is_null()) {
+    if (j.find("seed") != j.end() && !j["seed"].is_null()) {
+      seed = j["seed"].get<unsigned int>();
+      srand(seed);    
+    }
+
+    if (j.find("state") != j.end() && !j["state"].is_null()) {
       game_state = static_cast<GameState>(j["state"].get<int>());
     }
 
-    // Carrega jogadores
-    if (j.contains("players") && j["players"].is_array()) {
+    if (j.find("players") != j.end() && j["players"].is_array()) {
       const json &players = j["players"];
       if (players.size() > 0 && !players[0].is_null()) {
         player1 = new Player();
@@ -405,23 +402,24 @@ void Game::loadGame(const std::string &filename) {
       }
     }
 
-    if (j.contains("player_names") && j["player_names"].is_array()) {
+    if (j.find("player_names") != j.end() && j["player_names"].is_array()) {
       player_names.clear();
-      for (const auto &name : j["player_names"]) {
-        player_names.push_back(name.get<string>());
+      const json &namesArray = j["player_names"];
+      for (json::const_iterator it = namesArray.begin(); 
+           it != namesArray.end(); 
+           ++it) {
+        player_names.push_back(it->get<std::string>());
       }
     }
-    //  Carrega a fase
-    if (j.contains("phase") && !j["phase"].is_null()) {
-      if (j["phase"].contains("type") && j["phase"]["type"].is_string()) {
-        string phaseType = j["phase"]["type"];
 
+    if (j.find("phase") != j.end() && !j["phase"].is_null()) {
+      if (j["phase"].find("type") != j["phase"].end() && j["phase"]["type"].is_string()) {
+        std::string phaseType = j["phase"]["type"];
         if (phaseType == "FirstPhase") {
           currentPhase = new FirstPhase();
         } else if (phaseType == "SecondPhase") {
           currentPhase = new SecondPhase();
         }
-
         if (currentPhase) {
           currentPhase->setPlayers(player1, player2);
           currentPhase->fromJson(j["phase"]);
@@ -429,12 +427,10 @@ void Game::loadGame(const std::string &filename) {
       }
     }
 
-    // Reconfigurar managers
-
     file.close();
     updateCamera();
-    cout << "Projeteis carregados com sucesso:" << endl;
-    CollisionManager::getInstance()->printProjectiles();
     game_state = GameState::PLAYING;
   }
 }
+
+GameState Game::getGameState() const { return game_state; }

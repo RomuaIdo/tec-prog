@@ -201,7 +201,6 @@ void CollisionManager::treatEnemiesCollision() {
         }
     }
 
-    // Colisões entre inimigos
     for (vector<Enemy *>::iterator it = enemies_vector.begin();
         it != enemies_vector.end(); it++) {
         if ((*it) && (*it)->getAlive()) { // Só verifica se vivo
@@ -221,7 +220,6 @@ void CollisionManager::treatEnemiesCollision() {
 }
 void CollisionManager::treatObstaclesCollision() {
 
-  // Tratamento de colisão para inimigos
 
   for (vector<Enemy *>::iterator it = enemies_vector.begin();
        it != enemies_vector.end(); it++) {
@@ -388,9 +386,4 @@ void CollisionManager::execute() {
 }
 
 
-void CollisionManager::printProjectiles() const {
-  for (const auto &proj : projectiles_set) {
-    cout << "Projectile at position: " << proj->getPosition().x << ", "
-         << proj->getPosition().y << endl;
-  }
-}
+

@@ -14,10 +14,11 @@ NewGameMenu::NewGameMenu(Game *game)
 }
 
 NewGameMenu::~NewGameMenu() {
-  for (auto input : nameInputs) {
-    pGame->getMouseSubject().removeObserver(input);
-    pGame->getTextInputSubject().removeObserver(input);
-    delete input;
+  vector<TextInputField *>::iterator it;
+  for (it = nameInputs.begin(); it != nameInputs.end(); ++it) {
+    pGame->getMouseSubject().removeObserver((*it));
+    pGame->getTextInputSubject().removeObserver((*it));
+    delete (*it);
   }
   nameInputs.clear();
 }
@@ -43,13 +44,13 @@ void NewGameMenu::createButtons() {
   Button *phaseLeftButton = new Button(
       "assets/fonts/Minecraft.ttf", "<", "assets/textures/button.png",
       "assets/textures/button_hovered.png", &mouseSubject, 24,
-      Vector2f(center.x - 100.f, center.y - 50.f));
+      Vector2f(center.x - 200.f, center.y - 50.f));
   addButton("phase_left", phaseLeftButton);
 
   Button *phaseRightButton = new Button(
       "assets/fonts/Minecraft.ttf", ">", "assets/textures/button.png",
       "assets/textures/button_hovered.png", &mouseSubject, 24,
-      Vector2f(center.x + 100.f, center.y - 50.f));
+      Vector2f(center.x + 200.f, center.y - 50.f));
   addButton("phase_right", phaseRightButton);
 
   Button *startButton = new Button(
@@ -85,10 +86,11 @@ void NewGameMenu::createNameInputs() {
   Vector2f viewSize = pGM->getWindow()->getView().getSize();
   Vector2f center(viewSize.x / 2, viewSize.y / 2);
 
-  for (auto input : nameInputs) {
-    pGame->getMouseSubject().removeObserver(input);
-    pGame->getTextInputSubject().removeObserver(input);
-    delete input;
+  vector<TextInputField *>::iterator it;
+  for (it = nameInputs.begin(); it != nameInputs.end(); ++it) {
+    pGame->getMouseSubject().removeObserver(*it);
+    pGame->getTextInputSubject().removeObserver(*it);
+    delete (*it);
   }
   nameInputs.clear();
 
@@ -105,10 +107,10 @@ void NewGameMenu::createNameInputs() {
         font, "Player 2:", Vector2f(center.x + 50.f, center.y - 200.f));
     nameInputs.push_back(input1);
     nameInputs.push_back(input2);
-    pGame->getMouseSubject().addObserver(input1); // Registrar mouse observer
-    pGame->getMouseSubject().addObserver(input2); // Registrar mouse observer
-    pGame->getTextInputSubject().addObserver(input1); // Registrar text observer
-    pGame->getTextInputSubject().addObserver(input2); // Registrar text observer
+    pGame->getMouseSubject().addObserver(input1);
+    pGame->getMouseSubject().addObserver(input2);
+    pGame->getTextInputSubject().addObserver(input1);
+    pGame->getTextInputSubject().addObserver(input2);
   }
 
   if (!nameInputs.empty()) {
@@ -120,15 +122,18 @@ void NewGameMenu::updatePhaseDisplay() {
   Vector2f viewSize = pGM->getWindow()->getView().getSize();
   Vector2f center(viewSize.x / 2, viewSize.y / 2);
 
-  std::ostringstream oss;
-  oss << "Phase " << currentPhase;
-  phaseText.setString(oss.str());
+  std::string phaseName;
+  if (currentPhase == 1) {
+    phaseName = "Cuca's Forest";
+  } else if (currentPhase == 2) {
+    phaseName = "Mule's Pasture";
+  }
+  phaseText.setString(phaseName);
 
   FloatRect textBounds = phaseText.getLocalBounds();
   phaseText.setOrigin(textBounds.width / 2, textBounds.height / 2);
   phaseText.setPosition(center.x, center.y - 50.f);
 }
-
 void NewGameMenu::updatePlayersDisplay() {
   Vector2f viewSize = pGM->getWindow()->getView().getSize();
   Vector2f center(viewSize.x / 2, viewSize.y / 2);

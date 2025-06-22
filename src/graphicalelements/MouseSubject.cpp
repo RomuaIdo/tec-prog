@@ -14,6 +14,7 @@ MouseSubject::~MouseSubject() {
 void MouseSubject::addObserver(MouseObserver *observer) {
   if (observer != nullptr) {
     observers.push_back(observer);
+    observer->setMouseSubject(this);
   } else {
     cerr << "Erro: Addittion of null observer in MouseSubject" << endl;
   }
@@ -39,4 +40,8 @@ void MouseSubject::notifyObservers(const Event::MouseButtonEvent &event) {
       (*it)->onMouseEvent(event);
     }
   }
+}
+
+void MouseObserver::setMouseSubject(MouseSubject *subject) {
+  mouseSubject = subject;
 }

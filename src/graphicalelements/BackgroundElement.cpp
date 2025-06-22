@@ -1,6 +1,6 @@
 #include "../../include/graphicalelements/BackgroundElement.h"
 
-BackgroundElement::BackgroundElement(float x, float y, float Parallaxfactor,
+ge::BackgroundElement::BackgroundElement(float x, float y, float Parallaxfactor,
                                      const string &texturePath)
     : InitialPosition(x, y) {
   texture = pGM->loadTexture(texturePath);
@@ -11,14 +11,13 @@ BackgroundElement::BackgroundElement(float x, float y, float Parallaxfactor,
   centerOrigin();
   parallaxFactor = Parallaxfactor;
 }
-BackgroundElement::~BackgroundElement() {}
-void BackgroundElement::execute() {
+ge::BackgroundElement::~BackgroundElement() {}
+void ge::BackgroundElement::execute() {
   update(pGM->getCameraCenter());
   draw();
 }
 
-void BackgroundElement::update(const Vector2f &camPosition) {
-  // Calcula a posição relativa à câmera com fator de paralaxe
+void ge::BackgroundElement::update(const Vector2f &camPosition) {
   float parallaxX =
       InitialPosition.x + (camPosition.x - InitialPosition.x) * parallaxFactor;
   float parallaxY =
@@ -27,4 +26,4 @@ void BackgroundElement::update(const Vector2f &camPosition) {
   sprite.setPosition(parallaxX, parallaxY);
 }
 
-float BackgroundElement::getParallaxFactor() const { return parallaxFactor; }
+float ge::BackgroundElement::getParallaxFactor() const { return parallaxFactor; }

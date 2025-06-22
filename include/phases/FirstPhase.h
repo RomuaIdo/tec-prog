@@ -4,8 +4,10 @@
 
 class FirstPhase : public Phase {
     private:
-        const int maxHoneys = 10;
-        const int maxCucas = 5;
+        const int maxHoneys = 15;
+        const int minHoneys = 5;
+        const int maxCucas = 8;
+        const int minCucas = 3;
     public:
         FirstPhase();
         FirstPhase(Vector2f size, float limiarX, Player* p1, Player* p2);

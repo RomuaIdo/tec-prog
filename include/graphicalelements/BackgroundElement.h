@@ -1,12 +1,13 @@
-#ifndef TILE_H
-#define TILE_H
+#ifndef BACKGROUND_ELEMENT_H
+#define BACKGROUND_ELEMENT_H
 
 #include "../entities/Ente.h"
-
+namespace ge {
 class BackgroundElement : public Ente {
 private:
   float parallaxFactor;
   Vector2f InitialPosition;
+
 public:
   BackgroundElement(float x, float y, float Parallaxfactor,
                     const string &texturePath);
@@ -15,4 +16,5 @@ public:
   void update(const Vector2f &camPosition);
   float getParallaxFactor() const;
 };
+}
 #endif
