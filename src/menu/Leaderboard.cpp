@@ -9,7 +9,7 @@
 #include <algorithm>
 
 Leaderboard::Leaderboard(Game *game) : Menu(game), scoresLoaded(false) {
-    setBackground("assets/textures/menu_background.png");
+    setBackground("assets/textures/0_Background.png");
 
     try {
         if (!font.loadFromFile("assets/fonts/Minecraft.ttf")) {
@@ -27,7 +27,7 @@ Leaderboard::Leaderboard(Game *game) : Menu(game), scoresLoaded(false) {
     Vector2f center(viewSize.x / 2, viewSize.y / 2);
 
     MouseSubject &mouseSubject = pGame->getMouseSubject();
-    backButton = new Button("assets/fonts/Minecraft.ttf", "Back",
+    Button* backButton = new Button("assets/fonts/Minecraft.ttf", "Back",
                            "assets/textures/button.png",
                            "assets/textures/button_hovered.png", &mouseSubject,
                            24, Vector2f(center.x, center.y + 100.f));
@@ -54,9 +54,9 @@ void Leaderboard::execute() {
     }
 
     draw();
-    backButton->execute();
+    buttons["back"]->execute();
 
-    if (backButton->wasClicked()) {
+    if (buttons["back"]->wasClicked()) {
         pGame->setGameState(GameState::MAIN_MENU);
     }
 

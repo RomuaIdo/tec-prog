@@ -16,7 +16,7 @@ public:
                bool single)
         : position(pos), player1(p1), player2(p2), score(sc),
           isSinglePlayer(single) {}
-
+    ~ScoreEntry() = default;
     // Tornar todos os membros públicos
     int position;
     std::string player1;
@@ -39,7 +39,6 @@ private:
   bool scoresLoaded;
   sf::Font font;
   std::vector<ScoreEntry> scores;
-  Button *backButton;
 };
 
 #endif

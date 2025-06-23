@@ -15,6 +15,8 @@ public:
   void updatePhaseDisplay();
   void updatePlayersDisplay();
   void execute() override;
+  void activate() override;
+  void deactivate() override;
 
 private:
   vector<TextInputField *> nameInputs;
@@ -26,8 +28,6 @@ private:
   int players;
   int currentInputIndex;
   void setActiveInputField(int index);
-  void activate() override;
-  void deactivate() override;
   void activateTextInputFields();
   void deactivateTextInputFields();
 };

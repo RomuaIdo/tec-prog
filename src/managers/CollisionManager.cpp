@@ -313,8 +313,6 @@ void CollisionManager::treatProjectilesCollision() {
           pos.y - size.y / 2 < 0 || pos.y + size.y / 2 > phaseSize.y) {
         collided = true;
         collidedEntity = nullptr;
-        cout << "Projectile collided with wall at position: "
-             << pos.x << ", " << pos.y << endl;
       }
     }
     if (collided) {

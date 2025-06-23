@@ -65,7 +65,6 @@ class CollisionManager {
     /* ------ GETTERS/SETTERS ------ */
     void setPhaseSize(Vector2f size);
     void execute();
-    void printProjectiles() const;
 };
 
 #endif

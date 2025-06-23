@@ -72,7 +72,6 @@ void Projectile::collide(Entity *other) {
       // Atualizar pontuação se inimigo morreu
       if (enemy->getHealth() <= 0) {
         playerOwner->increaseScore(SCOREMULTIPLIER * enemy->getEvilness());
-        cout << "Player score increased to " << playerOwner->getScore() << endl;
       }
     }
     // Colisão com outro jogador - ignorar

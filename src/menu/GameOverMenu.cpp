@@ -3,7 +3,7 @@
 #include "../../include/graphicalelements/Button.h"
 
 GameOverMenu::GameOverMenu(Game* game) : Menu(game) {
-    setBackground("assets/textures/menu_background.png");
+    setBackground("assets/textures/0_Background.png");
 
     if (!font.loadFromFile("assets/fonts/Minecraft.ttf")) {
         std::cerr << "Failed to load font for game over menu!" << std::endl;

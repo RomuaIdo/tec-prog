@@ -3,7 +3,7 @@
 #include "../../include/graphicalelements/Button.h"
 
 PauseMenu::PauseMenu(Game *game) : Menu(game) {
-  setBackground("assets/textures/menu_background.png");
+  setBackground("assets/textures/0_Background.png");
   saveMessageVisible = false;
   Vector2f viewSize = pGM->getWindow()->getView().getSize();
   Vector2f center(viewSize.x / 2, viewSize.y / 2);

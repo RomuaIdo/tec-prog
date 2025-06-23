@@ -7,7 +7,7 @@
 NewGameMenu::NewGameMenu(Game *game)
     : Menu(game), activeInputField(nullptr), currentPhase(1), players(1),
       currentInputIndex(0) {
-  setBackground("assets/textures/menu_background.png");
+  setBackground("assets/textures/NewGameMenu_Background.png");
   createButtons();
   updatePhaseDisplay();
   updatePlayersDisplay();

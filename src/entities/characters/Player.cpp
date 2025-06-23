@@ -24,7 +24,6 @@ Player::Player(float x, float y, const float acel, const string Name, int life,
   if (name == "") {
     name = "___";
   }
-  cout << "Player Name: " << name << endl;
   sprite.setTexture(texture);
   configSprite();
 }
@@ -156,7 +155,6 @@ void Player::takeDamage(int damage, int direction) {
     if (health - damage <= 0 && alive) {
       health = 0;
       alive = false;
-      cout << "Player is dead!" << endl;
     } else {
       takeDamageClock = 0.f;
       health -= damage;
@@ -164,7 +162,6 @@ void Player::takeDamage(int damage, int direction) {
       velocity.x = direction * XPUSH;
       velocity.y = abs(direction) * -YPUSH;
       moveCharacter();
-      cout << "Lost Health:" << health << endl;
 
       isBlinking = true;
       damageBlinkClock = 0.f;
@@ -355,7 +352,6 @@ void Player::fromJson(const json &j) {
   if (name == "") {
     name = "___";
   }
-  cout << "Player Name: " << name << endl;
   sprite.setTexture(texture);
   configSprite();
 }
@@ -382,7 +378,6 @@ void Player::setPlayerNum(int n) {
   if (name == "") {
     name = "___";
   }
-  cout << "Player Name: " << name << endl;
   sprite.setTexture(texture);
   configSprite();
 }

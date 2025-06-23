@@ -4,7 +4,7 @@
 #include <iostream>
 
 MainMenu::MainMenu(Game *game) : Menu(game) {
-  setBackground("assets/textures/menu_background.png");
+  setBackground("assets/textures/MainMenu_Background.png");
   createButtons();
   if (!font.loadFromFile("assets/fonts/Minecraft.ttf")) {
     cerr << "Failed to load font for game title!" << endl;
@@ -35,6 +35,8 @@ void MainMenu::createButtons() {
       "assets/textures/button_hovered.png", &mouseSubject, 24,
       Vector2f(center.x, center.y));
   addButton("leaderboard", leaderboardButton);
+
+  setGameTitle("BRASILORE");
 }
 
 void MainMenu::execute() {
@@ -54,18 +56,19 @@ void MainMenu::execute() {
       }
     }
   }
+  pGM->draw(&GameTitle);
 }
 
 void MainMenu::setGameTitle(const string &title) {
   GameTitle.setString(title);
   GameTitle.setFont(font);
-  GameTitle.setCharacterSize(48);
-  GameTitle.setFillColor(Color::White);
+  GameTitle.setCharacterSize(96);
+  GameTitle.setFillColor(Color::Yellow);
 
   Vector2f viewSize = pGM->getWindow()->getView().getSize();
   Vector2f center(viewSize.x / 2, viewSize.y / 2);
 
   FloatRect textBounds = GameTitle.getLocalBounds();
   GameTitle.setOrigin(textBounds.width / 2, textBounds.height / 2);
-  GameTitle.setPosition(center.x, center.y - 300.f);
+  GameTitle.setPosition(660, center.y - 600.f);
 }

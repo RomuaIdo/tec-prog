@@ -4,7 +4,6 @@ MouseSubject::MouseSubject() {}
 
 MouseSubject::~MouseSubject() { 
   observers.clear(); 
-  cout << "MouseSubject destroyed, observers cleared." << endl;
 }
 
 /* ------------------------------------------- */
