@@ -1,7 +1,7 @@
 #ifndef CHARACTER_H
 #define CHARACTER_H
 #include "../Entity.h"
-#include "../obstacles/Plataform.h"
+#include "../obstacles/Cloud.h"
 #include <SFML/Graphics.hpp>
 using namespace sf;
 using namespace std;

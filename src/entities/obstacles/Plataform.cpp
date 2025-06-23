@@ -1,12 +1,12 @@
-#include "../../../include/entities/obstacles/Plataform.h"
+#include "../../../include/entities/obstacles/Cloud.h"
 #include <SFML/Window.hpp>
 
-Plataform::Plataform()
+Cloud::Cloud()
     : Obstacle(), isActive(false), plataformType(1), regenClock(0.0f),
       originalPosition(0, 0) {
 }
 
-Plataform::Plataform(float x, float y, bool harm, int n)
+Cloud::Cloud(float x, float y, bool harm, int n)
     : Obstacle(x, y, harm), isActive(false), plataformType(n), regenClock(0.0f),
       originalPosition(x, y) {
 
@@ -25,16 +25,16 @@ Plataform::Plataform(float x, float y, bool harm, int n)
   configSprite();
 }
 
-Plataform::~Plataform() {}
+Cloud::~Cloud() {}
 
-void Plataform::collide(Entity *other) {
-  if (dynamic_cast<Plataform *>(other)) {
+void Cloud::collide(Entity *other) {
+  if (dynamic_cast<Cloud *>(other)) {
     return; // Avoid self-collision
   }
   obstacleAction(other);
 }
 
-void Plataform::execute() {
+void Cloud::execute() {
   draw();
   move();
   setState();
@@ -46,7 +46,7 @@ void Plataform::execute() {
   }
 }
 
-void Plataform::obstacleAction(Entity *e) {
+void Cloud::obstacleAction(Entity *e) {
   isActive = false;
   float dx = (position.x - e->getPosition().x);
   float dy = (position.y - e->getPosition().y);
@@ -68,7 +68,7 @@ void Plataform::obstacleAction(Entity *e) {
   }
 }
 
-void Plataform::setState() {
+void Cloud::setState() {
   if (isActive) {
     if (plataformType) {
       texture = cloud2active;
@@ -84,7 +84,7 @@ void Plataform::setState() {
   }
 }
 
-void Plataform::move() {
+void Cloud::move() {
   if (isActive) {
     if (position.y < originalPosition.y + PLATAFORMMAXPOSITION) {
       position.y += PLATAFORMMOVE;
@@ -104,7 +104,7 @@ void Plataform::move() {
 /*                 SAVE BUFFER                 */
 /* ------------------------------------------- */
 
-json Plataform::toJson() const {
+json Cloud::toJson() const {
   return {{"type", getType()},
           {"position_x", position.x},
           {"position_y", position.y},
@@ -124,7 +124,7 @@ json Plataform::toJson() const {
         };
 }
 
-void Plataform::fromJson(const json &j) {
+void Cloud::fromJson(const json &j) {
   position.x = j.at("position_x");
   position.y = j.at("position_y");
   isActive = j.at("isActive").get<bool>();
@@ -150,12 +150,12 @@ void Plataform::fromJson(const json &j) {
   }
 }
 
-std::string Plataform::getType() const { return "Plataform"; }
+std::string Cloud::getType() const { return "Cloud"; }
 
 /* ------------------------------------------- */
 /*                 GETS & SETS                 */
 /* ------------------------------------------- */
 
-bool Plataform::getIsActive() const { return isActive; }
+bool Cloud::getIsActive() const { return isActive; }
 
-void Plataform::setIsActive(bool active) { isActive = active; }
+void Cloud::setIsActive(bool active) { isActive = active; }

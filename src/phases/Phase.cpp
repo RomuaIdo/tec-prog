@@ -73,15 +73,15 @@ void Phase::createPlatforms() {
   int numPlatforms =
       minPlatforms + rand() % (maxPlatforms - minPlatforms + 1);
   for (int i = 0; i < numPlatforms; i++) {
-    int numPlataform = rand() % 2;
+    int numCloud = rand() % 2;
     // Generate random position
     float x =
         static_cast<float>(50 + rand() % static_cast<int>(phaseSize.x - 500));
     float y = minY + static_cast<float>(rand() % static_cast<int>(maxY - minY));
 
-    Plataform *p = new Plataform(x, y, false, numPlataform);
-    Plataform *p2 =
-        new Plataform(x + p->getSize().x * 1.7f, y, false, numPlataform);
+    Cloud *p = new Cloud(x, y, false, numCloud);
+    Cloud *p2 =
+        new Cloud(x + p->getSize().x * 1.7f, y, false, numCloud);
 
     p->configSprite();
     p2->configSprite();
@@ -197,8 +197,8 @@ void Phase::fromJson(const json &j) {
         e = new Cuca();
       } else if (type == "Honey") {
         e = new Honey();
-      } else if (type == "Plataform") {
-        e = new Plataform();
+      } else if (type == "Cloud") {
+        e = new Cloud();
       } else if (type == "Player") {
         e = new Player();
       } else if (type == "MulaSemCabeca") {

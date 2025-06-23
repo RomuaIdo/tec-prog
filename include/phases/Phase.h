@@ -6,7 +6,7 @@
 #include "../../include/entities/characters/enemies/Saci.h"
 #include "../../include/entities/characters/enemies/MulaSemCabeca.h"
 #include "../../include/entities/characters/enemies/Cuca.h"
-#include "../../include/entities/obstacles/Plataform.h"
+#include "../../include/entities/obstacles/Cloud.h"
 #include "../../include/entities/obstacles/Honey.h"
 #include "../../include/entities/obstacles/ThornyBush.h"
 #include "../../include/graphicalelements/BackgroundElement.h"

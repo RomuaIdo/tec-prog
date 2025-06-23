@@ -61,7 +61,7 @@ void Enemy::collide(Entity* e){
         float push = 0.f;
         if (std::abs(intersection.x) < std::abs(intersection.y)) {
             /* To push the character the amount he is inside */
-            if (dynamic_cast<Plataform *>(e)) {
+            if (dynamic_cast<Cloud *>(e)) {
                 push = abs(intersection.x);
             } else
                 push = abs(intersection.x / 2.f);
@@ -78,7 +78,7 @@ void Enemy::collide(Entity* e){
         } else {
 
             /* To push the character the amount he is inside */
-            if (dynamic_cast<Plataform *>(e)) {
+            if (dynamic_cast<Cloud *>(e)) {
                 push = abs(intersection.y);
             } else
                 push = abs(intersection.y / 2.f);
