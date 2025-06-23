@@ -177,8 +177,8 @@ void CollisionManager::treatWallCollision() {
 }
 
 void CollisionManager::treatPlayersCollision() {
-
-  if (verifyCollision(players_vector[0], players_vector[1])) {
+  Player *player2 = players_vector[1];
+  if (player2 && player2->getAlive() && verifyCollision(players_vector[0], players_vector[1])) {
     players_vector[0]->collide(players_vector[1]);
     players_vector[1]->collide(players_vector[0]);
   }

@@ -138,7 +138,7 @@ void Player::collide(Entity *e) {
         position.y += push;
         velocity.y = 0.f;
 
-      /* player is on top */
+        /* player is on top */
       } else {
 
         if (dynamic_cast<Honey *>(e)) {
@@ -232,7 +232,21 @@ void Player::handlePlayer2Controls(float dt) {
 
 void Player::shoot() {
   if (player_num == 1) {
-    if (Keyboard::isKeyPressed(sf::Keyboard::C)) {
+    if (Keyboard::isKeyPressed(sf::Keyboard::M)) {
+      // Shoot after SHOOTCOOLDOWN seconds
+      if (shootClock >= SHOOTCOOLDOWN) {
+        Projectile *p =
+            new Projectile(position.x + (size.x * faced_right), position.y,
+                           Vector2f(faced_right * ROCKACEL, -8.f), this);
+        p->configSprite();
+        if (p) {
+          addProjectile(p);
+        }
+        shootClock = 0.f;
+      }
+    }
+  } else if (player_num == 2) {
+    if (Keyboard::isKeyPressed(sf::Keyboard::Space)) {
       // Shoot after SHOOTCOOLDOWN seconds
       if (shootClock >= SHOOTCOOLDOWN) {
         Projectile *p =
@@ -247,7 +261,6 @@ void Player::shoot() {
     }
   }
 }
-
 void Player::shootProjectiles() {
   list<Projectile *>::iterator it = projectiles_list.begin();
   while (it != projectiles_list.end()) {
@@ -267,8 +280,8 @@ void Player::shootProjectiles() {
   }
 }
 
-void Player::addProjectile(Projectile *p) { 
-  projectiles_list.push_back(p); 
+void Player::addProjectile(Projectile *p) {
+  projectiles_list.push_back(p);
   CollisionManager::getInstance()->addProjectile(p);
 }
 
@@ -278,7 +291,7 @@ void Player::addProjectile(Projectile *p) {
 
 json Player::toJson() const {
   json j;
-  
+
   j["type"] = getType();
   j["position_x"] = position.x;
   j["position_y"] = position.y;
@@ -297,7 +310,6 @@ json Player::toJson() const {
   j["takeDamageClock"] = takeDamageClock;
   j["isBlinking"] = isBlinking;
   j["damageBlinkClock"] = damageBlinkClock;
-
 
   vector<json> projectiles_json;
   list<Projectile *>::const_iterator it;
