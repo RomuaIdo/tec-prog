@@ -65,7 +65,7 @@ void PauseMenu::execute() {
         pGame->cleanupAfterGame();
         pGame->setGameState(GameState::MAIN_MENU);
       } else if (name == "save_game") {
-        pGame->saveGame("savegame.json");
+        pGame->saveGame("saves/savegame.json");
         saveMessageVisible = true;
         messageClock.restart();
       }

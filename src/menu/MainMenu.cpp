@@ -50,7 +50,7 @@ void MainMenu::execute() {
       } else if (it->first == "leaderboard") {
         pGame->setGameState(GameState::LEADERBOARD);
       } else if (it->first == "load_game") {
-        pGame->loadGame("savegame.json");
+        pGame->loadGame("saves/savegame.json");
       }
     }
   }

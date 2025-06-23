@@ -108,9 +108,9 @@ void Game::running() {
       return;
     }
     if (currentPhase->passed()) {
-      if (dynamic_cast<FirstPhase *>(currentPhase)) {
-        createSecondPhase();
-      } else if (dynamic_cast<SecondPhase *>(currentPhase)) {
+      if (dynamic_cast<CucasForest *>(currentPhase)) {
+        createMulesPasture();
+      } else if (dynamic_cast<MulesPasture *>(currentPhase)) {
         saveScoretoLeaderboard();
         cleanupAfterGame();
         resetCamera();
@@ -161,20 +161,20 @@ void Game::updateCamera() {
 
 void Game::createPhase(short int phaseNumber) {
   if (phaseNumber == 1) {
-    createFirstPhase();
+    createCucasForest();
   } else if (phaseNumber == 2) {
-    createSecondPhase();
+    createMulesPasture();
   } else {
     cerr << "Invalid phase number: " << phaseNumber << endl;
   }
 }
 
-void Game::createFirstPhase() {
+void Game::createCucasForest() {
   if (currentPhase) {
     delete currentPhase;
   }
   currentPhase =
-      new FirstPhase(Vector2f(12000.f, 850.f), 11900.0, player1, player2);
+      new CucasForest(Vector2f(12000.f, 850.f), 11900.0, player1, player2);
 
   player1->setPosition(Vector2f(200.f, 800.f));
   player1->setVelocity(Vector2f(0.f, 0.f));
@@ -184,12 +184,12 @@ void Game::createFirstPhase() {
   }
 }
 
-void Game::createSecondPhase() {
+void Game::createMulesPasture() {
   if (currentPhase) {
     delete currentPhase;
   }
   currentPhase =
-      new SecondPhase(Vector2f(12000.f, 850.f), 11900.0, player1, player2);
+      new MulesPasture(Vector2f(12000.f, 850.f), 11900.0, player1, player2);
 
   player1->setPosition(Vector2f(200.f, 800.f));
   player1->setVelocity(Vector2f(0.f, 0.f));
@@ -415,10 +415,10 @@ void Game::loadGame(const std::string &filename) {
     if (j.find("phase") != j.end() && !j["phase"].is_null()) {
       if (j["phase"].find("type") != j["phase"].end() && j["phase"]["type"].is_string()) {
         std::string phaseType = j["phase"]["type"];
-        if (phaseType == "FirstPhase") {
-          currentPhase = new FirstPhase();
-        } else if (phaseType == "SecondPhase") {
-          currentPhase = new SecondPhase();
+        if (phaseType == "CucasForest") {
+          currentPhase = new CucasForest();
+        } else if (phaseType == "MulesPasture") {
+          currentPhase = new MulesPasture();
         }
         if (currentPhase) {
           currentPhase->setPlayers(player1, player2);

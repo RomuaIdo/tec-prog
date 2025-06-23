@@ -7,8 +7,8 @@
 #include "../graphicalelements/TextInputSubject.h"
 #include "../lists/List.h"
 #include "../managers/GraphicsManager.h"
-#include "../phases/FirstPhase.h"
-#include "../phases/SecondPhase.h"
+#include "../phases/CucasForest.h"
+#include "../phases/MulesPasture.h"
 #include <fstream>
 #include <list>
 #include <vector>
@@ -44,8 +44,8 @@ private:
   /* ---- OWN FUNCTIONS ----- */
   void execute();
   void running();
-  void createFirstPhase();
-  void createSecondPhase();
+  void createCucasForest();
+  void createMulesPasture();
 
 public:
   Game();
